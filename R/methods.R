@@ -61,7 +61,7 @@
       msg,
       "\n",
       "See exports for more help:",
-      paste0("?", if (is.null(pkg)) "", paste0(pkg, ":::", exports))
+      paste0("?", if (is.null(pkg)) "", paste0(pkg, "::", exports))
     )
   }
 
@@ -131,6 +131,25 @@ delayedAssign(
 }
 
 #' @export
+`print.cnd::condition` <- function(x, ...) {
+  cat(format(x), "\n", sep = "")
+  invisible(x)
+}
+
+#' @export
+`format.cnd::condition` <- function(x, ...) {
+  pkg <- attr(x, "package")
+  fmt(
+    "{type}/{pkg}{class}//{message}",
+    type = attr(x, "type"),
+    pkg = if (is.null(pkg)) "" else paste0(pkg, "::"),
+    class = attr(x, "condition"),
+    message = x$message
+  )
+}
+
+#' @export
 `format.cnd::condition_function` <- function(x, ...) {
   paste0(x$type, "/", x$class)
 }
+
