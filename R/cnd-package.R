@@ -14,7 +14,6 @@ encapsulate <- function(expr, env = capsule) {
   eval(expr, env)
 }
 
-registry <- new.env(hash = FALSE, parent = emptyenv())
-
+.__conditions__. <- new.env(hash = FALSE, parent = emptyenv())
 
 `..` <- NULL

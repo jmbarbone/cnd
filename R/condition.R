@@ -102,12 +102,12 @@ condition <- function(
 
   if (
     isTRUE(getOption("cnd.verbose", TRUE)) &&
-    exists(class[1L], envir = registry, inherits = FALSE)
+    exists(class[1L], envir = .__conditions__., inherits = FALSE)
   ) {
     warning(condition_condition_warning(class[1L]))
   }
 
-  assign(class[1L], res, envir = registry)
+  assign(class[1L], res, envir = .__conditions__.)
   res
 }
 
@@ -116,7 +116,8 @@ class(condition) <- c("cnd::condition_generator", "function")
 #' @export
 #' @rdname condition
 conditions <- function(class = NULL, package = NULL) {
-  conds <- as.list(registry)
+  # TODO search on names only could reduce this to a smaller object
+  conds <- as.list(.__conditions__.)
 
   if (!is.null(class)) {
     conds <- Filter(\(x) sub("^.*::", "", x$condition) == condition, conds)
