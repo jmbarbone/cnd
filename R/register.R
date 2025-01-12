@@ -1,3 +1,11 @@
+register_conditions <- function(pkg = get_package()) {
+  ns <- asNamespace(pkg)
+  for (cond in conditions(pkg)) {
+    add_condition(cond$exports, ns, cond)
+  }
+  invisible()
+}
+
 #' Register a condition
 #'
 #' Only register functions that are associated with a package
@@ -27,6 +35,15 @@ register_condition <- function(cond, env = parent.frame()) {
 
   assign(class, cond, registry)
   invisible()
+}
+
+add_condition <- function(export, ns, condition) {
+  object <- get(export, ns)
+  attr(object, "condition") <- c(attr(object, "condition"), condition)
+  if (!is_conditioned_function(object)) {
+    class(object) <- c("cnd::conditioned_function", class(object))
+  }
+  assign(export, object, ns)
 }
 
 get_registry <- function(pkg) {

@@ -28,3 +28,12 @@ is_cnd_function <- function(x, type = c("error", "warning", "message")) {
 `is.cnd::condition_function` <- function(x) {
   is_cnd_function(x)
 }
+
+is_conditioned_function <- function(x) {
+  inherits(x, "cnd::conditioned_function")
+}
+
+#' @export
+`is.cnd::conditioned_function` <- function(x) {
+  is_conditioned_function(x)
+}

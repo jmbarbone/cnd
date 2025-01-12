@@ -61,7 +61,7 @@
       msg,
       "\n",
       "See exports for more help:",
-      paste0("?", if (is.null(pkg)) "", paste0(pkg, "::", exports))
+      paste0("?", if (is.null(pkg)) "", paste0(pkg, ":::", exports))
     )
   }
 
@@ -119,7 +119,18 @@ delayedAssign(
 
 
 #' @export
-print.cnd_condition_spec <- function(x, ...) {
-  cat(x$class, " (", x$package, ")", "\n", sep = "")
+`print.cnd::conditioned_function` <- function(x, ...) {
+  print.function(as.function(as.list(x)), ...)
+  cat(
+    "<condition(s): ",
+    to_string(vapply(attr(x, "condition"), format, NA_character_)),
+    ">\n",
+    sep = ""
+  )
   invisible(x)
+}
+
+#' @export
+`format.cnd::condition_function` <- function(x, ...) {
+  paste0(x$type, "/", x$class)
 }

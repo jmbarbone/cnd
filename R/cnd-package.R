@@ -16,3 +16,7 @@ encapsulate <- function(expr, env = capsule) {
 
 # global variable-ish
 `..` <- NULL
+
+.onLoad <- function(libname, pkgname) {
+  register_conditions(pkgname)
+}
