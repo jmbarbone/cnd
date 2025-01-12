@@ -10,17 +10,60 @@ to_string <- function(x) {
   paste0(x, collapse = ", ")
 }
 
-}
-
-
-
-
-}
-
-
-}
-
 filter2 <- function(x, fun, ...) {
   fun <- match.fun(fun)
   x[which(vapply(x, fun, NA, ...))]
+}
+
+fmt <- function(...) {
+  params <- list(...)
+  nms <- names(params)
+  if (is.null(nms)) {
+    return(paste0(unlist(params, use.names = FALSE), collapse = ""))
+  }
+
+  lines <- names(params) == ""
+  text <- unlist(params[lines])
+  params <- params[!lines]
+  names <- names(params)
+
+  for (i in seq_along(params)) {
+    text <- gsub(paste0("{", names[i], "}"), params[i], text, fixed = TRUE)
+  }
+
+  fmt(text)
+}
+
+
+clean_text <- function(x, pad = 0L) {
+  x <- as.character(x)
+  x <- clean_padding(x, pad)
+
+  while (x[1L] == "") {
+    x <- x[-1L]
+  }
+
+  while (x[n <- length(x)] == "") {
+    x <- x[-n]
+  }
+
+  x
+}
+
+clean_padding <- function(x, pad = 0L) {
+  pad <- as.integer(pad)
+
+  text <- unlist(strsplit(x, "\n", fixed = TRUE))
+  blank <- text == ""
+
+  n <- attr(regexpr("[[:space:]]+", text, perl = TRUE), "match.length")
+
+  if (all(n[!blank]) == 0L) {
+    return(text)
+  }
+
+  m <- min(n[!blank])
+  text[!blank] <- substr(text[!blank], m + 1L, nchar(text[!blank]))
+  text[!blank] <- paste0(strrep(" ", pad), text[!blank])
+  text
 }

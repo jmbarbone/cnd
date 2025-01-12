@@ -16,8 +16,7 @@
 #' @export
 `print.cnd::condition_function` <- function(x, ...) {
   cat("<<", x$class, ">>\n", sep = "")
-
-  cat("  $ type   :", x$type, "\n")
+  cat("  <type: ", x$type, ">\n", sep = "")
 
   if (length(x$exports)) {
     if (!is.null(x$package)) {
@@ -25,12 +24,16 @@
     } else {
       exp <- x$exports
     }
-    cat("  $ exports:", exp, "\n")
+    cat("  <exports: ", to_string(exp), ">\n", sep = "")
   }
   if (!is.null(x$package)) {
-    cat("  $ package:", x$package, "\n")
+    cat("  <package: ", x$package, ">\n", sep = "")
   }
 
+  if (length(x$help)) {
+    cat("\n")
+    writeLines(clean_text(x$help, pad = 2L))
+  }
 
   forms <- formals(x)
   if (!is.null(forms)) {
@@ -51,32 +54,56 @@
   exports <- attr(c, "exports")
   pkg <- attr(c, "package")
 
-  sprintf(
-    "<%s>\r\n%s%s",
-    attr(c, "condition"),
-    c$message,
-    if (length(exports)) {
-      sprintf(
-        "\nSee exports from for help: %s",
-        to_string(paste0("?", if (is.null(pkg)) "", paste0(pkg, "::", exports)))
-      )
-  } else {
-    ""
-  })
+  msg <- c(fmt("<{cl}>", cl = attr(c, "condition")), c$message)
+
+  if (length(exports)) {
+    msg <- c(
+      msg,
+      "\n",
+      "See exports for more help:",
+      paste0("?", if (is.null(pkg)) "", paste0(pkg, "::", exports))
+    )
+  }
+
+  msg
 }
 
 #' @export
 `as.character.cnd::condition_function` <- function(x, ...) {
-  stop(cond_as_character_condition_fun())
+  cnd(cond_as_character_condition())
 }
 
-cond_as_character_condition_fun <- condition(
-  "as_character_cnd_error",
-  type = "error",
-  package = "cnd",
-  message = c(
-      "You are trying to coerce a `cnd::condition_function` object to a ",
-      "character.\nDid you mean instead to call it as a function first?"
+cond_as_character_condition <- NULL
+delayedAssign(
+  "cond_as_character_condition",
+  condition(
+    "as_character_cnd_error",
+    type = "error",
+    package = "cnd",
+    message = "
+    You are trying to coerce a `cnd::condition_function` object to a character.
+    Did you mean instead to call it as a function first?
+    ",
+    # message = c(
+    #     "You are trying to coerce a `cnd::condition_function` object to a ",
+    #     "character.\nDid you mean instead to call it as a function first?"
+    # ),
+    help = "
+    You cannot coerce a `cnd::condition_function` object to a character.  This
+    may have occured when trying to put a condition function through `stop()` or
+    `warning`.  Instead, call the function first, then pass the result to `stop()`
+    or `warning()`.
+
+    For example:
+
+    ```r
+    # Instead of this
+    stop(my_condition)
+
+    # Do this
+    stop(my_condition())
+    ```
+    "
   )
 )
 
@@ -88,4 +115,10 @@ cond_as_character_condition_fun <- condition(
 #' @export
 `$.cnd::condition_function` <- function(x, i) {
   .subset2(as.list(environment(x)), i)
+}
+
+#' @export
+print.cnd_condition_spec <- function(x, ...) {
+  cat(x$class, " (", x$package, ")", "\n", sep = "")
+  invisible(x)
 }
