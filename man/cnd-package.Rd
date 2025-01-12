@@ -2,7 +2,6 @@
 % Please edit documentation in R/cnd-package.R
 \docType{package}
 \name{cnd-package}
-\alias{cnd}
 \alias{cnd-package}
 \title{cnd: What the Package Does (One Line, Title Case)}
 \description{

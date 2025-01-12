@@ -3,18 +3,21 @@
 \name{condition}
 \alias{condition}
 \alias{conditions}
+\alias{cnd}
 \title{Conditions}
 \usage{
 condition(
   class,
   message = NULL,
   type = c("error", "warning", "message"),
+  package = get_package(),
   exports = NULL,
-  help = NULL,
-  package = get_package()
+  help = NULL
 )
 
-conditions(class = NULL, package = NULL)
+conditions(package, class = NULL)
+
+cnd(condition)
 }
 \arguments{
 \item{class}{The name of the new class}
@@ -23,22 +26,32 @@ conditions(class = NULL, package = NULL)
 
 \item{type}{The type of condition: error, warning, or message}
 
+\item{package}{The package to which the condition belongs}
+
 \item{exports}{The exported functions to be displayed when the condition is
 called}
 
 \item{help}{The help message to be displayed for the condition function}
 
-\item{package}{The package to which the condition belongs}
+\item{condition}{A condition object}
 }
 \value{
 \itemize{
 \item \code{\link[=condition]{condition()}} a \code{cnd::condition_function} object
 \item \code{\link[=conditions]{conditions()}} a \code{list} of all conditions
 }
+
+\itemize{
+\item \code{\link[=cnd]{cnd()}} is a wrapper for calling \code{\link[=stop]{stop()}}, \code{\link[=warning]{warning()}}, or \code{\link[=message]{message()}}
+}
 }
 \description{
 \code{\link[=conditions]{conditions()}} is used to create a new condition function that itself returns
-a new \code{condition}.
+a new \code{condition}. If a package is supplied, \verb{[conditions()]} will register
+the condition in the \code{.__cnd::condition_registry__.} object with the package
+namespace.  If the object does not exist, \strong{it will be registered in your
+package namespace}.
+
 \code{\link[=conditions]{conditions()}} retrieves all conditions based on search values
 }
 \details{
@@ -46,10 +59,11 @@ Conditions
 }
 \examples{
 # create a new condition:
-cond_value_error <- condition("value_error")
+cond_bad_value <- condition("bad_value")
 
 # use the condition
-try(stop(cond_value_error()))
+try(stop(cond_bad_value()))
+try(cnd(cond_bad_value()))
 
 # dynamic messages:
 cond_class_error <- condition(
