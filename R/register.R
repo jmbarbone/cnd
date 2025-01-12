@@ -1,3 +1,11 @@
+#' Register conditions
+#'
+#' `[register_conditions()]` should be used within a package's `.onLoad()`
+#' function to modify functions to include conditions
+#'
+#' @param pkg The package name
+#' @returns Nothing, called for its side-effects
+#' @export
 register_conditions <- function(pkg = get_package()) {
   ns <- asNamespace(pkg)
   for (cond in conditions(pkg)) {
