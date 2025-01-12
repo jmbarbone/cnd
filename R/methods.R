@@ -91,8 +91,8 @@ delayedAssign(
     help = "
     You cannot coerce a `cnd::condition_function` object to a character.  This
     may have occured when trying to put a condition function through `stop()` or
-    `warning`.  Instead, call the function first, then pass the result to `stop()`
-    or `warning()`.
+    `warning`.  Instead, call the function first, then pass the result to
+    `stop()` or `warning()`.
 
     For example:
 

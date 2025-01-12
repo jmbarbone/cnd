@@ -85,8 +85,8 @@ delayedAssign(
   condition(
     "condition_warning",
     type = "warning",
-    message = function(class)
-      fmt("Condition '{cl}' already exists. Overwriting.", cl = class),
+    message =
+      \(class) fmt("Condition '{cl}' already exists. Overwriting.", cl = class),
     exports = "condition",
     package = "cnd",
     help = "
