@@ -55,11 +55,11 @@ condition <- function(
 
   type <- match.arg(type)
 
-  if (!endsWith(class, type)) {
-    # appending another class to the condition so we get explicit
-    # "condition_error"
-    class <- c(paste(class, type, sep = "_"), class)
-  }
+  # if (!endsWith(class, type)) {
+  #   # appending another class to the condition so we get explicit
+  #   # "condition_error"
+  #   class <- c(paste(class, type, sep = "_"), class)
+  # }
 
   if (!is.null(package)) {
     class <- paste(package, class, sep = "::")
@@ -120,11 +120,11 @@ conditions <- function(class = NULL, package = NULL) {
   conds <- as.list(.__conditions__.)
 
   if (!is.null(class)) {
-    conds <- Filter(\(x) sub("^.*::", "", x$condition) == condition, conds)
+    conds <- filter2(conds, \(x) sub("^.*::", "", x$condition) == condition)
   }
 
   if (!is.null(package)) {
-    conds <- Filter(\(x) x$package == package, conds)
+    conds <- filter2(conds, \(x) x$package == package)
   }
 
   conds

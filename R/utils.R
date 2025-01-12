@@ -37,3 +37,8 @@ is_warning_cnd <- function(x) {
 is_message_cnd <- function(x) {
   is_cnd_function(x) && attr(x, "type") == "message"
 }
+
+filter2 <- function(x, fun, ...) {
+  fun <- match.fun(fun)
+  x[which(vapply(x, fun, NA, ...))]
+}
