@@ -20,7 +20,7 @@
 
   if (length(x$exports)) {
     if (!is.null(x$package)) {
-      exp <- paste0(x$package, ":::", x$exports)
+      exp <- paste0(x$package, "::", x$exports)
     } else {
       exp <- x$exports
     }
