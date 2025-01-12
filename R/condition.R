@@ -130,6 +130,7 @@ conditions <- function(package, class = NULL) {
 #' @returns
 #' - [cnd()] is a wrapper for calling [stop()], [warning()], or [message()]
 cnd <- function(condition) {
+  # TODO use get_condition(condition)
   if (!is_cnd_condition(condition)) {
     cnd(cond_cnd_class())
   }
@@ -140,6 +141,16 @@ cnd <- function(condition) {
     warning = warning(condition),
     message = message(condition)
   )
+}
+
+get_condition <- function(x) {
+  if (is_cnd_condition(x)) {
+    return(x)
+  }
+
+  nm <- sub("^.*/", "", x)
+  ns <- sub("::.+$", "", nm)
+  conditions(ns)[[nm]]
 }
 
 # conditions --------------------------------------------------------------
