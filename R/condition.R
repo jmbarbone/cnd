@@ -4,7 +4,11 @@
 #'
 #' @description
 #' [conditions()] is used to create a new condition function that itself returns
-#' a new `condition`.
+#' a new `condition`. If a package is supplied, `[conditions()]` will register
+#' the condition in the `.__cnd::condition_registry__.` object with the package
+#' namespace.  If the object does not exist, **it will be registered in your
+#' package namespace**.
+#'
 #' [conditions()] retrieves all conditions based on search values
 #'
 #' @param class The name of the new class
@@ -21,10 +25,11 @@
 #' @export
 #' @examples
 #' # create a new condition:
-#' cond_value_error <- condition("value_error")
+#' cond_bad_value <- condition("bad_value")
 #'
 #' # use the condition
-#' try(stop(cond_value_error()))
+#' try(stop(cond_bad_value()))
+#' try(cnd(cond_bad_value()))
 #'
 #' # dynamic messages:
 #' cond_class_error <- condition(
@@ -34,17 +39,17 @@
 #' try(stop(cond_class_error(list())))
 #'
 #' @include utils.R
+#' @include register.R
 condition <- function(
     class,
     message = NULL,
     type = c("error", "warning", "message"),
+    package = get_package(),
     exports = NULL,
-    help = NULL,
-    package = get_package()
+    help = NULL
 ) {
   force(package)
-
-  # TODO add custom condition
+  # TODO add custom conditions
   stopifnot(
     is.character(class),
     !grepl("::", class, fixed = TRUE),
@@ -55,13 +60,11 @@ condition <- function(
 
   type <- match.arg(type)
 
-  # if (!endsWith(class, type)) {
-  #   # appending another class to the condition so we get explicit
-  #   # "condition_error"
-  #   class <- c(paste(class, type, sep = "_"), class)
-  # }
-
-  if (!is.null(package)) {
+  if (is.null(package)) {
+    if (!is.null(exports)) {
+      cnd(cond_no_package_exports())
+    }
+  } else {
     class <- paste(package, class, sep = "::")
   }
 
@@ -70,8 +73,9 @@ condition <- function(
   } else if (is.character(message)) {
     message <- as.function(list(paste0(message, collapse = "")))
   } else if (!is.function(message)) {
-    stop(condition_message_error())
+    cnd(cond_condition_bad_message())
   }
+
 
   # setting up an environment to track additional fields for
   condition_env <- new.env(parent = capsule)
@@ -86,28 +90,23 @@ condition <- function(
   res <- local(envir = condition_env, {
     function() {
       params <- as.list(match.call())[-1L]
+      params <- lapply(params, eval.parent, 2L)
       # TODO add `call` to the formals
       cond <- list(message = do.call(..$message, params), call = NULL)
+      cond$message <- clean_text(cond$message)
       base::class(cond) <- c(..$class, "cnd::condition", ..$type, "condition")
       attr(cond, "help") <- ..$help
       attr(cond, "package") <- ..$package
       attr(cond, "exports") <- ..$exports
       attr(cond, "condition") <- ..$class
+      attr(cond, "type") <- ..$type
       cond
     }
   })
 
   formals(res) <- formals(message)
   base::class(res) <- c("cnd::condition_function", "function")
-
-  if (
-    isTRUE(getOption("cnd.verbose", TRUE)) &&
-    exists(class[1L], envir = .__conditions__., inherits = FALSE)
-  ) {
-    warning(condition_condition_warning(class[1L]))
-  }
-
-  assign(class[1L], res, envir = .__conditions__.)
+  register_condition(res)
   res
 }
 
@@ -115,51 +114,69 @@ class(condition) <- c("cnd::condition_generator", "function")
 
 #' @export
 #' @rdname condition
-conditions <- function(class = NULL, package = NULL) {
-  # TODO search on names only could reduce this to a smaller object
-  conds <- as.list(.__conditions__.)
-
+conditions <- function(package, class = NULL) {
+  ns <- getNamespace(package)
+  registry <- get(".__cnd::condition_registry__.", ns)
+  conds <- as.list(registry)
   if (!is.null(class)) {
-    conds <- filter2(conds, \(x) sub("^.*::", "", x$condition) == condition)
+    conds <- filter2(conds, \(x) sub("^.*::", "", x$condition) == class)
   }
-
-  if (!is.null(package)) {
-    conds <- filter2(conds, \(x) x$package == package)
-  }
-
   conds
+}
+
+#' @export
+#' @rdname condition
+#' @param condition A condition object
+#' @returns
+#' - [cnd()] is a wrapper for calling [stop()], [warning()], or [message()]
+cnd <- function(condition) {
+  if (!is_cnd_condition(condition)) {
+    cnd(cond_cnd_class())
+  }
+
+  switch(
+    attr(condition, "type"),
+    error = stop(condition),
+    warning = warning(condition),
+    message = message(condition)
+  )
 }
 
 # conditions --------------------------------------------------------------
 
-get_condition_error <- condition(
-  "get_condition_error",
-  type = "error",
-  message = function(condition)
-    sprintf(
-      c(
-        "Condition '%s' does not exist.  Create a new condition with",
-        " `cnd::condition()`."
-      ),
-      condition
-    ),
+cond_no_package_exports <- condition(
+  "cond_no_package_exports",
+  type = "warning",
+  message = "No package was supplied, so `exports` is ignored",
   exports = "condition",
-  package = "cnd"
+  package = "cnd",
+  help = "The `exports` parameter requires a `package`"
 )
 
-condition_message_error <- condition(
-  "condition_message_error",
+cond_condition_bad_message <- condition(
+  "cond_bad_message",
   type = "error",
   message = "`message` must be a character vector or a function.",
   exports = "condition",
-  package = "cnd"
+  package = "cnd",
+  help = "
+  Conditions messages are displayed when invoked through conditionMessage().
+  You can set a static message by passing through a `character` vector, or a
+  dynamic message by passing through a `function`.  The function should return
+  a `character` vector.
+
+  When `message` is not set, a default \"there was an error\" message is used.
+  "
 )
 
-condition_condition_warning <- condition(
-  "condition_warning",
-  type = "warning",
-  message = function(class)
-    sprintf("Condition '%s' already exists. Overwriting.", class),
-  exports = "condition",
-  package = "cnd"
+cond_cnd_class <- condition(
+  "cond_cnd_class",
+  type = "error",
+  message = "'condition' must be a `cnd::condition` object",
+  exports = "cnd",
+  package = "cnd",
+  help = "
+  `cnd()` simple calls the appropriate function: `stop()`, `warning()`, or
+  `message()` based on the `type` parameter from `cnd::condition()`
+  "
 )

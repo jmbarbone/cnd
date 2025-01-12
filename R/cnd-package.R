@@ -14,6 +14,5 @@ encapsulate <- function(expr, env = capsule) {
   eval(expr, env)
 }
 
-.__conditions__. <- new.env(hash = FALSE, parent = emptyenv())
-
+# global variable-ish
 `..` <- NULL
