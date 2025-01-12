@@ -52,7 +52,8 @@ condition <- function(
   # TODO add custom conditions
   stopifnot(
     is.character(class),
-    !grepl("::", class, fixed = TRUE),
+    # must only contain letters, numbers and underscores or period
+    grepl("^[a-z0-9_.]+$", class, ignore.case = TRUE),
     length(class) == 1L,
     is.null(exports) || is.character(exports),
     is.null(help) || is.character(help)
@@ -65,7 +66,7 @@ condition <- function(
       cnd(cond_no_package_exports())
     }
   } else {
-    class <- paste(package, class, sep = "::")
+    class <- paste(package, class, sep = ":::")
   }
 
   if (is.null(message)) {

@@ -20,7 +20,7 @@
 
   if (length(x$exports)) {
     if (!is.null(x$package)) {
-      exp <- paste0(x$package, "::", x$exports)
+      exp <- paste0(x$package, ":::", x$exports)
     } else {
       exp <- x$exports
     }
@@ -116,6 +116,7 @@ delayedAssign(
 `$.cnd::condition_function` <- function(x, i) {
   .subset2(as.list(environment(x)), i)
 }
+
 
 #' @export
 print.cnd_condition_spec <- function(x, ...) {
