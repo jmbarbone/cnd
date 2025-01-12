@@ -1,5 +1,4 @@
 #' @keywords internal
-#' @import S7
 "_PACKAGE"
 
 ## usethis namespace: start

@@ -3,9 +3,9 @@
 \docType{package}
 \name{cnd-package}
 \alias{cnd-package}
-\title{cnd: What the Package Does (One Line, Title Case)}
+\title{cnd: Create and register conditions}
 \description{
-What the package does (one paragraph).
+Condition generating functions and registry options to track custom conditions for your package.
 }
 \author{
 \strong{Maintainer}: Jordan Mark Barbone \email{jmbarbone@gmail.com} (\href{https://orcid.org/0000-0001-9788-3628}{ORCID}) [copyright holder]
