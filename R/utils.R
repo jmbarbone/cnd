@@ -52,18 +52,17 @@ clean_text <- function(x, pad = 0L) {
 
 clean_padding <- function(x, pad = 0L) {
   pad <- as.integer(pad)
-
   text <- unlist(strsplit(x, "\n", fixed = TRUE))
-  blank <- text == ""
+  ok <- text != ""
 
-  n <- attr(regexpr("[[:space:]]+", text, perl = TRUE), "match.length")
+  ns <- attr(regexpr("^[[:space:]]+", text[ok], perl = TRUE), "match.length")
+  m <- min(ns)
 
-  if (all(n[!blank]) == 0L) {
+  if (m == 0) {
     return(text)
   }
 
-  m <- min(n[!blank])
-  text[!blank] <- substr(text[!blank], m + 1L, nchar(text[!blank]))
-  text[!blank] <- paste0(strrep(" ", pad), text[!blank])
+  text[ok] <- substr(text[ok], m + 1L, nchar(text[ok]))
+  text[ok] <- paste0(strrep(" ", pad), text[ok])
   text
 }
