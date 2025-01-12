@@ -55,8 +55,13 @@ add_condition <- function(export, ns, condition) {
 }
 
 get_registry <- function(pkg) {
-  ns <- asNamespace(pkg)
-  if (!exists(".__cnd::condition_registry__.", ns)) {
+  env <- if (pkg == "cnd") {
+    parent.env(.__condition_registry__.)
+  } else {
+    asNamespace(pkg)
+  }
+
+  if (!exists(".__cnd::condition_registry__.", env)) {
     if (getOption("cnd.verbose", TRUE)) {
       cnd(cond_new_registry(pkg))
     }
@@ -64,11 +69,11 @@ get_registry <- function(pkg) {
     assign(
       ".__cnd::condition_registry__.",
       new.env(parent = .__condition_registry__.),
-      ns
+      env
     )
   }
 
-  get(".__cnd::condition_registry__.", ns)
+  get(".__cnd::condition_registry__.", env)
 }
 
 #' Condition registration environment
