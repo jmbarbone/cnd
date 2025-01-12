@@ -77,7 +77,6 @@ condition <- function(
     cnd(cond_condition_bad_message())
   }
 
-
   # setting up an environment to track additional fields for
   condition_env <- new.env(parent = capsule)
   assign("..", condition_env, condition_env)
