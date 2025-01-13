@@ -152,4 +152,3 @@ delayedAssign(
 `format.cnd::condition_function` <- function(x, ...) {
   paste0(x$type, "/", x$class)
 }
-

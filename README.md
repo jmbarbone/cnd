@@ -33,7 +33,7 @@ bad_value
 #> <<bad_value>>
 #>   <type: error>
 bad_value()
-#> <error/bad_value//Value has to be better: <bad_value>Value has to be better>
+#> error/bad_value//Value has to be better
 
 foo <- function(x) {
   if (x < 0) {
@@ -63,7 +63,7 @@ bad_value2
 #> Generator:
 #>   |  x :
 bad_value2(0)
-#> <error/bad_value2//Value '0' is no good: <bad_value2>Value '0' is no good>
+#> error/bad_value2//Value '0' is no good
 
 foo <- function(x) {
   if (x < 0) {
@@ -96,10 +96,10 @@ condition("an_example", pakage = "pkg", exports = "fun")
 
 ``` r
 pkg::fun
-function () 
-{
-    # nonsense example
-}
-<environment: 0x000000000000>
-<condition(s): error/pkg:::an_example>
+#> function () 
+#> {
+#>     # nonsense example
+#> }
+#> <environment: 0x000000000000>
+#> <condition(s): error/pkg:::an_example>
 ```

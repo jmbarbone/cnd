@@ -5,6 +5,6 @@ exclusions: list(
     "R/is.R" = list(object_name_linter = c(10, 19, 28, 37)),
     "R/register.R" = list(
       indentation_linter = 39,
-      object_name_linter = 78:79
+      object_name_linter = 83:84
     )
   )

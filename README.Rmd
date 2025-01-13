@@ -88,11 +88,11 @@ condition("an_example", pakage = "pkg", exports = "fun")
 
 ```r
 pkg::fun
-function () 
-{
-    # nonsense example
-}
-<environment: 0x000000000000>
-<condition(s): error/pkg:::an_example>
+#> function () 
+#> {
+#>     # nonsense example
+#> }
+#> <environment: 0x000000000000>
+#> <condition(s): error/pkg:::an_example>
 ```
 
