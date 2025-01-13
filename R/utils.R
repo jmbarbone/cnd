@@ -7,7 +7,11 @@ get_package <- function(env = parent.frame(2L)) {
 }
 
 to_string <- function(x) {
-  paste0(x, collapse = ", ")
+  collapse(x, sep = ", ")
+}
+
+collapse <- function(..., sep = "") {
+  paste0(c(...), collapse = sep)
 }
 
 filter2 <- function(x, fun, ...) {
@@ -19,7 +23,7 @@ fmt <- function(...) {
   params <- list(...)
   nms <- names(params)
   if (is.null(nms)) {
-    return(paste0(unlist(params, use.names = FALSE), collapse = ""))
+    return(collapse(params))
   }
 
   lines <- names(params) == ""

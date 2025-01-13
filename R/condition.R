@@ -72,7 +72,7 @@ condition <- function(
   if (is.null(message)) {
     message <- function() "\b there was an error"
   } else if (is.character(message)) {
-    message <- as.function(list(paste0(message, collapse = "")))
+    message <- as.function(list(collapse(message)))
   } else if (!is.function(message)) {
     cnd(cond_condition_bad_message())
   }

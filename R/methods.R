@@ -139,16 +139,22 @@ delayedAssign(
 #' @export
 `format.cnd::condition` <- function(x, ...) {
   pkg <- attr(x, "package")
+  # browser()
   fmt(
-    "{type}/{pkg}{class}//{message}",
+    "{pkg}{type}/{class}<<{message}",
     type = attr(x, "type"),
-    pkg = if (is.null(pkg)) "" else paste0(pkg, "::"),
-    class = attr(x, "condition"),
-    message = x$message
+    pkg = if (is.null(pkg)) "" else paste0(pkg, ":::"),
+    class = sub("^.*:+", "", attr(x, "condition")),
+    message = collapse(x$message)
   )
 }
 
 #' @export
 `format.cnd::condition_function` <- function(x, ...) {
-  paste0(x$type, "/", x$class)
+  fmt(
+    "{pkg}{type}/{class}",
+    pkg = if (is.null(x$package)) "" else paste0(x$package, ":::"),
+    type = x$type,
+    class = sub("^.*:+", "", x$class)
+  )
 }
