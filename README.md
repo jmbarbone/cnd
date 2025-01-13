@@ -4,6 +4,8 @@
 # cnd
 
 <!-- badges: start -->
+
+[![R-CMD-check](https://github.com/jmbarbone/cnd/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/jmbarbone/cnd/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
 The goal of `{cnd}` is to provide easy, customized classes for
@@ -30,10 +32,9 @@ library(cnd)
 bad_value <- condition("bad_value", message = "Value has to be better")
 
 bad_value
-#> <<bad_value>>
-#>   <type: error>
+#> error/bad_value
 bad_value()
-#> error/bad_value//Value has to be better
+#> error/bad_value<<Value has to be better
 
 foo <- function(x) {
   if (x < 0) {
@@ -57,13 +58,12 @@ bad_value2 <- condition(
 )
 
 bad_value2
-#> <<bad_value2>>
-#>   <type: error>
+#> error/bad_value2
 #> 
 #> Generator:
 #>   |  x :
 bad_value2(0)
-#> error/bad_value2//Value '0' is no good
+#> error/bad_value2<<Value '0' is no good
 
 foo <- function(x) {
   if (x < 0) {
@@ -91,7 +91,13 @@ Once that is done, your functions will have a
 you have linked.
 
 ``` r
-condition("an_example", pakage = "pkg", exports = "fun")
+condition("an_example", pakage = "pkg", help = "more info", exports = "fun")
+#> pkg:::error/an_example
+#> 
+#> more info
+#> 
+#> exports:
+#>   pkg::fun
 ```
 
 ``` r
@@ -101,5 +107,5 @@ pkg::fun
 #>     # nonsense example
 #> }
 #> <environment: 0x000000000000>
-#> <condition(s): error/pkg:::an_example>
+#> <condition(s): pkg:::error/an_example>
 ```

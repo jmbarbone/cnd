@@ -15,24 +15,10 @@
 
 #' @export
 `print.cnd::condition_function` <- function(x, ...) {
-  cat("<<", x$class, ">>\n", sep = "")
-  cat("  <type: ", x$type, ">\n", sep = "")
-
-  if (length(x$exports)) {
-    if (!is.null(x$package)) {
-      exp <- paste0(x$package, "::", x$exports)
-    } else {
-      exp <- x$exports
-    }
-    cat("  <exports: ", to_string(exp), ">\n", sep = "")
-  }
-  if (!is.null(x$package)) {
-    cat("  <package: ", x$package, ">\n", sep = "")
-  }
-
+  cat(format(x), "\n", sep = "")
   if (length(x$help)) {
     cat("\n")
-    writeLines(clean_text(x$help, pad = 2L))
+    writeLines(clean_text(x$help, pad = 0L))
   }
 
   forms <- formals(x)
@@ -46,6 +32,13 @@
     ))
   }
 
+  if (length(x$exports)) {
+    cat(
+      "\nexports:",
+      to_string(paste0("\n  ", x$package, "::", x$exports)),
+      sep = ""
+    )
+  }
   invisible(x)
 }
 
