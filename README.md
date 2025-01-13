@@ -24,8 +24,8 @@ pak::pak("jmbarbone/cnd")
 
 ## Example
 
-`condition()` creates a `cnd::condition_function` that then generates
-the condition when called.
+`condition()` creates a `cnd::condition_function` that can generate the
+condition when called.
 
 ``` r
 library(cnd)
@@ -60,8 +60,8 @@ bad_value2 <- condition(
 bad_value2
 #> error/bad_value2
 #> 
-#> Generator:
-#>   |  x :
+#> generator:
+#>   $ x: <symbol>
 bad_value2(0)
 #> error/bad_value2<<Value '0' is no good
 
@@ -76,6 +76,8 @@ try(foo(-1L))
 #> Error : <bad_value2>
 #>  Error : Value '-1' is no good
 ```
+
+## Registration
 
 Conditions can be assigned into objects within your package by adding
 one line to your `.onLoad()`
@@ -108,4 +110,14 @@ pkg::fun
 #> }
 #> <environment: 0x000000000000>
 #> <condition(s): pkg:::error/an_example>
+```
+
+## Documentation
+
+`cnd_document()` will create a `.Rd` file for all conditions you have
+assigned to your package. Simply run the command when developing to
+generate a file listing all conditions.
+
+``` r
+cnd::cnd_document("{your-package}")
 ```
