@@ -16,20 +16,23 @@
 #' @export
 `print.cnd::condition_function` <- function(x, ...) {
   cat(format(x), "\n", sep = "")
+
+  forms <- formals(x$message)
+  if (!is.null(forms)) {
+    values <- vapply(forms, deparse1, NA_character_)
+    types <- paste0("<", vapply(forms, typeof, NA_character_), "> ")
+
+    cat(
+      "\ngenerator:",
+      paste0("\n  $ ", format(names(forms)), ": ", types, values),
+      "\n",
+      sep = ""
+    )
+  }
+
   if (length(x$help)) {
     cat("\n")
     writeLines(clean_text(x$help, pad = 0L))
-  }
-
-  forms <- formals(x)
-  if (!is.null(forms)) {
-    cat("\nGenerator:\n")
-    writeLines(paste0(
-      "  |  ",
-      format(names(forms)),
-      " :",
-      vapply(forms, deparse1, NA_character_)
-    ))
   }
 
   if (length(x$exports)) {
