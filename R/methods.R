@@ -139,7 +139,6 @@ delayedAssign(
 #' @export
 `format.cnd::condition` <- function(x, ...) {
   pkg <- attr(x, "package")
-  # browser()
   fmt(
     "{pkg}{type}/{class}<<{message}",
     type = attr(x, "type"),

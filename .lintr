@@ -1,6 +1,7 @@
 linters: linters_with_defaults() # see vignette("lintr")
 encoding: "UTF-8"
 exclusions: list(
+    "R/doc.R" = list(indentation_linter = c(49, 55, 57)),
     "R/condition.R" = list(indentation_linter = 44),
     "R/is.R" = list(object_name_linter = c(10, 19, 28, 37)),
     "R/register.R" = list(

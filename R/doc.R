@@ -50,15 +50,16 @@ cond_to_doc <- function(condition) {
           pkg1 = if (condition$package == "cnd") "=" else "cnd:",
           pkg2 = if (condition$package == "cnd") "" else "cnd::",
           exp = condition$exports,
-          fun =
-            if (is.function(get(
+          fun = if (
+            is.function(get(
               condition$exports,
-              parent.env(get_registry(condition$package))))
-            ) {
-              "()"
-            } else {
-              ""
-            })
+              parent.env(get_registry(condition$package))
+            ))
+          ) {
+            "()"
+          } else {
+            ""
+          })
         ))
       }
   )
