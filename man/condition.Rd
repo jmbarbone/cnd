@@ -4,6 +4,8 @@
 \alias{condition}
 \alias{conditions}
 \alias{cnd}
+\alias{conditions<-}
+\alias{conditions<-.function}
 \title{Conditions}
 \usage{
 condition(
@@ -12,12 +14,17 @@ condition(
   type = c("error", "warning", "message"),
   package = get_package(),
   exports = NULL,
-  help = NULL
+  help = NULL,
+  register = !is.null(package)
 )
 
-conditions(package, class = NULL)
+conditions(x = NULL, class = NULL)
 
 cnd(condition)
+
+conditions(x, ...) <- value
+
+\method{conditions}{`function`}(x, append = FALSE, ...) <- value
 }
 \arguments{
 \item{class}{The name of the new class}
@@ -33,7 +40,17 @@ called}
 
 \item{help}{The help message to be displayed for the condition function}
 
+\item{register}{Controls registration checks}
+
+\item{x}{Function or package name}
+
 \item{condition}{A condition object}
+
+\item{...}{Additional arguments passed to methods}
+
+\item{value}{A \code{condition}}
+
+\item{append}{If \code{TRUE}, adds to thel ist of \code{conditions}}
 }
 \value{
 \itemize{
