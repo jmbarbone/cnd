@@ -15,7 +15,7 @@
 
 #' @export
 `print.cnd::condition_function` <- function(x, ...) {
-  cat(format(x), "\n", sep = "")
+  cat("<", format(x), ">\n", sep = "")
 
   forms <- formals(x$message)
   if (!is.null(forms)) {
@@ -32,13 +32,14 @@
 
   if (length(x$help)) {
     cat("\n")
-    writeLines(clean_text(x$help, pad = 0L))
+    writeLines(clean_text(x$help))
   }
 
   if (length(x$exports)) {
     cat(
       "\nexports:",
       to_string(paste0("\n  ", x$package, "::", x$exports)),
+      "\n",
       sep = ""
     )
   }
@@ -55,9 +56,9 @@
   if (length(exports)) {
     msg <- c(
       msg,
-      "\n",
+      "",
       "See exports for more help:",
-      paste0("?", if (is.null(pkg)) "", paste0(pkg, "::", exports))
+      paste0("  ?", if (is.null(pkg)) "", paste0(pkg, "::", exports))
     )
   }
 
@@ -136,9 +137,9 @@ delayedAssign(
 `format.cnd::condition` <- function(x, ...) {
   pkg <- attr(x, "package")
   fmt(
-    "{pkg}{type}/{class}<<{message}",
+    "<{pkg}{type}/{class}> {message}",
     type = attr(x, "type"),
-    pkg = if (is.null(pkg)) "" else paste0(pkg, ":::"),
+    pkg = if (is.null(pkg)) "" else paste0(pkg, ":"),
     class = sub("^.*:+", "", attr(x, "condition")),
     message = collapse(x$message)
   )
@@ -148,7 +149,7 @@ delayedAssign(
 `format.cnd::condition_function` <- function(x, ...) {
   fmt(
     "{pkg}{type}/{class}",
-    pkg = if (is.null(x$package)) "" else paste0(x$package, ":::"),
+    pkg = if (is.null(x$package)) "" else paste0(x$package, ":"),
     type = x$type,
     class = sub("^.*:+", "", x$class)
   )

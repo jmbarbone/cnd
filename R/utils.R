@@ -55,7 +55,6 @@ clean_text <- function(x, pad = 0L) {
 }
 
 clean_padding <- function(x, pad = 0L) {
-  pad <- as.integer(pad)
   text <- unlist(strsplit(x, "\n", fixed = TRUE))
   ok <- text != ""
 
@@ -67,6 +66,11 @@ clean_padding <- function(x, pad = 0L) {
   }
 
   text[ok] <- substr(text[ok], m + 1L, nchar(text[ok]))
-  text[ok] <- paste0(strrep(" ", pad), text[ok])
+  if (is.numeric(pad)) {
+    pad <- as.integer(pad)
+    text[ok] <- paste0(strrep(" ", pad), text[ok])
+  } else {
+    text[ok] <- paste0(pad, text[ok])
+  }
   text
 }

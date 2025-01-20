@@ -65,6 +65,7 @@ cond_to_doc <- function(condition) {
   )
 }
 
+
 cnd_document_fmt <- "% Generated with cnd::cnd_document(\"{package}\")
 \\name{{package}-conditions}
 \\alias{{package}-conditions}{aliases1}{aliases2}
