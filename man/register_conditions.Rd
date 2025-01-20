@@ -4,7 +4,7 @@
 \alias{register_conditions}
 \title{Register conditions}
 \usage{
-register_conditions(pkg = get_package())
+register_conditions(env = parent.frame())
 }
 \arguments{
 \item{pkg}{The package name}

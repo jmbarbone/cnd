@@ -18,6 +18,7 @@
 #'   called
 #' @param help The help message to be displayed for the condition function
 #' @param package The package to which the condition belongs
+#' @param register Controls registration checks
 #'
 #' @returns
 #' - [condition()] a `cnd::condition_function` object
@@ -46,9 +47,12 @@ condition <- function(
     type = c("error", "warning", "message"),
     package = get_package(),
     exports = NULL,
-    help = NULL
+    help = NULL,
+    register = !is.null(package)
 ) {
   force(package)
+  force(register)
+
   # TODO add custom conditions
   stopifnot(
     is.character(class),
@@ -59,18 +63,21 @@ condition <- function(
     is.null(help) || is.character(help)
   )
 
+  # TODO use custom match.arg()
   type <- match.arg(type)
+  oclass <- class
 
   if (is.null(package)) {
     if (!is.null(exports)) {
       cnd(cond_no_package_exports())
+      exports <- NULL
     }
   } else {
-    class <- paste(package, class, sep = ":::")
+    class <- paste(package, class, sep = ":")
   }
 
   if (is.null(message)) {
-    message <- function() "\b there was an error"
+    message <- function() "there was an error"
   } else if (is.character(message)) {
     message <- as.function(list(collapse(message)))
   } else if (!is.function(message)) {
@@ -78,12 +85,13 @@ condition <- function(
   }
 
   # setting up an environment to track additional fields for
-  condition_env <- new.env(parent = capsule)
+  condition_env <- registry$new_env()
   assign("..", condition_env, condition_env)
   assign("message", message, condition_env)
   assign("exports", exports, condition_env)
   assign("package", package, condition_env)
   assign("class", class, condition_env)
+  assign(".oclass", class, condition_env)
   assign("type", type, condition_env)
   assign("help", help, condition_env)
 
@@ -106,22 +114,37 @@ condition <- function(
 
   formals(res) <- formals(message)
   base::class(res) <- c("cnd::condition_function", "function")
-  register_condition(res)
+
+  if (register) {
+    register_condition(res)
+  }
+
   res
 }
 
 class(condition) <- c("cnd::condition_generator", "function")
 
+cond <- function(class, package = NULL) {
+  conditions(package)[[paste(package, class, sep = ":")]]
+}
+
 #' @export
 #' @rdname condition
-conditions <- function(package, class = NULL) {
-  ns <- getNamespace(package)
-  registry <- get(".__cnd::condition_registry__.", ns)
-  conds <- as.list(registry)
-  if (!is.null(class)) {
-    conds <- filter2(conds, \(x) sub("^.*::", "", x$condition) == class)
+#' @param x Function or package name
+conditions <- function(x = NULL, class = NULL) {
+  if (is.null(x)) {
+    conds <- Reduce("c", lapply(registry$packages, as.list))
+  } else if (is.function(x)) {
+    conds <- attr(x, "conditions")
+  } else {
+    conds <- as.list(get_registry(x))
   }
-  conds
+
+  if (!is.null(class)) {
+    conds <- filter2(conds, \(cond) cond$.oclass == class)
+  }
+
+  unname(conds)
 }
 
 #' @export
@@ -153,41 +176,84 @@ get_condition <- function(x) {
   conditions(ns)[[nm]]
 }
 
+#' @export
+#' @rdname condition
+#' @param ... Additional arguments passed to methods
+#' @param value A `condition`
+`conditions<-` <- function(x, ..., value) {
+  UseMethod("cnd.Rprojnditions<-")
+}
+
+#' @export
+#' @rdname condition
+#' @param append If `TRUE`, adds to thel ist of `conditions`
+`conditions<-.function` <- function(x, append = FALSE, ..., value) {
+  if (is.null(value)) {
+    attr(x, "conditions") <- NULL
+    class(x) <- setdiff(class(x), "cnd::conditioned_function")
+    return(x)
+  }
+
+  attr(x, "conditions") <- c(
+    if (append) attr(x, "conditions"),
+    if (is.list(value)) value else list(value)
+  )
+
+  if (!is_conditioned_function(x)) {
+    class(x) <- c("cnd::conditioned_function", class(x))
+  }
+
+  x
+}
+
+
 # conditions --------------------------------------------------------------
 
-cond_no_package_exports <- condition(
+cond_no_package_exports <- NULL
+delayedAssign(
   "cond_no_package_exports",
-  type = "warning",
-  message = "No package was supplied, so `exports` is ignored",
-  exports = "condition",
-  package = "cnd",
-  help = "The `exports` parameter requires a `package`"
+  condition(
+    "cond_no_package_exports",
+    type = "warning",
+    message = "No package was supplied, so `exports` is ignored",
+    exports = "condition",
+    package = "cnd",
+    help = "The `exports` parameter requires a `package`"
+  )
 )
 
-cond_condition_bad_message <- condition(
-  "cond_bad_message",
-  type = "error",
-  message = "`message` must be a character vector or a function.",
-  exports = "condition",
-  package = "cnd",
-  help = "
-  Conditions messages are displayed when invoked through conditionMessage().
-  You can set a static message by passing through a `character` vector, or a
-  dynamic message by passing through a `function`.  The function should return
-  a `character` vector.
+cond_condition_bad_message <- NULL
+delayedAssign(
+  "cond_condition_bad_message",
+  condition(
+    "cond_bad_message",
+    type = "error",
+    message = "`message` must be a character vector or a function.",
+    exports = "condition",
+    package = "cnd",
+    help = "
+    Conditions messages are displayed when invoked through conditionMessage().
+    You can set a static message by passing through a `character` vector, or a
+    dynamic message by passing through a `function`.  The function should return
+    a `character` vector.
 
-  When `message` is not set, a default \"there was an error\" message is used.
-  "
+    When `message` is not set, a default \"there was an error\" message is used.
+    "
+  )
 )
 
-cond_cnd_class <- condition(
+cond_cnd_class <- NULL
+delayedAssign(
   "cond_cnd_class",
-  type = "error",
-  message = "'condition' must be a `cnd::condition` object",
-  exports = "cnd",
-  package = "cnd",
-  help = "
-  `cnd()` simple calls the appropriate function: `stop()`, `warning()`, or
-  `message()` based on the `type` parameter from `cnd::condition()`
-  "
+  condition(
+    "cond_cnd_class",
+    type = "error",
+    message = "'condition' must be a `cnd::condition` object",
+    exports = "cnd",
+    package = "cnd",
+    help = "
+    `cnd()` simple calls the appropriate function: `stop()`, `warning()`, or
+    `message()` based on the `type` parameter from `cnd::condition()`
+    "
+  )
 )

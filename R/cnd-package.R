@@ -5,17 +5,16 @@
 ## usethis namespace: end
 NULL
 
-capsule <- new.env(hash = FALSE)
-class(capsule) <- c("cnd_capsule", "environment")
+registry <- new.env(hash = FALSE)
+class(registry) <- c("cnd_registry", "environment")
 
-encapsulate <- function(expr, env = capsule) {
-  expr <- substitute(expr)
-  eval(expr, env)
-}
+local(envir = registry, {
+  new_env <- function() {
+    new.env(parent = registry)
+  }
+
+  packages <- new_env()
+})
 
 # global variable-ish
 `..` <- NULL
-
-.onLoad <- function(libname, pkgname) {
-  register_conditions(pkgname)
-}

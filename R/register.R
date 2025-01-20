@@ -1,3 +1,5 @@
+
+
 #' Register conditions
 #'
 #' `[register_conditions()]` should be used within a package's `.onLoad()`
@@ -6,11 +8,30 @@
 #' @param pkg The package name
 #' @returns Nothing, called for its side-effects
 #' @export
-register_conditions <- function(pkg = get_package()) {
-  ns <- asNamespace(pkg)
-  for (cond in conditions(pkg)) {
-    add_condition(cond$exports, ns, cond)
+register_conditions <- function(env = parent.frame()) {
+  pkg <- if (identical(env, parent.env(registry))) {
+    "cnd"
+  } else {
+    get_package(env)
   }
+
+  add_condition <- function(export, condition) {
+    object <- get(export, env, mode = "function")
+    attr(object, "condition") <- c(attr(object, "condition"), condition)
+
+    if (!is_conditioned_function(object)) {
+      class(object) <- c("cnd::conditioned_function", class(object))
+    }
+
+    assign(export, object, env)
+  }
+
+  for (cond in conditions(pkg)) {
+    for (export in cond$exports) {
+      add_condition(cond$exports, cond)
+    }
+  }
+
   invisible()
 }
 
@@ -31,96 +52,16 @@ register_condition <- function(cond, env = parent.frame()) {
     return()
   }
 
-  registry <- get_registry(pkg)
-  class <- get("class", environment(cond))
-
-  if (
-    isTRUE(getOption("cnd.verbose", TRUE)) &&
-    exists(class, registry)
-  ) {
-    cnd(cond_overwrite_registration(class))
-  }
-
-  assign(class, cond, registry)
+  assign(get("class", environment(cond)), cond, get_registry(pkg))
   invisible()
 }
 
-add_condition <- function(export, ns, condition) {
-  object <- get(export, ns)
-  attr(object, "condition") <- c(attr(object, "condition"), condition)
-  if (!is_conditioned_function(object)) {
-    class(object) <- c("cnd::conditioned_function", class(object))
-  }
-  assign(export, object, ns)
-}
-
 get_registry <- function(pkg) {
-  env <- if (pkg == "cnd") {
-    parent.env(.__condition_registry__.)
-  } else {
-    asNamespace(pkg)
+  # for some reason, exists(pkg, registry$packages) was working weird
+  if (is.null(registry$packages[[pkg]])) {
+    assign(pkg, registry$new_env(), registry$packages)
   }
 
-  if (!exists(".__cnd::condition_registry__.", env)) {
-    if (getOption("cnd.verbose", TRUE)) {
-      cnd(cond_new_registry(pkg))
-    }
-
-    assign(
-      ".__cnd::condition_registry__.",
-      new.env(parent = .__condition_registry__.),
-      env
-    )
-  }
-
-  get(".__cnd::condition_registry__.", env)
+  get(pkg, registry$packages)
 }
 
-#' Condition registration environment
-#'
-#' @include utils.R
-#' @noRd
-.__condition_registry__. <- new.env()
-`.__cnd::condition_registry__.` <- new.env(parent = .__condition_registry__.)
-
-
-cond_overwrite_registration <- NULL
-delayedAssign(
-  "cond_overwrite_registration",
-  condition(
-    "condition_warning",
-    type = "warning",
-    message =
-      \(class) fmt("Condition '{cl}' already exists. Overwriting.", cl = class),
-    exports = "condition",
-    package = "cnd",
-    help = "
-    Conditions created through `cnd::condition()` are registered in the package
-    namespace inside the `.__cnd::condition_registry__.` object. If a condition
-    with the same name already exists, it will be overwritten.  This will often
-    be the case when _reloading_ a development package (e.g. with
-    `devtools::load_all()`).
-
-    This warning may be suppressed by setting `options(cnd.verbose = FALSE)`.
-    "
-  )
-)
-
-cond_new_registry <- NULL
-delayedAssign(
-  "cond_new_registry",
-  condition(
-    "new_registry_cnd_message",
-    message = \(package) paste("Creating condition registry for", package),
-    type = "message",
-    package = "cnd",
-    exports = "condition",
-    help = "
-    Condition registration is completed within a package namespace.  If you do
-    not create the registry yourself, it will be created automatically when
-    the resgistry is retrieved.  The name must be
-    `.__cnd::condition_registry__.`, which will likely not conflict with
-    other objects in your package.
-    "
-  )
-)
