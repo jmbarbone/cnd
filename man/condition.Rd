@@ -50,7 +50,7 @@ called}
 
 \item{value}{A \code{condition}}
 
-\item{append}{If \code{TRUE}, adds to thel ist of \code{conditions}}
+\item{append}{If \code{TRUE}, adds to the list of \code{conditions}}
 }
 \value{
 \itemize{

@@ -7,7 +7,7 @@
 register_conditions(env = parent.frame())
 }
 \arguments{
-\item{pkg}{The package name}
+\item{env}{The package environment}
 }
 \value{
 Nothing, called for its side-effects
