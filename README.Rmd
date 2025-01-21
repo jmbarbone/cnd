@@ -75,24 +75,30 @@ try(foo(-1L))
 
 ## Registration
 
-Conditions can be assigned into objects within your package by adding one line to your `.onLoad()`
+Conditions can be assigned into objects within your package by adding one line to your package.
+This is probably best in a file like `R/zzz.R` that can be run at the end of your package load, before the namespace is locked.
 
 ```r
-.onLoad <- function(libname, pkgname) {
-  cnd::register_conditions(pkgname)
-}
+cnd::register_conditions(pkgname)
 ```
 
 Once that is done, your functions will have a `cnd::conditioned_function` class added to them and print the conditions you have linked.
 
-```r
-condition("an_example", pakage = "pkg", help = "more info", exports = "fun")
-#> pkg:::error/an_example
-#> 
-#> more info
-#> 
-#> exports:
-#>   pkg::fun
+```{r}
+#| include: false
+# ignoring registration for now
+condition <- cnd::condition
+formals(condition)["register"] <- FALSE
+```
+
+
+```{r}
+condition(
+  "an_example",
+  package = "pkg",
+  help = "more info",
+  exports = "fun"
+)
 ```
 
 ```r
@@ -102,7 +108,7 @@ pkg::fun
 #>     # nonsense example
 #> }
 #> <environment: 0x000000000000>
-#> <condition(s): pkg:::error/an_example>
+#> <condition(s): pkg:error/an_example>
 ```
 
 ## Documentation
@@ -111,5 +117,14 @@ pkg::fun
 Simply run the command when developing to generate a file listing all conditions.
 
 ```r
-cnd::cnd_document("{your-package}")
+cnd::cnd_document()
+```
+
+## Retrieval
+
+You can retrieve any `conditions` that are created with `conditions()`.
+By default this will list all `conditions` loaded, but can be filtered by specific packages.
+
+```{r}
+conditions("cnd")
 ```
