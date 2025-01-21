@@ -1,4 +1,8 @@
 get_package <- function(env = parent.frame(2L)) {
+  if (identical(env, parent.env(registry))) {
+    return("cnd")
+  }
+
   # used specifically in condition()
   top <- topenv(env)
   if (isNamespace(top)) {

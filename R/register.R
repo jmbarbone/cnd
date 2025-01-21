@@ -5,15 +5,11 @@
 #' `[register_conditions()]` should be used within a package's `.onLoad()`
 #' function to modify functions to include conditions
 #'
-#' @param pkg The package name
+#' @param env The package environment
 #' @returns Nothing, called for its side-effects
 #' @export
 register_conditions <- function(env = parent.frame()) {
-  pkg <- if (identical(env, parent.env(registry))) {
-    "cnd"
-  } else {
-    get_package(env)
-  }
+  pkg <- get_package(env)
 
   add_condition <- function(export, condition) {
     object <- get(export, env, mode = "function")
@@ -40,16 +36,27 @@ register_conditions <- function(env = parent.frame()) {
 #' Only register functions that are associated with a package
 #'
 #' @param cond A condition object
+#' @param old the old condition
+#' @param ... Unused
 #' @param env The parent environment to register the condition
 #'
 #' @include utils.R
 #' @noRd
-register_condition <- function(cond, env = parent.frame()) {
+register_condition <- function(cond, old, ..., env = parent.frame()) {
+  # could play around with identical()
+  if (isTRUE(all.equal(cond, old))) {
+    return(invisible())
+  }
+
   # S3 methods may not be available when building the cnd package
   pkg <- get0("package", environment(cond))
 
   if (is.null(pkg)) {
     return()
+  }
+
+  if (!is.null(old)) {
+    cnd(cond_condition_overwrite(old))
   }
 
   assign(get("class", environment(cond)), cond, get_registry(pkg))
@@ -65,3 +72,18 @@ get_registry <- function(pkg) {
   get(pkg, registry$packages)
 }
 
+cond_condition_overwrite <- NULL
+delayedAssign(
+  "cond_condition_overwrite",
+  condition(
+    "condition_overwrite",
+    type = "warning",
+    package = "cnd",
+    message = \(cond) fmt(
+      "A condition with the class name {cls} already exists in {pkg} and will",
+      " be overwritten",
+      cls = cond$class,
+      pkg = conditions(class = cond$class)[[1L]]$pkg
+    )
+  )
+)

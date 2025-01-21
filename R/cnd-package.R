@@ -8,7 +8,12 @@ NULL
 registry <- new.env(hash = FALSE)
 class(registry) <- c("cnd_registry", "environment")
 
-local(envir = registry, {
+encapsulate <- function(expr, env = registry)  {
+  expr <- substitute(expr)
+  eval(expr, env)
+}
+
+encapsulate({
   new_env <- function() {
     new.env(parent = registry)
   }

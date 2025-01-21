@@ -51,7 +51,7 @@
   exports <- attr(c, "exports")
   pkg <- attr(c, "package")
 
-  msg <- c(fmt("<{cl}>", cl = attr(c, "condition")), c$message)
+  msg <- c(fmt("<{cl}>", cl = attr(c, "condition")), collapse(c$message))
 
   if (length(exports)) {
     msg <- c(

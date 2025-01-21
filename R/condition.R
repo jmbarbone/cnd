@@ -50,6 +50,21 @@ condition <- function(
     help = NULL,
     register = !is.null(package)
 ) {
+  # when no arguments are passed, return the existing condition
+  old <- conditions(x = package, class = class)[[1L]]
+
+  if (
+    missing(message) &&
+    missing(type) &&
+    missing(exports) &&
+    missing(help) &&
+    missing(register) &&
+    (missing(package) || !is.null(package)) &&
+    !is.null(old)
+  ) {
+    return(old)
+  }
+
   force(package)
   force(register)
 
@@ -65,7 +80,6 @@ condition <- function(
 
   # TODO use custom match.arg()
   type <- match.arg(type)
-  oclass <- class
 
   if (is.null(package)) {
     if (!is.null(exports)) {
@@ -85,17 +99,18 @@ condition <- function(
   }
 
   # setting up an environment to track additional fields for
+
   condition_env <- registry$new_env()
+  environment(message) <- condition_env
   assign("..", condition_env, condition_env)
   assign("message", message, condition_env)
   assign("exports", exports, condition_env)
   assign("package", package, condition_env)
   assign("class", class, condition_env)
-  assign(".oclass", class, condition_env)
   assign("type", type, condition_env)
   assign("help", help, condition_env)
 
-  res <- local(envir = condition_env, {
+  res <- encapsulate(env = condition_env, {
     function() {
       params <- as.list(match.call())[-1L]
       params <- lapply(params, eval.parent, 2L)
@@ -116,7 +131,7 @@ condition <- function(
   base::class(res) <- c("cnd::condition_function", "function")
 
   if (register) {
-    register_condition(res)
+    register_condition(res, old)
   }
 
   res
@@ -141,7 +156,11 @@ conditions <- function(x = NULL, class = NULL) {
   }
 
   if (!is.null(class)) {
-    conds <- filter2(conds, \(cond) cond$.oclass == class)
+    conds <- filter2(conds, \(cond) sub("^.*:", "", cond$class) == class)
+  }
+
+  if (!length(conds)) {
+    return()
   }
 
   unname(conds)
@@ -186,7 +205,7 @@ get_condition <- function(x) {
 
 #' @export
 #' @rdname condition
-#' @param append If `TRUE`, adds to thel ist of `conditions`
+#' @param append If `TRUE`, adds to the list of `conditions`
 `conditions<-.function` <- function(x, append = FALSE, ..., value) {
   if (is.null(value)) {
     attr(x, "conditions") <- NULL
