@@ -51,7 +51,7 @@ condition <- function(
     register = !is.null(package)
 ) {
   # when no arguments are passed, return the existing condition
-  old <- conditions(x = package, class = class)[[1L]]
+  old <- conditions(package = package, class = class)[[1L]]
 
   if (
     missing(message) &&
@@ -145,19 +145,45 @@ cond <- function(class, package = NULL) {
 
 #' @export
 #' @rdname condition
-#' @param x Function or package name
-conditions <- function(x = NULL, class = NULL) {
-  if (is.null(x)) {
-    conds <- Reduce("c", lapply(registry$packages, as.list))
-  } else if (is.function(x)) {
-    conds <- attr(x, "conditions")
-  } else {
-    conds <- as.list(get_registry(x))
+#' @param ... Input argument.  If a function is passed, then defaults to passing
+#'   `..1` to `fun`; otherwise defaults to passing `..1` to `package`
+#' @param class,type,package
+#' @param fun if a function is passed, then retrieves the `"conditions"` attribute
+conditions <- function(
+    ...,
+    class = NULL,
+    type = NULL,
+    package = NULL,
+    fun = NULL
+) {
+
+  if (...length()) {
+    if (is.function(..1)) {
+      fun <- fun %||% ..1
+    } else {
+      package <- package %||% ..1
+    }
+  }
+
+  if (!is.null(fun)) {
+    fun <- match.fun(fun)
+    return(attr(fun, "conditions"))
+  }
+
+  conds <- Reduce("c", lapply(registry$packages, as.list))
+
+  if (!is.null(package)) {
+    conds <- filter2(conds, \(cond) cond$package == package)
   }
 
   if (!is.null(class)) {
     conds <- filter2(conds, \(cond) sub("^.*:", "", cond$class) == class)
   }
+
+  if (!is.null(type)) {
+    conds <- filter2(conds, \(cond) cond$type == type)
+  }
+
 
   if (!length(conds)) {
     return()
