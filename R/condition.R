@@ -98,6 +98,10 @@ condition <- function(
     cnd(cond_condition_bad_message())
   }
 
+  if (!is.null(help)) {
+    help <- collapse(help)
+  }
+
   # setting up an environment to track additional fields for
 
   condition_env <- registry$new_env()

@@ -77,30 +77,31 @@ delayedAssign(
     "as_character_cnd_error",
     type = "error",
     package = "cnd",
-    message = "
-    You are trying to coerce a `cnd::condition_function` object to a character.
-    Did you mean instead to call it as a function first?
-    ",
-    # message = c(
-    #     "You are trying to coerce a `cnd::condition_function` object to a ",
-    #     "character.\nDid you mean instead to call it as a function first?"
-    # ),
-    help = "
-    You cannot coerce a `cnd::condition_function` object to a character.  This
-    may have occured when trying to put a condition function through `stop()` or
-    `warning`.  Instead, call the function first, then pass the result to
-    `stop()` or `warning()`.
+    # message = "
+    # You are trying to coerce a `cnd::condition_function` object to a character.
+    #   Did you mean instead to call it as a function first?
+    # ",
+    message = c(
+        "You are trying to coerce a `cnd::condition_function` object to a ",
+        "character.\nDid you mean instead to call it as a function first?"
+    ),
+    help = c(
+      "You cannot coerce a `cnd::condition_function` object to a character. ",
+      "This may have occured when trying to put a condition function through ",
+      "`stop()` or `warning`.  Instead, call the function first, then pass the",
+      " result to `stop()` or `warning()`.",
+      "
+\nFor example:
 
-    For example:
+```r
+# Instead of this
+stop(my_condition)
 
-    ```r
-    # Instead of this
-    stop(my_condition)
-
-    # Do this
-    stop(my_condition())
-    ```
-    "
+# Do this
+stop(my_condition())
+```
+"
+    )
   )
 )
 
@@ -137,10 +138,10 @@ delayedAssign(
 `format.cnd::condition` <- function(x, ...) {
   pkg <- attr(x, "package")
   fmt(
-    "<{pkg}{type}/{class}> {message}",
-    type = attr(x, "type"),
+    "<{pkg}{class}/{type}>\n{message}",
     pkg = if (is.null(pkg)) "" else paste0(pkg, ":"),
     class = sub("^.*:+", "", attr(x, "condition")),
+    type = attr(x, "type"),
     message = collapse(x$message)
   )
 }
@@ -148,7 +149,7 @@ delayedAssign(
 #' @export
 `format.cnd::condition_function` <- function(x, ...) {
   fmt(
-    "{pkg}{type}/{class}",
+    "{pkg}{class}/{type}",
     pkg = if (is.null(x$package)) "" else paste0(x$package, ":"),
     type = x$type,
     class = sub("^.*:+", "", x$class)
