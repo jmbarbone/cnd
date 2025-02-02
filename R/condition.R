@@ -151,7 +151,7 @@ cond <- function(class, package = NULL) {
 #' @rdname condition
 #' @param ... Input argument.  If a function is passed, then defaults to passing
 #'   `..1` to `fun`; otherwise defaults to passing `..1` to `package`
-#' @param class,type,package
+#' @param class,type,package Filtering
 #' @param fun if a function is passed, then retrieves the `"conditions"` attribute
 conditions <- function(
     ...,
@@ -209,7 +209,7 @@ cnd <- function(condition) {
 
   switch(
     attr(condition, "type"),
-    error = stop(condition),
+    error = stop(condition), # maybe `error()` should be the name
     warning = warning(condition),
     message = message(condition)
   )
@@ -262,7 +262,7 @@ cond_no_package_exports <- NULL
 delayedAssign(
   "cond_no_package_exports",
   condition(
-    "cond_no_package_exports",
+    "no_package_exports",
     type = "warning",
     message = "No package was supplied, so `exports` is ignored",
     exports = "condition",
@@ -275,7 +275,7 @@ cond_condition_bad_message <- NULL
 delayedAssign(
   "cond_condition_bad_message",
   condition(
-    "cond_bad_message",
+    "invalid_condition_message",
     type = "error",
     message = "`message` must be a character vector or a function.",
     exports = "condition",
