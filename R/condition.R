@@ -2,14 +2,11 @@
 #'
 #' Conditions
 #'
-#' @description
-#' [conditions()] is used to create a new condition function that itself returns
-#' a new `condition`. If a package is supplied, `[conditions()]` will register
-#' the condition in the `.__cnd::condition_registry__.` object with the package
-#' namespace.  If the object does not exist, **it will be registered in your
-#' package namespace**.
+#' @description [condition()] is used to create a new condition function that
+#' itself returns a new `condition`.
 #'
-#' [conditions()] retrieves all conditions based on search values
+#' [conditions()] retrieves all conditions based on search values.  The
+#' paremters serve as filtering arguments.
 #'
 #' @param class The name of the new class
 #' @param message The message to be displayed when the condition is called
@@ -151,7 +148,6 @@ cond <- function(class, package = NULL) {
 #' @rdname condition
 #' @param ... Input argument.  If a function is passed, then defaults to passing
 #'   `..1` to `fun`; otherwise defaults to passing `..1` to `package`
-#' @param class,type,package Filtering
 #' @param fun if a function is passed, then retrieves the `"conditions"` attribute
 conditions <- function(
     ...,
@@ -227,10 +223,11 @@ get_condition <- function(x) {
 
 #' @export
 #' @rdname condition
+#' @param x An object
 #' @param ... Additional arguments passed to methods
 #' @param value A `condition`
 `conditions<-` <- function(x, ..., value) {
-  UseMethod("cnd.Rprojnditions<-")
+  UseMethod("conditions<-")
 }
 
 #' @export
