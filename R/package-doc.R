@@ -8,15 +8,19 @@
 #' @returns Nothing, called for its side-effects
 cnd_document <- function(package = get_package()) {
   stopifnot(!is.null(package))
-  conds <- conditions(package)
+  conds <- conditions(package = package)
   rd <- fmt(
     cnd_document_fmt,
     aliases1 = collapse(
       paste0("\n\\alias{", vapply(conds, \(c) c$class, NA_character_), "}")
     ),
-    aliases2 = collapse(
-      paste0("\n\\alias{", vapply(conds, format, NA_character_), "}")
-    ),
+    # aliases2 = collapse(
+    #   paste0(
+    #     "\n\\alias{",
+    #     vapply(conds, `format.cnd::condition_function`, NA_character_),
+    #     "}"
+    #   )
+    # ),
     package = package,
     cnd1 = if (package == "cnd") "=conditions" else "cnd:conditions",
     cnd2 = if (package == "cnd") "conditions" else "cnd::conditions",
@@ -65,7 +69,6 @@ cond_to_doc <- function(condition) {
   )
 }
 
-
 cnd_document_fmt <- "% Generated with cnd::cnd_document(\"{package}\")
 \\name{{package}-conditions}
 \\alias{{package}-conditions}{aliases1}{aliases2}
@@ -85,6 +88,7 @@ cond_to_doc_fmt <- "
   \\item{package}{{pkg}}
 }{help}{exports}
 }"
+cnd_document_fmt <- sub("{aliases2}", "", cnd_document_fmt, fixed = TRUE)
 
 
 # TODO consider different formatting for the help section
@@ -94,3 +98,4 @@ cond_to_doc_fmt <- "
 "cnd:::cond_no_package_exports/warning"
 "condition[warning/condition_warning]"
 "cnd:::condition[warning/condition_warning]"
+"cnd:class/type[]"

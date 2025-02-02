@@ -1,36 +1,4 @@
 
-
-#' Register conditions
-#'
-#' `[register_conditions()]` should be used within a package's `.onLoad()`
-#' function to modify functions to include conditions
-#'
-#' @param env The package environment
-#' @returns Nothing, called for its side-effects
-#' @export
-register_conditions <- function(env = parent.frame()) {
-  pkg <- get_package(env)
-
-  add_condition <- function(export, condition) {
-    object <- get(export, env, mode = "function")
-    attr(object, "condition") <- c(attr(object, "condition"), condition)
-
-    if (!is_conditioned_function(object)) {
-      class(object) <- c("cnd::conditioned_function", class(object))
-    }
-
-    assign(export, object, env)
-  }
-
-  for (cond in conditions(pkg)) {
-    for (export in cond$exports) {
-      add_condition(cond$exports, cond)
-    }
-  }
-
-  invisible()
-}
-
 #' Register a condition
 #'
 #' Only register functions that are associated with a package
@@ -70,6 +38,17 @@ get_registry <- function(pkg) {
   }
 
   get(pkg, registry$packages)
+}
+
+#' Evaluate all conditions in registry
+#'
+#' Because conditions are delayed via [delayedAssign()], we need to force their
+#' evaluation so they get assigned into the **registry** and we can retrieve
+#' them for package documentation and enhancement
+#'
+#' @noRd
+cnd_evaluate <- function() {
+  invisible(lapply(parent.env(registry), force))
 }
 
 cond_condition_overwrite <- NULL
