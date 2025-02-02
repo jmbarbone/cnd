@@ -1,12 +1,11 @@
 % Generated with cnd::cnd_document("cnd")
 \name{cnd-conditions}
 \alias{cnd-conditions}
-\alias{cnd:cond_bad_message}
-\alias{cnd:cond_no_package_exports}
+\alias{cnd:no_package_exports}
+\alias{cnd:as_character_cnd_error}
 \alias{cnd:cond_cnd_class}
-\alias{cnd:error/cond_bad_message}
-\alias{cnd:warning/cond_no_package_exports}
-\alias{cnd:error/cond_cnd_class}
+\alias{cnd:invalid_condition_message}
+\alias{cnd:condition_overwrite}
 \title{Conditions for \code{{cnd}}}
 \description{
   The following conditions are defined in the cnd package.
@@ -14,9 +13,48 @@
   \code{\link[=conditions]{conditions()}}
 }
 
-\section{\code{cnd:cond_bad_message}}{
+\section{\code{cnd:no_package_exports}}{
 \describe{
-  \item{class}{cnd:cond_bad_message}
+  \item{class}{cnd:no_package_exports}
+  \item{type}{warning}
+  \item{package}{cnd}
+}
+The `exports` parameter requires a `package`
+
+see: \code{\link[=condition]{condition()}}
+}
+\section{\code{cnd:as_character_cnd_error}}{
+\describe{
+  \item{class}{cnd:as_character_cnd_error}
+  \item{type}{error}
+  \item{package}{cnd}
+}
+You cannot coerce a `cnd::condition_function` object to a character. This may have occured when trying to put a condition function through `stop()` or `warning`.  Instead, call the function first, then pass the result to `stop()` or `warning()`.
+
+For example:
+
+```r
+# Instead of this
+stop(my_condition)
+
+# Do this
+stop(my_condition())
+```
+}
+\section{\code{cnd:cond_cnd_class}}{
+\describe{
+  \item{class}{cnd:cond_cnd_class}
+  \item{type}{error}
+  \item{package}{cnd}
+}
+`cnd()` simple calls the appropriate function: `stop()`, `warning()`, or
+`message()` based on the `type` parameter from `cnd::condition()`
+
+see: \code{\link[=cnd]{cnd()}}
+}
+\section{\code{cnd:invalid_condition_message}}{
+\describe{
+  \item{class}{cnd:invalid_condition_message}
   \item{type}{error}
   \item{package}{cnd}
 }
@@ -29,24 +67,10 @@ When `message` is not set, a default "there was an error" message is used.
 
 see: \code{\link[=condition]{condition()}}
 }
-\section{\code{cnd:cond_no_package_exports}}{
+\section{\code{cnd:condition_overwrite}}{
 \describe{
-  \item{class}{cnd:cond_no_package_exports}
+  \item{class}{cnd:condition_overwrite}
   \item{type}{warning}
   \item{package}{cnd}
 }
-The `exports` parameter requires a `package`
-
-see: \code{\link[=condition]{condition()}}
-}
-\section{\code{cnd:cond_cnd_class}}{
-\describe{
-  \item{class}{cnd:cond_cnd_class}
-  \item{type}{error}
-  \item{package}{cnd}
-}
-`cnd()` simple calls the appropriate function: `stop()`, `warning()`, or
-`message()` based on the `type` parameter from `cnd::condition()`
-
-see: \code{\link[=cnd]{cnd()}}
 }

@@ -18,7 +18,7 @@ condition(
   register = !is.null(package)
 )
 
-conditions(x = NULL, class = NULL)
+conditions(..., class = NULL, type = NULL, package = NULL, fun = NULL)
 
 cnd(condition)
 
@@ -42,11 +42,13 @@ called}
 
 \item{register}{Controls registration checks}
 
-\item{x}{Function or package name}
+\item{...}{Additional arguments passed to methods}
+
+\item{fun}{if a function is passed, then retrieves the \code{"conditions"} attribute}
 
 \item{condition}{A condition object}
 
-\item{...}{Additional arguments passed to methods}
+\item{x}{An object}
 
 \item{value}{A \code{condition}}
 
@@ -63,13 +65,11 @@ called}
 }
 }
 \description{
-\code{\link[=conditions]{conditions()}} is used to create a new condition function that itself returns
-a new \code{condition}. If a package is supplied, \verb{[conditions()]} will register
-the condition in the \code{.__cnd::condition_registry__.} object with the package
-namespace.  If the object does not exist, \strong{it will be registered in your
-package namespace}.
+\code{\link[=condition]{condition()}} is used to create a new condition function that
+itself returns a new \code{condition}.
 
-\code{\link[=conditions]{conditions()}} retrieves all conditions based on search values
+\code{\link[=conditions]{conditions()}} retrieves all conditions based on search values.  The
+paremters serve as filtering arguments.
 }
 \details{
 Conditions
