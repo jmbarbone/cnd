@@ -15,13 +15,3 @@ Encoding: UTF-8
 Language: en-US
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2
-Collate: 
-    'cnd-package.R'
-    'utils.R'
-    'register.R'
-    'condition.R'
-    'is.R'
-    'methods.R'
-    'package-doc.R'
-    'package-exports.R'
-    'zzz.R'

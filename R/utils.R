@@ -24,6 +24,7 @@ filter2 <- function(x, fun, ...) {
 }
 
 fmt <- function(...) {
+  # this is actually pretty neat, and maybe will go into `{fuj}`
   params <- list(...)
   nms <- names(params)
   if (is.null(nms)) {

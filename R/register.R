@@ -8,7 +8,6 @@
 #' @param ... Unused
 #' @param env The parent environment to register the condition
 #'
-#' @include utils.R
 #' @noRd
 register_condition <- function(cond, old, ..., env = parent.frame()) {
   # could play around with identical()

@@ -6,7 +6,7 @@
 #' itself returns a new `condition`.
 #'
 #' [conditions()] retrieves all conditions based on search values.  The
-#' paremters serve as filtering arguments.
+#' parameters serve as filtering arguments.
 #'
 #' @param class The name of the new class
 #' @param message The message to be displayed when the condition is called
@@ -35,9 +35,6 @@
 #'   message = \(x) paste("class cannot be", toString(class(x)))
 #' )
 #' try(stop(cond_class_error(list())))
-#'
-#' @include utils.R
-#' @include register.R
 condition <- function(
     class,
     message = NULL,
@@ -253,9 +250,46 @@ get_condition <- function(x) {
 }
 
 
+# methods -----------------------------------------------------------------
+
+#' @export
+`[.cnd::condition_function` <- function(x, i) {
+  get(i, environment(x))
+}
+
+#' @export
+`$.cnd::condition_function` <- function(x, i) {
+  .subset2(as.list(environment(x)), i)
+}
+
+
+#' @export
+`conditionMessage.cnd::condition` <- function(c) {
+  exports <- attr(c, "exports")
+  pkg <- attr(c, "package")
+
+  msg <- c(fmt("<{cl}>", cl = attr(c, "condition")), collapse(c$message))
+
+  if (length(exports)) {
+    msg <- c(
+      msg,
+      "",
+      "See exports for more help:",
+      paste0("  ?", if (is.null(pkg)) "", paste0(pkg, "::", exports))
+    )
+  }
+
+  msg
+}
+
+#' @export
+`as.character.cnd::condition_function` <- function(x, ...) {
+  cnd(cond_as_character_condition())
+}
+
 # conditions --------------------------------------------------------------
 
-cond_no_package_exports <- NULL
+cond_no_package_exports <- function() {}
 delayedAssign(
   "cond_no_package_exports",
   condition(
@@ -268,7 +302,8 @@ delayedAssign(
   )
 )
 
-cond_condition_bad_message <- NULL
+
+cond_condition_bad_message <- function() {}
 delayedAssign(
   "cond_condition_bad_message",
   condition(
@@ -288,7 +323,7 @@ delayedAssign(
   )
 )
 
-cond_cnd_class <- NULL
+cond_cnd_class <- function() {}
 delayedAssign(
   "cond_cnd_class",
   condition(
@@ -303,3 +338,40 @@ delayedAssign(
     "
   )
 )
+
+
+cond_as_character_condition <- function() {}
+delayedAssign(
+  "cond_as_character_condition",
+  condition(
+    "as_character_cnd_error",
+    type = "error",
+    package = "cnd",
+    # message = "
+    # You are trying to coerce a `cnd::condition_function` object to a character.
+    #   Did you mean instead to call it as a function first?
+    # ",
+    message = c(
+      "You are trying to coerce a `cnd::condition_function` object to a ",
+      "character.\nDid you mean instead to call it as a function first?"
+    ),
+    help = c(
+      "You cannot coerce a `cnd::condition_function` object to a character. ",
+      "This may have occured when trying to put a condition function through ",
+      "`stop()` or `warning`.  Instead, call the function first, then pass the",
+      " result to `stop()` or `warning()`.",
+      "
+\nFor example:
+
+```r
+# Instead of this
+stop(my_condition)
+
+# Do this
+stop(my_condition())
+```
+"
+    )
+  )
+)
+

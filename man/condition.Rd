@@ -69,7 +69,7 @@ called}
 itself returns a new \code{condition}.
 
 \code{\link[=conditions]{conditions()}} retrieves all conditions based on search values.  The
-paremters serve as filtering arguments.
+parameters serve as filtering arguments.
 }
 \details{
 Conditions
@@ -88,5 +88,4 @@ cond_class_error <- condition(
   message = \(x) paste("class cannot be", toString(class(x)))
 )
 try(stop(cond_class_error(list())))
-
 }

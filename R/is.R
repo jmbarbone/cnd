@@ -1,39 +1,36 @@
+#' `is` functions for {cnd}
+#'
+#' @param x An object
+#' @param type A specific type to check
+#' @name cnd_is
+NULL
+
+#' @export
+#' @rdname cnd_is
 is_condition <- function(x) {
   inherits(x, "condition")
 }
 
+#' @export
+#' @rdname cnd_is
 is_cnd_condition <- function(x) {
   inherits(x, "cnd::condition")
 }
 
-#' @exportS3Method methods::is
-`is.cnd::condition` <- function(x) {
-  is_cnd_condition(x)
-}
-
+#' @export
+#' @rdname cnd_is
 is_cnd_generator <- function(x) {
   inherits(x, "cnd::condition_generator")
 }
 
-#' @exportS3Method methods::is
-`is.cnd::condition_generator` <- function(x) {
-  is_cnd_generator(x)
-}
-
+#' @export
+#' @rdname cnd_is
 is_cnd_function <- function(x, type = c("error", "warning", "message")) {
   inherits(x, "cnd::condition_function") && x$type %in% type
 }
 
-#' @exportS3Method methods::is
-`is.cnd::condition_function` <- function(x) {
-  is_cnd_function(x)
-}
-
+#' @export
+#' @rdname cnd_is
 is_conditioned_function <- function(x) {
   inherits(x, "cnd::conditioned_function")
-}
-
-#' @exportS3Method methods::is
-`is.cnd::conditioned_function` <- function(x) {
-  is_conditioned_function(x)
 }
