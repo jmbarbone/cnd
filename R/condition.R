@@ -100,7 +100,7 @@ condition <- function(
 
   condition_env <- registry$new_env()
   environment(message) <- condition_env
-  assign("..", condition_env, condition_env)
+  assign("..", condition_env, condition_env) # 'self'
   assign("message", message, condition_env)
   assign("exports", exports, condition_env)
   assign("package", package, condition_env)
@@ -125,6 +125,8 @@ condition <- function(
     }
   })
 
+  browser()
+
   formals(res) <- formals(message)
   base::class(res) <- c("cnd::condition_function", "function")
 
@@ -135,10 +137,29 @@ condition <- function(
   res
 }
 
-class(condition) <- c("cnd::condition_generator", "function")
+cond <- function(x) {
+  if (is_cnd_function(x)) {
+    return(x)
+  }
 
-cond <- function(class, package = NULL) {
-  conditions(package)[[paste(package, class, sep = ":")]]
+  package <- sub(":.*$", "", x)
+  if (!nzchar(package)) {
+    package <- NULL
+  }
+
+  class <- sub("^.*:", "", x)
+  class <- sub("/.*$", "", class)
+
+  res <- conditions(class = class, package = package)
+
+  switch(
+    length(res) + 1L,
+    stop("no condition found"),
+    return(res[[1L]])
+  )
+
+  warning("multiple conditions found")
+  res[[1L]]
 }
 
 #' @export
@@ -154,7 +175,13 @@ conditions <- function(
     fun = NULL
 ) {
 
-  if (...length()) {
+  dot_n <- ...length()
+
+  if (dot_n) {
+    if (dot_n > 1) {
+      warning("only the first ... argument is used")
+    }
+
     if (is.function(..1)) {
       fun <- fun %||% ..1
     } else {
@@ -195,7 +222,8 @@ conditions <- function(
 #' @returns
 #' - [cnd()] is a wrapper for calling [stop()], [warning()], or [message()]
 cnd <- function(condition) {
-  # TODO use get_condition(condition)
+  # should this be raise()?
+  # TODO use cond(conition)
   if (!is_cnd_condition(condition)) {
     cnd(cond_cnd_class())
   }
@@ -206,16 +234,6 @@ cnd <- function(condition) {
     warning = warning(condition),
     message = message(condition)
   )
-}
-
-get_condition <- function(x) {
-  if (is_cnd_condition(x)) {
-    return(x)
-  }
-
-  nm <- sub("^.*/", "", x)
-  ns <- sub("::.+$", "", nm)
-  conditions(ns)[[nm]]
 }
 
 #' @export

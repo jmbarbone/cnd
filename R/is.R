@@ -1,4 +1,4 @@
-#' `is` functions for {cnd}
+#' `is` functions for [cnd]
 #'
 #' @param x An object
 #' @param type A specific type to check
