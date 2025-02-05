@@ -44,7 +44,8 @@ called}
 
 \item{...}{Additional arguments passed to methods}
 
-\item{fun}{if a function is passed, then retrieves the \code{"conditions"} attribute}
+\item{fun}{if a function is passed, then retrieves the \code{"conditions"}
+attribute}
 
 \item{condition}{A condition object}
 

@@ -14,13 +14,6 @@ cnd_document <- function(package = get_package()) {
     aliases1 = collapse(
       paste0("\n\\alias{", vapply(conds, \(c) c$class, NA_character_), "}")
     ),
-    # aliases2 = collapse(
-    #   paste0(
-    #     "\n\\alias{",
-    #     vapply(conds, `format.cnd::condition_function`, NA_character_),
-    #     "}"
-    #   )
-    # ),
     package = package,
     cnd1 = if (package == "cnd") "=conditions" else "cnd:conditions",
     cnd2 = if (package == "cnd") "conditions" else "cnd::conditions",
@@ -89,13 +82,3 @@ cond_to_doc_fmt <- "
 }{help}{exports}
 }"
 cnd_document_fmt <- sub("{aliases2}", "", cnd_document_fmt, fixed = TRUE)
-
-
-# TODO consider different formatting for the help section
-"warning/cnd:::cond_no_package_exports"
-"cnd[warning/cond_no_package_exports]"
-"cnd:::cond_no_package_exports[warning]"
-"cnd:::cond_no_package_exports/warning"
-"condition[warning/condition_warning]"
-"cnd:::condition[warning/condition_warning]"
-"cnd:class/type[]"

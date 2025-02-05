@@ -35,6 +35,7 @@
 #'   message = \(x) paste("class cannot be", toString(class(x)))
 #' )
 #' try(stop(cond_class_error(list())))
+# nolint next: cyclocomp_linter.
 condition <- function(
     class,
     message = NULL,
@@ -100,7 +101,6 @@ condition <- function(
 
   condition_env <- registry$new_env()
   environment(message) <- condition_env
-  assign("..", condition_env, condition_env) # 'self'
   assign("message", message, condition_env)
   assign("exports", exports, condition_env)
   assign("package", package, condition_env)
@@ -108,21 +108,24 @@ condition <- function(
   assign("type", type, condition_env)
   assign("help", help, condition_env)
 
-  res <- encapsulate(env = condition_env, {
-    function() {
+  res <- local(envir = condition_env, {
+    fun <- function() {}
+    body(fun) <- substitute({
+      # nolint next: object_usage_linter.
       params <- as.list(match.call())[-1L]
       params <- lapply(params, eval.parent, 2L)
+      # nolint next: object_usage_linter.
+      cond <- list(message = clean_text(do.call(message, params)), call = NULL)
       # TODO add `call` to the formals
-      cond <- list(message = do.call(..$message, params), call = NULL)
-      cond$message <- clean_text(cond$message)
-      base::class(cond) <- c(..$class, "cnd::condition", ..$type, "condition")
-      attr(cond, "help") <- ..$help
-      attr(cond, "package") <- ..$package
-      attr(cond, "exports") <- ..$exports
-      attr(cond, "condition") <- ..$class
-      attr(cond, "type") <- ..$type
+      cond <- `class<-`(cond, c(class, "cnd::condition", type, "condition"))
+      attr(cond, "help") <- help
+      attr(cond, "package") <- package
+      attr(cond, "exports") <- exports
+      attr(cond, "condition") <- class
+      attr(cond, "type") <- type
       cond
-    }
+    })
+    fun
   })
 
   formals(res) <- formals(message)
@@ -164,7 +167,8 @@ cond <- function(x) {
 #' @rdname condition
 #' @param ... Input argument.  If a function is passed, then defaults to passing
 #'   `..1` to `fun`; otherwise defaults to passing `..1` to `package`
-#' @param fun if a function is passed, then retrieves the `"conditions"` attribute
+#' @param fun if a function is passed, then retrieves the `"conditions"`
+#'   attribute
 conditions <- function(
     ...,
     class = NULL,
@@ -363,10 +367,6 @@ delayedAssign(
     "as_character_cnd_error",
     type = "error",
     package = "cnd",
-    # message = "
-    # You are trying to coerce a `cnd::condition_function` object to a character.
-    #   Did you mean instead to call it as a function first?
-    # ",
     message = c(
       "You are trying to coerce a `cnd::condition_function` object to a ",
       "character.\nDid you mean instead to call it as a function first?"
@@ -390,4 +390,3 @@ stop(my_condition())
     )
   )
 )
-
