@@ -125,8 +125,6 @@ condition <- function(
     }
   })
 
-  browser()
-
   formals(res) <- formals(message)
   base::class(res) <- c("cnd::condition_function", "function")
 
