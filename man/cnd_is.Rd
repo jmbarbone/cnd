@@ -7,7 +7,7 @@
 \alias{is_cnd_generator}
 \alias{is_cnd_function}
 \alias{is_conditioned_function}
-\title{\code{is} functions for {cnd}}
+\title{\code{is} functions for \link{cnd}}
 \usage{
 is_condition(x)
 
@@ -25,5 +25,5 @@ is_conditioned_function(x)
 \item{type}{A specific type to check}
 }
 \description{
-\code{is} functions for {cnd}
+\code{is} functions for \link{cnd}
 }
