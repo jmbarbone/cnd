@@ -45,7 +45,8 @@
     " : ",
     vapply(forms, deparse1, NA_character_)
   ))
-  cat("For list of conditions use cnd::conditions()\n")
+  print_conditions(x)
+  cat("\nFor list of conditions use cnd::conditions()\n")
   invisible(x)
 }
 
@@ -53,13 +54,14 @@
 
 #' @export
 `print.cnd::conditioned_function` <- function(x, ...) {
-  print.function(as.function(as.list(x)), ...)
-  cat(
-    "<condition(s): ",
-    to_string(vapply(attr(x, "condition"), format, NA_character_)),
-    ">\n",
-    sep = ""
-  )
+  y <- x
+  attr(y, "conditions") <- NULL
+  class(y) <- setdiff(class(y), "cnd::conditioned_function")
+  if (identical(class(y), "function")) {
+    class(y) <- NULL
+  }
+  print(y, ...)
+  print_conditions(x)
   invisible(x)
 }
 
@@ -69,6 +71,14 @@
   invisible(x)
 }
 
+print_conditions <- function(x) {
+  cat(
+    "<condition(s): ",
+    to_string(vapply(attr(x, "condition"), format, NA_character_)),
+    ">\n",
+    sep = ""
+  )
+}
 
 # format ------------------------------------------------------------------
 
