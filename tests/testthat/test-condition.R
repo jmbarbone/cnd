@@ -45,3 +45,36 @@ test_that("cond() fails", {
   expect_error(cond("foo:bar"))
   expect_error(cond("foooo"))
 })
+
+test_that("cnd()", {
+  con <- condition(
+    "foo_message",
+    "a message",
+    type = "message",
+    package = NULL
+  )
+
+  expect_message(cnd(con()), class = "foo_message")
+
+  con <- condition(
+    "foo_warning",
+    "a warning",
+    type = "warning",
+    package = NULL
+  )
+  expect_warning(cnd(con()), class = "foo_warning")
+
+  con <- condition(
+    "foo_error",
+    "an error",
+    type = "error",
+    package = NULL
+  )
+  expect_error(cnd(con()), class = "foo_error")
+})
+
+# TODO test for $help
+# TODO test for multiple conditions()?
+# TODO test for cnd() errors
+# TODO test for conditions(fun) <- NULL
+# TODO test for as.character.cnd::condition_function()
