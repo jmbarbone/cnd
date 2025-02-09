@@ -1,5 +1,5 @@
 get_package <- function(env = parent.frame(2L)) {
-  if (identical(env, parent.env(registry))) {
+  if (is_cnd(env)) {
     return("cnd")
   }
 
@@ -8,6 +8,10 @@ get_package <- function(env = parent.frame(2L)) {
   if (isNamespace(top)) {
     unname(getNamespaceName(top))
   }
+}
+
+is_cnd <- function(env) {
+  identical(as.environment(env), parent.env(registry))
 }
 
 to_string <- function(x) {
