@@ -3,6 +3,7 @@
 S3method("$","cnd::condition_function")
 S3method("[","cnd::condition_function")
 S3method("conditions<-","function")
+S3method(all,"equal.cnd::condition_function")
 S3method(as.character,"cnd::condition_function")
 S3method(conditionMessage,"cnd::condition")
 S3method(format,"cnd::condition")
