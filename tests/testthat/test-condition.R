@@ -33,7 +33,7 @@ test_that("condition() works", {
 
 test_that("conditions(x) <- value", {
   foo <- function() {}
-  conditions(foo) <- condition("foo")
+  conditions(foo) <- condition("foo", package = "cnd:testing")
   expect_s3_class(foo, "cnd::conditioned_function")
 })
 
