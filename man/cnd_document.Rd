@@ -4,10 +4,12 @@
 \alias{cnd_document}
 \title{Document your conditions}
 \usage{
-cnd_document(package = get_package())
+cnd_document(package = get_package(env), env = parent.frame())
 }
 \arguments{
 \item{package}{The package to document}
+
+\item{env}{The environment to detech the package name}
 }
 \value{
 Nothing, called for its side-effects
