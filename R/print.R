@@ -74,7 +74,7 @@
 print_conditions <- function(x) {
   cat(
     "<condition(s): ",
-    to_string(vapply(attr(x, "condition"), format, NA_character_)),
+    to_string(vapply(attr(x, "conditions"), format, NA_character_)),
     ">\n",
     sep = ""
   )

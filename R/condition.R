@@ -45,19 +45,11 @@ condition <- function(
     help = NULL,
     register = !is.null(package)
 ) {
-  # when no arguments are passed, return the existing condition
-  old <- conditions(package = package, class = class)[[1L]]
-
-  if (
-    missing(message) &&
-    missing(type) &&
-    missing(exports) &&
-    missing(help) &&
-    missing(register) &&
-    (missing(package) || !is.null(package)) &&
-    !is.null(old)
-  ) {
-    return(old)
+  if (nargs() == 1L) {
+    ok <- conditions(class = class)[[1L]]
+    if (!is.null(ok)) {
+      return(ok)
+    }
   }
 
   force(package)
@@ -117,7 +109,7 @@ condition <- function(
       # nolint next: object_usage_linter.
       cond <- list(message = clean_text(do.call(message, params)), call = NULL)
       # TODO add `call` to the formals
-      cond <- `class<-`(cond, c(class, "cnd::condition", type, "condition"))
+      cond <- set_class(cond, c(class, "cnd::condition", type, "condition"))
       attr(cond, "help") <- help
       attr(cond, "package") <- package
       attr(cond, "exports") <- exports
@@ -132,7 +124,7 @@ condition <- function(
   base::class(res) <- c("cnd::condition_function", "function")
 
   if (register) {
-    register_condition(res, old)
+    register_condition(res)
   }
 
   res
@@ -197,19 +189,12 @@ conditions <- function(
   }
 
   conds <- Reduce("c", lapply(registry$packages, as.list))
+  terms <- list(package = package, class = class, type = type)
+  terms <- filter2(terms, Negate(is.null))
 
-  if (!is.null(package)) {
-    conds <- filter2(conds, \(cond) cond$package == package)
+  for (i in seq_along(terms)) {
+    conds <- filter2(conds, \(cond) cget(cond, names(terms)[i]) == terms[[i]])
   }
-
-  if (!is.null(class)) {
-    conds <- filter2(conds, \(cond) sub("^.*:", "", cond$class) == class)
-  }
-
-  if (!is.null(type)) {
-    conds <- filter2(conds, \(cond) cond$type == type)
-  }
-
 
   if (!length(conds)) {
     return()
@@ -225,7 +210,7 @@ conditions <- function(
 #' - [cnd()] is a wrapper for calling [stop()], [warning()], or [message()]
 cnd <- function(condition) {
   # should this be raise()?
-  # TODO use cond(conition)
+  # TODO use condition(condition) --> try to find the condition function
   if (!is_cnd_condition(condition)) {
     cnd(cond_cnd_class())
   }
@@ -252,8 +237,8 @@ cnd <- function(condition) {
 #' @param append If `TRUE`, adds to the list of `conditions`
 `conditions<-.function` <- function(x, append = FALSE, ..., value) {
   if (is.null(value)) {
-    attr(x, "conditions") <- NULL
-    class(x) <- setdiff(class(x), "cnd::conditioned_function")
+    x <- remove_conditions(x)
+    x <- remove_class(x, "cnd::conditioned_function")
     return(x)
   }
 
@@ -269,12 +254,20 @@ cnd <- function(condition) {
   x
 }
 
+remove_conditions <- function(x) {
+  attr(x, "conditions") <- NULL
+  x
+}
 
 # methods -----------------------------------------------------------------
 
 #' @export
 `[.cnd::condition_function` <- function(x, i) {
-  get(i, environment(x))
+  cget(x, i)
+}
+
+cget <- function(x, field) {
+  get(field, environment(x))
 }
 
 #' @export
@@ -305,6 +298,39 @@ cnd <- function(condition) {
 #' @export
 `as.character.cnd::condition_function` <- function(x, ...) {
   cnd(cond_as_character_condition())
+}
+
+#' @export
+`all.equal.cnd::condition_function` <- function(target, current, ...) {
+  op <- options(useFancyQuotes = FALSE)
+  on.exit(options(op))
+
+  mode_check <- all.equal(mode(target), mode(current))
+  if (!isTRUE(mode_check)) {
+    return(mode_check)
+  }
+
+  new <- as.list(environment(current))
+  old <- as.list(environment(target))
+
+  if (isTRUE(all.equal(new, old))) {
+    return(TRUE)
+  }
+
+  bad <- character()
+
+  # TODO relying on the default all.equal() checks.  I'd like
+  # something a little more sophisticated and detailed
+  for (field in names(new)) {
+    check <- all.equal(new[[field]], old[[field]])
+    if (isTRUE(check)) {
+      next
+    }
+
+    bad <- c(bad, check)
+  }
+
+  bad
 }
 
 # conditions --------------------------------------------------------------

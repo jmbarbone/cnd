@@ -19,12 +19,33 @@ to_string <- function(x) {
 }
 
 collapse <- function(..., sep = "") {
-  paste0(c(...), collapse = sep)
+  paste0(unlist(c(...)), collapse = sep)
 }
 
 filter2 <- function(x, fun, ...) {
   fun <- match.fun(fun)
   x[which(vapply(x, fun, NA, ...))]
+}
+
+set_class <- function(x, value) {
+  class(x) <- value
+  x
+}
+
+add_class <- function(x, value) {
+  if (!inherits(x, value)) {
+    class(x) <- c(value, class(x))
+  }
+  x
+}
+
+remove_class <- function(x, value) {
+  set_class(x, filter2(class(x), function(cl) !cl %in% value))
+}
+
+# yeah, just going to save over this one
+attr <- function(x, which) {
+  base::attr(x, which, exact = TRUE)
 }
 
 fmt <- function(...) {
@@ -83,3 +104,4 @@ clean_padding <- function(x, pad = 0L) {
   }
   text
 }
+

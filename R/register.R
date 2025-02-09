@@ -10,6 +10,12 @@
 #'
 #' @noRd
 register_condition <- function(cond, old, ..., env = parent.frame()) {
+  # See if there's already a condition created, just based on name and package.
+  # The other values may change, which will be noted in the overwrite
+  old <- conditions(
+    class = cget(cond, "class"),
+    package = cget(cond, "package")
+  )[[1L]]
   # could play around with identical()
   if (isTRUE(all.equal(cond, old))) {
     return(invisible())
@@ -23,7 +29,7 @@ register_condition <- function(cond, old, ..., env = parent.frame()) {
   }
 
   if (!is.null(old)) {
-    cnd(cond_condition_overwrite(old))
+    cnd(cond_condition_overwrite(old, cond))
   }
 
   assign(get("class", environment(cond)), cond, get_registry(pkg))
@@ -58,11 +64,12 @@ delayedAssign(
     type = "warning",
     package = "cnd",
     # nolint next: brace_linter.
-    message = \(cond) fmt(
-      "A condition with the class name {cls} already exists in {pkg} and will",
-      " be overwritten",
-      cls = cond$class,
-      pkg = conditions(class = cond$class)[[1L]]$pkg
+    message = \(old, new) fmt(
+      "A condition with the class name '{cls}' already exists in '{pkg}' and",
+      " will be overwritten{diff}",
+      cls = old$class,
+      pkg = old$package,
+      diff = paste0("\n   ", all.equal(old, new), collapse = "")
     )
   )
 )
