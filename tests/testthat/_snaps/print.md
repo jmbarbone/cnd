@@ -54,25 +54,3 @@
       <cnd:condition_overwrite/warning>
       c("A condition with the class name cnd:cond_cnd_class already exists in NULL and will", " be overwritten")
 
----
-
-    Code
-      cnd
-    Output
-      function(condition) {
-        # should this be raise()?
-        # TODO use cond(conition)
-        if (!is_cnd_condition(condition)) {
-          cnd(cond_cnd_class())
-        }
-      
-        switch(
-          attr(condition, "type"),
-          error = stop(condition), # maybe `error()` should be the name
-          warning = warning(condition),
-          message = message(condition)
-        )
-      }
-      <environment: namespace:cnd>
-      <condition(s): cnd:cond_cnd_class/error>
-
