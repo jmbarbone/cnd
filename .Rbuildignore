@@ -3,3 +3,4 @@
 ^\.github$
 ^\.lintr$
 ^README\.Rmd$
+^tools$
