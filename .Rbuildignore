@@ -4,3 +4,4 @@
 ^\.lintr$
 ^README\.Rmd$
 ^tools$
+^tergo\.toml$

@@ -1,0 +1,8 @@
+allow_nl_after_assignment = false
+embracing_op_no_nl = true
+function_line_breaks = 'double'
+indent = 2
+insert_newline_in_quote_call = false
+line_length = 80
+space_before_complex_rhs_in_formula = true
+strip_suffix_whitespace_in_function_defs = false
