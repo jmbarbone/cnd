@@ -8,23 +8,13 @@
 #' @export
 cnd_exports <- function(env = parent.frame()) {
   pkg <- get_package(env)
-
-  for (cond in conditions(pkg)) {
+  for (cond in conditions(package = pkg)) {
     for (export in cond$exports) {
-      add_condition(cond$exports, cond, env)
+      object <- get(export, env, mode = "function")
+      conditions(object, append = TRUE) <- cond
+      assign(export, object, env)
     }
   }
 
   invisible()
-}
-
-add_condition <- function(export, condition, env) {
-  object <- get(export, env, mode = "function")
-  attr(object, "conditions") <- c(attr(object, "conditions"), condition)
-
-  if (!is_conditioned_function(object)) {
-    class(object) <- c("cnd::conditioned_function", class(object))
-  }
-
-  assign(export, object, env)
 }
