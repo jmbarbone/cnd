@@ -2,6 +2,7 @@
 % Please edit documentation in R/condition.R
 \name{condition}
 \alias{condition}
+\alias{condition_progenitor}
 \alias{condition_generator}
 \alias{conditions}
 \alias{cnd}
@@ -16,10 +17,18 @@ condition(
   package = get_package(),
   exports = NULL,
   help = NULL,
-  register = !is.null(package)
+  registry = package,
+  register = !is.null(registry)
 )
 
-conditions(..., class = NULL, type = NULL, package = NULL, fun = NULL)
+conditions(
+  ...,
+  class = NULL,
+  type = NULL,
+  package = NULL,
+  registry = package,
+  fun = NULL
+)
 
 cnd(condition)
 
@@ -41,6 +50,8 @@ called}
 
 \item{help}{The help message to be displayed for the condition function}
 
+\item{registry}{The name of the registry to store the condition}
+
 \item{register}{Controls registration checks}
 
 \item{...}{Additional arguments passed to methods}
@@ -58,7 +69,7 @@ attribute}
 }
 \value{
 \itemize{
-\item \code{\link[=condition]{condition()}} a \code{cnd::condition_generator} object
+\item \code{\link[=condition]{condition()}} a \link{condition_generator} object
 \item \code{\link[=conditions]{conditions()}} a \code{list} of all conditions
 }
 
@@ -76,10 +87,20 @@ parameters serve as filtering arguments.
 \details{
 Conditions
 }
+\section{\link{condition_generator}}{
+ A \link{condition_generator} is an object (a
+special \link{function}) which can be used to create generate a new condition,
+based on specifications applied in \code{\link[=condition]{condition()}}. These functions use \code{...}
+to absorb extra arguments and contain a special \code{.call} parameter. By
+default, \code{.call} captures the parent call from where the
+\link{condition_generator} was created, but users may pass their own call to
+override this.  See \code{call.} in \code{\link[=conditionCall]{conditionCall()}}
+}
+
 \section{Conditions}{
 
-
-Conditions are generated through the \code{\link[cnd-package]{cnd}} package.
+Conditions are generated through the \code{{\link[cnd:cnd-package]{cnd}}}
+package.
 The following conditions are associated with this function:
 
 \describe{

@@ -10,7 +10,8 @@
         package  : get_package()
         exports  : NULL
         help     : NULL
-        register : !is.null(package)
+        registry : package
+        register : !is.null(registry)
       
       <condition(s): cnd:match_arg/error, cnd:no_package_exports/warning, cnd:as_character_cnd_error/error, cnd:invalid_condition_message/error, cnd:invalid_condition/error>
       

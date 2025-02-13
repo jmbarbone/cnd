@@ -67,12 +67,13 @@ cnd_document_fmt <- "% Generated with cnd::cnd_document(\"{package}\")
 \\alias{{package}-conditions}{aliases1}{aliases2}
 \\title{Conditions for \\code{{{package}}}}
 \\description{
-  The following conditions are defined in the {package} package.
-  For more information on \\code{conditions} see
-  \\code{\\link[{cnd1}]{{cnd2}()}}
+  The following conditions are defined in the \\code{{\\pkg{{package}}}}
+  package.  For more information on \\code{\\link[cnd:condition]{conditions}}
+  see \\code{\\link[{cnd1}]{{cnd2}}}
 }
 \\section{\\pkg{cnd}}{
-  \\code{\\link[cnd:cnd-package]{cnd}} is the package that provides this stuff
+  These conditions are made with the \\code{{\\link[cnd:cnd-package]{cnd}}}
+  package though the use of \\code{\\link[cnd:condition]{condition()}}.
 }
 {conds_docs}
 "
@@ -124,7 +125,8 @@ cnd_section <- function(fun) {
 
 
 cnd_section_fmt <- "
-Conditions are generated through the \\code{\\link[cnd-package]{cnd}} package.
+Conditions are generated through the \\code{{\\link[cnd:cnd-package]{cnd}}}
+package.
 The following conditions are associated with this function:
 
 \\describe{

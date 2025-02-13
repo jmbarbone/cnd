@@ -15,9 +15,11 @@ test_that("class functions", {
 
 test_that("clean_padding()", {
   expect_identical(clean_padding("foo\nbar\n"), c("foo", "bar"))
+})
 
+test_that("clean_text() strips leading/trailing blank lines", {
   expect_identical(
-    clean_padding(c("  one", "  two"), "--"),
-    c("--one", "--two")
+    clean_text("\nfoo\nbar\n\n\n"),
+    c("foo", "bar")
   )
 })

@@ -1,13 +1,12 @@
 #' Conditions
 #'
-#' @details
-#' Conditions
+#' @details Conditions
 #'
 #' @description [condition()] is used to create a new condition function that
-#' itself returns a new `condition`.
+#'   itself returns a new `condition`.
 #'
-#' [conditions()] retrieves all conditions based on search values.  The
-#' parameters serve as filtering arguments.
+#'   [conditions()] retrieves all conditions based on search values.  The
+#'   parameters serve as filtering arguments.
 #'
 #' @param class The name of the new class
 #' @param message The message to be displayed when the condition is called
@@ -16,13 +15,21 @@
 #'   called
 #' @param help The help message to be displayed for the condition function
 #' @param package The package to which the condition belongs
+#' @param registry The name of the registry to store the condition
 #' @param register Controls registration checks
 #'
-#' @section Conditions:
-#' `r cnd_section(condition)`
+#' @section [condition_generator]: A [condition_generator] is an object (a
+#'   special [function]) which can be used to create generate a new condition,
+#'   based on specifications applied in [condition()]. These functions use `...`
+#'   to absorb extra arguments and contain a special `.call` parameter. By
+#'   default, `.call` captures the parent call from where the
+#'   [condition_generator] was created, but users may pass their own call to
+#'   override this.  See `call.` in [conditionCall()]
+#'
+#' @section Conditions: `r cnd_section(condition)`
 #'
 #' @returns
-#' - [condition()] a `cnd::condition_generator` object
+#' - [condition()] a [condition_generator] object
 #' - [conditions()] a `list` of all conditions
 #'
 #' @export
@@ -41,7 +48,7 @@
 #' )
 #' try(stop(cond_class_error(list())))
 #'
-#' @aliases condition_generator
+#' @aliases condition_progenitor condition_generator
 #' @seealso [cnd-package]
 condition <- function(
     class,
@@ -50,7 +57,8 @@ condition <- function(
     package = get_package(),
     exports = NULL,
     help = NULL,
-    register = !is.null(package)
+    registry = package,
+    register = !is.null(registry)
 ) {
   if (nargs() == 1L) {
     found <- do_find_cond(class)
@@ -60,6 +68,7 @@ condition <- function(
   }
 
   force(package)
+  force(registry)
   force(register)
 
   validate_condition(class = class, exports = exports, help = help)
@@ -99,7 +108,7 @@ condition <- function(
 
   # setting up an environment to track additional fields for
 
-  condition_env <- registry$new_env()
+  condition_env <- global_registry$new_env()
   environment(message) <- condition_env
   assign("message", message, condition_env)
   assign("exports", exports, condition_env)
@@ -113,17 +122,14 @@ condition <- function(
     condition_function <- function() {}
     body(condition_function) <- substitute({
       # nolint next: object_usage_linter.
-      call <- sys.call(sys.parent(.ncall + 1L))
-
-      # nolint next: object_usage_linter.
       params <- as.list(match.call())[-1L]
-      params <- params[names(params) != ".ncall"]
+      params <- params[names(params) != ".call"]
       params <- lapply(params, eval.parent, 2L)
 
       # nolint next: object_usage_linter.
       cond <- list(
         message = clean_text(do.call(message, params)),
-        call = call
+        call = .call
       )
 
       cond <- set_class(
@@ -143,13 +149,11 @@ condition <- function(
 
   lockEnvironment(condition_env)
 
-  formals(res) <- c(formals(message), .ncall = 0L)
+  formals(res) <- c(formals(message), alist(... = , .call = sys.call(1L)))
   base::class(res) <- c("cnd::condition_generator", "function")
-
   if (register) {
-    register_condition(res)
+    register_condition(res, registry = registry)
   }
-
   res
 }
 
@@ -220,6 +224,7 @@ conditions <- function(
     class = NULL,
     type = NULL,
     package = NULL,
+    registry = package,
     fun = NULL
 ) {
 
@@ -242,7 +247,13 @@ conditions <- function(
     return(attr(fun, "conditions"))
   }
 
-  conds <- Reduce("c", lapply(registry$packages, as.list))
+
+  if (is.null(registry)) {
+    conds <- Reduce("c", lapply(global_registry$packages, as.list))
+  } else {
+    conds <- as.list(get_registry(registry))
+  }
+
   terms <- list(package = package, .class = class, type = type)
   terms <- filter2(terms, Negate(is.null))
 
@@ -341,7 +352,7 @@ validate_condition <- function(class, exports, help) {
   }
 
   if (length(problems)) {
-    cnd(cond_condition_invalid(problems, .ncall = 1L))
+    cnd(cond_condition_invalid(problems, .call = sys.call(1L)))
   }
 }
 

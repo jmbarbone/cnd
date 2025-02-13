@@ -4,10 +4,11 @@
 #' Only register functions that are associated with a package
 #'
 #' @param cond A condition object
-#' @param old the old condition
+#' @param old The old condition
+#' @param registry A registry name
 #'
 #' @noRd
-register_condition <- function(cond, old = NULL) {
+register_condition <- function(cond, old = NULL, registry = NULL) {
   # See if there's already a condition created, just based on name and package.
   # The other values may change, which will be noted in the overwrite
   if (is.null(old)) {
@@ -22,32 +23,36 @@ register_condition <- function(cond, old = NULL) {
     return(invisible())
   }
 
-  pkg <- cget(cond, "package")
-
-  if (is.null(pkg)) {
-    return()
-  }
-
   if (!is.null(old)) {
     cnd(cond_condition_overwrite(old, cond))
   }
 
-  assign(cget(cond, "class"), cond, get_registry(pkg))
+  if (is.null(registry)) {
+    pkg <- cget(cond, "package")
+    if (is.null(pkg)) {
+      return()
+    }
+    registry <- get_registry(pkg)
+  } else {
+    registry <- get_registry(registry)
+  }
+
+  assign(cget(cond, "class"), cond, registry)
   invisible()
 }
 
 get_registry <- function(pkg) {
-  # for some reason, exists(pkg, registry$packages) was working weird
-  if (is.null(registry$packages[[pkg]])) {
-    assign(pkg, registry$new_env(), registry$packages)
+  # for some reason, exists(pkg, global_registry$packages) was working weird
+  if (is.null(global_registry$packages[[pkg]])) {
+    assign(pkg, global_registry$new_env(), global_registry$packages)
   }
 
-  get(pkg, registry$packages)
+  get(pkg, global_registry$packages)
 }
 
 remove_registration <- function(pkg) {
-  if (exists(pkg, registry$packages)) {
-    rm(list = pkg, envir = registry$packages)
+  if (exists(pkg, global_registry$packages)) {
+    rm(list = pkg, envir = global_registry$packages)
   }
 }
 
@@ -66,7 +71,7 @@ unregister_condition <- function(cond, package = cond$package) {
 #'
 #' @noRd
 cnd_evaluate <- function() {
-  invisible(lapply(parent.env(registry), force))
+  invisible(lapply(parent.env(global_registry), force))
 }
 
 cond_condition_overwrite <- NULL

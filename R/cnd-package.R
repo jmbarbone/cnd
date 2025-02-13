@@ -5,10 +5,10 @@
 ## usethis namespace: end
 NULL
 
-registry <- new.env(hash = FALSE)
-class(registry) <- c("cnd_registry", "environment")
+global_registry <- new.env(hash = FALSE)
+class(global_registry) <- c("cnd_registry", "environment")
 
-local(envir = registry, {
-  new_env <- function() new.env(parent = registry)
+local(envir = global_registry, {
+  new_env <- function() new.env(parent = global_registry)
   packages <- new_env()
 })

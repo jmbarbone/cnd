@@ -10,12 +10,13 @@
 \alias{cnd:condition_overwrite}
 \title{Conditions for \code{{cnd}}}
 \description{
-  The following conditions are defined in the cnd package.
-  For more information on \code{conditions} see
-  \code{\link[=conditions]{conditions()}}
+  The following conditions are defined in the \code{{\pkg{cnd}}}
+  package.  For more information on \code{\link[cnd:condition]{conditions}}
+  see \code{\link[=conditions]{conditions}}
 }
 \section{\pkg{cnd}}{
-  \code{\link[cnd:cnd-package]{cnd}} is the package that provides this stuff
+  These conditions are made with the \code{{\link[cnd:cnd-package]{cnd}}}
+  package though the use of \code{\link[cnd:condition]{condition()}}.
 }
 
   \section{\code{cnd:match_arg}}{

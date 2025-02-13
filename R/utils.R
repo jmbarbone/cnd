@@ -19,7 +19,7 @@ get_package <- function(env = parent.frame(2L)) {
 }
 
 is_cnd <- function(env) {
-  identical(as.environment(env), parent.env(registry))
+  identical(as.environment(env), parent.env(global_registry))
 }
 
 to_string <- function(x) {
@@ -77,9 +77,9 @@ fmt <- function(...) {
 }
 
 
-clean_text <- function(x, pad = 0L) {
+clean_text <- function(x) {
   x <- as.character(x)
-  x <- clean_padding(x, pad)
+  x <- clean_padding(x)
 
   while (x[1L] == "") {
     x <- x[-1L]
@@ -92,7 +92,7 @@ clean_text <- function(x, pad = 0L) {
   x
 }
 
-clean_padding <- function(x, pad = 0L) {
+clean_padding <- function(x) {
   text <- unlist(strsplit(x, "\n", fixed = TRUE))
   ok <- text != ""
 
@@ -104,12 +104,6 @@ clean_padding <- function(x, pad = 0L) {
   }
 
   text[ok] <- substr(text[ok], m + 1L, nchar(text[ok]))
-  if (is.numeric(pad)) {
-    pad <- as.integer(pad)
-    text[ok] <- paste0(strrep(" ", pad), text[ok])
-  } else {
-    text[ok] <- paste0(pad, text[ok])
-  }
   text
 }
 
@@ -129,7 +123,7 @@ match_arg <- function(arg, choices) {
   if (is.na(ok)) {
     value <- arg
     arg <- deparse1(substitute(arg))
-    cnd(cond_match_arg(arg, value, choices))
+    cnd(cond_match_arg(arg, value, choices, .call = sys.call(1L)))
   }
 
   choices[ok]
