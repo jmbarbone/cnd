@@ -1,3 +1,11 @@
+`%||%` <- get0(
+  "%||%",
+  envir = baseenv(),
+  mode = "function",
+  inherits = FALSE,
+  ifnotfound = function(x, y) if (is.null(x)) y else x
+)
+
 get_package <- function(env = parent.frame(2L)) {
   if (is_cnd(env)) {
     return("cnd")
