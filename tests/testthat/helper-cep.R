@@ -11,12 +11,8 @@ cep_dir <- function() {
 test_cep <- function() {
   skip_if_not_installed("pkgload")
   skip_if_no_cep()
-
-  withr::with_dir(cep_dir(), {
-    cep <- pkgload::load_all(quiet = TRUE)$env
-    pkgload::unload("cep")
-    expect_type(conditions(cep$example_function), "list")
-    expect_error(cep$example_function(TRUE), NA)
-    expect_error(cep$example_function(0), class = "cep:bad_argument")
-  })
+  cep <- pkgload::load_all(cep_dir(), attach = FALSE, quiet = TRUE)$env
+  expect_type(conditions(cep$example_function), "list")
+  expect_error(cep$example_function(TRUE), NA)
+  expect_error(cep$example_function(0), class = "cep:bad_argument")
 }
