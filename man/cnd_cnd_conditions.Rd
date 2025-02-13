@@ -6,8 +6,8 @@
 \alias{cnd:as_character_cnd_error}
 \alias{cnd:cond_cnd_class}
 \alias{cnd:invalid_condition_message}
-\alias{cnd:invalid_condition}
 \alias{cnd:condition_overwrite}
+\alias{cnd:invalid_condition}
 \title{Conditions for \code{{cnd}}}
 \description{
   The following conditions are defined in the cnd package.
@@ -38,7 +38,7 @@ see: \code{\link[=condition]{condition()}}
   \item{type}{error}
   \item{package}{cnd}
 }
-You cannot coerce a `cnd::condition_function` object to a character. This may have occured when trying to put a condition function through `stop()` or `warning`.  Instead, call the function first, then pass the result to `stop()` or `warning()`.
+You cannot coerce a `cnd::condition_generator` object to a character. This may have occured when trying to put a condition function through `stop()` or `warning`.  Instead, call the function first, then pass the result to `stop()` or `warning()`.
 
 For example:
 
@@ -56,8 +56,7 @@ stop(my_condition())
   \item{type}{error}
   \item{package}{cnd}
 }
-`cnd()` simple calls the appropriate function: `stop()`, `warning()`, or
-`message()` based on the `type` parameter from `cnd::condition()`
+`cnd()` simple calls the appropriate function: `stop()`, `warning()`, or `message()` based on the `type` parameter from `cnd::condition()`.
 
 see: \code{\link[=cnd]{cnd()}}
 }
@@ -76,21 +75,20 @@ When `message` is not set, a default "there was an error" message is used.
 
 see: \code{\link[=condition]{condition()}}
 }
-\section{\code{cnd:invalid_condition}}{
-\describe{
-  \item{class}{cnd:invalid_condition}
-  \item{type}{error}
-  \item{package}{cnd}
-}
-The `class`, `exports`, and `help` parameters must be a single character
-string.  If you are passing a function, it must be a valid function.
-
-see: \code{\link[=condition]{condition()}}
-}
 \section{\code{cnd:condition_overwrite}}{
 \describe{
   \item{class}{cnd:condition_overwrite}
   \item{type}{warning}
   \item{package}{cnd}
 }
+}
+\section{\code{cnd:invalid_condition}}{
+\describe{
+  \item{class}{cnd:invalid_condition}
+  \item{type}{error}
+  \item{package}{cnd}
+}
+The `class`, `exports`, and `help` parameters must be a single character string.  If you are passing a function, it must be a valid function.
+
+see: \code{\link[=condition]{condition()}}
 }

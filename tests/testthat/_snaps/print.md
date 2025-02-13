@@ -3,7 +3,7 @@
     Code
       condition
     Output
-      Condition generator
+      Condition progenitor
         class    : 
         message  : NULL
         type     : c("error", "warning", "message", "condition")
@@ -20,6 +20,7 @@
     Code
       cond_cnd_class
     Output
+      Condition generator
       <cnd:cond_cnd_class/error>
       
       `cnd()` simple calls the appropriate function: `stop()`, `warning()`, or
@@ -41,6 +42,7 @@
     Code
       cond_condition_overwrite
     Output
+      Condition generator
       <cnd:condition_overwrite/warning>
       
       generator:

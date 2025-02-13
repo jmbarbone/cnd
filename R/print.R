@@ -3,7 +3,8 @@
 # print -------------------------------------------------------------------
 
 #' @export
-`print.cnd::condition_function` <- function(x, ...) {
+`print.cnd::condition_generator` <- function(x, ...) {
+  cat("Condition generator\n")
   cat("<", format(x), ">\n", sep = "")
 
   forms <- formals(x$message)
@@ -36,8 +37,8 @@
 }
 
 #' @export
-`print.cnd::condition_generator` <- function(x, ...) {
-  cat("Condition generator\n")
+`print.cnd::condition_progenitor` <- function(x, ...) {
+  cat("Condition progenitor\n")
   forms <- formals(x)
   writeLines(paste0(
     "  ",
@@ -95,7 +96,7 @@ print_conditions <- function(x) {
 }
 
 #' @export
-`format.cnd::condition_function` <- function(x, ...) {
+`format.cnd::condition_generator` <- function(x, ...) {
   fmt(
     "{pkg}{class}/{type}",
     pkg = if (is.null(x$package)) "" else paste0(x$package, ":"),

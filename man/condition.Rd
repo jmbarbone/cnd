@@ -57,7 +57,7 @@ attribute}
 }
 \value{
 \itemize{
-\item \code{\link[=condition]{condition()}} a \code{cnd::condition_function} object
+\item \code{\link[=condition]{condition()}} a \code{cnd::condition_generator} object
 \item \code{\link[=conditions]{conditions()}} a \code{list} of all conditions
 }
 

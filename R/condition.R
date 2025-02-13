@@ -18,7 +18,7 @@
 #' @param register Controls registration checks
 #'
 #' @returns
-#' - [condition()] a `cnd::condition_function` object
+#' - [condition()] a `cnd::condition_generator` object
 #' - [conditions()] a `list` of all conditions
 #' @export
 #' @examples
@@ -136,7 +136,7 @@ condition <- function(
   lockEnvironment(condition_env)
 
   formals(res) <- c(formals(message), .ncall = 0L)
-  base::class(res) <- c("cnd::condition_function", "function")
+  base::class(res) <- c("cnd::condition_generator", "function")
 
   if (register) {
     register_condition(res)
@@ -341,7 +341,7 @@ validate_condition <- function(class, exports, help) {
 # methods -----------------------------------------------------------------
 
 #' @export
-`[.cnd::condition_function` <- function(x, i) {
+`[.cnd::condition_generator` <- function(x, i) {
   cget(x, i)
 }
 
@@ -350,7 +350,7 @@ cget <- function(x, field) {
 }
 
 #' @export
-`$.cnd::condition_function` <- function(x, i) {
+`$.cnd::condition_generator` <- function(x, i) {
   .subset2(as.list(environment(x), all.names = TRUE), i)
 }
 
@@ -378,12 +378,12 @@ cget <- function(x, field) {
 }
 
 #' @export
-`as.character.cnd::condition_function` <- function(x, ...) {
+`as.character.cnd::condition_generator` <- function(x, ...) {
   cnd(cond_as_character_condition())
 }
 
 #' @export
-`all.equal.cnd::condition_function` <- function(target, current, ...) {
+`all.equal.cnd::condition_generator` <- function(target, current, ...) {
   op <- options(useFancyQuotes = FALSE)
   on.exit(options(op))
 

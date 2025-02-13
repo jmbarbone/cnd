@@ -24,7 +24,7 @@ pak::pak("jmbarbone/cnd")
 
 ## Example
 
-`condition()` creates a `cnd::condition_function` that can generate the
+`condition()` creates a `cnd::condition_generator` that can generate the
 condition when called.
 
 ``` r
@@ -48,7 +48,7 @@ try(foo(-1))
 #>  Error : Value has to be better
 ```
 
-`cnd::condition_function`s can also take parameters that are used in
+`cnd::condition_generator`s can also take parameters that are used in
 creating a custom message.
 
 ``` r
@@ -153,7 +153,7 @@ conditions("cnd")
     #> [[2]]
     #> <cnd:error/as_character_cnd_error>
     #> 
-    #> You cannot coerce a `cnd::condition_function` object to a character.  This
+    #> You cannot coerce a `cnd::condition_generator` object to a character.  This
     #> may have occured when trying to put a condition function through `stop()` or
     #> `warning`.  Instead, call the function first, then pass the result to
     #> `stop()` or `warning()`.

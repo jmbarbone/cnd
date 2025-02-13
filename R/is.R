@@ -20,7 +20,7 @@ is_cnd_condition <- function(x) {
 #' @export
 #' @rdname cnd_is
 is_cnd_generator <- function(x) {
-  inherits(x, "cnd::condition_generator")
+  inherits(x, "cnd::condition_progenitor")
 }
 
 #' @export
@@ -29,7 +29,7 @@ is_cnd_function <- function(
     x,
     type = c("error", "warning", "message", "condition")
 ) {
-  inherits(x, "cnd::condition_function") && x$type %in% type
+  inherits(x, "cnd::condition_generator") && x$type %in% type
 }
 
 #' @export

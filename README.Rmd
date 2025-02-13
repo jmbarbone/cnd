@@ -33,7 +33,7 @@ pak::pak("jmbarbone/cnd")
 
 ## Example
 
-`condition()` creates a `cnd::condition_function` that can generate the condition when called.
+`condition()` creates a `cnd::condition_generator` that can generate the condition when called.
 
 ```{r}
 library(cnd)
@@ -52,7 +52,7 @@ foo <- function(x) {
 try(foo(-1))
 ```
 
-`cnd::condition_function`s can also take parameters that are used in creating a custom message.
+`cnd::condition_generator`s can also take parameters that are used in creating a custom message.
 
 ```{r}
 bad_value2 <- condition(

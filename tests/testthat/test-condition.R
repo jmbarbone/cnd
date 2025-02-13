@@ -1,7 +1,7 @@
 test_that("condition() works", {
-  expect_s3_class(condition, "cnd::condition_generator")
+  expect_s3_class(condition, "cnd::condition_progenitor")
   con <- expect_no_error(condition("foo"))
-  expect_s3_class(con, "cnd::condition_function")
+  expect_s3_class(con, "cnd::condition_generator")
 })
 
 test_that("condition() conditions", {
@@ -116,11 +116,11 @@ test_that("condition(type = 'condition')", {
 test_that("find_cond()", {
   expect_s3_class(
     find_cond("cnd:cond_cnd_class/error"),
-    "cnd::condition_function"
+    "cnd::condition_generator"
   )
 
   expect_warning(
-    expect_s3_class(find_cond("/error"), "cnd::condition_function"),
+    expect_s3_class(find_cond("/error"), "cnd::condition_generator"),
     class = "simpleWarning"
   )
 
