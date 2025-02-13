@@ -1,5 +1,6 @@
 #' Conditions
 #'
+#' @details
 #' Conditions
 #'
 #' @description [condition()] is used to create a new condition function that
@@ -17,9 +18,13 @@
 #' @param package The package to which the condition belongs
 #' @param register Controls registration checks
 #'
+#' @section Conditions:
+#' `r cnd_section(condition)`
+#'
 #' @returns
 #' - [condition()] a `cnd::condition_generator` object
 #' - [conditions()] a `list` of all conditions
+#'
 #' @export
 #' @examples
 #' # create a new condition:
@@ -35,6 +40,9 @@
 #'   message = \(x) paste("class cannot be", toString(class(x)))
 #' )
 #' try(stop(cond_class_error(list())))
+#'
+#' @aliases condition_generator
+#' @seealso [cnd-package]
 condition <- function(
     class,
     message = NULL,
@@ -440,14 +448,15 @@ delayedAssign(
     message = "`message` must be a character vector or a function.",
     exports = "condition",
     package = "cnd",
-    help = "
-    Conditions messages are displayed when invoked through conditionMessage().
-    You can set a static message by passing through a `character` vector, or a
-    dynamic message by passing through a `function`.  The function should return
-    a `character` vector.
-
-    When `message` is not set, a default \"there was an error\" message is used.
-    "
+    help = c(
+      "Conditions messages are displayed when invoked through",
+      " [conditionMessage()].  You can set a static message by passing through",
+      " a `character` vector, or a dynamic message by passing through a",
+      " `function`.  The function should return a `character` vector.\n",
+      "\n",
+      "When `message` is not set, a default \"there was an error\" message is",
+      " used."
+    )
   )
 )
 
@@ -460,10 +469,10 @@ delayedAssign(
     message = "'condition' must be a `cnd::condition` object",
     exports = "cnd",
     package = "cnd",
-    help = "
-    `cnd()` simple calls the appropriate function: `stop()`, `warning()`, or
-    `message()` based on the `type` parameter from `cnd::condition()`
-    "
+    help = c(
+      "[cnd()] simple calls the appropriate function: [stop()], [warning()],",
+      " or [message()] based on the `type` parameter from [cnd::condition()]."
+    )
   )
 )
 
@@ -476,14 +485,15 @@ delayedAssign(
     type = "error",
     package = "cnd",
     message = c(
-      "You are trying to coerce a `cnd::condition_function` object to a ",
+      "You are trying to coerce a [cnd::condition_generator] object to a ",
       "character.\nDid you mean instead to call it as a function first?"
     ),
+    exports = "condition",
     help = c(
-      "You cannot coerce a `cnd::condition_function` object to a character. ",
+      "You cannot coerce a [cnd::condition_generator] object to a character. ",
       "This may have occured when trying to put a condition function through ",
-      "`stop()` or `warning`.  Instead, call the function first, then pass the",
-      " result to `stop()` or `warning()`.",
+      "[stop()] or [warning].  Instead, call the function first, then pass the",
+      " result to [stop()] or [warning()].",
       "
 \nFor example:
 
@@ -512,9 +522,10 @@ delayedAssign(
     ),
     package = "cnd",
     exports = "condition",
-    help = "
-    The `class`, `exports`, and `help` parameters must be a single character
-    string.  If you are passing a function, it must be a valid function.
-    "
+    help = c(
+      "The `class`, `exports`, and `help` parameters must be a single",
+      " character string.  If you are passing a function, it must be a valid",
+      " function."
+    )
   )
 )

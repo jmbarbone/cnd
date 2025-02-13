@@ -3,7 +3,7 @@
 #' Documents your [conditions()] and [cnd::conditions()]
 #'
 #' @param package The package to document
-#' @param env The environment to detech the package name
+#' @param env The environment to attach the package name
 #'
 #' @export
 #' @returns Nothing, called for its side-effects
@@ -71,14 +71,75 @@ cnd_document_fmt <- "% Generated with cnd::cnd_document(\"{package}\")
   For more information on \\code{conditions} see
   \\code{\\link[{cnd1}]{{cnd2}()}}
 }
-{conds_docs}"
+\\section{\\pkg{cnd}}{
+  \\code{\\link[cnd:cnd-package]{cnd}} is the package that provides this stuff
+}
+{conds_docs}
+"
 
 cond_to_doc_fmt <- "
-\\section{\\code{{clsfmt}}}{
-\\describe{
-  \\item{class}{{cls}}
-  \\item{type}{{typ}}
-  \\item{package}{{pkg}}
-}{help}{exports}
-}"
+  \\section{\\code{{clsfmt}}}{
+  \\describe{
+    \\item{class}{{cls}}
+    \\item{type}{{typ}}
+    \\item{package}{{pkg}}
+  }{help}{exports}
+  }
+"
+
 cnd_document_fmt <- sub("{aliases2}", "", cnd_document_fmt, fixed = TRUE)
+
+
+#' @export
+#' @rdname cnd_document
+#' @param fun The name of a function
+cnd_section <- function(fun) {
+  conds <- conditions(fun)
+  fmt(
+    cnd_section_fmt,
+    conds = collapse(
+      vapply(
+        conds,
+        function(c) {
+          fmt(
+            cnd_section_item_fmt,
+            pkg = cget(c, "package"),
+            form = format(c),
+            help = cget(c, "help") %||% ""
+          )
+        },
+        NA_character_
+      )
+    ),
+    pkgs = collapse(
+      vapply(
+        unique(vapply(conds, cget, NA_character_, "package")),
+        function(p) fmt(cnd_section_seealso_fmt, pkg = p),
+        NA_character_
+      )
+    ),
+    sep = ", "
+  )
+}
+
+
+cnd_section_fmt <- "
+Conditions are generated through the \\code{\\link[cnd-package]{cnd}} package.
+The following conditions are associated with this function:
+
+\\describe{
+  {conds}
+}
+
+For more conditions, see: {pkgs}
+"
+
+cnd_section_item_fmt <- "
+  \\item{\\code{\\link[{pkg}:{pkg}-conditions]{{form}}}}{
+    {help}
+  }
+"
+
+cnd_section_seealso_fmt <- "
+\\code{\\link{{pkg}-conditions}}
+"

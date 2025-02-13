@@ -2,14 +2,19 @@
 % Please edit documentation in R/package-doc.R
 \name{cnd_document}
 \alias{cnd_document}
+\alias{cnd_section}
 \title{Document your conditions}
 \usage{
 cnd_document(package = get_package(env), env = parent.frame())
+
+cnd_section(fun)
 }
 \arguments{
 \item{package}{The package to document}
 
-\item{env}{The environment to detech the package name}
+\item{env}{The environment to attach the package name}
+
+\item{fun}{The name of a function}
 }
 \value{
 Nothing, called for its side-effects

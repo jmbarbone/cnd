@@ -46,6 +46,7 @@
     " : ",
     vapply(forms, deparse1, NA_character_)
   ))
+  cat("\n")
   print_conditions(x)
   cat("\nFor list of conditions use cnd::conditions()\n")
   invisible(x)

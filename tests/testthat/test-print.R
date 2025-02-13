@@ -15,4 +15,7 @@ test_that("printing snapshots", {
     register = FALSE
   )
   expect_snapshot(fun, transform = scrub_environment_code)
+
+  # has a line return
+  expect_snapshot(cond_condition_bad_message)
 })

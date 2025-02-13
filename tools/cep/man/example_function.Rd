@@ -9,3 +9,18 @@ example_function(x)
 \description{
 An example function
 }
+\section{Conditions}{
+
+
+\describe{
+
+\item{\code{cep:bad_argument}}{
+
+}
+
+}
+\seealso{
+\code{\link{cep-conditions}}
+}
+}
+

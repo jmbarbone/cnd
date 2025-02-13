@@ -8,13 +8,16 @@
   For more information on \code{conditions} see
   \code{\link[cnd:conditions]{cnd::conditions()}}
 }
-
-\section{\code{cep:bad_argument}}{
-\describe{
-  \item{class}{cep:bad_argument}
-  \item{type}{error}
-  \item{package}{cep}
+\section{\pkg{cnd}}{
+  \code{\link[cnd:cnd-package]{cnd}} is the package that provides this stuff
 }
+
+  \section{\code{cep:bad_argument}}{
+  \describe{
+    \item{class}{cep:bad_argument}
+    \item{type}{error}
+    \item{package}{cep}
+  }
 
 see: \code{\link[cnd:example_function]{example_function()}}
-}
+  }

@@ -11,7 +11,8 @@
         exports  : NULL
         help     : NULL
         register : !is.null(package)
-      <condition(s): cnd:no_package_exports/warning, cnd:invalid_condition_message/error, cnd:invalid_condition/error>
+      
+      <condition(s): cnd:match_arg/error, cnd:no_package_exports/warning, cnd:as_character_cnd_error/error, cnd:invalid_condition_message/error, cnd:invalid_condition/error>
       
       For list of conditions use cnd::conditions()
 
@@ -23,8 +24,7 @@
       Condition generator
       <cnd:cond_cnd_class/error>
       
-      `cnd()` simple calls the appropriate function: `stop()`, `warning()`, or
-      `message()` based on the `type` parameter from `cnd::condition()`
+      [cnd()] simple calls the appropriate function: [stop()], [warning()], or [message()] based on the `type` parameter from [cnd::condition()].
       
       exports:
         cnd::cnd
@@ -65,4 +65,19 @@
       function() NULL
       <environment: 0x000000000000>
       <condition(s): test-snapshots:snapshot_test_fun/error>
+
+---
+
+    Code
+      cond_condition_bad_message
+    Output
+      Condition generator
+      <cnd:invalid_condition_message/error>
+      
+      Conditions messages are displayed when invoked through [conditionMessage()].  You can set a static message by passing through a `character` vector, or a dynamic message by passing through a `function`.  The function should return a `character` vector.
+      
+      When `message` is not set, a default "there was an error" message is used.
+      
+      exports:
+        cnd::condition
 
