@@ -14,6 +14,5 @@ test_that("printing snapshots", {
     package = "test-snapshots",
     register = FALSE
   )
-  # debug(scrub_environment_code)
   expect_snapshot(fun, transform = scrub_environment_code)
 })

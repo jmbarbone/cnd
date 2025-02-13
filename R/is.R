@@ -25,7 +25,10 @@ is_cnd_generator <- function(x) {
 
 #' @export
 #' @rdname cnd_is
-is_cnd_function <- function(x, type = c("error", "warning", "message")) {
+is_cnd_function <- function(
+    x,
+    type = c("error", "warning", "message", "condition")
+) {
   inherits(x, "cnd::condition_function") && x$type %in% type
 }
 

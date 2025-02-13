@@ -49,13 +49,14 @@ test_that("find_cond() fails", {
 })
 
 test_that("cnd()", {
+  expect_error(cnd(1), class = "cnd:cond_cnd_class")
+
   con <- condition(
     "foo_message",
     "a message",
     type = "message",
     package = NULL
   )
-
   expect_message(cnd(con()), class = "foo_message")
 
   con <- condition(
@@ -73,10 +74,104 @@ test_that("cnd()", {
     package = NULL
   )
   expect_error(cnd(con()), class = "foo_error")
+
+  con <- condition(
+    "foo_condition",
+    "a condition",
+    type = "condition",
+    package = NULL
+  )
+  expect_output(
+    expect_condition(cnd(con()), class = "foo_condition")
+  )
 })
 
-# TODO test for $help
-# TODO test for multiple conditions()?
-# TODO test for cnd() errors
-# TODO test for conditions(fun) <- NULL
-# TODO test for as.character.cnd::condition_function()
+test_that("condition(existing)", {
+  foo <- condition("foo", package = "cnd_testing_existing")
+  on.exit(remove_registration("cnd_testing_existing"))
+  expect_identical(condition("cnd_testing_existing:foo"), foo)
+})
+
+test_that("condition(help = gets_collapsed)", {
+  foo <- condition("foo", help = c("one", "two"), package = "cnd_testing_help")
+  on.exit(remove_registration("cnd_testing_help"))
+  expect_identical(foo$help, "onetwo")
+})
+
+test_that("conditions(..1)", {
+  expect_warning(
+    conditions("cond_cnd_class", "cnd"),
+    # TODO replace simpleWarning with classed warning
+    class = "simpleWarning"
+  )
+})
+
+test_that("condition(type = 'condition')", {
+  foo <- condition("foo", type = "condition", package = "cnd_testing_type")
+  on.exit(remove_registration("cnd_testing_type"))
+  expect_identical(foo, condition("cnd_testing_type:foo"))
+  expect_snapshot(foo())
+})
+
+test_that("find_cond()", {
+  expect_s3_class(
+    find_cond("cnd:cond_cnd_class/error"),
+    "cnd::condition_function"
+  )
+
+  expect_warning(
+    expect_s3_class(find_cond("/error"), "cnd::condition_function"),
+    class = "simpleWarning"
+  )
+
+  expect_warning(
+    expect_type(find_cond("/error", .multi = TRUE), "list"),
+    class = "simpleWarning"
+  )
+})
+
+test_that("validate_condition()", {
+  expect_error(
+    validate_condition(1, NULL, NULL),
+    class = "cnd:invalid_condition"
+  )
+
+  expect_error(
+    validate_condition(letters, NULL, NULL),
+    class = "cnd:invalid_condition"
+  )
+
+  expect_error(
+    validate_condition("foo!bar", NULL, NULL),
+    class = "cnd:invalid_condition"
+  )
+
+  expect_error(
+    validate_condition("foo", NULL, 1),
+    class = "cnd:invalid_condition"
+  )
+
+  expect_error(
+    validate_condition("foo", 1, NULL),
+    class = "cnd:invalid_condition"
+  )
+})
+
+test_that("cget() and $ and [", {
+  expect_identical(
+    cget(cond_cnd_class, "class"),
+    cond_cnd_class$class
+  )
+
+  expect_identical(
+    cget(cond_cnd_class, "class"),
+    cond_cnd_class["class"]
+  )
+})
+
+test_that("as.character() error", {
+  expect_error(
+    as.character(cond_as_character_condition),
+    class = "cnd:as_character_cnd_error"
+  )
+})

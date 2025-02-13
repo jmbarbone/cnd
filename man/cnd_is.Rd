@@ -15,7 +15,7 @@ is_cnd_condition(x)
 
 is_cnd_generator(x)
 
-is_cnd_function(x, type = c("error", "warning", "message"))
+is_cnd_function(x, type = c("error", "warning", "message", "condition"))
 
 is_conditioned_function(x)
 }

@@ -46,8 +46,8 @@ condition <- function(
 ) {
   if (nargs() == 1L) {
     found <- do_find_cond(class)
-    if (length(found) == 1) {
-      return(found)
+    if (length(found) == 1L) {
+      return(found[[1L]])
     }
   }
 
@@ -69,7 +69,16 @@ condition <- function(
   }
 
   if (is.null(message)) {
-    message <- function() "there was an error"
+    message <- function() {}
+    # default message is just announcing an error
+    body(message) <- paste(
+      switch(
+        type,
+        error = "there was an",
+        "there was a"
+      ),
+      type
+    )
   } else if (is.character(message)) {
     message <- as.function(list(collapse(message)))
   } else if (!is.function(message)) {
@@ -136,7 +145,7 @@ condition <- function(
   res
 }
 
-find_cond <- function(x, ...) {
+find_cond <- function(x, ..., .multi = FALSE) {
   found <- do_find_cond(x, ...)
 
   if (is_cnd_function(found)) {
@@ -149,8 +158,13 @@ find_cond <- function(x, ...) {
     return(found[[1L]])
   )
 
-  warning("multiple conditions found")
-  found[[1L]]
+  warning("multiple conditions found") # internal warning
+
+  if (!.multi) {
+    found <- found[[1L]]
+  }
+
+  found
 }
 
 do_find_cond <- function(
@@ -172,6 +186,7 @@ do_find_cond <- function(
   } else {
     package <- str_extract(x, "^.*(?=:.*)")
     class <- gsub("^.*:|/.*$", "", x)
+    class <- if (nzchar(class)) class
     type <- str_extract(x, "(?<=/).*$")
   }
 
@@ -490,12 +505,11 @@ delayedAssign(
   condition(
     "invalid_condition",
     type = "error",
-    message = function(problems) {
-      collapse(
-        "The following problems were found with the condition:",
-        paste0("\n", problems)
-      )
-    },
+    # nolint next: brace_linter.
+    message = function(problems) collapse(
+      "The following problems were found with the condition:",
+      paste0("\n", problems)
+    ),
     package = "cnd",
     exports = "condition",
     help = "
