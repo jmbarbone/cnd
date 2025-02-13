@@ -38,7 +38,7 @@
 condition <- function(
     class,
     message = NULL,
-    type = c("error", "warning", "message"),
+    type = c("error", "warning", "message", "condition"),
     package = get_package(),
     exports = NULL,
     help = NULL,
@@ -97,16 +97,23 @@ condition <- function(
     body(condition_function) <- substitute({
       # nolint next: object_usage_linter.
       call <- sys.call(sys.parent(.ncall + 1L))
+
       # nolint next: object_usage_linter.
       params <- as.list(match.call())[-1L]
       params <- params[names(params) != ".ncall"]
       params <- lapply(params, eval.parent, 2L)
+
       # nolint next: object_usage_linter.
       cond <- list(
         message = clean_text(do.call(message, params)),
         call = call
       )
-      cond <- set_class(cond, c(class, "cnd::condition", type, "condition"))
+
+      cond <- set_class(
+        cond,
+        unique(c(class, "cnd::condition", type, "condition"))
+      )
+
       attr(cond, "help") <- help
       attr(cond, "package") <- package
       attr(cond, "exports") <- exports
@@ -226,7 +233,11 @@ cnd <- function(condition) {
     attr(condition, "type"),
     error = stop(condition), # maybe `error()` should be the name
     warning = warning(condition),
-    message = message(condition)
+    message = message(condition),
+    condition = {
+      signalCondition(condition)
+      cat(condition$message, "\n")
+    }
   )
 }
 

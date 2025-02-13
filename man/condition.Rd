@@ -11,7 +11,7 @@
 condition(
   class,
   message = NULL,
-  type = c("error", "warning", "message"),
+  type = c("error", "warning", "message", "condition"),
   package = get_package(),
   exports = NULL,
   help = NULL,
