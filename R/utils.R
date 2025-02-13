@@ -48,12 +48,15 @@ attr <- function(x, which) {
   base::attr(x, which, exact = TRUE)
 }
 
-fmt <- function(...) {
+fmt <- function(..., .sep = "") {
   # this is actually pretty neat, and maybe will go into `{fuj}`
   params <- list(...)
   nms <- names(params)
   if (is.null(nms)) {
-    return(collapse(params))
+    if (isTRUE(is.na(.sep))) {
+      return(unlist(params))
+    }
+    return(collapse(params, sep = .sep))
   }
 
   lines <- names(params) == ""
@@ -105,3 +108,43 @@ clean_padding <- function(x, pad = 0L) {
   text
 }
 
+match_arg <- function(arg, choices) {
+  if (missing(choices)) {
+    parent <- sys.parent()
+    fargs <- formals(sys.function(parent))
+    choices <- eval(
+      fargs[[as.character(substitute(arg))]],
+      envir = sys.frame(parent)
+    )
+  }
+
+  ok <- match(arg, choices, nomatch = 0L)
+  ok <- ok[ok > 0L][1L]
+
+  if (is.na(ok)) {
+    value <- arg
+    arg <- deparse1(substitute(arg))
+    cnd(cond_match_arg(arg, value, choices))
+  }
+
+  choices[ok]
+}
+
+cond_match_arg <- NULL
+delayedAssign(
+  "cond_match_arg",
+  condition(
+    "match_arg",
+    type = "error",
+    package = "cnd",
+    # nolint next: brace_linter.
+    message = \(arg, value, choices) fmt(
+      "Argument '{arg}' not valid\n",
+      "value  : {value}\n",
+      "choices: {choices}",
+      arg = arg,
+      value = value,
+      choices = collapse(choices, sep = ", ")
+    )
+  )
+)

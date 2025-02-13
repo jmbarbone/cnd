@@ -35,7 +35,6 @@
 #'   message = \(x) paste("class cannot be", toString(class(x)))
 #' )
 #' try(stop(cond_class_error(list())))
-# nolint next: cyclocomp_linter.
 condition <- function(
     class,
     message = NULL,
@@ -46,28 +45,20 @@ condition <- function(
     register = !is.null(package)
 ) {
   if (nargs() == 1L) {
-    ok <- conditions(class = class)[[1L]]
-    if (!is.null(ok)) {
-      return(ok)
+    found <- do_find_cond(class)
+    if (length(found) == 1) {
+      return(found)
     }
   }
 
   force(package)
   force(register)
 
-  # TODO add custom conditions
-  stopifnot(
-    is.character(class),
-    # must only contain letters, numbers and underscores or period
-    grepl("^[a-z0-9_.]+$", class, ignore.case = TRUE),
-    length(class) == 1L,
-    is.null(exports) || is.character(exports),
-    is.null(help) || is.character(help)
-  )
+  validate_condition(class = class, exports = exports, help = help)
 
-  # TODO use custom match.arg()
-  type <- match.arg(type)
+  type <- match_arg(type)
 
+  original_class <- class
   if (is.null(package)) {
     if (!is.null(exports)) {
       cnd(cond_no_package_exports())
@@ -97,18 +88,24 @@ condition <- function(
   assign("exports", exports, condition_env)
   assign("package", package, condition_env)
   assign("class", class, condition_env)
+  assign(".class", original_class, condition_env)
   assign("type", type, condition_env)
   assign("help", help, condition_env)
 
   res <- local(envir = condition_env, {
-    fun <- function() {}
-    body(fun) <- substitute({
+    condition_function <- function() {}
+    body(condition_function) <- substitute({
+      # nolint next: object_usage_linter.
+      call <- sys.call(sys.parent(.ncall + 1L))
       # nolint next: object_usage_linter.
       params <- as.list(match.call())[-1L]
+      params <- params[names(params) != ".ncall"]
       params <- lapply(params, eval.parent, 2L)
       # nolint next: object_usage_linter.
-      cond <- list(message = clean_text(do.call(message, params)), call = NULL)
-      # TODO add `call` to the formals
+      cond <- list(
+        message = clean_text(do.call(message, params)),
+        call = call
+      )
       cond <- set_class(cond, c(class, "cnd::condition", type, "condition"))
       attr(cond, "help") <- help
       attr(cond, "package") <- package
@@ -117,10 +114,12 @@ condition <- function(
       attr(cond, "type") <- type
       cond
     })
-    fun
+    condition_function
   })
 
-  formals(res) <- formals(message)
+  lockEnvironment(condition_env)
+
+  formals(res) <- c(formals(message), .ncall = 0L)
   base::class(res) <- c("cnd::condition_function", "function")
 
   if (register) {
@@ -130,29 +129,39 @@ condition <- function(
   res
 }
 
-cond <- function(x) {
+find_cond <- function(x) {
+  found <- do_find_cond(x)
+
+  if (is_cnd_function(found)) {
+    return(found)
+  }
+
+  switch(
+    length(found) + 1L,
+    stop("no condition found"),
+    return(found[[1L]])
+  )
+
+  warning("multiple conditions found")
+  found[[1L]]
+}
+
+do_find_cond <- function(x) {
   if (is_cnd_function(x)) {
     return(x)
   }
 
-  package <- sub(":.*$", "", x)
-  if (!nzchar(package)) {
-    package <- NULL
-  }
+  package <- str_extract(x, "^.*(?=:.*)")
+  class <- gsub("^.*:|/.*$", "", x)
+  type <- str_extract(x, "(?<=/).*$")
 
-  class <- sub("^.*:", "", x)
-  class <- sub("/.*$", "", class)
+  conditions(class = class, package = package, type = type)
+}
 
-  res <- conditions(class = class, package = package)
-
-  switch(
-    length(res) + 1L,
-    stop("no condition found"),
-    return(res[[1L]])
-  )
-
-  warning("multiple conditions found")
-  res[[1L]]
+str_extract <- function(x, pattern, perl = TRUE, ...) {
+  m <- regexpr(pattern, x, perl = TRUE, ...)
+  res <- regmatches(x, m)
+  if (length(res)) res else NULL
 }
 
 #' @export
@@ -189,7 +198,7 @@ conditions <- function(
   }
 
   conds <- Reduce("c", lapply(registry$packages, as.list))
-  terms <- list(package = package, class = class, type = type)
+  terms <- list(package = package, .class = class, type = type)
   terms <- filter2(terms, Negate(is.null))
 
   for (i in seq_along(terms)) {
@@ -209,8 +218,6 @@ conditions <- function(
 #' @returns
 #' - [cnd()] is a wrapper for calling [stop()], [warning()], or [message()]
 cnd <- function(condition) {
-  # should this be raise()?
-  # TODO use condition(condition) --> try to find the condition function
   if (!is_cnd_condition(condition)) {
     cnd(cond_cnd_class())
   }
@@ -259,6 +266,37 @@ remove_conditions <- function(x) {
   x
 }
 
+validate_condition <- function(class, exports, help) {
+  # reset problems
+  problems <- character()
+  problem <- function(...) problems <<- c(problems, ...)
+
+  if (!is.character(class)) {
+    problem("`class` must be a character vector")
+  }
+
+  if (length(class) != 1L) {
+    problem("`class` must be a single character string")
+  } else if (!grepl("^[a-z0-9_.]+$", class, ignore.case = TRUE)) {
+    problem(
+      "`class` must only contain letters, numbers, underscores, or periods"
+    )
+  }
+
+  if (!(is.null(exports) || is.character(exports))) {
+    problem("`exports` must be NULL or a character vector")
+  }
+
+  if (!(is.null(help) || is.character(help))) {
+    problem("`help` must be NULL or a character vector")
+  }
+
+  if (length(problems)) {
+    cnd(cond_condition_invalid(problems, .ncall = 1L))
+  }
+}
+
+
 # methods -----------------------------------------------------------------
 
 #' @export
@@ -272,7 +310,7 @@ cget <- function(x, field) {
 
 #' @export
 `$.cnd::condition_function` <- function(x, i) {
-  .subset2(as.list(environment(x)), i)
+  .subset2(as.list(environment(x), all.names = TRUE), i)
 }
 
 
@@ -281,7 +319,10 @@ cget <- function(x, field) {
   exports <- attr(c, "exports")
   pkg <- attr(c, "package")
 
-  msg <- c(fmt("<{cl}>", cl = attr(c, "condition")), collapse(c$message))
+  msg <- c(
+    fmt("<{cl}>", cl = attr(c, "condition")),
+    collapse(c$message, sep = "\n")
+  )
 
   if (length(exports)) {
     msg <- c(
@@ -414,5 +455,26 @@ stop(my_condition())
 ```
 "
     )
+  )
+)
+
+cond_condition_invalid <- NULL
+delayedAssign(
+  "cond_condition_invalid",
+  condition(
+    "invalid_condition",
+    type = "error",
+    message = function(problems) {
+      collapse(
+        "The following problems were found with the condition:",
+        paste0("\n", problems)
+      )
+    },
+    package = "cnd",
+    exports = "condition",
+    help = "
+    The `class`, `exports`, and `help` parameters must be a single character
+    string.  If you are passing a function, it must be a valid function.
+    "
   )
 )

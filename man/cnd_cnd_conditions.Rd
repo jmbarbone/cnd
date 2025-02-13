@@ -1,11 +1,13 @@
 % Generated with cnd::cnd_document("cnd")
 \name{cnd-conditions}
 \alias{cnd-conditions}
+\alias{cnd:match_arg}
 \alias{cnd:no_package_exports}
 \alias{cnd:as_character_cnd_error}
 \alias{cnd:cond_cnd_class}
 \alias{cnd:invalid_condition_message}
 \alias{cnd:condition_overwrite}
+\alias{cnd:invalid_condition}
 \title{Conditions for \code{{cnd}}}
 \description{
   The following conditions are defined in the cnd package.
@@ -13,6 +15,13 @@
   \code{\link[=conditions]{conditions()}}
 }
 
+\section{\code{cnd:match_arg}}{
+\describe{
+  \item{class}{cnd:match_arg}
+  \item{type}{error}
+  \item{package}{cnd}
+}
+}
 \section{\code{cnd:no_package_exports}}{
 \describe{
   \item{class}{cnd:no_package_exports}
@@ -73,4 +82,15 @@ see: \code{\link[=condition]{condition()}}
   \item{type}{warning}
   \item{package}{cnd}
 }
+}
+\section{\code{cnd:invalid_condition}}{
+\describe{
+  \item{class}{cnd:invalid_condition}
+  \item{type}{error}
+  \item{package}{cnd}
+}
+The `class`, `exports`, and `help` parameters must be a single character
+string.  If you are passing a function, it must be a valid function.
+
+see: \code{\link[=condition]{condition()}}
 }

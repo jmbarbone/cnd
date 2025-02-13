@@ -1,6 +1,4 @@
-linters: linters_with_defaults() # see vignette("lintr")
-encoding: "UTF-8"
-exclusions: list(
-    "R/condition.R" = list(indentation_linter = c(40, 53, 173)),
-    "R/package-doc.R" = list(indentation_linter = 46)
+linters: linters_with_defaults(
+  indentation_linter = NULL
   )
+encoding: "UTF-8"

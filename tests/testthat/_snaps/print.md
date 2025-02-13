@@ -11,7 +11,7 @@
         exports  : NULL
         help     : NULL
         register : !is.null(package)
-      <condition(s): cnd:no_package_exports/warning, cnd:invalid_condition_message/error>
+      <condition(s): cnd:no_package_exports/warning, cnd:invalid_condition_message/error, cnd:invalid_condition/error>
       
       For list of conditions use cnd::conditions()
 
@@ -53,5 +53,5 @@
       cond_condition_overwrite(old, new)
     Output
       <cnd:condition_overwrite/warning>
-      A condition with the class name 'cnd:testing:snapshot_test_old' already exists in 'cnd:testing' and will be overwritten   1 string mismatch   target, current do not match when deparsed   Component "class": 1 string mismatch   Component "fun": target, current do not match when deparsed   Component "class": 1 string mismatch   Component "fun": target, current do not match when deparsed
+      A condition with the class name 'cnd:testing:snapshot_test_old' already exists in 'cnd:testing' and will be overwritten   1 string mismatch   target, current do not match when deparsed   Component ".class": 1 string mismatch   Component "class": 1 string mismatch   Component "condition_function": target, current do not match when deparsed   Component ".class": 1 string mismatch   Component "class": 1 string mismatch   Component "condition_function": target, current do not match when deparsed
 

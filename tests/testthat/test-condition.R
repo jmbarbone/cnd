@@ -37,13 +37,13 @@ test_that("conditions(x) <- value", {
   expect_s3_class(foo, "cnd::conditioned_function")
 })
 
-test_that("cond() works", {
-  expect_identical(cond(cond_cnd_class), cond_cnd_class)
+test_that("find_cond() works", {
+  expect_identical(find_cond(cond_cnd_class), cond_cnd_class)
 })
 
-test_that("cond() fails", {
-  expect_error(cond("foo:bar"))
-  expect_error(cond("foooo"))
+test_that("find_cond() fails", {
+  expect_error(find_cond("foo:bar"))
+  expect_error(find_cond("foooo"))
 })
 
 test_that("cnd()", {
