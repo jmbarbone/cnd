@@ -136,8 +136,8 @@ condition <- function(
   res
 }
 
-find_cond <- function(x) {
-  found <- do_find_cond(x)
+find_cond <- function(x, ...) {
+  found <- do_find_cond(x, ...)
 
   if (is_cnd_function(found)) {
     return(found)
@@ -145,7 +145,7 @@ find_cond <- function(x) {
 
   switch(
     length(found) + 1L,
-    stop("no condition found"),
+    stop("no condition found"), # TODO replace with custom condition
     return(found[[1L]])
   )
 
@@ -153,16 +153,31 @@ find_cond <- function(x) {
   found[[1L]]
 }
 
-do_find_cond <- function(x) {
+do_find_cond <- function(
+    x,
+    force = FALSE,
+    check = c("package", "class", "type")
+) {
+  check <- intersect(check, eval(formals(do_find_cond)$check))
+  stopifnot(!identical(check, character())) # internal error
+
   if (is_cnd_function(x)) {
-    return(x)
+    if (!force) {
+      return(x)
+    }
+
+    package <- cget(x, "package")
+    class <- cget(x, ".class")
+    type <- cget(x, "type")
+  } else {
+    package <- str_extract(x, "^.*(?=:.*)")
+    class <- gsub("^.*:|/.*$", "", x)
+    type <- str_extract(x, "(?<=/).*$")
   }
 
-  package <- str_extract(x, "^.*(?=:.*)")
-  class <- gsub("^.*:|/.*$", "", x)
-  type <- str_extract(x, "(?<=/).*$")
-
-  conditions(class = class, package = package, type = type)
+  args <- list(package = package, class = class, type = type)
+  args <- args[match(check, names(args))]
+  do.call(conditions, args)
 }
 
 str_extract <- function(x, pattern, perl = TRUE, ...) {

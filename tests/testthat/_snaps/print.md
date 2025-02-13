@@ -55,3 +55,12 @@
       <cnd:condition_overwrite/warning>
       A condition with the class name 'cnd:testing:snapshot_test_old' already exists in 'cnd:testing' and will be overwritten   1 string mismatch   target, current do not match when deparsed   Component ".class": 1 string mismatch   Component "class": 1 string mismatch   Component "condition_function": target, current do not match when deparsed   Component ".class": 1 string mismatch   Component "class": 1 string mismatch   Component "condition_function": target, current do not match when deparsed
 
+---
+
+    Code
+      fun
+    Output
+      function() NULL
+      <environment: 0x000000000000>
+      <condition(s): test-snapshots:snapshot_test_fun/error>
+

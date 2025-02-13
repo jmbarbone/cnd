@@ -56,15 +56,12 @@ attr <- function(x, which) {
   base::attr(x, which, exact = TRUE)
 }
 
-fmt <- function(..., .sep = "") {
+fmt <- function(...) {
   # this is actually pretty neat, and maybe will go into `{fuj}`
   params <- list(...)
   nms <- names(params)
   if (is.null(nms)) {
-    if (isTRUE(is.na(.sep))) {
-      return(unlist(params))
-    }
-    return(collapse(params, sep = .sep))
+    return(collapse(params))
   }
 
   lines <- names(params) == ""
@@ -100,7 +97,7 @@ clean_padding <- function(x, pad = 0L) {
   ok <- text != ""
 
   ns <- attr(regexpr("^[[:space:]]+", text[ok], perl = TRUE), "match.length")
-  m <- min(ns)
+  m <- max(min(ns), 0)
 
   if (m == 0) {
     return(text)

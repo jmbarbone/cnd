@@ -5,24 +5,24 @@
 #'
 #' @param cond A condition object
 #' @param old the old condition
-#' @param ... Unused
-#' @param env The parent environment to register the condition
 #'
 #' @noRd
-register_condition <- function(cond, old, ..., env = parent.frame()) {
+register_condition <- function(cond, old = NULL) {
   # See if there's already a condition created, just based on name and package.
   # The other values may change, which will be noted in the overwrite
-  old <- conditions(
-    class = cget(cond, "class"),
-    package = cget(cond, "package")
-  )[[1L]]
+  if (is.null(old)) {
+    old <- do_find_cond(cond, force = TRUE, check = c("class", "package"))
+    if (!is.null(old)) {
+      old <- old[[1L]]
+    }
+  }
+
   # could play around with identical()
   if (isTRUE(all.equal(cond, old))) {
     return(invisible())
   }
 
-  # S3 methods may not be available when building the cnd package
-  pkg <- get0("package", environment(cond))
+  pkg <- cget(cond, "package")
 
   if (is.null(pkg)) {
     return()
@@ -32,7 +32,7 @@ register_condition <- function(cond, old, ..., env = parent.frame()) {
     cnd(cond_condition_overwrite(old, cond))
   }
 
-  assign(get("class", environment(cond)), cond, get_registry(pkg))
+  assign(cget(cond, "class"), cond, get_registry(pkg))
   invisible()
 }
 
@@ -43,6 +43,19 @@ get_registry <- function(pkg) {
   }
 
   get(pkg, registry$packages)
+}
+
+remove_registration <- function(pkg) {
+  if (exists(pkg, registry$packages)) {
+    rm(list = pkg, envir = registry$packages)
+  }
+}
+
+unregister_condition <- function(cond, package = cond$package) {
+  cond <- find_cond(cond)
+  force(package)
+  rm(list = cond$class, envir = get_registry(package))
+  invisible()
 }
 
 #' Evaluate all conditions in registry

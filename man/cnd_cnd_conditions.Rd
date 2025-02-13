@@ -1,8 +1,8 @@
 % Generated with cnd::cnd_document("cnd")
 \name{cnd-conditions}
 \alias{cnd-conditions}
-\alias{cnd:match_arg}
 \alias{cnd:no_package_exports}
+\alias{cnd:match_arg}
 \alias{cnd:as_character_cnd_error}
 \alias{cnd:cond_cnd_class}
 \alias{cnd:invalid_condition_message}
@@ -15,13 +15,6 @@
   \code{\link[=conditions]{conditions()}}
 }
 
-\section{\code{cnd:match_arg}}{
-\describe{
-  \item{class}{cnd:match_arg}
-  \item{type}{error}
-  \item{package}{cnd}
-}
-}
 \section{\code{cnd:no_package_exports}}{
 \describe{
   \item{class}{cnd:no_package_exports}
@@ -31,6 +24,13 @@
 The `exports` parameter requires a `package`
 
 see: \code{\link[=condition]{condition()}}
+}
+\section{\code{cnd:match_arg}}{
+\describe{
+  \item{class}{cnd:match_arg}
+  \item{type}{error}
+  \item{package}{cnd}
+}
 }
 \section{\code{cnd:as_character_cnd_error}}{
 \describe{
