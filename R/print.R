@@ -7,19 +7,7 @@
   cat("Condition generator\n")
   cat("<", format(x), ">\n", sep = "")
 
-  forms <- formals(x$message)
-  if (!is.null(forms)) {
-    values <- vapply(forms, deparse1, NA_character_)
-    types <- paste0("<", vapply(forms, typeof, NA_character_), "> ")
-
-    cat(
-      "\ngenerator:",
-      paste0("\n  $ ", format(names(forms)), ": ", types, values),
-      "\n",
-      sep = ""
-    )
-  }
-
+  print_generator(x$message)
   if (length(x$help)) {
     cat("\n")
     writeLines(clean_text(x$help))
@@ -39,20 +27,12 @@
 #' @export
 `print.cnd::condition_progenitor` <- function(x, ...) {
   cat("Condition progenitor\n")
-  forms <- formals(x)
-  writeLines(paste0(
-    "  ",
-    format(names(forms)),
-    " : ",
-    vapply(forms, deparse1, NA_character_)
-  ))
+  print_generator(x)
   cat("\n")
   print_conditions(x)
   cat("\nFor list of conditions use cnd::conditions()\n")
   invisible(x)
 }
-
-
 
 #' @export
 `print.cnd::conditioned_function` <- function(x, ...) {
@@ -78,6 +58,23 @@ print_conditions <- function(x) {
     "<condition(s): ",
     to_string(vapply(attr(x, "conditions"), format, NA_character_)),
     ">\n",
+    sep = ""
+  )
+}
+
+print_generator <- function(x) {
+  forms <- formals(x)
+  if (is.null(forms)) {
+    return()
+  }
+
+  values <- vapply(forms, deparse1, NA_character_)
+  types <- paste0("<", vapply(forms, typeof, NA_character_), "> ")
+  types[types == "<NULL> "] <- ""
+  cat(
+    "generator:",
+    paste0("\n  $ ", format(names(forms)), ": ", types, values),
+    "\n",
     sep = ""
   )
 }

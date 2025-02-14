@@ -3,6 +3,6 @@
     Code
       foo()
     Output
-      <cnd_testing_type:foo/condition>
+      <help:foo/condition>
       there was a condition
 

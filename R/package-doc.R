@@ -106,7 +106,7 @@ cnd_section <- function(fun) {
     pkgs = collapse(
       vapply(
         unique(vapply(conds, cget, NA_character_, "package")),
-        function(p) fmt(cnd_section_seealso_fmt, pkg = p),
+        function(p) fmt("[{pkg}-conditions]", pkg = p),
         NA_character_
       )
     ),
@@ -126,11 +126,7 @@ For more conditions, see: {pkgs}
 "
 
 cnd_section_item_fmt <- "
-  \\item{\\code{\\link[{pkg}:{pkg}-conditions]{{form}}}}{
+  \\item{[`{form}`][{pkg}-conditions]}{
     {help}
   }
-"
-
-cnd_section_seealso_fmt <- "
-\\code{\\link{{pkg}-conditions}}
 "

@@ -1,6 +1,6 @@
 test_that("condition() works", {
   expect_s3_class(condition, "cnd::condition_progenitor")
-  con <- expect_no_error(condition("foo"))
+  con <- expect_no_error(condition("foo", register = FALSE))
   expect_s3_class(con, "cnd::condition_generator")
 })
 
@@ -32,11 +32,13 @@ test_that("condition() works", {
 })
 
 test_that("conditions(x) <- value", {
+  reg <- create_registry("cnd:testing")
+  on.exit(remove_registry(reg))
   foo <- function() {}
-  conditions(foo) <- condition("foo", package = "cnd:testing")
+  conditions(foo) <- condition("foo", package = "test", registry = reg)
   expect_s3_class(foo, "cnd::conditioned_function")
   conditions(foo) <- NULL
-  expect_failure(expect_s3_class(foo, "cnd::conditioned_function"))
+  expect_failure(expect_s3_class(foo, "test::conditioned_function"))
 })
 
 test_that("find_cond() works", {
@@ -87,15 +89,14 @@ test_that("cnd()", {
 })
 
 test_that("condition(existing)", {
-  reg <- create_registry("cnd:condition_existing")
-  on.exit(remove_registry(reg))
+  reg <- local_reg("cnd:test:condition_exists")
   foo <- condition("foo", package = "foo", registry = reg)
   expect_identical(condition("foo:foo"), foo)
 })
 
 test_that("condition(help = gets_collapsed)", {
-  foo <- condition("foo", help = c("one", "two"), package = "cnd_testing_help")
-  on.exit(remove_registry("cnd_testing_help"))
+  reg <- local_reg("cnd:test:condition_help")
+  foo <- condition("foo", help = c("one", "two"), registry = reg)
   expect_identical(foo$help, "onetwo")
 })
 
@@ -108,9 +109,9 @@ test_that("conditions(..1)", {
 })
 
 test_that("condition(type = 'condition')", {
-  foo <- condition("foo", type = "condition", package = "cnd_testing_type")
-  on.exit(remove_registry("cnd_testing_type"))
-  expect_identical(foo, condition("cnd_testing_type:foo"))
+  reg <- local_reg("cnd:test:condition_type")
+  foo <- condition("foo", type = "condition", package = "help", registry = reg)
+  expect_identical(foo, condition("help:foo"))
   expect_snapshot(foo())
 })
 

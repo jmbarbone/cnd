@@ -2,6 +2,7 @@
 
 S3method("$","cnd::condition_generator")
 S3method("[","cnd::condition_generator")
+S3method("conditions<-","cnd::condition_progenitor")
 S3method("conditions<-","function")
 S3method(all,"equal.cnd::condition_generator")
 S3method(as.character,"cnd::condition_generator")

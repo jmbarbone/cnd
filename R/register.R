@@ -46,7 +46,7 @@ register_condition <- function(cond, old = NULL, registry = NULL) {
 
 # global registry ---------------------------------------------------------
 
-global_registry <- new.env(hash = FALSE)
+global_registry <- new.env()
 class(global_registry) <- c("cnd:registry", "environment")
 attr(global_registry, "global") <- TRUE
 
@@ -54,7 +54,7 @@ local(envir = global_registry, {
   .self <- global_registry
 
   new_registry <- function() {
-    e <- new.env(parent = .self, hash = FALSE)
+    e <- new.env(parent = .self)
     class(e) <- c("cnd:registry", "environment")
     e
   }
@@ -133,7 +133,11 @@ unregister_condition <- function(cond, registry = cond$package) {
 }
 
 as_list_env <- function(x, ...) {
-  as.list.environment(x, all.names = FALSE, sorted = TRUE)
+  res <- as.list.environment(as.environment(x))
+  if (length(res)) {
+    res <- res[order(names(res), method = "radix")]
+  }
+  res
 }
 
 #' @export

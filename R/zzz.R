@@ -3,6 +3,4 @@ cnd_evaluate()
 
 # update package functions and build documentation
 cnd_exports()
-class(condition) <- "cnd::condition_progenitor"
-
 cnd_document("cnd")

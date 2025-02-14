@@ -157,6 +157,8 @@ condition <- function(
   res
 }
 
+class(condition) <- "cnd::condition_progenitor"
+
 find_cond <- function(x, ..., .multi = FALSE) {
   found <- do_find_cond(x, ...)
 
@@ -248,7 +250,10 @@ conditions <- function(
   }
 
   if (is.null(registry)) {
-    conds <- Reduce("c", lapply(global_registry$registries, as_list_env))
+    conds <- Reduce(
+      "c",
+      lapply(as_list_env(global_registry$registries), as_list_env)
+    )
   } else {
     registry <- get_registry(registry)
     conds <- as_list_env(registry)
@@ -309,10 +314,18 @@ cnd <- function(condition) {
     return(x)
   }
 
-  attr(x, "conditions") <- c(
+  conds <- c(
     if (append) attr(x, "conditions"),
     if (is.list(value)) value else list(value)
   )
+
+  conds <- unique(conds)
+  o <- order(
+    vapply(conds, `format.cnd::condition_generator`, NA_character_),
+    method = "radix"
+  )
+  conds <- conds[o]
+  attr(x, "conditions") <- conds
 
   if (!is_conditioned_function(x)) {
     class(x) <- c("cnd::conditioned_function", class(x))
@@ -320,6 +333,18 @@ cnd <- function(condition) {
 
   x
 }
+
+
+#' @rdname condition
+#' @export
+`conditions<-.cnd::condition_progenitor` <- function(x, ..., value) {
+  stopifnot(!is.null(value)) # internal error
+  x <- `conditions<-.function`(x, append = TRUE, value = value)
+  class(x) <- "cnd::condition_progenitor"
+  x
+}
+
+# debug(`conditions<-.cnd::condition_progenitor`)
 
 remove_conditions <- function(x) {
   attr(x, "conditions") <- NULL

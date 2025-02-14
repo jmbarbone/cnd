@@ -4,14 +4,15 @@
       condition
     Output
       Condition progenitor
-        class    : 
-        message  : NULL
-        type     : c("error", "warning", "message", "condition")
-        package  : get_package()
-        exports  : NULL
-        help     : NULL
-        registry : package
-        register : !is.null(registry)
+      generator:
+        $ class   : <symbol> 
+        $ message : NULL
+        $ type    : <language> c("error", "warning", "message", "condition")
+        $ package : <language> get_package()
+        $ exports : NULL
+        $ help    : NULL
+        $ registry: <symbol> package
+        $ register: <language> !is.null(registry)
       
       <condition(s): cnd:as_character_cnd_error/error, cnd:invalid_condition/error, cnd:invalid_condition_message/error, cnd:match_arg/error, cnd:no_package_exports/warning>
       
@@ -45,7 +46,6 @@
     Output
       Condition generator
       <cnd:condition_overwrite/warning>
-      
       generator:
         $ old: <symbol> 
         $ new: <symbol> 
