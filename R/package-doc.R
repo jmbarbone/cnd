@@ -20,9 +20,11 @@ cnd_document <- function(
   res <- fmt(
     sub("[@]noRd", "@export", cnd_documentation_fmt),
     package = package,
+    # nolint start: line_length_linter.
     aliases1 = collapse(vapply(conds, cget, NA_character_, "class"), sep = " "),
     aliases2 = collapse(vapply(conds, cget, NA_character_, ".class"), sep = " "),
     aliases3 = collapse(vapply(conds, `format.cnd::condition_generator`, NA_character_), sep = " "),
+    # nolint end: line_length_linter.
     cnd_section_describe = collapse(
       vapply(
         conds,
@@ -44,7 +46,7 @@ cnd_document <- function(
       )
     )
   )
-  cat(res, file = path)
+  cat(res, file = path, sep = "")
 }
 
 cnd_documentation_fmt <- "
