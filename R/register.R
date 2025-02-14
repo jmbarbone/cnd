@@ -44,7 +44,7 @@ register_condition <- function(cond, old = NULL, registry = NULL) {
 get_registry <- function(pkg) {
   # for some reason, exists(pkg, global_registry$packages) was working weird
   if (is.null(global_registry$packages[[pkg]])) {
-    assign(pkg, global_registry$new_env(), global_registry$packages)
+    assign(pkg, global_registry$new_registry(), global_registry$packages)
   }
 
   get(pkg, global_registry$packages)

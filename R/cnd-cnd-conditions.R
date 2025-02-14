@@ -1,6 +1,6 @@
 
 #' @name cnd-conditions
-#' @aliases cnd-conditions cnd:match_arg cnd:no_package_exports cnd:as_character_cnd_error cnd:cond_cnd_class cnd:invalid_condition_message cnd:invalid_condition cnd:condition_overwrite match_arg no_package_exports as_character_cnd_error cond_cnd_class invalid_condition_message invalid_condition condition_overwrite cnd:match_arg/error cnd:no_package_exports/warning cnd:as_character_cnd_error/error cnd:cond_cnd_class/error cnd:invalid_condition_message/error cnd:invalid_condition/error cnd:condition_overwrite/warning
+#' @aliases cnd-conditions cnd:as_character_cnd_error cnd:cond_cnd_class cnd:condition_overwrite cnd:invalid_condition cnd:invalid_condition_message cnd:match_arg cnd:no_package_exports as_character_cnd_error cond_cnd_class condition_overwrite invalid_condition invalid_condition_message match_arg no_package_exports cnd:as_character_cnd_error/error cnd:cond_cnd_class/error cnd:condition_overwrite/warning cnd:invalid_condition/error cnd:invalid_condition_message/error cnd:match_arg/error cnd:no_package_exports/warning
 #' @title Conditions for `cnd`
 #'
 #' @details
@@ -12,26 +12,6 @@
 #'
 #' @section `{cnd}` conditions:
 #' 
-#' 
-#'   \subsection{`cnd:match_arg/error`}{
-#'   \describe{
-#'     \item{package}{`{cnd}`}
-#'     \item{class}{`cnd:match_arg`}
-#'     \item{type}{**error**}
-#'   }
-#'   Mostly [match.arg()] but with a custom condition
-#'   }
-#'
-#' 
-#'   \subsection{`cnd:no_package_exports/warning`}{
-#'   \describe{
-#'     \item{package}{`{cnd}`}
-#'     \item{class}{`cnd:no_package_exports`}
-#'     \item{type}{**warning**}
-#'   }
-#'   The `exports` parameter requires a `package`
-#'   }
-#'
 #' 
 #'   \subsection{`cnd:as_character_cnd_error/error`}{
 #'   \describe{
@@ -63,15 +43,13 @@
 #'   }
 #'
 #' 
-#'   \subsection{`cnd:invalid_condition_message/error`}{
+#'   \subsection{`cnd:condition_overwrite/warning`}{
 #'   \describe{
 #'     \item{package}{`{cnd}`}
-#'     \item{class}{`cnd:invalid_condition_message`}
-#'     \item{type}{**error**}
+#'     \item{class}{`cnd:condition_overwrite`}
+#'     \item{type}{**warning**}
 #'   }
-#'   Conditions messages are displayed when invoked through [conditionMessage()].  You can set a static message by passing through a `character` vector, or a dynamic message by passing through a `function`.  The function should return a `character` vector.
-#'   
-#'   When `message` is not set, a default "there was an error" message is used.
+#'
 #'   }
 #'
 #' 
@@ -85,13 +63,35 @@
 #'   }
 #'
 #' 
-#'   \subsection{`cnd:condition_overwrite/warning`}{
+#'   \subsection{`cnd:invalid_condition_message/error`}{
 #'   \describe{
 #'     \item{package}{`{cnd}`}
-#'     \item{class}{`cnd:condition_overwrite`}
-#'     \item{type}{**warning**}
+#'     \item{class}{`cnd:invalid_condition_message`}
+#'     \item{type}{**error**}
+#'   }
+#'   Conditions messages are displayed when invoked through [conditionMessage()].  You can set a static message by passing through a `character` vector, or a dynamic message by passing through a `function`.  The function should return a `character` vector.
+#'   
+#'   When `message` is not set, a default "there was an error" message is used.
 #'   }
 #'
+#' 
+#'   \subsection{`cnd:match_arg/error`}{
+#'   \describe{
+#'     \item{package}{`{cnd}`}
+#'     \item{class}{`cnd:match_arg`}
+#'     \item{type}{**error**}
+#'   }
+#'   Mostly [match.arg()] but with a custom condition
+#'   }
+#'
+#' 
+#'   \subsection{`cnd:no_package_exports/warning`}{
+#'   \describe{
+#'     \item{package}{`{cnd}`}
+#'     \item{class}{`cnd:no_package_exports`}
+#'     \item{type}{**warning**}
+#'   }
+#'   The `exports` parameter requires a `package`
 #'   }
 #'
 #'

@@ -108,7 +108,7 @@ condition <- function(
 
   # setting up an environment to track additional fields for
 
-  condition_env <- global_registry$new_env()
+  condition_env <- global_registry$new_registry()
   environment(message) <- condition_env
   assign("message", message, condition_env)
   assign("exports", exports, condition_env)

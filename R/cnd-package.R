@@ -9,6 +9,22 @@ global_registry <- new.env(hash = FALSE)
 class(global_registry) <- c("cnd_registry", "environment")
 
 local(envir = global_registry, {
-  new_env <- function() new.env(parent = global_registry)
-  packages <- new_env()
+  new_registry <- function() structure(
+    new.env(parent = global_registry, hash = FALSE),
+    class = c("registry", "environment")
+  )
+  packages <- new_registry()
 })
+
+
+#' @export
+print.registry <- function(x, ...) {
+  cat("registry", ls(x), sep = "\n  ")
+  invisible(x)
+}
+
+
+#' @export
+as.list.registry <- function(x, ...) {
+  as.list.environment(x, all.names = TRUE, sorted = TRUE)
+}

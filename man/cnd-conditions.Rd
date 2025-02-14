@@ -3,27 +3,27 @@
 \docType{package}
 \name{cnd-conditions}
 \alias{cnd-conditions}
-\alias{cnd:match_arg}
-\alias{cnd:no_package_exports}
 \alias{cnd:as_character_cnd_error}
 \alias{cnd:cond_cnd_class}
-\alias{cnd:invalid_condition_message}
-\alias{cnd:invalid_condition}
 \alias{cnd:condition_overwrite}
-\alias{match_arg}
-\alias{no_package_exports}
+\alias{cnd:invalid_condition}
+\alias{cnd:invalid_condition_message}
+\alias{cnd:match_arg}
+\alias{cnd:no_package_exports}
 \alias{as_character_cnd_error}
 \alias{cond_cnd_class}
-\alias{invalid_condition_message}
-\alias{invalid_condition}
 \alias{condition_overwrite}
-\alias{cnd:match_arg/error}
-\alias{cnd:no_package_exports/warning}
+\alias{invalid_condition}
+\alias{invalid_condition_message}
+\alias{match_arg}
+\alias{no_package_exports}
 \alias{cnd:as_character_cnd_error/error}
 \alias{cnd:cond_cnd_class/error}
-\alias{cnd:invalid_condition_message/error}
-\alias{cnd:invalid_condition/error}
 \alias{cnd:condition_overwrite/warning}
+\alias{cnd:invalid_condition/error}
+\alias{cnd:invalid_condition_message/error}
+\alias{cnd:match_arg/error}
+\alias{cnd:no_package_exports/warning}
 \title{Conditions for \code{cnd}}
 \description{
 Condition generating functions and registry options to track custom conditions for your package.
@@ -39,24 +39,6 @@ These conditions are made with the \code{{cnd}} package though the use of
 
 \section{\code{{cnd}} conditions}{
 
-
-\subsection{\code{cnd:match_arg/error}}{
-\describe{
-\item{package}{\code{{cnd}}}
-\item{class}{\code{cnd:match_arg}}
-\item{type}{\strong{error}}
-}
-Mostly \code{\link[=match.arg]{match.arg()}} but with a custom condition
-}
-
-\subsection{\code{cnd:no_package_exports/warning}}{
-\describe{
-\item{package}{\code{{cnd}}}
-\item{class}{\code{cnd:no_package_exports}}
-\item{type}{\strong{warning}}
-}
-The \code{exports} parameter requires a \code{package}
-}
 
 \subsection{\code{cnd:as_character_cnd_error/error}}{
 \describe{
@@ -86,15 +68,13 @@ stop(my_condition())
 \code{\link[=cnd]{cnd()}} simple calls the appropriate function: \code{\link[=stop]{stop()}}, \code{\link[=warning]{warning()}}, or \code{\link[=message]{message()}} based on the \code{type} parameter from \code{\link[=condition]{condition()}}.
 }
 
-\subsection{\code{cnd:invalid_condition_message/error}}{
+\subsection{\code{cnd:condition_overwrite/warning}}{
 \describe{
 \item{package}{\code{{cnd}}}
-\item{class}{\code{cnd:invalid_condition_message}}
-\item{type}{\strong{error}}
+\item{class}{\code{cnd:condition_overwrite}}
+\item{type}{\strong{warning}}
 }
-Conditions messages are displayed when invoked through \code{\link[=conditionMessage]{conditionMessage()}}.  You can set a static message by passing through a \code{character} vector, or a dynamic message by passing through a \code{function}.  The function should return a \code{character} vector.
 
-When \code{message} is not set, a default "there was an error" message is used.
 }
 
 \subsection{\code{cnd:invalid_condition/error}}{
@@ -106,13 +86,33 @@ When \code{message} is not set, a default "there was an error" message is used.
 The \code{class}, \code{exports}, and \code{help} parameters must be a single character string.  If you are passing a function, it must be a valid function.
 }
 
-\subsection{\code{cnd:condition_overwrite/warning}}{
+\subsection{\code{cnd:invalid_condition_message/error}}{
 \describe{
 \item{package}{\code{{cnd}}}
-\item{class}{\code{cnd:condition_overwrite}}
-\item{type}{\strong{warning}}
+\item{class}{\code{cnd:invalid_condition_message}}
+\item{type}{\strong{error}}
+}
+Conditions messages are displayed when invoked through \code{\link[=conditionMessage]{conditionMessage()}}.  You can set a static message by passing through a \code{character} vector, or a dynamic message by passing through a \code{function}.  The function should return a \code{character} vector.
+
+When \code{message} is not set, a default "there was an error" message is used.
 }
 
+\subsection{\code{cnd:match_arg/error}}{
+\describe{
+\item{package}{\code{{cnd}}}
+\item{class}{\code{cnd:match_arg}}
+\item{type}{\strong{error}}
+}
+Mostly \code{\link[=match.arg]{match.arg()}} but with a custom condition
+}
+
+\subsection{\code{cnd:no_package_exports/warning}}{
+\describe{
+\item{package}{\code{{cnd}}}
+\item{class}{\code{cnd:no_package_exports}}
+\item{type}{\strong{warning}}
+}
+The \code{exports} parameter requires a \code{package}
 }
 }
 
