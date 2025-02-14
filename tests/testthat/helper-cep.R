@@ -1,3 +1,4 @@
+library(testthat)
 
 skip_if_no_cep <- function() {
   skip_if_not(dir.exists(cep_dir()), "tools/cep package directory not found")
