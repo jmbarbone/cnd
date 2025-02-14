@@ -26,7 +26,7 @@ conditions(
   class = NULL,
   type = NULL,
   package = NULL,
-  registry = package,
+  registry = NULL,
   fun = NULL
 )
 

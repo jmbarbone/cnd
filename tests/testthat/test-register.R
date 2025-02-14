@@ -1,6 +1,6 @@
 test_that("registration works", {
-  remove_registration("test-register")
-  on.exit(remove_registration("test-register"))
+  remove_registry("test-register")
+  on.exit(remove_registry("test-register"))
 
   foo <- condition("foo", package = "test-register", register = FALSE)
   expect_null(register_condition(foo))
@@ -18,4 +18,13 @@ test_that("registration works", {
 
   # TODO expect custom condition
   expect_error(find_cond("foobar"), class = "simpleError")
+})
+
+test_that("print(registry)", {
+  reg <- create_registry("test-register-snaps")
+  conditions("foo", registry = reg)
+  conditions("foo", registry = reg)
+  on.exit(remove_registry("test-register-snaps"))
+  expect_snapshot(global_registry)
+  expect_snapshot(reg)
 })

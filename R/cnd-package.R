@@ -5,26 +5,13 @@
 ## usethis namespace: end
 NULL
 
-global_registry <- new.env(hash = FALSE)
-class(global_registry) <- c("cnd_registry", "environment")
-
-local(envir = global_registry, {
-  new_registry <- function() structure(
-    new.env(parent = global_registry, hash = FALSE),
-    class = c("registry", "environment")
-  )
-  packages <- new_registry()
-})
-
-
-#' @export
-print.registry <- function(x, ...) {
-  cat("registry", ls(x), sep = "\n  ")
-  invisible(x)
-}
-
-
-#' @export
-as.list.registry <- function(x, ...) {
-  as.list.environment(x, all.names = TRUE, sorted = TRUE)
+#' Evaluate all conditions in registry
+#'
+#' Because conditions are delayed via [delayedAssign()], we need to force their
+#' evaluation so they get assigned into the **registry** and we can retrieve
+#' them for package documentation and enhancement
+#'
+#' @noRd
+cnd_evaluate <- function() {
+  invisible(lapply(parent.env(global_registry), force))
 }

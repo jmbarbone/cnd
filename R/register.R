@@ -1,4 +1,6 @@
 
+# register ----------------------------------------------------------------
+
 #' Register a condition
 #'
 #' Only register functions that are associated with a package
@@ -41,38 +43,105 @@ register_condition <- function(cond, old = NULL, registry = NULL) {
   invisible()
 }
 
-get_registry <- function(pkg) {
-  # for some reason, exists(pkg, global_registry$packages) was working weird
-  if (is.null(global_registry$packages[[pkg]])) {
-    assign(pkg, global_registry$new_registry(), global_registry$packages)
+
+# global registry ---------------------------------------------------------
+
+global_registry <- new.env(hash = FALSE)
+class(global_registry) <- c("cnd:registry", "environment")
+attr(global_registry, "global") <- TRUE
+
+local(envir = global_registry, {
+  .self <- global_registry
+
+  new_registry <- function() {
+    e <- new.env(parent = .self, hash = FALSE)
+    class(e) <- c("cnd:registry", "environment")
+    e
   }
 
-  get(pkg, global_registry$packages)
-}
-
-remove_registration <- function(pkg) {
-  if (exists(pkg, global_registry$packages)) {
-    rm(list = pkg, envir = global_registry$packages)
+  create_registry <- function(x) {
+    e <- assign(x, .self$new_registry(), .self$registries)
+    assign(".__NAME__.", x, e)
+    e
   }
+
+  remove_registry <- function(x) {
+    if (inherits(x, "cnd:registry")) {
+      x <- get(".__NAME__.", x, inherits = TRUE)
+    }
+
+    if (exists(x, .self$registries, inherits = FALSE)) {
+      rm(list = x, envir = .self$registries)
+    }
+  }
+
+  get_registry <- function(x) {
+    if (inherits(x, "cnd:registry")) {
+      return(x)
+    }
+
+    if (!exists(x, .self$registries, inherits = FALSE)) {
+      return(.self$create_registry(x))
+    }
+
+    get(x, .self$registries, inherits = FALSE)
+  }
+
+  # a new environment for each registry
+  registries <- new_registry()
+  class(registries) <- c("cnd:registry", "environment")
+  attr(registries, "list") <- TRUE
+})
+
+
+# helpers -----------------------------------------------------------------
+
+create_registry <- function(name) {
+  global_registry$create_registry(name)
 }
 
-unregister_condition <- function(cond, package = cond$package) {
+get_registry <- function(registry) {
+  global_registry$get_registry(registry)
+}
+
+remove_registry <- function(registry) {
+  global_registry$remove_registry(registry)
+}
+
+unregister_condition <- function(cond, registry = cond$package) {
   cond <- find_cond(cond)
-  force(package)
-  rm(list = cond$class, envir = get_registry(package))
+  force(registry)
+  rm(list = cond$class, envir = get_registry(registry))
   invisible()
 }
 
-#' Evaluate all conditions in registry
-#'
-#' Because conditions are delayed via [delayedAssign()], we need to force their
-#' evaluation so they get assigned into the **registry** and we can retrieve
-#' them for package documentation and enhancement
-#'
-#' @noRd
-cnd_evaluate <- function() {
-  invisible(lapply(parent.env(global_registry), force))
+
+# methods -----------------------------------------------------------------
+
+#' @export
+`print.cnd:registry` <- function(x, ...) {
+  nm <- get0(".__NAME__.", x, inherits = TRUE)
+  cat(
+    if (isTRUE(attr(x, "global"))) "global ",
+    "registry",
+    if (isTRUE(attr(x, "list"))) " list",
+    if (!is.null(nm)) paste0(" '", nm, "'"),
+    paste0("\n  ", ls(x, sorted = TRUE)),
+    sep = ""
+  )
+  invisible(x)
 }
+
+as_list_env <- function(x, ...) {
+  as.list.environment(x, all.names = FALSE, sorted = TRUE)
+}
+
+#' @export
+`as.list.cnd:registry` <- as_list_env
+
+
+
+# conditions --------------------------------------------------------------
 
 cond_condition_overwrite <- NULL
 delayedAssign(
@@ -91,3 +160,4 @@ delayedAssign(
     )
   )
 )
+

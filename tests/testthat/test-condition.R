@@ -22,7 +22,7 @@ test_that("condition() conditions", {
 test_that("condition() works", {
   expect_identical(
     conditions("cnd"),
-    conditions(package = "cnd")
+    conditions()
   )
 
   expect_identical(
@@ -87,14 +87,15 @@ test_that("cnd()", {
 })
 
 test_that("condition(existing)", {
-  foo <- condition("foo", package = "cnd_testing_existing")
-  on.exit(remove_registration("cnd_testing_existing"))
-  expect_identical(condition("cnd_testing_existing:foo"), foo)
+  reg <- create_registry("cnd:condition_existing")
+  on.exit(remove_registry(reg))
+  foo <- condition("foo", package = "foo", registry = reg)
+  expect_identical(condition("foo:foo"), foo)
 })
 
 test_that("condition(help = gets_collapsed)", {
   foo <- condition("foo", help = c("one", "two"), package = "cnd_testing_help")
-  on.exit(remove_registration("cnd_testing_help"))
+  on.exit(remove_registry("cnd_testing_help"))
   expect_identical(foo$help, "onetwo")
 })
 
@@ -108,7 +109,7 @@ test_that("conditions(..1)", {
 
 test_that("condition(type = 'condition')", {
   foo <- condition("foo", type = "condition", package = "cnd_testing_type")
-  on.exit(remove_registration("cnd_testing_type"))
+  on.exit(remove_registry("cnd_testing_type"))
   expect_identical(foo, condition("cnd_testing_type:foo"))
   expect_snapshot(foo())
 })

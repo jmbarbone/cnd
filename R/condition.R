@@ -224,7 +224,7 @@ conditions <- function(
     class = NULL,
     type = NULL,
     package = NULL,
-    registry = package,
+    registry = NULL,
     fun = NULL
 ) {
 
@@ -247,11 +247,11 @@ conditions <- function(
     return(attr(fun, "conditions"))
   }
 
-
   if (is.null(registry)) {
-    conds <- Reduce("c", lapply(global_registry$packages, as.list))
+    conds <- Reduce("c", lapply(global_registry$registries, as_list_env))
   } else {
-    conds <- as.list(get_registry(registry))
+    registry <- get_registry(registry)
+    conds <- as_list_env(registry)
   }
 
   terms <- list(package = package, .class = class, type = type)
@@ -411,8 +411,8 @@ cget <- function(x, field) {
     return(mode_check)
   }
 
-  new <- as.list(environment(current))
-  old <- as.list(environment(target))
+  new <- as_list_env(environment(current))
+  old <- as_list_env(environment(target))
 
   if (isTRUE(all.equal(new, old))) {
     return(TRUE)
