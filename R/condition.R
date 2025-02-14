@@ -168,11 +168,13 @@ find_cond <- function(x, ..., .multi = FALSE) {
 
   switch(
     length(found) + 1L,
-    stop("no condition found"), # TODO replace with custom condition
+    # this is an internal error, no?
+    stop("no condition found"),
     return(found[[1L]])
   )
 
-  warning("multiple conditions found") # internal warning
+  # this is an internal warning, no?
+  warning("only the first ... argument is used")
 
   if (!.multi) {
     found <- found[[1L]]
@@ -234,7 +236,7 @@ conditions <- function(
 
   if (dot_n) {
     if (dot_n > 1) {
-      warning("only the first ... argument is used")
+      warning(cond_conditions_dots())
     }
 
     if (is.function(..1)) {
@@ -547,7 +549,7 @@ delayedAssign(
   )
 )
 
-cond_condition_invalid <- NULL
+cond_condition_invalid <- function() {}
 delayedAssign(
   "cond_condition_invalid",
   condition(
@@ -564,6 +566,33 @@ delayedAssign(
       "The `class`, `exports`, and `help` parameters must be a single",
       " character string.  If you are passing a function, it must be a valid",
       " function."
+    )
+  )
+)
+
+cond_conditions_dots <- function() {}
+delayedAssign(
+  "cond_conditions_dots",
+  condition(
+    "conditions_dots",
+    type = "warning",
+    message = "The `...` parameter only allows for a single argument",
+    exports = "conditions",
+    package = "cnd",
+    help = c(
+      "The `...` parameter in [conditions()] is meant for convenience.  Only",
+      "a single argument is alowed.  Other parameters must be named ",
+      " explicitly.",
+      "",
+      "For example:",
+      "",
+      "```r",
+      "# Instead of this",
+      "conditions('class', 'package') # 'package' is ignored with a warning",
+      "",
+      "# Do this",
+      "conditions(class = 'class', package = 'package')",
+      "```"
     )
   )
 )

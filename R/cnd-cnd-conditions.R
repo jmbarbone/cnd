@@ -1,6 +1,6 @@
 
 #' @name cnd-conditions
-#' @aliases cnd-conditions cnd:as_character_cnd_error cnd:cond_cnd_class cnd:condition_overwrite cnd:invalid_condition cnd:invalid_condition_message cnd:match_arg cnd:no_package_exports as_character_cnd_error cond_cnd_class condition_overwrite invalid_condition invalid_condition_message match_arg no_package_exports cnd:as_character_cnd_error/error cnd:cond_cnd_class/error cnd:condition_overwrite/warning cnd:invalid_condition/error cnd:invalid_condition_message/error cnd:match_arg/error cnd:no_package_exports/warning
+#' @aliases cnd-conditions cnd:as_character_cnd_error cnd:cond_cnd_class cnd:condition_overwrite cnd:conditions_dots cnd:invalid_condition cnd:invalid_condition_message cnd:match_arg cnd:no_package_exports as_character_cnd_error cond_cnd_class condition_overwrite conditions_dots invalid_condition invalid_condition_message match_arg no_package_exports cnd:as_character_cnd_error/error cnd:cond_cnd_class/error cnd:condition_overwrite/warning cnd:conditions_dots/warning cnd:invalid_condition/error cnd:invalid_condition_message/error cnd:match_arg/error cnd:no_package_exports/warning
 #' @title Conditions for `cnd`
 #'
 #' @details
@@ -50,6 +50,16 @@
 #'     \item{type}{**warning**}
 #'   }
 #'
+#'   }
+#'
+#' 
+#'   \subsection{`cnd:conditions_dots/warning`}{
+#'   \describe{
+#'     \item{package}{`{cnd}`}
+#'     \item{class}{`cnd:conditions_dots`}
+#'     \item{type}{**warning**}
+#'   }
+#'   The `...` parameter in [conditions()] is meant for convenience.  Onlya single argument is alowed.  Other parameters must be named  explicitly.For example:```r# Instead of thisconditions('class', 'package') # 'package' is ignored with a warning# Do thisconditions(class = 'class', package = 'package')```
 #'   }
 #'
 #' 

@@ -6,6 +6,7 @@
 \alias{cnd:as_character_cnd_error}
 \alias{cnd:cond_cnd_class}
 \alias{cnd:condition_overwrite}
+\alias{cnd:conditions_dots}
 \alias{cnd:invalid_condition}
 \alias{cnd:invalid_condition_message}
 \alias{cnd:match_arg}
@@ -13,6 +14,7 @@
 \alias{as_character_cnd_error}
 \alias{cond_cnd_class}
 \alias{condition_overwrite}
+\alias{conditions_dots}
 \alias{invalid_condition}
 \alias{invalid_condition_message}
 \alias{match_arg}
@@ -20,6 +22,7 @@
 \alias{cnd:as_character_cnd_error/error}
 \alias{cnd:cond_cnd_class/error}
 \alias{cnd:condition_overwrite/warning}
+\alias{cnd:conditions_dots/warning}
 \alias{cnd:invalid_condition/error}
 \alias{cnd:invalid_condition_message/error}
 \alias{cnd:match_arg/error}
@@ -75,6 +78,15 @@ stop(my_condition())
 \item{type}{\strong{warning}}
 }
 
+}
+
+\subsection{\code{cnd:conditions_dots/warning}}{
+\describe{
+\item{package}{\code{{cnd}}}
+\item{class}{\code{cnd:conditions_dots}}
+\item{type}{\strong{warning}}
+}
+The \code{...} parameter in \code{\link[=conditions]{conditions()}} is meant for convenience.  Onlya single argument is alowed.  Other parameters must be named  explicitly.For example:\code{r# Instead of thisconditions('class', 'package') # 'package' is ignored with a warning# Do thisconditions(class = 'class', package = 'package')}
 }
 
 \subsection{\code{cnd:invalid_condition/error}}{

@@ -16,7 +16,6 @@ test_that("registration works", {
     )
   )
 
-  # TODO expect custom condition
   expect_error(find_cond("foobar"), class = "simpleError")
 })
 

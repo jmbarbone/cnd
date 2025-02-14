@@ -5,7 +5,6 @@ test_that("condition() works", {
 })
 
 test_that("condition() conditions", {
-  # TODO replace with custom function
   expect_error(condition("foo", type = "bad"))
 
   expect_warning(
@@ -103,8 +102,7 @@ test_that("condition(help = gets_collapsed)", {
 test_that("conditions(..1)", {
   expect_warning(
     conditions("cond_cnd_class", "cnd"),
-    # TODO replace simpleWarning with classed warning
-    class = "simpleWarning"
+    class = cond_conditions_dots$class
   )
 })
 
