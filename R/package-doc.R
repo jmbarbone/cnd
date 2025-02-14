@@ -3,93 +3,82 @@
 #' Documents your [conditions()] and [cnd::conditions()]
 #'
 #' @param package The package to document
-#' @param env The environment to attach the package name
+#' @param registry The name of the registry
+#' @param path The path to save the documentation
 #'
 #' @export
-#' @returns Nothing, called for its side-effects
-cnd_document <- function(package = get_package(env), env = parent.frame()) {
+#' @returns A `character` vector`
+cnd_document <- function(
+    package = get_package(),
+    registry = package,
+    path = file.path("R", paste0(package, "-cnd-conditions.R"))
+) {
   force(package)
-  conds <- conditions(package = package)
+  force(path)
+  conds <- conditions(package = package, registry = registry)
 
-  rd <- fmt(
-    cnd_document_fmt,
-    aliases1 = collapse(
-      paste0("\n\\alias{", vapply(conds, \(c) c$class, NA_character_), "}")
-    ),
+  res <- fmt(
+    sub("[@]noRd", "@export", cnd_documentation_fmt),
     package = package,
-    cnd1 = if (package == "cnd") "=conditions" else "cnd:conditions",
-    cnd2 = if (package == "cnd") "conditions" else "cnd::conditions",
-    conds_docs = collapse(vapply(conds, cond_to_doc, NA_character_, env = env))
-  )
-
-  rd <- clean_text(rd)
-  writeLines(rd, fmt("man/{pkg}_cnd_conditions.Rd", pkg = package))
-  invisible()
-}
-
-cond_to_doc <- function(condition, env) {
-  stopifnot(is_cnd_function(condition))
-  fmt(
-    cond_to_doc_fmt,
-    clsfmt = fmt(condition$class),
-    cls = condition$class,
-    pkg = condition$package,
-    typ = condition$type,
-    help =
-      if (is.null(condition$help)) {
-        ""
-      } else {
-        paste0("\n", collapse(clean_text(condition$help), sep = "\n"))
-      },
-    exports =
-      if (is.null(condition$exports)) {
-        ""
-      } else {
-        paste0(
-          "\n\nsee: ",
-          to_string(
-            fmt(
-              "\\code{\\link[{pkg1}{exp}]{{exp}{fun}}}",
-              pkg1 = if (condition$package == "cnd") "=" else "cnd:",
-              pkg2 = if (condition$package == "cnd") "" else "cnd::",
-              exp = condition$exports,
-              # not the same as is(_, "function") or inherits(_, "function")
-              fun = if (is.function(get(condition$exports, env))) "()" else ""
-            )
+    aliases1 = collapse(vapply(conds, cget, NA_character_, "class"), sep = " "),
+    aliases2 = collapse(vapply(conds, cget, NA_character_, ".class"), sep = " "),
+    aliases3 = collapse(vapply(conds, `format.cnd::condition_generator`, NA_character_), sep = " "),
+    cnd_section_describe = collapse(
+      vapply(
+        conds,
+        function(c) {
+          fmt(
+            sub("@keywords internal", "", cnd_section_describe_fmt),
+            form = format(c),
+            pkg = cget(c, "package"),
+            cls = cget(c, "class"),
+            typ = cget(c, "type"),
+            help = if (is.null(h <- cget(c, "help"))) {
+              "#'"
+            } else {
+              paste0("#'   ", clean_text(h), collapse = "\n")
+            }
           )
-        )
-      }
+        },
+        NA_character_
+      )
+    )
   )
+  cat(res, file = path)
 }
 
-cnd_document_fmt <- "% Generated with cnd::cnd_document(\"{package}\")
-\\name{{package}-conditions}
-\\alias{{package}-conditions}{aliases1}{aliases2}
-\\title{Conditions for \\code{{{package}}}}
-\\description{
-  The following conditions are defined in the \\code{{\\pkg{{package}}}}
-  package.  For more information on \\code{\\link[cnd:condition]{conditions}}
-  see \\code{\\link[{cnd1}]{{cnd2}}}
-}
-\\section{\\pkg{cnd}}{
-  These conditions are made with the \\code{{\\link[cnd:cnd-package]{cnd}}}
-  package though the use of \\code{\\link[cnd:condition]{condition()}}.
-}
-{conds_docs}
+cnd_documentation_fmt <- "
+#' @name {package}-conditions
+#' @aliases {package}-conditions {aliases1} {aliases2} {aliases3}
+#' @title Conditions for `{package}`
+#'
+#' @details
+#'  The following conditions are defined in the `{{package}}` package.
+#'
+#' @section [`{cnd}`][cnd::cnd-package]:
+#'  These conditions are made with the `{cnd}` package though the use of
+#'  [cnd::condition()].
+#'
+#' @section `{{package}}` conditions:
+#' {cnd_section_describe}
+#'
+#' @seealso [cnd::cnd-package] [cnd::condition]
+#' @noRd
+#' @keywords internal
+'_PACKAGE'
 "
 
-cond_to_doc_fmt <- "
-  \\section{\\code{{clsfmt}}}{
-  \\describe{
-    \\item{class}{{cls}}
-    \\item{type}{{typ}}
-    \\item{package}{{pkg}}
-  }{help}{exports}
-  }
-"
-
-cnd_document_fmt <- sub("{aliases2}", "", cnd_document_fmt, fixed = TRUE)
-
+cnd_section_describe_fmt <- "
+#' @keywords internal
+#'   \\subsection{`{form}`}{
+#'   \\describe{
+#'     \\item{package}{`{{pkg}}`}
+#'     \\item{class}{`{cls}`}
+#'     \\item{type}{**{typ}**}
+#'   }
+{help}
+#'   }
+#'"
 
 #' @export
 #' @rdname cnd_document
@@ -123,10 +112,8 @@ cnd_section <- function(fun) {
   )
 }
 
-
 cnd_section_fmt <- "
-Conditions are generated through the \\code{{\\link[cnd:cnd-package]{cnd}}}
-package.
+Conditions are generated through the [`{cnd}`][cnd::cnd-package] package.
 The following conditions are associated with this function:
 
 \\describe{

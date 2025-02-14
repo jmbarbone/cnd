@@ -505,17 +505,19 @@ delayedAssign(
       "This may have occured when trying to put a condition function through ",
       "[stop()] or [warning].  Instead, call the function first, then pass the",
       " result to [stop()] or [warning()].",
-      "
-\nFor example:
-
-```r
-# Instead of this
-stop(my_condition)
-
-# Do this
-stop(my_condition())
-```
-"
+      "\n\n",
+      collapse(
+        "For example:",
+        "",
+        "```r",
+        "# Instead of this",
+        "stop(my_condition)",
+        "",
+        "# Do this",
+        "stop(my_condition())",
+        "```",
+        sep = "\n"
+      )
     )
   )
 )

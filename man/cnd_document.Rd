@@ -5,19 +5,25 @@
 \alias{cnd_section}
 \title{Document your conditions}
 \usage{
-cnd_document(package = get_package(env), env = parent.frame())
+cnd_document(
+  package = get_package(),
+  registry = package,
+  path = file.path("R", paste0(package, "-cnd-conditions.R"))
+)
 
 cnd_section(fun)
 }
 \arguments{
 \item{package}{The package to document}
 
-\item{env}{The environment to attach the package name}
+\item{registry}{The name of the registry}
+
+\item{path}{The path to save the documentation}
 
 \item{fun}{The name of a function}
 }
 \value{
-Nothing, called for its side-effects
+A \code{character} vector`
 }
 \description{
 Documents your \code{\link[=conditions]{conditions()}} and \code{\link[=conditions]{conditions()}}

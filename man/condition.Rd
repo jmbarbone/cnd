@@ -99,8 +99,7 @@ override this.  See \code{call.} in \code{\link[=conditionCall]{conditionCall()}
 
 \section{Conditions}{
 
-Conditions are generated through the \code{{\link[cnd:cnd-package]{cnd}}}
-package.
+Conditions are generated through the \code{\link[=cnd-package]{\{cnd\}}} package.
 The following conditions are associated with this function:
 
 \describe{

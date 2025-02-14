@@ -1,0 +1,29 @@
+
+#' @name cep-conditions
+#' @aliases cep-conditions cep:bad_argument bad_argument cep:bad_argument/error
+#' @title Conditions for `cep`
+#'
+#' @details
+#'  The following conditions are defined in the `{cep}` package.
+#'
+#' @section [`{cnd}`][cnd::cnd-package]:
+#'  These conditions are made with the `{cnd}` package though the use of
+#'  [cnd::condition()].
+#'
+#' @section `{cep}` conditions:
+#' 
+#' 
+#'   \subsection{`cep:bad_argument/error`}{
+#'   \describe{
+#'     \item{package}{`{cep}`}
+#'     \item{class}{`cep:bad_argument`}
+#'     \item{type}{**error**}
+#'   }
+#'
+#'   }
+#'
+#'
+#' @seealso [cnd::cnd-package] [cnd::condition]
+#' @export
+#' @keywords internal
+'_PACKAGE'
