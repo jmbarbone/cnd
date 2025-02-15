@@ -1,3 +1,6 @@
+
+# exports -----------------------------------------------------------------
+
 #' Conditions
 #'
 #' @details Conditions
@@ -121,12 +124,25 @@ condition <- function(
   res <- local(envir = condition_env, {
     condition_function <- function() {}
     body(condition_function) <- substitute({
-      # nolint next: object_usage_linter.
+
+      # nolint next: object_usage_linter. (params is used)
       params <- as.list(match.call())[-1L]
       params <- params[names(params) != ".call"]
       params <- lapply(params, eval.parent, 2L)
 
-      # nolint next: object_usage_linter.
+      # nolint next: object_usage_linter. (.call is used)
+      if (is.logical(.call) && length(.call) == 1L) {
+        # this is what isTRUE()/isFALSE()
+        if (is.na(.call) || !.call) {
+          .call <- NULL
+        } else {
+          .call <- sys.call(sys.parent())
+        }
+      } else if (is.numeric(.call)) {
+        .call <- sys.call(sys.parent(.call + 1L))
+      }
+
+      # nolint next: object_usage_linter. (cond) is used
       cond <- list(
         message = clean_text(do.call(message, params)),
         call = .call
@@ -149,7 +165,10 @@ condition <- function(
 
   lockEnvironment(condition_env)
 
-  formals(res) <- c(formals(message), alist(... = , .call = sys.call(1L)))
+  formals(res) <- c(
+    formals(message),
+    alist(... = , .call = getOption("cnd.call", TRUE))
+  )
   base::class(res) <- c("cnd::condition_generator", "function")
   if (register) {
     register_condition(res, registry = registry)
@@ -159,63 +178,6 @@ condition <- function(
 
 class(condition) <- "cnd::condition_progenitor"
 
-find_cond <- function(x, ..., .multi = FALSE) {
-  found <- do_find_cond(x, ...)
-
-  if (is_cnd_function(found)) {
-    return(found)
-  }
-
-  switch(
-    length(found) + 1L,
-    # this is an internal error, no?
-    stop("no condition found"),
-    return(found[[1L]])
-  )
-
-  # this is an internal warning, no?
-  warning("only the first ... argument is used")
-
-  if (!.multi) {
-    found <- found[[1L]]
-  }
-
-  found
-}
-
-do_find_cond <- function(
-    x,
-    force = FALSE,
-    check = c("package", "class", "type")
-) {
-  check <- intersect(check, eval(formals(do_find_cond)$check))
-  stopifnot(!identical(check, character())) # internal error
-
-  if (is_cnd_function(x)) {
-    if (!force) {
-      return(x)
-    }
-
-    package <- cget(x, "package")
-    class <- cget(x, ".class")
-    type <- cget(x, "type")
-  } else {
-    package <- str_extract(x, "^.*(?=:.*)")
-    class <- gsub("^.*:|/.*$", "", x)
-    class <- if (nzchar(class)) class
-    type <- str_extract(x, "(?<=/).*$")
-  }
-
-  args <- list(package = package, class = class, type = type)
-  args <- args[match(check, names(args))]
-  do.call(conditions, args)
-}
-
-str_extract <- function(x, pattern, perl = TRUE, ...) {
-  m <- regexpr(pattern, x, perl = TRUE, ...)
-  res <- regmatches(x, m)
-  if (length(res)) res else NULL
-}
 
 #' @export
 #' @rdname condition
@@ -231,7 +193,6 @@ conditions <- function(
     registry = NULL,
     fun = NULL
 ) {
-
   dot_n <- ...length()
 
   if (dot_n) {
@@ -292,7 +253,9 @@ cnd <- function(condition) {
     message = message(condition),
     condition = {
       signalCondition(condition)
-      cat(condition$message, "\n")
+      if (!isTRUE(getOption("cnd.condition.silent", FALSE))) {
+        cat(condition$message, "\n")
+      }
     }
   )
 }
@@ -339,6 +302,7 @@ cnd <- function(condition) {
 
 #' @rdname condition
 #' @export
+# nolint next: object_length_linter.
 `conditions<-.cnd::condition_progenitor` <- function(x, ..., value) {
   stopifnot(!is.null(value)) # internal error
   x <- `conditions<-.function`(x, append = TRUE, value = value)
@@ -346,7 +310,61 @@ cnd <- function(condition) {
   x
 }
 
-# debug(`conditions<-.cnd::condition_progenitor`)
+
+# helpers -----------------------------------------------------------------
+
+find_cond <- function(x, ..., .multi = FALSE) {
+  found <- do_find_cond(x, ...)
+
+  if (is_cnd_function(found)) {
+    return(found)
+  }
+
+  switch(
+    length(found) + 1L,
+    # this is an internal error, no?
+    stop("no condition found"),
+    return(found[[1L]])
+  )
+
+  # this is an internal warning, no?
+  warning("only the first ... argument is used")
+
+  if (!.multi) {
+    found <- found[[1L]]
+  }
+
+  found
+}
+
+do_find_cond <- function(
+    x,
+    force = FALSE,
+    check = c("package", "class", "type")
+) {
+  check <- intersect(check, eval(formals(do_find_cond)$check))
+  stopifnot(!identical(check, character())) # internal error
+
+  if (is_cnd_function(x)) {
+    if (!force) {
+      return(x)
+    }
+
+    package <- cget(x, "package")
+    class <- cget(x, ".class")
+    type <- cget(x, "type")
+  } else {
+    package <- str_extract(x, "^.*(?=:.*)")
+    class <- gsub("^.*:|/.*$", "", x)
+    class <- if (nzchar(class)) class
+    type <- str_extract(x, "(?<=/).*$")
+  }
+
+  args <- list(package = package, class = class, type = type)
+  args <- args[match(check, names(args))]
+  do.call(conditions, args)
+}
+
 
 remove_conditions <- function(x) {
   attr(x, "conditions") <- NULL
@@ -381,6 +399,12 @@ validate_condition <- function(class, exports, help) {
   if (length(problems)) {
     cnd(cond_condition_invalid(problems, .call = sys.call(1L)))
   }
+}
+
+str_extract <- function(x, pattern, perl = TRUE, ...) {
+  m <- regexpr(pattern, x, perl = TRUE, ...)
+  res <- regmatches(x, m)
+  if (length(res)) res else NULL
 }
 
 
@@ -461,6 +485,7 @@ cget <- function(x, field) {
   bad
 }
 
+
 # conditions --------------------------------------------------------------
 
 cond_no_package_exports <- function() {}
@@ -475,7 +500,6 @@ delayedAssign(
     help = "The `exports` parameter requires a `package`"
   )
 )
-
 
 cond_condition_bad_message <- function() {}
 delayedAssign(
@@ -513,7 +537,6 @@ delayedAssign(
     )
   )
 )
-
 
 cond_as_character_condition <- function() {}
 delayedAssign(

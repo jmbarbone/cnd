@@ -175,3 +175,37 @@ test_that("as.character() error", {
     class = "cnd:as_character_cnd_error"
   )
 })
+
+test_that(".call", {
+  get_call <- function(expr) tryCatch(expr, error = function(e) e$call)
+  err <- condition("foo", register = FALSE)
+  foo <- function() stop(err())
+  expect_identical(get_call(foo()), quote(foo()))
+  expect_snapshot(foo(), error = TRUE)
+
+  bar <- function() foo()
+  expect_identical(get_call(bar()), quote(foo()))
+  expect_snapshot(bar(), error = TRUE)
+
+  foo <- function() cnd(err(.call = FALSE))
+  expect_null(get_call(foo()))
+  expect_snapshot(foo(), error = TRUE)
+
+  fizz <- function() bar()
+
+  foo <- function() stop(err(.call = 0))
+  expect_identical(get_call(fizz()), quote(foo()))
+  expect_snapshot(fizz(), error = TRUE)
+
+  foo <- function() stop(err(.call = 1))
+  expect_identical(get_call(fizz()), quote(bar()))
+  expect_snapshot(fizz(), error = TRUE)
+
+  foo <- function() stop(err(.call = 2))
+  expect_identical(get_call(fizz()), quote(fizz()))
+  expect_snapshot(fizz(), error = TRUE)
+
+  foo <- function() stop(err(.call = "anything I want"))
+  expect_identical(get_call(fizz()), "anything I want")
+  expect_snapshot(fizz(), error = TRUE)
+})

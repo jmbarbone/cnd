@@ -15,3 +15,13 @@ NULL
 cnd_evaluate <- function() {
   invisible(lapply(parent.env(global_registry), force))
 }
+
+# TODO document op.cnd
+op.cnd <- list( # nolint: object_name_linter.
+  cnd.condition.silent = FALSE,
+  cnd.call = TRUE
+)
+
+.onLoad <- function(libname, pkgname) {
+  options(op.cnd[!names(op.cnd) %in% names(options())]) # nocov
+}

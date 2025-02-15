@@ -107,7 +107,7 @@ The following conditions are associated with this function:
 
 \describe{
 
-\item{\code{\link[=cnd-conditions]{cnd:as_character_cnd_error/error}}}{
+\item{\code{\link[=cnd-cnd-conditions]{cnd:as_character_cnd_error/error}}}{
 You cannot coerce a \link{condition_generator} object to a character. This may have occured when trying to put a condition function through \code{\link[=stop]{stop()}} or \link{warning}.  Instead, call the function first, then pass the result to \code{\link[=stop]{stop()}} or \code{\link[=warning]{warning()}}.
 
 For example:
@@ -121,27 +121,27 @@ stop(my_condition())
 
 }
 
-\item{\code{\link[=cnd-conditions]{cnd:invalid_condition/error}}}{
+\item{\code{\link[=cnd-cnd-conditions]{cnd:invalid_condition/error}}}{
 The \code{class}, \code{exports}, and \code{help} parameters must be a single character string.  If you are passing a function, it must be a valid function.
 }
 
-\item{\code{\link[=cnd-conditions]{cnd:invalid_condition_message/error}}}{
+\item{\code{\link[=cnd-cnd-conditions]{cnd:invalid_condition_message/error}}}{
 Conditions messages are displayed when invoked through \code{\link[=conditionMessage]{conditionMessage()}}.  You can set a static message by passing through a \code{character} vector, or a dynamic message by passing through a \code{function}.  The function should return a \code{character} vector.
 
 When \code{message} is not set, a default "there was an error" message is used.
 }
 
-\item{\code{\link[=cnd-conditions]{cnd:match_arg/error}}}{
+\item{\code{\link[=cnd-cnd-conditions]{cnd:match_arg/error}}}{
 Mostly \code{\link[=match.arg]{match.arg()}} but with a custom condition
 }
 
-\item{\code{\link[=cnd-conditions]{cnd:no_package_exports/warning}}}{
+\item{\code{\link[=cnd-cnd-conditions]{cnd:no_package_exports/warning}}}{
 The \code{exports} parameter requires a \code{package}
 }
 
 }
 
-For more conditions, see: \link{cnd-conditions}
+For more conditions, see: \link{cnd-cnd-conditions}
 }
 
 \examples{

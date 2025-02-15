@@ -11,11 +11,12 @@
 #'
 #' @noRd
 register_condition <- function(cond, old = NULL, registry = NULL) {
+  force(cond)
   # See if there's already a condition created, just based on name and package.
   # The other values may change, which will be noted in the overwrite
   if (is.null(old)) {
     old <- do_find_cond(cond, force = TRUE, check = c("class", "package"))
-    if (!is.null(old)) {
+    if (length(old)) {
       old <- old[[1L]]
     }
   }

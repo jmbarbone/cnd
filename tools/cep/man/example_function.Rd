@@ -12,15 +12,17 @@ An example function
 \section{Conditions}{
 
 
+Conditions are generated through the \code{\link[cnd:cnd-package]{\{cnd\}}} package.
+The following conditions are associated with this function:
+
 \describe{
 
-\item{\code{cep:bad_argument}}{
+\item{\code{\link[=cep-conditions]{cep:bad_argument/error}}}{
 
 }
 
 }
-\seealso{
-\code{\link{cep-conditions}}
-}
+
+For more conditions, see: \link{cep-conditions}
 }
 
