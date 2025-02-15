@@ -170,7 +170,7 @@ override this.  See <code>call.</code> in <code><a href="https://rdrr.io/r/base/
 
 <p>Conditions are generated through the <code><a href="cnd-package.html">{cnd}</a></code> package.
 The following conditions are associated with this function:</p>
-<dl><dt><code><a href="cnd-conditions.html">cnd:as_character_cnd_error/error</a></code></dt>
+<dl><dt><code><a href="cnd-cnd-conditions.html">cnd:as_character_cnd_error/error</a></code></dt>
 <dd><p>You cannot coerce a condition_generator object to a character. This may have occured when trying to put a condition function through <code><a href="https://rdrr.io/r/base/stop.html" class="external-link">stop()</a></code> or <a href="https://rdrr.io/r/base/warning.html" class="external-link">warning</a>.  Instead, call the function first, then pass the result to <code><a href="https://rdrr.io/r/base/stop.html" class="external-link">stop()</a></code> or <code><a href="https://rdrr.io/r/base/warning.html" class="external-link">warning()</a></code>.</p>
 <p>For example:</p>
 <p></p><div class="sourceCode r"><pre><code><span><span class="co"># Instead of this</span></span>
@@ -180,25 +180,25 @@ The following conditions are associated with this function:</p>
 <span><span class="kw"><a href="https://rdrr.io/r/base/stop.html" class="external-link">stop</a></span><span class="op">(</span><span class="fu">my_condition</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre><p></p></div></dd>
 
 
-<dt><code><a href="cnd-conditions.html">cnd:invalid_condition/error</a></code></dt>
+<dt><code><a href="cnd-cnd-conditions.html">cnd:invalid_condition/error</a></code></dt>
 <dd><p>The <code>class</code>, <code>exports</code>, and <code>help</code> parameters must be a single character string.  If you are passing a function, it must be a valid function.</p></dd>
 
 
-<dt><code><a href="cnd-conditions.html">cnd:invalid_condition_message/error</a></code></dt>
+<dt><code><a href="cnd-cnd-conditions.html">cnd:invalid_condition_message/error</a></code></dt>
 <dd><p>Conditions messages are displayed when invoked through <code><a href="https://rdrr.io/r/base/conditions.html" class="external-link">conditionMessage()</a></code>.  You can set a static message by passing through a <code>character</code> vector, or a dynamic message by passing through a <code>function</code>.  The function should return a <code>character</code> vector.</p>
 <p>When <code>message</code> is not set, a default "there was an error" message is used.</p></dd>
 
 
-<dt><code><a href="cnd-conditions.html">cnd:match_arg/error</a></code></dt>
+<dt><code><a href="cnd-cnd-conditions.html">cnd:match_arg/error</a></code></dt>
 <dd><p>Mostly <code><a href="https://rdrr.io/r/base/match.arg.html" class="external-link">match.arg()</a></code> but with a custom condition</p></dd>
 
 
-<dt><code><a href="cnd-conditions.html">cnd:no_package_exports/warning</a></code></dt>
+<dt><code><a href="cnd-cnd-conditions.html">cnd:no_package_exports/warning</a></code></dt>
 <dd><p>The <code>exports</code> parameter requires a <code>package</code></p></dd>
 
 
 
-</dl><p>For more conditions, see: <a href="cnd-conditions.html">cnd-conditions</a></p>
+</dl><p>For more conditions, see: <a href="cnd-cnd-conditions.html">cnd-cnd-conditions</a></p>
     </div>
     <div id="see-also">
     <h2>See also</h2>
@@ -212,15 +212,11 @@ The following conditions are associated with this function:</p>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># use the condition</span></span></span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/try.html" class="external-link">try</a></span><span class="op">(</span><span class="kw"><a href="https://rdrr.io/r/base/stop.html" class="external-link">stop</a></span><span class="op">(</span><span class="fu">cond_bad_value</span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Error in pkgdown::build_site_github_pages(new_process = FALSE, install = FALSE) : </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   &lt;bad_value&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Error in pkgdown::build_site_github_pages(new_process = FALSE, install = FALSE) : </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   there was an error</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Error in eval(expr, envir) : &lt;bad_value&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Error in eval(expr, envir) : there was an error</span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/try.html" class="external-link">try</a></span><span class="op">(</span><span class="fu">cnd</span><span class="op">(</span><span class="fu">cond_bad_value</span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Error in pkgdown::build_site_github_pages(new_process = FALSE, install = FALSE) : </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   &lt;bad_value&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Error in pkgdown::build_site_github_pages(new_process = FALSE, install = FALSE) : </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   there was an error</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Error in eval(expr, envir) : &lt;bad_value&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Error in eval(expr, envir) : there was an error</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># dynamic messages:</span></span></span>
 <span class="r-in"><span><span class="va">cond_class_error</span> <span class="op">&lt;-</span> <span class="fu">condition</span><span class="op">(</span></span></span>
@@ -228,10 +224,8 @@ The following conditions are associated with this function:</p>
 <span class="r-in"><span>  message <span class="op">=</span> \<span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="st">"class cannot be"</span>, <span class="fu"><a href="https://rdrr.io/r/base/toString.html" class="external-link">toString</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/try.html" class="external-link">try</a></span><span class="op">(</span><span class="kw"><a href="https://rdrr.io/r/base/stop.html" class="external-link">stop</a></span><span class="op">(</span><span class="fu">cond_class_error</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Error in pkgdown::build_site_github_pages(new_process = FALSE, install = FALSE) : </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   &lt;class_error&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Error in pkgdown::build_site_github_pages(new_process = FALSE, install = FALSE) : </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   class cannot be list</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Error in eval(expr, envir) : &lt;class_error&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Error in eval(expr, envir) : class cannot be list</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
