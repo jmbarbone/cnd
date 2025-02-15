@@ -236,6 +236,8 @@ conditions <- function(
   unname(conds)
 }
 
+# TODO include cond <- function(x) find_cond(x)
+
 #' @export
 #' @rdname condition
 #' @param condition A condition object

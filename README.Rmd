@@ -1,5 +1,7 @@
 ---
 output: github_document
+editor_options: 
+  chunk_output_type: console
 ---
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
@@ -34,10 +36,18 @@ pak::pak("jmbarbone/cnd")
 
 ## Example
 
-`condition()` creates a `cnd::condition_generator` that can generate the condition when called.
+The workhorse of `{cnd}` is `condition()`, which is a special function of class `cnd::condition_progenitor`, which returns other special functions of class `cnd::condition_generator`.
+The `cnd::condition_generator` objects return `condition`s.
 
 ```{r}
 library(cnd)
+condition
+```
+
+Use `condition()` to create a generator, which controls messaging for `conditions`s.
+
+```{r}
+#| error: true
 bad_value <- condition("bad_value", message = "Value has to be better")
 
 bad_value
@@ -45,20 +55,33 @@ bad_value()
 
 foo <- function(x) {
   if (x < 0) {
-    stop(bad_value())
+    cnd(bad_value())
   }
   x
 }
 
-try(foo(-1))
+
+foo(-1)
 ```
 
-`cnd::condition_generator`s can also take parameters that are used in creating a custom message.
+By default, the `call` will try to still grab the from the sys.parent of `bad_value()`.
+As `bad_value()` is called inside `foo()`, we still see `foo()` in the error.
 
 ```{r}
+#| error: true
+bar <- function() foo(-1L)
+bar()
+```
+
+The resulting `cnd::condition_generator` object can also take parameters that are used in creating a custom message.
+
+```{r}
+#| error: true
 bad_value2 <- condition(
   "bad_value2",
-  message = function(x) sprintf("Value '%s' is no good", format(x))
+  message = function(x) {
+    sprintf("`x` must be `>=0`. A value of `%s` is no good", format(x))
+  }
 )
 
 bad_value2
@@ -71,55 +94,56 @@ foo <- function(x) {
   x
 }
 
-try(foo(-1L))
+foo(-1.2)
 ```
 
 ## Registration
 
-Conditions can be assigned into objects within your package by adding one line to your package.
-This is probably best in a file like `R/zzz.R` that can be run at the end of your package load, before the namespace is locked.
-
-```r
-cnd::register_conditions(pkgname)
-```
-
-Once that is done, your functions will have a `cnd::conditioned_function` class added to them and print the conditions you have linked.
-
-```{r}
-#| include: false
-# ignoring registration for now
-condition <- cnd::condition
-formals(condition)["register"] <- FALSE
-```
+`condition()` has a few options for _registering_ a condition to an exported `function`.
+When using `condition()` within your package development, you should only need to use the `exports` parameter, which requires a `character` vector of exported function.
+`register` toggles whether a `cnd::condition_generator` is assigned to an object.
+`registry` is for advanced use cases where you want to save the `cnd::condition_generator` in a registration environment that is not associated with your package.
 
 
 ```{r}
-condition(
-  "an_example",
-  package = "pkg",
-  help = "more info",
-  exports = "fun"
-)
+condition
 ```
 
-```r
-pkg::fun
-#> function () 
-#> {
-#>     # nonsense example
-#> }
-#> <environment: 0x000000000000>
-#> <condition(s): pkg:error/an_example>
+When conditions are registered to a function, they can be retrieved from that function.
+`condition()` itself has several `cnd::condition_generator` objects.
+
+```{r}
+conditions(condition)
 ```
+
+<!-- These can be retrieved through their names: -->
+
+<!-- ```{r} -->
+<!-- cond("cnd:invalid_condition_message") -->
+<!-- ``` -->
+
+To get the most out of your development package, add a call to `cnd::cnd_exports()` in your last sourced filed.
+Usually saved in `R/zzz.R` should be good enough.
+
 
 ## Documentation
 
-`cnd_document()` will create a `.Rd` file for all conditions you have assigned to your package.
+`cnd_document()` will create a new `.R` file for all conditions you have assigned to your package.
 Simply run the command when developing to generate a file listing all conditions.
 
 ```r
 cnd::cnd_document()
 ```
+
+This can also be called after your `cnd::cnd_exports()`.
+
+There's a specialist `cnd_section()` function which can be used within a `roxygen` block inside your own documentation.
+This returns `rogxygen2` friendly text that can also copy information about your conditions to documentation for your functions.
+
+```{r}
+cat(cnd_section("cnd"))
+```
+
 
 ## Retrieval
 
