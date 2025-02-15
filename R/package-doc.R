@@ -173,6 +173,7 @@ delayedAssign(
     type = "condition",
     package = "cnd",
     exports = "cnd_document",
+    # nolint next: brace_linter.
     message = function(paths) c(
       "Removing the following cnd generated files:",
       paste0("  ", paths)
@@ -188,6 +189,7 @@ delayedAssign(
     type = "condition",
     package = "cnd",
     exports = "cnd_document",
+    # nolint next: brace_linter.
     message = function(path) c(
       "Writing to the following path: ",
       paste0("  ", path),

@@ -2,6 +2,6 @@ linters: linters_with_defaults(
   indentation_linter = NULL
   )
 exclusions: list(
-  "R/cnd_cnd_conditions.R"
+  "R/cnd-cnd-conditions.R"
   )
 encoding: "UTF-8"

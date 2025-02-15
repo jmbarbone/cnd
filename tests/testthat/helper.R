@@ -68,4 +68,3 @@ silent_condition <- function(expr) {
 expect_cnd_condition <- function(expr, class) {
   tryCatch(expr, condition = function(e) expect_s3_class(e, class))
 }
-
