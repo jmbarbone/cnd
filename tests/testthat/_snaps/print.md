@@ -3,7 +3,7 @@
     Code
       condition
     Output
-      Condition progenitor
+      cnd::condition_progenitor
       generator:
         $ class   : <symbol> 
         $ message : NULL
@@ -23,7 +23,7 @@
     Code
       cond_cnd_class
     Output
-      Condition generator
+      cnd::condition_generator
       <cnd:cond_cnd_class/error>
       
       [cnd()] simple calls the appropriate function: [stop()], [warning()], or [message()] based on the `type` parameter from [cnd::condition()].
@@ -44,7 +44,7 @@
     Code
       cond_condition_overwrite
     Output
-      Condition generator
+      cnd::condition_generator
       <cnd:condition_overwrite/warning>
       generator:
         $ old: <symbol> 
@@ -72,7 +72,7 @@
     Code
       cond_condition_bad_message
     Output
-      Condition generator
+      cnd::condition_generator
       <cnd:invalid_condition_message/error>
       
       Conditions messages are displayed when invoked through [conditionMessage()].  You can set a static message by passing through a `character` vector, or a dynamic message by passing through a `function`.  The function should return a `character` vector.

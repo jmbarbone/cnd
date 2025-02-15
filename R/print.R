@@ -4,7 +4,7 @@
 
 #' @export
 `print.cnd::condition_generator` <- function(x, ...) {
-  cat("Condition generator\n")
+  cat("cnd::condition_generator\n")
   cat("<", format(x), ">\n", sep = "")
 
   print_generator(x$message)
@@ -26,7 +26,7 @@
 
 #' @export
 `print.cnd::condition_progenitor` <- function(x, ...) {
-  cat("Condition progenitor\n")
+  cat("cnd::condition_progenitor\n")
   print_generator(x)
   cat("\n")
   print_conditions(x)
