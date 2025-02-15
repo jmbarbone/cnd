@@ -1,7 +1,7 @@
 #' An example function
 #'
 #' @section Conditions:
-#' `r cnd::cnd_section(example_function)`
+#' `r cnd::cnd_section("example_function")`
 #' @export
 example_function <- function(x) {
   if (!isTRUE(x)) {
@@ -9,6 +9,8 @@ example_function <- function(x) {
   }
 }
 
+#' @export
+#' @rdname example_function
 bad_argument <- cnd::condition(
   "bad_argument",
   "x must be TRUE",

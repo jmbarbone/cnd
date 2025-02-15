@@ -2,9 +2,12 @@
 % Please edit documentation in R/functions.R
 \name{example_function}
 \alias{example_function}
+\alias{bad_argument}
 \title{An example function}
 \usage{
 example_function(x)
+
+bad_argument(..., .call = getOption("cnd.call", TRUE))
 }
 \description{
 An example function
@@ -17,12 +20,8 @@ The following conditions are associated with this function:
 
 \describe{
 
-\item{\code{\link[=cep-conditions]{cep:bad_argument/error}}}{
-
 }
 
-}
-
-For more conditions, see: \link{cep-conditions}
+For more conditions, see:
 }
 
