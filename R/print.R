@@ -8,7 +8,7 @@
   cat(blue(bold("cnd::condition_generator\n")))
   cat("<", format(x), ">\n", sep = "")
   print_generator(x$message)
-  cat("\n")
+
   if (length(x$help)) {
     cat(bold("help\n"))
     cat(grey(clean_text(x$help)))

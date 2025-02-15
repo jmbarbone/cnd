@@ -260,7 +260,7 @@ cnd <- function(condition) {
     condition = {
       signalCondition(condition)
       if (!isTRUE(getOption("cnd.condition.silent", FALSE))) {
-        cat(condition$message, "\n")
+        cat(condition$message, sep = "\n")
       }
     }
   )

@@ -22,6 +22,16 @@ cnd_document <- function(
   op <- options(cnd.cli.on = FALSE)
   on.exit(options(op))
   force(package)
+  force(registry)
+
+  if (is.null(package)) {
+    stop("package must be set")
+  }
+
+  if (is.null(registry)) {
+    stop("registry must be set")
+  }
+
   force(path)
   conds <- conditions(package = package, registry = registry)
 
