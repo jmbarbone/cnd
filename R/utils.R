@@ -19,11 +19,7 @@ get_package <- function(env = parent.frame(2L)) {
 }
 
 is_cnd <- function(env) {
-  identical(as.environment(env), parent.env(global_registry))
-}
-
-to_string <- function(x) {
-  collapse(x, sep = ", ")
+  identical(as.environment(env), .cnd_env)
 }
 
 collapse <- function(..., sep = "") {

@@ -1,20 +1,26 @@
-# print(registry)
+# print(registrar)
 
     Code
-      global_registry
+      registrar
     Output
-      global registry
-        create_registry
-        get_registry
-        new_registry
-        registries
-        remove_registry
+      REGISTRAR
+        add
+        create
+        get
+        list
+        ls
+        new
+        register
+        remove
+        rm
+        unregister
 
----
+# print(registry) with new registries
 
     Code
       reg
     Output
-      registry 'test-register-snaps'
+      REGISTRY
+        'test-register-snaps'
         
 

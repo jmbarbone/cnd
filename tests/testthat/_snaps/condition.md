@@ -3,7 +3,7 @@
     Code
       foo()
     Output
-      <help:foo/condition>
+      <help:foo/condition::>
       there was a condition
 
 # .call

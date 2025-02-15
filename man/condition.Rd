@@ -5,6 +5,7 @@
 \alias{condition_progenitor}
 \alias{condition_generator}
 \alias{conditions}
+\alias{cond}
 \alias{cnd}
 \alias{conditions<-}
 \alias{conditions<-.function}
@@ -30,6 +31,8 @@ conditions(
   registry = NULL,
   fun = NULL
 )
+
+cond(x)
 
 cnd(condition)
 
@@ -62,9 +65,9 @@ called}
 \item{fun}{if a function is passed, then retrieves the \code{"conditions"}
 attribute}
 
-\item{condition}{A condition object}
-
 \item{x}{An object}
+
+\item{condition}{A condition object}
 
 \item{value}{A \code{condition}}
 

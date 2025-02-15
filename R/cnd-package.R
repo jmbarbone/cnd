@@ -13,11 +13,19 @@ NULL
 #'
 #' @noRd
 cnd_evaluate <- function() {
-  invisible(lapply(parent.env(global_registry), force))
+  # this registry has to be force so that we get the .__CND_REGISTRY__.
+  # environment created.  Otherwise, we hit a fun error when we try to grab all
+  # the names from our environment:
+  #
+  #> Caused by error in `as.list.environment()`:
+  #> ! attempt to set index 96/96 in SET_VECTOR_ELT
+  force(.__CND_PACKAGE_REGISTRY__.)
+  invisible(lapply(as_list_env(.cnd_env, all = TRUE), force))
 }
 
 # TODO document op.cnd
-op.cnd <- list( # nolint: object_name_linter.
+# nolint next: object_name_linter.
+op.cnd <- list(
   cnd.condition.silent = FALSE,
   cnd.call = TRUE
 )
@@ -25,3 +33,16 @@ op.cnd <- list( # nolint: object_name_linter.
 .onLoad <- function(libname, pkgname) {
   options(op.cnd[!names(op.cnd) %in% names(options())]) # nocov
 }
+
+# assigning to a difference name so we can force the evaluation when we try to
+# find any conditions
+.__CND_PACKAGE_REGISTRY__. <- NULL
+delayedAssign(
+  ".__CND_PACKAGE_REGISTRY__.",
+  registrar$create(
+    registry = "cnd",
+    overwrite = TRUE,
+    name = ".__CND_REGISTRY__.",
+    env = .cnd_env
+  )
+)

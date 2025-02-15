@@ -64,11 +64,11 @@ test_documentation <- function(package) {
   expect_failure(expect_identical(parsed, list()))
 }
 
-local_reg <- function(name) {
-  remove_registry(name)
-  create_registry(name)
-  do.call(on.exit, list(remove_registry(name)), envir = parent.frame())
-  get_registry(name)
+local_registry <- function(name = basename(tempfile(""))) {
+  registrar$add(name)
+  do <- as.call(list(function() registrar$remove(name)))
+  do.call(on.exit, list(do), envir = parent.frame())
+  registrar$get(name)
 }
 
 silent_condition <- function(expr) {

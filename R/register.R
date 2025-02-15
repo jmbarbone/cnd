@@ -1,154 +1,222 @@
 
 # register ----------------------------------------------------------------
 
-#' Register a condition
+#' Create a registration
 #'
-#' Only register functions that are associated with a package
+#' Crate a new `cnd:registry` to the current environment
 #'
-#' @param cond A condition object
-#' @param old The old condition
-#' @param registry A registry name
+#' @description This function will create a new object with the name as `name`
+#' in the environment where it is called.  This is intended to be your package
+#' environment, but could potentially be anywhere you want.  If an object which
+#' is not a `cnd:registry` object is found with the same name, an error will be
+#' thrown.
 #'
-#' @noRd
-register_condition <- function(cond, old = NULL, registry = NULL) {
-  force(cond)
-  # See if there's already a condition created, just based on name and package.
-  # The other values may change, which will be noted in the overwrite
-  if (is.null(old)) {
-    old <- do_find_cond(cond, force = TRUE, check = c("class", "package"))
-    if (length(old)) {
-      old <- old[[1L]]
-    }
-  }
-
-  # could play around with identical()
-  if (isTRUE(all.equal(cond, old))) {
-    return(invisible())
-  }
-
-  if (!is.null(old)) {
-    cnd(cond_condition_overwrite(old, cond))
-  }
-
-  if (is.null(registry)) {
-    pkg <- cget(cond, "package")
-    if (is.null(pkg)) {
-      return()
-    }
-    registry <- get_registry(pkg)
-  } else {
-    registry <- get_registry(registry)
-  }
-
-  assign(cget(cond, "class"), cond, registry)
-  invisible()
+#' @param registry The name of the registry
+#' @param overwrite When `TRUE` will overwrite
+#' @param name The name of the registry variable.  Default is intended to
+#'   prevent potential conflicts with other objects.
+#' @param env The environment to assign the registry to
+#' @examples
+#' # In most cases, just having the function in your R/ scripts is good enough:
+#' # cnd_create_registry()
+#'
+#' # But for the sake of advanced use:
+#' e <- new.env()
+#' cnd_create_registry("EXAMPLE", env = e)
+#' cnd_create_registry("EXAMPLE", overwrite = TRUE)
+#'
+#' @returns a `cnd:registry` object, invisibly
+#' @export
+cnd_create_registry <- function(
+    registry = get_package(),
+    overwrite = FALSE,
+    name = ".__CND_REGISTRY__.",
+    env = parent.frame()
+) {
+  registrar$create(
+    registry = registry,
+    overwrite = overwrite,
+    name = name,
+    env = env
+  )
 }
 
+# registrar ---------------------------------------------------------------
 
-# global registry ---------------------------------------------------------
+registrar <- new.env()
+class(registrar) <- "cnd:registrar"
+.cnd_env <- environment()
 
-global_registry <- new.env()
-class(global_registry) <- c("cnd:registry", "environment")
-attr(global_registry, "global") <- TRUE
+local(envir = registrar, {
+  .self <- registrar
 
-local(envir = global_registry, {
-  .self <- global_registry
 
-  new_registry <- function() {
-    e <- new.env(parent = .self)
-    class(e) <- c("cnd:registry", "environment")
-    e
-  }
-
-  create_registry <- function(x) {
-    e <- assign(x, .self$new_registry(), .self$registries)
+  new <- function(x = NULL) {
+    e <- new.env(parent = .cnd_env)
     assign(".__NAME__.", x, e)
+    class(e) <- "cnd:registry"
     e
   }
 
-  remove_registry <- function(x) {
-    if (inherits(x, "cnd:registry")) {
-      x <- get(".__NAME__.", x, inherits = TRUE)
+  add <- function(registry) {
+    if (is.character(registry) && length(registry) == 1) {
+      registry <- .self$new(registry)
     }
 
-    if (exists(x, .self$registries, inherits = FALSE)) {
-      rm(list = x, envir = .self$registries)
+    if (!inherits(registry, "cnd:registry")) {
+      # internal error
+      stop("registry must be a 'cnd:registry' object") # nocov
+    }
+
+    assign(
+      base::get(".__NAME__.", registry, inherits = FALSE),
+      registry,
+      .__REGISTRIES__.
+    )
+  }
+
+  create <- function(registry, overwrite, name, env) {
+
+    found <- get0(name, env, inherits = FALSE)
+    if (!is.null(found)) {
+      if (!inherits(found, "cnd:registry")) {
+        stop(
+          "You have a variable named '", name, "' in your environment,",
+          " which is not a 'cnd:registry' object.  Please remove this from your",
+          " package environment to create a registry for the cnd pacakge",
+          call. = FALSE
+        )
+      }
+
+      if (!overwrite) {
+        return(invisible(found))
+      }
+    }
+
+    # create the registration and assign it to both environments
+    reg <- .self$add(registry)
+    .self$add(reg)
+    assign(name, reg, env)
+  }
+
+  remove <- function(x) {
+    if (inherits(x, "cnd:registry")) {
+      x <- base::get(".__NAME__.", x, inherits = TRUE)
+    }
+
+    if (exists(x, .__REGISTRIES__., inherits = FALSE)) {
+      base::remove(list = x, envir = .__REGISTRIES__., inherits = TRUE)
     }
   }
 
-  get_registry <- function(x) {
+  get <- function(x) {
     if (inherits(x, "cnd:registry")) {
       return(x)
     }
 
-    if (!exists(x, .self$registries, inherits = FALSE)) {
-      return(.self$create_registry(x))
-    }
-
-    get(x, .self$registries, inherits = FALSE)
+    force(.__CND_PACKAGE_REGISTRY__.)
+    base::get(x, .__REGISTRIES__., mode = "environment")
   }
 
+  register <- function(condition, old = NULL, registry = NULL) {
+    force(condition)
+
+    # See if there's already a condition created, just based on name and package.
+    # The other values may change, which will be noted in the overwrite
+    if (is.null(old)) {
+      old <- do_find_cond(
+        x = condition,
+        force = TRUE,
+        check = c("class", "package")
+      )
+      if (length(old)) {
+        old <- old[[1L]]
+      }
+    }
+
+    # could play around with identical()
+    if (isTRUE(all.equal(condition, old))) {
+      return(invisible())
+    }
+
+    if (!is.null(old)) {
+      cnd(cond_condition_overwrite(old, condition))
+    }
+
+    if (is.null(registry)) {
+      pkg <- cget(condition, "package")
+      if (is.null(pkg)) {
+        return()
+      }
+      registry <- .self$get(pkg)
+    } else {
+      registry <- .self$get(registry)
+    }
+
+    assign(cget(condition, "class"), condition, registry)
+  }
+
+  unregister <- function(condition, registry = cget(condition, "package")) {
+    condition <- cond(condition)
+    force(registry)
+    base::rm(list = condition$class, envir = .self$get(registry))
+  }
+
+  list = function() {
+    .__REGISTRIES__.
+  }
+
+  ls <- .self$list
+  rm <- .self$remove
   # a new environment for each registry
-  registries <- new_registry()
-  class(registries) <- c("cnd:registry", "environment")
-  attr(registries, "list") <- TRUE
+  .__REGISTRIES__. <- registrar$new()
+
+  # using the same class because why not
+  class(.__REGISTRIES__.) <- "cnd:registries"
+  attr(.__REGISTRIES__., "list") <- TRUE
 })
-
-
-# helpers -----------------------------------------------------------------
-
-create_registry <- function(name) {
-  global_registry$create_registry(name)
-}
-
-get_registry <- function(registry) {
-  global_registry$get_registry(registry)
-}
-
-remove_registry <- function(registry) {
-  global_registry$remove_registry(registry)
-}
-
-unregister_condition <- function(cond, registry = cond$package) {
-  cond <- find_cond(cond)
-  force(registry)
-  rm(list = cond$class, envir = get_registry(registry))
-  invisible()
-}
 
 
 # methods -----------------------------------------------------------------
 
-#' @export
-`print.cnd:registry` <- function(x, ...) {
-  nm <- get0(".__NAME__.", x, inherits = TRUE)
+print_cnd_registrar <- function(x, ...) {
+  name <- get0(".__NAME__.", x, inherits = FALSE)
   cat(
-    if (isTRUE(attr(x, "global"))) "global ",
-    "registry",
-    if (isTRUE(attr(x, "list"))) " list",
-    if (!is.null(nm)) paste0(" '", nm, "'"),
-    paste0("\n  ", ls(x, sorted = TRUE)),
+    switch(
+      class(x),
+      "cnd:registrar" = "REGISTRAR",
+      "cnd:registry" = "REGISTRY",
+      "cnd:registries" = "REGISTRIES"
+    ),
+    "\n",
+    if (!is.null(name)) paste0("  '", name, "'\n"),
+    paste0("  ", ls(x, sorted = TRUE), "\n"),
     sep = ""
   )
   invisible(x)
 }
 
-as_list_env <- function(x, ...) {
-  res <- as.list.environment(as.environment(x))
-  if (length(res)) {
-    res <- res[order(names(res), method = "radix")]
-  }
-  res
-}
+#' @export
+`print.cnd:registrar` <- print_cnd_registrar
 
 #' @export
-`as.list.cnd:registry` <- as_list_env
+`print.cnd:registry` <- print_cnd_registrar
 
+#' @export
+`print.cnd:registries` <- print_cnd_registrar
 
+as_list_env <- function(x, all = FALSE) {
+  force(x)
+  as.list.environment(
+    as.environment(x),
+    sorted = TRUE,
+    all.names = all
+  )
+}
 
 # conditions --------------------------------------------------------------
 
-cond_condition_overwrite <- NULL
+cond_condition_overwrite <- function() {}
 delayedAssign(
   "cond_condition_overwrite",
   condition(

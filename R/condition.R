@@ -111,7 +111,7 @@ condition <- function(
 
   # setting up an environment to track additional fields for
 
-  condition_env <- global_registry$new_registry()
+  condition_env <- new.env()
   environment(message) <- condition_env
   assign("message", message, condition_env)
   assign("exports", exports, condition_env)
@@ -171,7 +171,7 @@ condition <- function(
   )
   base::class(res) <- c("cnd::condition_generator", "function")
   if (register) {
-    register_condition(res, registry = registry)
+    registrar$register(res, registry = registry)
   }
   res
 }
@@ -215,10 +215,10 @@ conditions <- function(
   if (is.null(registry)) {
     conds <- Reduce(
       "c",
-      lapply(as_list_env(global_registry$registries), as_list_env)
+      lapply(as_list_env(registrar$.__REGISTRIES__.), as_list_env)
     )
   } else {
-    registry <- get_registry(registry)
+    registry <- registrar$get(registry)
     conds <- as_list_env(registry)
   }
 
@@ -236,7 +236,11 @@ conditions <- function(
   unname(conds)
 }
 
-# TODO include cond <- function(x) find_cond(x)
+#' @export
+#' @rdname condition
+cond <- function(x) {
+  find_cond(x)
+}
 
 #' @export
 #' @rdname condition
