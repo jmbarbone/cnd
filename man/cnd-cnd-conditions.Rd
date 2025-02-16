@@ -10,6 +10,7 @@
 \alias{cnd:cnd_generated_cleanup}
 \alias{cnd:cnd_generated_write}
 \alias{cnd:cond_cnd_class}
+\alias{cnd:condition_message_generator}
 \alias{cnd:condition_overwrite}
 \alias{cnd:conditions_dots}
 \alias{cnd:invalid_condition}
@@ -23,6 +24,7 @@
 \alias{cnd_generated_cleanup}
 \alias{cnd_generated_write}
 \alias{cond_cnd_class}
+\alias{condition_message_generator}
 \alias{condition_overwrite}
 \alias{conditions_dots}
 \alias{invalid_condition}
@@ -36,6 +38,7 @@
 \alias{cnd:cnd_generated_cleanup/message}
 \alias{cnd:cnd_generated_write/condition}
 \alias{cnd:cond_cnd_class/error}
+\alias{cnd:condition_message_generator/error}
 \alias{cnd:condition_overwrite/warning}
 \alias{cnd:conditions_dots/warning}
 \alias{cnd:invalid_condition/error}
@@ -129,6 +132,15 @@ stop(my_condition())
 \item{type}{\strong{error}}
 }
 \code{\link[=cnd]{cnd()}} simple calls the appropriate function: \code{\link[=stop]{stop()}}, \code{\link[=warning]{warning()}}, or \code{\link[=message]{message()}} based on the \code{type} parameter from \code{\link[=condition]{condition()}}.
+}
+
+\subsection{\code{cnd:condition_message_generator/error}}{
+\describe{
+\item{package}{\code{{cnd}}}
+\item{class}{\code{cnd:condition_message_generator}}
+\item{type}{\strong{error}}
+}
+'cnd::condition_generator' objects are not conditions.   You may have made this mistake: \verb{rx <- condition('my_condition')conditionMessage(x)}Condition generators need to be called first before they can be used as conditions.  Try this instead:\verb{rx <- condition('my_condition')conditionMessage(x())}
 }
 
 \subsection{\code{cnd:condition_overwrite/warning}}{

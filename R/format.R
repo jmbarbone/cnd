@@ -7,14 +7,12 @@
 #'
 #' @param x A [condition] object
 #' @param ... Not used
-#' @param cli If `TRUE` will use formatting from [`{cli}`][cli-package]
+#' @param cli If `TRUE` will use formatting from [cli][cli::cli-package].
+#'   Default uses an option, `"cnd.cli.override"`, if available, otherwise
+#'   checks that `cli` is installed and ansi colors are available.
 #' @export
 #' @name format-conditions
-`format.cnd::condition` <- function(
-    x,
-    ...,
-    cli = getOption("cnd.cli.on", TRUE)
-) {
+`format.cnd::condition` <- function(x, ..., cli = cli_on()) {
   a <- attributes(x)
   fmt_cond(a$package, a$condition, a$type, class(x), x$message, cli_on = cli)
 }

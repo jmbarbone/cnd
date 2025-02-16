@@ -6,7 +6,7 @@
 \alias{format.cnd::condition_generator}
 \title{Format conditions}
 \usage{
-\method{format}{`cnd::condition`}(x, ..., cli = getOption("cnd.cli.on", TRUE))
+\method{format}{`cnd::condition`}(x, ..., cli = cli_on())
 
 \method{format}{`cnd::condition_generator`}(x, ..., cli = getOption("cnd.cli.on", TRUE))
 }
@@ -15,7 +15,9 @@
 
 \item{...}{Not used}
 
-\item{cli}{If \code{TRUE} will use formatting from \code{\link[=cli-package]{\{cli\}}}}
+\item{cli}{If \code{TRUE} will use formatting from \link[cli:cli-package]{cli}.
+Default uses an option, \code{"cnd.cli.override"}, if available, otherwise
+checks that \code{cli} is installed and ansi colors are available.}
 }
 \description{
 Formats \link{condition} objects

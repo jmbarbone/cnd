@@ -164,6 +164,10 @@ stop(my_condition())
 \code{\link[=cnd]{cnd()}} simple calls the appropriate function: \code{\link[=stop]{stop()}}, \code{\link[=warning]{warning()}}, or \code{\link[=message]{message()}} based on the \code{type} parameter from \code{\link[=condition]{condition()}}.
 }
 
+\item{\code{\link[=cnd-cnd-conditions]{cnd:condition_message_generator/error}}}{
+'cnd::condition_generator' objects are not conditions.   You may have made this mistake: \verb{rx <- condition('my_condition')conditionMessage(x)}Condition generators need to be called first before they can be used as conditions.  Try this instead:\verb{rx <- condition('my_condition')conditionMessage(x())}
+}
+
 \item{\code{\link[=cnd-cnd-conditions]{cnd:condition_overwrite/warning}}}{
 
 }
@@ -206,7 +210,7 @@ try(cnd(cond_bad_value()))
 # dynamic messages:
 cond_class_error <- condition(
   "class_error",
-  message = \(x) paste("class cannot be", toString(class(x)))
+  message = function(x) paste("class cannot be", toString(class(x)))
 )
 try(stop(cond_class_error(list())))
 
