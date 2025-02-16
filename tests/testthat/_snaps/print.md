@@ -34,7 +34,6 @@
     Output
       cnd::condition_generator
       <cnd:cond_cnd_class/error>
-      
       help
       [cnd()] simple calls the appropriate function: [stop()], [warning()], or [message()] based on the `type` parameter from [cnd::condition()].
       exports
@@ -59,7 +58,6 @@
       generator
         $ old : <symbol> 
         $ new : <symbol> 
-      
 
 ---
 
@@ -88,7 +86,6 @@
     Output
       cnd::condition_generator
       <cnd:invalid_condition_message/error>
-      
       help
       Conditions messages are displayed when invoked through [conditionMessage()].  You can set a static message by passing through a `character` vector, or a dynamic message by passing through a `function`.  The function should return a `character` vector.  When `message` is not set, a default "there was an error" message is used.
       exports
