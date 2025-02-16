@@ -37,6 +37,7 @@ op.cnd <- list(
 
 # assigning to a difference name so we can force the evaluation when we try to
 # find any conditions
+# nolint next: object_name_linter.
 .__CND_PACKAGE_REGISTRY__. <- NULL
 delayedAssign(
   ".__CND_PACKAGE_REGISTRY__.",

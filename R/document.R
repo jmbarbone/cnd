@@ -243,7 +243,6 @@ delayedAssign(
     "cnd_generated_write",
     type = "condition",
     package = "cnd",
-    # help = "help",
     exports = "cnd_document",
     # nolint next: brace_linter.
     message = function(path)
@@ -263,7 +262,7 @@ delayedAssign(
     exports = "cnd_document",
     package = "cnd",
     # nolint next: brace_linter.
-    message = \(pkg, reg) fmt(
+    message = function(pkg, reg) fmt(
       "package and registry must be set\n",
       "  package: {pkg}\n",
       "  registry: {reg}",
@@ -293,7 +292,8 @@ delayedAssign(
     type = "error",
     package = "cnd",
     exports = "cnd_document",
-    message = \(file) fmt(
+    # nolint next: brace_linter.
+    message = function(file) fmt(
       "`file` must be a `character`, `connection` object`, or `NULL`,",
       " not {class} ({type})",
       class = collapse(class(file), sep = "/"),

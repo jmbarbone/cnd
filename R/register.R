@@ -82,8 +82,8 @@ local(envir = registrar, {
       if (!inherits(found, "cnd:registry")) {
         stop(
           "You have a variable named '", name, "' in your environment,",
-          " which is not a 'cnd:registry' object.  Please remove this from your",
-          " package environment to create a registry for the cnd pacakge",
+          " which is not a 'cnd:registry' object.  Please remove this from",
+          " your package environment to create a registry for the cnd pacakge",
           call. = FALSE
         )
       }
@@ -121,8 +121,8 @@ local(envir = registrar, {
   register <- function(condition, old = NULL, registry = NULL) {
     force(condition)
 
-    # See if there's already a condition created, just based on name and package.
-    # The other values may change, which will be noted in the overwrite
+    # See if there's already a condition created, just based on name and
+    # package. The other values may change, which will be noted in the overwrite
     if (is.null(old)) {
       old <- do_find_cond(
         x = condition,
@@ -162,18 +162,18 @@ local(envir = registrar, {
     base::rm(list = condition$class, envir = .self$get(registry))
   }
 
-  list = function() {
+  list <- function() {
     .__REGISTRIES__.
   }
 
   ls <- .self$list
   rm <- .self$remove
   # a new environment for each registry
-  .__REGISTRIES__. <- registrar$new()
+  .__REGISTRIES__. <- registrar$new() # nolint: object_name_linter.
 
   # using the same class because why not
-  class(.__REGISTRIES__.) <- "cnd:registries"
-  attr(.__REGISTRIES__., "list") <- TRUE
+  class(.__REGISTRIES__.) <- "cnd:registries" # nolint: object_name_linter.
+  attr(.__REGISTRIES__., "list") <- TRUE # nolint: object_name_linter.
 })
 
 
@@ -225,7 +225,7 @@ delayedAssign(
     package = "cnd",
     exports = "condition",
     # nolint next: brace_linter.
-    message = \(old, new) fmt(
+    message = function(old, new) fmt(
       "A condition with the class name '{cls}' already exists in '{pkg}' and",
       " will be overwritten{diff}",
       cls = old$class,

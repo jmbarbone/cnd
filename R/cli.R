@@ -19,7 +19,7 @@ cli_switch <- function(on, off = NULL) {
   switch(2L - cli_on(), on, off)
 }
 
-# nolint: object_length_linter.
+# nolint next: object_length_linter.
 local_cli_ignore_unknown_rstudio_theme <- function() {
   op <- options(
     cli.ignore_unknown_rstudio_theme =
@@ -29,6 +29,7 @@ local_cli_ignore_unknown_rstudio_theme <- function() {
   do.call(on.exit, list(do()), envir = parent.frame())
 }
 
+# nolint next: object_name_linter.
 cli_fun <- function(cli, ..., ..otherwise = base::paste0) {
   cli_switch(
     get(cli, asNamespace("cli"), mode = "function"),

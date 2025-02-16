@@ -53,7 +53,7 @@
 #' # dynamic messages:
 #' cond_class_error <- condition(
 #'   "class_error",
-#'   message = \(x) paste("class cannot be", toString(class(x)))
+#'   message = function(x) paste("class cannot be", toString(class(x)))
 #' )
 #' try(stop(cond_class_error(list())))
 #'
@@ -232,7 +232,10 @@ conditions <- function(
   terms <- filter2(terms, Negate(is.null))
 
   for (i in seq_along(terms)) {
-    conds <- filter2(conds, \(cond) cget(cond, names(terms)[i]) == terms[[i]])
+    conds <- filter2(
+      conds,
+      function(cond) cget(cond, names(terms)[i]) == terms[[i]]
+    )
   }
 
   if (!length(conds)) {
@@ -636,6 +639,7 @@ delayedAssign(
   )
 )
 
+# nolint next: object_length_linter.
 cond_condition_message_generator <- function() {}
 delayedAssign(
   "cond_condition_message_generator",
