@@ -223,6 +223,7 @@ delayedAssign(
     "condition_overwrite",
     type = "warning",
     package = "cnd",
+    exports = "condition",
     # nolint next: brace_linter.
     message = \(old, new) fmt(
       "A condition with the class name '{cls}' already exists in '{pkg}' and",

@@ -1,12 +1,11 @@
 
-
-# print -------------------------------------------------------------------
+# exports -----------------------------------------------------------------
 
 #' @export
 `print.cnd::condition_generator` <- function(x, ...) {
   local_cli_ignore_unknown_rstudio_theme()
   cat(blue(bold("cnd::condition_generator\n")))
-  cat("<", format(x), ">\n", sep = "")
+  cat(format(x))
   print_generator(x$message)
 
   if (length(x$help)) {
@@ -38,7 +37,10 @@
   print_generator(x)
   print_conditions(x)
   cat("\n")
-  cli::cli_text("For a list of conditions: {.run cnd::conditions()}")
+  cli_text(
+    "For a list of conditions: {.run cnd::conditions()}",
+    "For a list of conditions: `cnd::conditions()`",
+  )
   invisible(x)
 }
 
@@ -58,9 +60,12 @@
 
 #' @export
 `print.cnd::condition` <- function(x, ...) {
-  cat(blue(format(x)), "\n", sep = "")
+  cat(format(x))
   invisible(x)
 }
+
+
+# helpers -----------------------------------------------------------------
 
 print_conditions <- function(x) {
   local_cli_ignore_unknown_rstudio_theme()
@@ -68,12 +73,18 @@ print_conditions <- function(x) {
   conds <- attr(x, "conditions") %||% return()
 
   cat("\n", bold("condition(s)"), "\n", sep = "")
-  clean <- cli_toggle(FALSE, vapply(conds, format, NA_character_))
-  fmt <- cli_toggle(TRUE, vapply(conds, format, NA_character_))
+  clean <- override_cli("off", vapply(conds, format, NA_character_))
+  if (!cli_on()) {
+    cat(clean, sep = "\n")
+    return()
+  }
+
+  fmt <- override_cli("on", vapply(conds, format, NA_character_))
   code <- sprintf("cnd::cond(\"%s\")", clean)
   text <- sprintf("  {.run [%s](%s)}", fmt, code)
-  for (line in text) {
-    cli::cli_text(line)
+
+  for (i in seq_along(text)) {
+    cli_text(text[i], fmt[i])
   }
 }
 
@@ -98,32 +109,3 @@ print_generator <- function(x) {
   )
 }
 
-# format ------------------------------------------------------------------
-
-#' @export
-`format.cnd::condition` <- function(x, ...) {
-  pkg <- attr(x, "package")
-  fmt(
-    "<{pkg}{class}/{type}::>\n{message}",
-    pkg = if (is.null(pkg)) "" else paste0(pkg, ":"),
-    class = sub("^.*:+", "", attr(x, "condition")),
-    type = attr(x, "type"),
-    message = collapse(x$message)
-  )
-}
-
-#' @export
-`format.cnd::condition_generator` <- function(x, ...) {
-  fmt(
-    "{pkg}{class}/{type}",
-    pkg = if (is.null(x$package)) "" else paste0(magenta(x$package), ":"),
-    class = magenta(sub("^.*:+", "", x$class)),
-    type = switch(
-      x$type,
-      error = red,
-      warning = yellow,
-      message = blue,
-      condition = white
-      )(x$type)
-  )
-}

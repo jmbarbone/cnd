@@ -103,7 +103,7 @@ clean_padding <- function(x) {
   text
 }
 
-match_arg <- function(arg, choices) {
+match_arg <- function(arg, choices, .call = NULL) {
   if (missing(choices)) {
     parent <- sys.parent()
     fargs <- formals(sys.function(parent))
@@ -119,11 +119,14 @@ match_arg <- function(arg, choices) {
   if (is.na(ok)) {
     value <- arg
     arg <- deparse1(substitute(arg))
-    cnd(cond_match_arg(arg, value, choices, .call = sys.call(1L)))
+    cnd(cond_match_arg(arg, value, choices, .call = .call %||% sys.call(1L)))
   }
 
   choices[ok]
 }
+
+
+# conditions --------------------------------------------------------------
 
 cond_match_arg <- NULL
 delayedAssign(
@@ -132,6 +135,7 @@ delayedAssign(
     "match_arg",
     type = "error",
     package = "cnd",
+    exports = "condition",
     help = "Mostly [match.arg()] but with a custom condition",
     # nolint next: brace_linter.
     message = \(arg, value, choices) fmt(
@@ -141,7 +145,6 @@ delayedAssign(
       arg = arg,
       value = value,
       choices = collapse(choices, sep = ", ")
-    ),
-    exports = "condition"
+    )
   )
 )

@@ -4,6 +4,9 @@
 \name{cnd-cnd-conditions}
 \alias{cnd-cnd-conditions}
 \alias{cnd:as_character_cnd_error}
+\alias{cnd:cnd_document_conditions}
+\alias{cnd:cnd_document_file}
+\alias{cnd:cnd_document_pkg_reg}
 \alias{cnd:cnd_generated_cleanup}
 \alias{cnd:cnd_generated_write}
 \alias{cnd:cond_cnd_class}
@@ -14,6 +17,9 @@
 \alias{cnd:match_arg}
 \alias{cnd:no_package_exports}
 \alias{as_character_cnd_error}
+\alias{cnd_document_conditions}
+\alias{cnd_document_file}
+\alias{cnd_document_pkg_reg}
 \alias{cnd_generated_cleanup}
 \alias{cnd_generated_write}
 \alias{cond_cnd_class}
@@ -24,7 +30,10 @@
 \alias{match_arg}
 \alias{no_package_exports}
 \alias{cnd:as_character_cnd_error/error}
-\alias{cnd:cnd_generated_cleanup/condition}
+\alias{cnd:cnd_document_conditions/warning}
+\alias{cnd:cnd_document_file/error}
+\alias{cnd:cnd_document_pkg_reg/error}
+\alias{cnd:cnd_generated_cleanup/message}
 \alias{cnd:cnd_generated_write/condition}
 \alias{cnd:cond_cnd_class/error}
 \alias{cnd:condition_overwrite/warning}
@@ -68,13 +77,40 @@ stop(my_condition())
 
 }
 
-\subsection{\code{cnd:cnd_generated_cleanup/condition}}{
+\subsection{\code{cnd:cnd_document_conditions/warning}}{
+\describe{
+\item{package}{\code{{cnd}}}
+\item{class}{\code{cnd:cnd_document_conditions}}
+\item{type}{\strong{warning}}
+}
+\emph{no help documentation provided}
+}
+
+\subsection{\code{cnd:cnd_document_file/error}}{
+\describe{
+\item{package}{\code{{cnd}}}
+\item{class}{\code{cnd:cnd_document_file}}
+\item{type}{\strong{error}}
+}
+\emph{no help documentation provided}
+}
+
+\subsection{\code{cnd:cnd_document_pkg_reg/error}}{
+\describe{
+\item{package}{\code{{cnd}}}
+\item{class}{\code{cnd:cnd_document_pkg_reg}}
+\item{type}{\strong{error}}
+}
+\emph{no help documentation provided}
+}
+
+\subsection{\code{cnd:cnd_generated_cleanup/message}}{
 \describe{
 \item{package}{\code{{cnd}}}
 \item{class}{\code{cnd:cnd_generated_cleanup}}
-\item{type}{\strong{condition}}
+\item{type}{\strong{message}}
 }
-
+\emph{no help documentation provided}
 }
 
 \subsection{\code{cnd:cnd_generated_write/condition}}{
@@ -83,7 +119,7 @@ stop(my_condition())
 \item{class}{\code{cnd:cnd_generated_write}}
 \item{type}{\strong{condition}}
 }
-
+\emph{no help documentation provided}
 }
 
 \subsection{\code{cnd:cond_cnd_class/error}}{
@@ -101,7 +137,7 @@ stop(my_condition())
 \item{class}{\code{cnd:condition_overwrite}}
 \item{type}{\strong{warning}}
 }
-
+\emph{no help documentation provided}
 }
 
 \subsection{\code{cnd:conditions_dots/warning}}{
@@ -110,7 +146,7 @@ stop(my_condition())
 \item{class}{\code{cnd:conditions_dots}}
 \item{type}{\strong{warning}}
 }
-The \code{...} parameter in \code{\link[=conditions]{conditions()}} is meant for convenience.  Onlya single argument is alowed.  Other parameters must be named  explicitly.For example:\code{r# Instead of thisconditions('class', 'package') # 'package' is ignored with a warning# Do thisconditions(class = 'class', package = 'package')}
+The \code{...} parameter in \code{\link[=conditions]{conditions()}} is meant for convenience.  Onlya single argument is alowed.  Other parameters must be named  explicitly.For example:\code{r# Instead of thisconditions('class', 'package') # 'package' is ignored with a warning# Do thisconditions(class = 'class', package = 'package')}...
 }
 
 \subsection{\code{cnd:invalid_condition/error}}{

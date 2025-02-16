@@ -1,17 +1,22 @@
+
 cli_on <- function() {
-  requireNamespace("cli", quietly = TRUE) &&
-    isTRUE(getOption("cnd.cli.on", TRUE)) &&
-    cli::num_ansi_colors() > 1L
+  switch(
+    getOption("cnd.cli.override", "none"),
+    on = TRUE,
+    off = FALSE,
+    requireNamespace("cli", quietly = TRUE) && cli::num_ansi_colors() > 1L
+  )
 }
 
-cli_toggle <- function(on, code) {
-  op <- options(cnd.cli.on = on)
+override_cli <- function(status = c("on", "off"), expr) {
+  status <- match_arg(status)
+  op <- options(cnd.cli.override = status)
   on.exit(options(op))
-  force(code)
+  force(expr)
 }
 
-cli_switch <- function(fun, ...) {
-  (if (cli_on()) match.fun(fun) else base::paste0)(...)
+cli_switch <- function(on, off) {
+  switch(2L - cli_on(), on, off)
 }
 
 # nolint: object_length_linter.
@@ -20,21 +25,37 @@ local_cli_ignore_unknown_rstudio_theme <- function() {
     cli.ignore_unknown_rstudio_theme =
       getOption("cli.ignore_unknown_rstudio_theme", TRUE)
   )
-  do.call(on.exit, list(options(op)), envir = parent.frame())
+  do <- function() options(op)
+  do.call(on.exit, list(do()), envir = parent.frame())
+}
+
+cli_fun <- function(cli, ..., ..otherwise = base::paste0) {
+  cli_switch(
+    get(cli, asNamespace("cli"), mode = "function"),
+    match.fun(..otherwise)
+  )(...)
 }
 
 # nocov start
-black   <- function(...) cli_switch(cli::col_black, ...)
-blue    <- function(...) cli_switch(cli::col_blue, ...)
-cyan    <- function(...) cli_switch(cli::col_cyan, ...)
-green   <- function(...) cli_switch(cli::col_green, ...)
-grey    <- function(...) cli_switch(cli::col_grey, ...)
-magenta <- function(...) cli_switch(cli::col_magenta, ...)
-red     <- function(...) cli_switch(cli::col_red, ...)
-silver  <- function(...) cli_switch(cli::col_silver, ...)
-white   <- function(...) cli_switch(cli::col_white, ...)
-yellow  <- function(...) cli_switch(cli::col_yellow, ...)
-
-bold  <- function(...) cli_switch(cli::style_bold, ...)
-code  <- function(...) cli_switch(cli::code_highlight, ...)
+black   <- function(...) cli_fun("col_black", ...)
+blue    <- function(...) cli_fun("col_blue", ...)
+cyan    <- function(...) cli_fun("col_cyan", ...)
+green   <- function(...) cli_fun("col_green", ...)
+grey    <- function(...) cli_fun("col_grey", ...)
+magenta <- function(...) cli_fun("col_magenta", ...)
+red     <- function(...) cli_fun("col_red", ...)
+silver  <- function(...) cli_fun("col_silver", ...)
+white   <- function(...) cli_fun("col_white", ...)
+yellow  <- function(...) cli_fun("col_yellow", ...)
+bold    <- function(...) cli_fun("style_bold", ...)
+italic  <- function(...) cli_fun("style_italic", ...)
+code    <- function(...) cli_fun("code_highlight", ...)
 # nocov end
+
+# handled retains .envir and just prints directly
+cli_text <- function(..., .envir = parent.frame()) {
+  cli_switch(
+    cli::cli_text(..., .envir = .envir),
+    function(...) cat(..., "\n", sep = "")
+  )
+}

@@ -80,7 +80,9 @@ attribute}
 }
 
 \itemize{
-\item \code{\link[=cnd]{cnd()}} is a wrapper for calling \code{\link[=stop]{stop()}}, \code{\link[=warning]{warning()}}, or \code{\link[=message]{message()}}
+\item \code{\link[=cnd]{cnd()}} is a wrapper for calling \code{\link[=stop]{stop()}}, \code{\link[=warning]{warning()}}, or \code{\link[=message]{message()}};
+when  \code{condition} is a type, an error is thrown, and likewise for the other
+types.  When an error isn't thrown, the \code{condition} is returned, invisibly.
 }
 }
 \description{
@@ -103,7 +105,21 @@ default, \code{.call} captures the parent call from where the
 override this.  See \code{call.} in \code{\link[=conditionCall]{conditionCall()}}
 }
 
-\section{Conditions}{
+\section{\code{\link[=condition]{condition()}} conditions}{
+
+
+Conditions are generated through the \code{\link[=cnd-package]{\{cnd\}}} package.
+The following conditions are associated with this function:
+
+\describe{
+
+}
+
+For more conditions, see:
+}
+
+\section{\code{\link[=cnd]{cnd()}} conditions}{
+
 
 Conditions are generated through the \code{\link[=cnd-package]{\{cnd\}}} package.
 The following conditions are associated with this function:
@@ -122,6 +138,38 @@ stop(my_condition)
 stop(my_condition())
 }\if{html}{\out{</div>}}
 
+}
+
+\item{\code{\link[=cnd-cnd-conditions]{cnd:cnd_document_conditions/warning}}}{
+
+}
+
+\item{\code{\link[=cnd-cnd-conditions]{cnd:cnd_document_file/error}}}{
+
+}
+
+\item{\code{\link[=cnd-cnd-conditions]{cnd:cnd_document_pkg_reg/error}}}{
+
+}
+
+\item{\code{\link[=cnd-cnd-conditions]{cnd:cnd_generated_cleanup/message}}}{
+
+}
+
+\item{\code{\link[=cnd-cnd-conditions]{cnd:cnd_generated_write/condition}}}{
+
+}
+
+\item{\code{\link[=cnd-cnd-conditions]{cnd:cond_cnd_class/error}}}{
+\code{\link[=cnd]{cnd()}} simple calls the appropriate function: \code{\link[=stop]{stop()}}, \code{\link[=warning]{warning()}}, or \code{\link[=message]{message()}} based on the \code{type} parameter from \code{\link[=condition]{condition()}}.
+}
+
+\item{\code{\link[=cnd-cnd-conditions]{cnd:condition_overwrite/warning}}}{
+
+}
+
+\item{\code{\link[=cnd-cnd-conditions]{cnd:conditions_dots/warning}}}{
+The \code{...} parameter in \code{\link[=conditions]{conditions()}} is meant for convenience.  Onlya single argument is alowed.  Other parameters must be named  explicitly.For example:\code{r# Instead of thisconditions('class', 'package') # 'package' is ignored with a warning# Do thisconditions(class = 'class', package = 'package')}...
 }
 
 \item{\code{\link[=cnd-cnd-conditions]{cnd:invalid_condition/error}}}{

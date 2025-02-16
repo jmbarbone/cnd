@@ -29,7 +29,13 @@
 #'   [condition_generator] was created, but users may pass their own call to
 #'   override this.  See `call.` in [conditionCall()]
 #'
-#' @section Conditions: `r cnd_section(condition)`
+#' @section [condition()] conditions:
+#'
+#'   `r cnd_section("condition")`
+#'
+#' @section [cnd()] conditions:
+#'
+#'   `r cnd_section("cnd")`
 #'
 #' @returns
 #' - [condition()] a [condition_generator] object
@@ -246,7 +252,9 @@ cond <- function(x) {
 #' @rdname condition
 #' @param condition A condition object
 #' @returns
-#' - [cnd()] is a wrapper for calling [stop()], [warning()], or [message()]
+#' - [cnd()] is a wrapper for calling [stop()], [warning()], or [message()];
+#'   when  `condition` is a type, an error is thrown, and likewise for the other
+#'   types.  When an error isn't thrown, the `condition` is returned, invisibly.
 cnd <- function(condition) {
   if (!is_cnd_condition(condition)) {
     cnd(cond_cnd_class())
@@ -256,14 +264,11 @@ cnd <- function(condition) {
     attr(condition, "type"),
     error = stop(condition), # maybe `error()` should be the name
     warning = warning(condition),
-    message = message(condition),
-    condition = {
-      signalCondition(condition)
-      if (!isTRUE(getOption("cnd.condition.silent", FALSE))) {
-        cat(condition$message, sep = "\n")
-      }
-    }
+    message = cnd_message(condition),
+    condition = cnd_condition(condition)
   )
+
+  invisible(condition)
 }
 
 #' @export
@@ -430,6 +435,14 @@ cget <- function(x, field) {
   .subset2(as.list(environment(x), all.names = TRUE), i)
 }
 
+#' @export
+`conditionMessage.cnd::condition_generator` <- function(c) {
+  stop(
+    "You are trying to call conditionMessage() on a condition_generator object",
+    " but likely meant to generate the condition first",
+    call. = FALSE
+  )
+}
 
 #' @export
 `conditionMessage.cnd::condition` <- function(c) {
@@ -621,7 +634,8 @@ delayedAssign(
       "",
       "# Do this",
       "conditions(class = 'class', package = 'package')",
-      "```"
+      "```",
+      "... "
     )
   )
 )

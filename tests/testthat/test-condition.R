@@ -208,3 +208,24 @@ test_that(".call", {
   expect_identical(get_call(fizz()), "anything I want")
   expect_snapshot(fizz(), error = TRUE)
 })
+
+test_that("cnd(condition) handling", {
+  foo <- condition(
+    "foo",
+    "CONDITION",
+    type = "condition",
+    register = FALSE
+  )
+
+  expect_condition(
+    expect_output(cnd(foo()), "CONDITION"),
+    class = "cnd::condition"
+  )
+
+  expect_failure(
+    expect_condition(
+      expect_output(suppress_conditions(cnd(foo())), NA),
+      class = "cnd::condition"
+    )
+  )
+})
