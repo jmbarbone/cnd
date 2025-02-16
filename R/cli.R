@@ -15,7 +15,7 @@ override_cli <- function(status = c("on", "off"), expr) {
   force(expr)
 }
 
-cli_switch <- function(on, off) {
+cli_switch <- function(on, off = NULL) {
   switch(2L - cli_on(), on, off)
 }
 
@@ -56,6 +56,6 @@ code    <- function(...) cli_fun("code_highlight", ...)
 cli_text <- function(..., .envir = parent.frame()) {
   cli_switch(
     cli::cli_text(..., .envir = .envir),
-    function(...) cat(..., "\n", sep = "")
+    cat(..., "\n", sep = "")
   )
 }

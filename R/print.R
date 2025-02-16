@@ -37,9 +37,9 @@
   print_generator(x)
   print_conditions(x)
   cat("\n")
-  cli_text(
-    "For a list of conditions: {.run cnd::conditions()}",
-    "For a list of conditions: `cnd::conditions()`",
+  cli_switch(
+    cli_text("For a list of conditions: {.run cnd::conditions()}"),
+    cat("For a list of conditions: `cnd::conditions()`\n")
   )
   invisible(x)
 }
@@ -74,18 +74,20 @@ print_conditions <- function(x) {
 
   cat("\n", bold("condition(s)"), "\n", sep = "")
   clean <- override_cli("off", vapply(conds, format, NA_character_))
+
   if (!cli_on()) {
     cat(clean, sep = "\n")
     return()
   }
 
+  # should only be called when cli is on
   fmt <- override_cli("on", vapply(conds, format, NA_character_))
   code <- sprintf("cnd::cond(\"%s\")", clean)
   text <- sprintf("  {.run [%s](%s)}", fmt, code)
-
-  for (i in seq_along(text)) {
-    cli_text(text[i], fmt[i])
+  for (line in text) {
+    cli_text(line)
   }
+  invisible()
 }
 
 print_generator <- function(x) {

@@ -16,48 +16,42 @@ suppress_cnd_conditions <- function(expr) {
   suppress_conditions(expr, "cnd::condition")
 }
 
-cnd_message <- function(condition) {
-  fmt <- match_fmt()
-  handler <- function(x) cat(x, sep = "\n", file = stderr())
-  withRestarts(
-    {
-      signalCondition(condition)
-      cat(
-        switch(
-          fmt,
-          simple = conditionMessage(condition),
-          verbose = format(condition)
-        ),
-        sep = "\n",
-        file = stderr()
-      )
-    },
-    muffleMessage = function() NULL
-  )
-  invisible(condition)
+cnd_condition <- function(condition, fmt = c("verbse", "simple")) {
+  cnd_message_handler(condition, fmt, "condition")
 }
 
-cnd_condition <- function(condition) {
-  fmt <- match_fmt()
-  handler <- function(x) cat(x, sep = "\n", file = stdout())
-  withRestarts(
-    {
-      signalCondition(condition)
-      cat(
-        switch(
-          fmt,
-          simple = handler(conditionMessage(condition)),
-          verbose = handler(format(condition))
-        ),
-        sep = "\n",
-        file = stdout()
-      )
-    },
-    muffleCondition = function() NULL
-  )
-  invisible(condition)
+cnd_message <- function(condition, fmt = c("verbose", "simple")) {
+  cnd_message_handler(condition, fmt, "message")
 }
 
-match_fmt <- function(fmt = c("verbose", "simple")) {
-  match_arg(fmt, .call = sys.call(2L))
+cnd_message_handler <- function(
+    condition,
+    fmt = c("verbose", "simple"),
+    type = c("message", "condition")
+) {
+  fmt <- match_arg(fmt, .null_as_default = TRUE)
+  type <- match_arg(type)
+
+  with_restarts <- function(output, fmt, ...) {
+
+    # stderr() for messages, stdout() for condition
+    handler <- function(x, fmt, output) {
+      msg <- switch(fmt, simple = conditionMessage(x), verbose = format(x))
+      cat(msg, sep = "\n", file = output)
+    }
+
+    withRestarts(
+      {
+        signalCondition(condition)
+        handler(condition, fmt, output)
+      },
+      ...
+    )
+  }
+
+  switch(
+    type,
+    message = with_restarts(stderr(), fmt, muffleMessage = function() NULL),
+    condition = with_restarts(stdout(), fmt, muffleCondition = function() NULL)
+  )
 }

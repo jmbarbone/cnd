@@ -26,8 +26,8 @@ cnd_evaluate <- function() {
 # TODO document op.cnd
 # nolint next: object_name_linter.
 op.cnd <- list(
-  cnd.condition.signal = "on",
-  cnd.condition.message = "simple",
+  cnd.cli.override = NULL,
+  cnd.condition.message = "verbose",
   cnd.call = TRUE
 )
 

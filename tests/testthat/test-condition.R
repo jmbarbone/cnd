@@ -229,3 +229,10 @@ test_that("cnd(condition) handling", {
     )
   )
 })
+
+test_that("conditinMessage(condition_generator)", {
+  expect_error(
+    conditionMessage(condition("foo", register = FALSE)),
+    class = "cnd:condition_message_generator"
+  )
+})

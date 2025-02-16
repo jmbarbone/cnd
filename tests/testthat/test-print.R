@@ -20,3 +20,9 @@ test_that("printing snapshots", {
   # has a line return
   expect_snapshot(cond_condition_bad_message)
 })
+
+test_that("printing with cli", {
+  override_cli("on", {
+    expect_snapshot(condition)
+  })
+})

@@ -121,8 +121,7 @@ cnd_document <- function(
     return(invisible(file))
   }
 
-  cnd(cond_cnd_generated_write())
-  cli_text(sprintf("Writing {.file %s}", file))
+  cnd(cond_cnd_generated_write(file))
   writeLines(lines, file)
   invisible(file)
 }
@@ -247,7 +246,11 @@ delayedAssign(
     # help = "help",
     exports = "cnd_document",
     # nolint next: brace_linter.
-    message = "Writing the cnd generated file"
+    message = function(path)
+      cli_switch(
+        cli_text(sprintf("Writing {.file %s}", path))
+      ) %||%
+      paste("Writing", path)
   )
 )
 

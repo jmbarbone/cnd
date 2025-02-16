@@ -103,7 +103,7 @@ clean_padding <- function(x) {
   text
 }
 
-match_arg <- function(arg, choices, .call = NULL) {
+match_arg <- function(arg, choices, .call = NULL, .null_as_default = FALSE) {
   if (missing(choices)) {
     parent <- sys.parent()
     fargs <- formals(sys.function(parent))
@@ -111,6 +111,10 @@ match_arg <- function(arg, choices, .call = NULL) {
       fargs[[as.character(substitute(arg))]],
       envir = sys.frame(parent)
     )
+  }
+
+  if (is.null(arg) && .null_as_default) {
+    return(choices[1L])
   }
 
   ok <- match(arg, choices, nomatch = 0L)

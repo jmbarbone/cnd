@@ -17,12 +17,14 @@
       
       condition(s)
       cnd:as_character_cnd_error/error
+      cnd:condition_message_generator/error
       cnd:condition_overwrite/warning
       cnd:invalid_condition/error
       cnd:invalid_condition_message/error
       cnd:match_arg/error
       cnd:no_package_exports/warning
       
+      For a list of conditions: `cnd::conditions()`
 
 ---
 
@@ -88,4 +90,35 @@
       Conditions messages are displayed when invoked through [conditionMessage()].  You can set a static message by passing through a `character` vector, or a dynamic message by passing through a `function`.  The function should return a `character` vector.  When `message` is not set, a default "there was an error" message is used.
       exports
         cnd::condition()
+
+# printing with cli
+
+    Code
+      condition
+    Output
+      cnd::condition_progenitor
+      
+      generator
+        $ class    : <symbol> 
+        $ message  : NULL
+        $ type     : <language> c("error", "warning", "message", "condition")
+        $ package  : <language> get_package()
+        $ exports  : NULL
+        $ help     : NULL
+        $ registry : <symbol> package
+        $ register : <language> !is.null(registry)
+      
+      condition(s)
+    Message
+      `cnd:as_character_cnd_error/error`
+      `cnd:condition_message_generator/error`
+      `cnd:condition_overwrite/warning`
+      `cnd:invalid_condition/error`
+      `cnd:invalid_condition_message/error`
+      `cnd:match_arg/error`
+      `cnd:no_package_exports/warning`
+    Output
+      
+    Message
+      For a list of conditions: `cnd::conditions()`
 

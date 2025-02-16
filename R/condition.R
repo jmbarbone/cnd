@@ -264,8 +264,8 @@ cnd <- function(condition) {
     attr(condition, "type"),
     error = stop(condition), # maybe `error()` should be the name
     warning = warning(condition),
-    message = cnd_message(condition),
-    condition = cnd_condition(condition)
+    message = cnd_message(condition, getOption("cnd.message.format")),
+    condition = cnd_condition(condition, getOption("cnd.message.format"))
   )
 
   invisible(condition)
@@ -437,11 +437,7 @@ cget <- function(x, field) {
 
 #' @export
 `conditionMessage.cnd::condition_generator` <- function(c) {
-  stop(
-    "You are trying to call conditionMessage() on a condition_generator object",
-    " but likely meant to generate the condition first",
-    call. = FALSE
-  )
+  cnd(cond_condition_message_generator())
 }
 
 #' @export
@@ -636,6 +632,38 @@ delayedAssign(
       "conditions(class = 'class', package = 'package')",
       "```",
       "... "
+    )
+  )
+)
+
+cond_condition_message_generator <- function() {}
+delayedAssign(
+  "cond_condition_message_generator",
+  condition(
+    "condition_message_generator",
+    type = "error",
+    message = c(
+      "You are trying to call conditionMessage() on a condition_generator",
+      " object, which is not allowed"
+    ),
+    exports = "condition",
+    package = "cnd",
+    help = c(
+      "'cnd::condition_generator' objects are not conditions.   You may have",
+      " made this mistake: ",
+      "",
+      "```r",
+      "x <- condition('my_condition')",
+      "conditionMessage(x)",
+      "```",
+      "",
+      "Condition generators need to be called first before they can be used as",
+      " conditions.  Try this instead:",
+      "",
+      "```r",
+      "x <- condition('my_condition')",
+      "conditionMessage(x())",
+      "```"
     )
   )
 )
