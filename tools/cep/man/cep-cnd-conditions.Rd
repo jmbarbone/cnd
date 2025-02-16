@@ -15,8 +15,8 @@ Example package used for testing cep
 \details{
 The following conditions are defined in the \code{{cep}} package.
 }
-\section{\code{\link[cnd}{
-cnd-package]{\{cnd\}}}:
+\section{\code{\link[=cnd-package]{\{cnd\}}}}{
+
 These conditions are made with the \code{{cnd}} package though the use of
 \code{\link[cnd:condition]{cnd::condition()}}.
 }
@@ -30,7 +30,7 @@ These conditions are made with the \code{{cnd}} package though the use of
 \item{class}{\code{cep:bad_argument}}
 \item{type}{\strong{error}}
 }
-
+x should be \code{TRUE}
 }
 }
 

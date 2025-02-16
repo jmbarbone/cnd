@@ -7,7 +7,7 @@
 #' @details
 #'  The following conditions are defined in the `{cep}` package.
 #'
-#' @section [`{cnd}`][cnd::cnd-package]:
+#' @section [`{cnd}`][cnd-package]:
 #'  These conditions are made with the `{cnd}` package though the use of
 #'  [cnd::condition()].
 #'
@@ -20,7 +20,7 @@
 #'     \item{class}{`cep:bad_argument`}
 #'     \item{type}{**error**}
 #'   }
-#'
+#'   x should be `TRUE`
 #'   }
 #'
 #'
