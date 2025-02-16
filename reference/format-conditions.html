@@ -48,7 +48,7 @@
 
     <div id="ref-usage">
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="co"># S3 method for class '`cnd::condition`'</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/format.html" class="external-link">format</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span>, cli <span class="op">=</span> <span class="fu">cli_on</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/format.html" class="external-link">format</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span>, cli <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">getOption</a></span><span class="op">(</span><span class="st">"cnd.cli.on"</span>, <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># S3 method for class '`cnd::condition_generator`'</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/format.html" class="external-link">format</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span>, cli <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">getOption</a></span><span class="op">(</span><span class="st">"cnd.cli.on"</span>, <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
@@ -67,9 +67,7 @@
 
 
 <dt id="arg-cli">cli<a class="anchor" aria-label="anchor" href="#arg-cli"></a></dt>
-<dd><p>If <code>TRUE</code> will use formatting from <a href="https://cli.r-lib.org/reference/cli-package.html" class="external-link">cli</a>.
-Default uses an option, <code>"cnd.cli.override"</code>, if available, otherwise
-checks that <code>cli</code> is installed and ansi colors are available.</p></dd>
+<dd><p>If <code>TRUE</code> will use formatting from <code>{cli}</code></p></dd>
 
 </dl></div>
 
