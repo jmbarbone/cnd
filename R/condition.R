@@ -175,6 +175,8 @@ condition <- function(
     formals(message),
     alist(... = , .call = getOption("cnd.call", TRUE))
   )
+
+  # explicit so that substitute() doesn't mess this up
   base::class(res) <- c("cnd::condition_generator", "function")
   if (register) {
     registrar$register(res, registry = registry)
@@ -463,6 +465,13 @@ cget <- function(x, field) {
   }
 
   msg
+}
+
+#' @export
+`conditionCall.cnd::condition` <- function(c) {
+  if (!isFALSE(getOption("cnd.call"))) {
+    c$call
+  }
 }
 
 #' @export

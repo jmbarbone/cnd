@@ -12,9 +12,20 @@
 #'   checks that `cli` is installed and ansi colors are available.
 #' @export
 #' @name format-conditions
-`format.cnd::condition` <- function(x, ..., cli = cli_on()) {
+`format.cnd::condition` <- function(
+    x,
+    ...,
+    cli = getOption("cnd.cli.override")
+  ) {
   a <- attributes(x)
-  fmt_cond(a$package, a$condition, a$type, class(x), x$message, cli_on = cli)
+  fmt_cond(
+    package = a$package,
+    class = a$condition,
+    type = a$type,
+    classes = class(x),
+    message = x$message,
+    cli_override = cli
+  )
 }
 
 #' @rdname format-conditions
@@ -22,9 +33,14 @@
 `format.cnd::condition_generator` <- function(
     x,
     ...,
-    cli = getOption("cnd.cli.on", TRUE)
+    cli = getOption("cnd.cli.override")
 ) {
-  fmt_cond(x$package, x$class, x$type, cli_on = cli)
+  fmt_cond(
+    package = x$package,
+    class = x$class,
+    type = x$type,
+    cli_override = cli
+  )
 }
 
 
@@ -36,9 +52,9 @@ fmt_cond <- function(
     type,
     classes = NULL,
     message = NULL,
-    cli_on = getOption("cnd.cli.on", TRUE)
+    cli_override = getOption("cnd.cli.override")
 ) {
-  op <- options(cnd.cli.on = cli_on)
+  op <- options(cnd.cli.on = cli_override)
   on.exit(options(op), add = TRUE)
 
   fmt(
@@ -59,12 +75,12 @@ fmt_cond <- function(
     classes = if (is.null(classes)) {
       ""
     } else {
-      grey(paste0("\n(", collapse(classes, sep = "/"), ")"))
+      paste0("\n", grey(paste0("(", collapse(classes, sep = "/"), ")")))
     },
     message = if (is.null(message)) {
       ""
     } else {
-      paste0("\n", italic(message))
+      paste0("\n", collapse(italic(message), sep = "\n"))
     }
   )
 }

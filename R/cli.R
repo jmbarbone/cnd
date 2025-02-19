@@ -1,7 +1,14 @@
 
+# All functions from {cli} are indirectly called.  They are wrapped in a check
+# for the package itself and for whether or not ansi colors are detected.  The
+# default is to check for the package and the colors, but this can be overridden
+# by setting the option `cnd.cli.override` to either "on" or "off".
+
 cli_on <- function() {
   switch(
     getOption("cnd.cli.override", "none"),
+    "TRUE" = TRUE,
+    "FALSE" = FALSE,
     on = TRUE,
     off = FALSE,
     requireNamespace("cli", quietly = TRUE) && cli::num_ansi_colors() > 1L
