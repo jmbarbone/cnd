@@ -66,8 +66,16 @@
       cond_condition_overwrite(old, new)
     Output
       cnd:condition_overwrite/warning
-      (cnd:condition_overwrite/cnd::condition/warning/condition)c("\nA condition with the class name 'cnd:testing:snapshot_test_old' already exists in 'cnd:testing' and will be overwritten", "\n   1 string mismatch", "\n   target, current do not match when deparsed", "\n   Component \".class\": 1 string mismatch", "\n   Component \"class\": 1 string mismatch", "\n   Component \"condition_function\": target, current do not match when deparsed", "\n   Component \".class\": 1 string mismatch", "\n   Component \"class\": 1 string mismatch", "\n   Component \"condition_function\": target, current do not match when deparsed"
-      )
+      (cnd:condition_overwrite/cnd::condition/warning/condition)
+      A condition with the class name 'cnd:testing:snapshot_test_old' already exists in 'cnd:testing' and will be overwritten
+         1 string mismatch
+         target, current do not match when deparsed
+         Component ".class": 1 string mismatch
+         Component "class": 1 string mismatch
+         Component "condition_function": target, current do not match when deparsed
+         Component ".class": 1 string mismatch
+         Component "class": 1 string mismatch
+         Component "condition_function": target, current do not match when deparsed
 
 ---
 
