@@ -182,6 +182,22 @@
 </div>
 
 <div class="section">
+<h3 id="cnd-condition-message-generator-error"><code>cnd:condition_message_generator/error</code><a class="anchor" aria-label="anchor" href="#cnd-condition-message-generator-error"></a></h3>
+
+<dl><dt>package</dt>
+<dd><p><code>{cnd}</code></p></dd>
+
+<dt>class</dt>
+<dd><p><code>cnd:condition_message_generator</code></p></dd>
+
+<dt>type</dt>
+<dd><p><strong>error</strong></p></dd>
+
+
+</dl><p>'cnd::condition_generator' objects are not conditions.   You may have made this mistake: <code>rx &lt;- condition('my_condition')conditionMessage(x)</code>Condition generators need to be called first before they can be used as conditions.  Try this instead:<code>rx &lt;- condition('my_condition')conditionMessage(x())</code></p>
+</div>
+
+<div class="section">
 <h3 id="cnd-condition-overwrite-warning"><code>cnd:condition_overwrite/warning</code><a class="anchor" aria-label="anchor" href="#cnd-condition-overwrite-warning"></a></h3>
 
 <dl><dt>package</dt>
