@@ -6,9 +6,9 @@
 \alias{format.cnd::condition_generator}
 \title{Format conditions}
 \usage{
-\method{format}{`cnd::condition`}(x, ..., cli = cli_on())
+\method{format}{`cnd::condition`}(x, ..., cli = getOption("cnd.cli.override"))
 
-\method{format}{`cnd::condition_generator`}(x, ..., cli = getOption("cnd.cli.on", TRUE))
+\method{format}{`cnd::condition_generator`}(x, ..., cli = getOption("cnd.cli.override"))
 }
 \arguments{
 \item{x}{A \link{condition} object}
