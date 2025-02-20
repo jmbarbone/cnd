@@ -6,3 +6,4 @@
 ^tools$
 ^tergo\.toml$
 ^codecov\.yml$
+^LICENSE\.md$
