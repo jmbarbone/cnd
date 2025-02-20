@@ -19,6 +19,12 @@
 Default uses an option, \code{"cnd.cli.override"}, if available, otherwise
 checks that \code{cli} is installed and ansi colors are available.}
 }
+\value{
+A \code{character} vector
+}
 \description{
 Formats \link{condition} objects
+}
+\examples{
+format(condition("foo"))
 }

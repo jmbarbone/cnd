@@ -11,6 +11,9 @@
 #'   Default uses an option, `"cnd.cli.override"`, if available, otherwise
 #'   checks that `cli` is installed and ansi colors are available.
 #' @export
+#' @returns A `character` vector
+#' @examples
+#' format(condition("foo"))
 #' @name format-conditions
 `format.cnd::condition` <- function(
     x,

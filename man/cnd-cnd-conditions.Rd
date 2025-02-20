@@ -47,7 +47,7 @@
 \alias{cnd:no_package_exports/warning}
 \title{Conditions for \code{cnd}}
 \description{
-Condition generating functions and registry options to track custom conditions for your package.
+Condition generating functions and registry options to track custom conditions for your package and processes.
 }
 \details{
 The following conditions are defined in the \code{{cnd}} package.

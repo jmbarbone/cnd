@@ -38,8 +38,7 @@
 #'   `r cnd_section("cnd")`
 #'
 #' @returns
-#' - [condition()] a [condition_generator] object
-#' - [conditions()] a `list` of all conditions
+#' - [condition()] a `cnd::condition_generator` object
 #'
 #' @export
 #' @examples
@@ -193,6 +192,8 @@ class(condition) <- "cnd::condition_progenitor"
 #'   `..1` to `fun`; otherwise defaults to passing `..1` to `package`
 #' @param fun if a function is passed, then retrieves the `"conditions"`
 #'   attribute
+#' @returns
+#' - [conditions()] a `list` of `cnd::condition_generator` objects
 conditions <- function(
     ...,
     class = NULL,
@@ -249,13 +250,15 @@ conditions <- function(
 
 #' @export
 #' @rdname condition
+#' @returns
+#' - [cond()] A `cnd::condition_generator` object
 cond <- function(x) {
   find_cond(x)
 }
 
 #' @export
 #' @rdname condition
-#' @param condition A condition object
+#' @param condition A `cnd::condition_generator` object
 #' @returns
 #' - [cnd()] is a wrapper for calling [stop()], [warning()], or [message()];
 #'   when  `condition` is a type, an error is thrown, and likewise for the other
@@ -287,7 +290,7 @@ cnd <- function(condition) {
 
 #' @export
 #' @rdname condition
-#' @param append If `TRUE`, adds to the list of `conditions`
+#' @param append If `TRUE`, adds to the **conditions** attribute
 `conditions<-.function` <- function(x, append = FALSE, ..., value) {
   if (is.null(value)) {
     x <- remove_conditions(x)
@@ -332,7 +335,7 @@ cnd <- function(condition) {
 find_cond <- function(x, ..., .multi = FALSE) {
   found <- do_find_cond(x, ...)
 
-  if (is_cnd_function(found)) {
+  if (is_cnd_generator(found)) {
     return(found)
   }
 
@@ -361,7 +364,7 @@ do_find_cond <- function(
   check <- intersect(check, eval(formals(do_find_cond)$check))
   stopifnot(!identical(check, character())) # internal error
 
-  if (is_cnd_function(x)) {
+  if (is_cnd_generator(x)) {
     if (!force) {
       return(x)
     }

@@ -67,16 +67,23 @@ attribute}
 
 \item{x}{An object}
 
-\item{condition}{A condition object}
+\item{condition}{A \code{cnd::condition_generator} object}
 
 \item{value}{A \code{condition}}
 
-\item{append}{If \code{TRUE}, adds to the list of \code{conditions}}
+\item{append}{If \code{TRUE}, adds to the \strong{conditions} attribute}
 }
 \value{
 \itemize{
-\item \code{\link[=condition]{condition()}} a \link{condition_generator} object
-\item \code{\link[=conditions]{conditions()}} a \code{list} of all conditions
+\item \code{\link[=condition]{condition()}} a \code{cnd::condition_generator} object
+}
+
+\itemize{
+\item \code{\link[=conditions]{conditions()}} a \code{list} of \code{cnd::condition_generator} objects
+}
+
+\itemize{
+\item \code{\link[=cond]{cond()}} A \code{cnd::condition_generator} object
 }
 
 \itemize{

@@ -20,11 +20,18 @@
 #'   `r cnd_section("cnd_document")`
 #'
 #' @export
-#' @returns Conditional on the `file` argument:
-#' - when `file` is a connection, the connection object
-#' - when `file` is a path, the path
-#' - when `file` is `NULL`, a `character` vector of the documentation
-#' - if no conditions are found, a warning is thrown and `NULL` is returned
+#' @returns
+#'  - [cnd_document()] Conditional on the `file` argument:
+#'    - when `file` is a connection, the connection object
+#'    - when `file` is a path, the path
+#'    - when `file` is `NULL`, a `character` vector of the documentation
+#'     - if no conditions are found, a warning is thrown and `NULL` is returned
+#' @examples
+#' file <- file()
+#' cnd_document("cnd", file = file)
+#' readLines(file)
+#'
+#' cnd_section("cnd")
 cnd_document <- function(
     package = get_package(),
     registry = package,
@@ -129,6 +136,8 @@ cnd_document <- function(
 #' @export
 #' @rdname cnd_document
 #' @param fun The name of a function
+#' @returns
+#' - [cnd_section()] A `character` vector of the documentation
 cnd_section <- function(fun) {
   conds <- conditions(fun)
   fmt(

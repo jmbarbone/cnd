@@ -29,12 +29,18 @@ documentation.}
 \item{fun}{The name of a function}
 }
 \value{
-Conditional on the \code{file} argument:
+\itemize{
+\item \code{\link[=cnd_document]{cnd_document()}} Conditional on the \code{file} argument:
 \itemize{
 \item when \code{file} is a connection, the connection object
 \item when \code{file} is a path, the path
 \item when \code{file} is \code{NULL}, a \code{character} vector of the documentation
 \item if no conditions are found, a warning is thrown and \code{NULL} is returned
+}
+}
+
+\itemize{
+\item \code{\link[=cnd_section]{cnd_section()}} A \code{character} vector of the documentation
 }
 }
 \description{
@@ -53,3 +59,10 @@ The following conditions are associated with this function:
 For more conditions, see:
 }
 
+\examples{
+file <- file()
+cnd_document("cnd", file = file)
+readLines(file)
+
+cnd_section("cnd")
+}
