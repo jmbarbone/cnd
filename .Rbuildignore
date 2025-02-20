@@ -7,3 +7,4 @@
 ^tergo\.toml$
 ^codecov\.yml$
 ^LICENSE\.md$
+^cran-comments\.md$
