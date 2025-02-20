@@ -1,5 +1,5 @@
 Package: cnd
-Title: Create and register conditions
+Title: Create and Register Conditions
 Version: 0.0.0.9001
 Authors@R: 
     person(
@@ -9,7 +9,7 @@ Authors@R:
       comment = c(ORCID = "0000-0001-9788-3628")
     )
 Description: Condition generating functions and registry options to track custom
-    conditions for your package.
+    conditions for your package and processes.
 License: MIT + file LICENSE
 Encoding: UTF-8
 Language: en-US
