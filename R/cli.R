@@ -7,8 +7,6 @@
 cli_on <- function() {
   switch(
     getOption("cnd.cli.override", "none"),
-    "TRUE" = TRUE,
-    "FALSE" = FALSE,
     on = TRUE,
     off = FALSE,
     requireNamespace("cli", quietly = TRUE) && cli::num_ansi_colors() > 1L
