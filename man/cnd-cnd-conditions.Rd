@@ -158,7 +158,7 @@ stop(my_condition())
 \item{class}{\code{cnd:conditions_dots}}
 \item{type}{\strong{warning}}
 }
-The \code{...} parameter in \code{\link[=conditions]{conditions()}} is meant for convenience.  Onlya single argument is alowed.  Other parameters must be named  explicitly.For example:\code{r# Instead of thisconditions('class', 'package') # 'package' is ignored with a warning# Do thisconditions(class = 'class', package = 'package')}...
+The \code{...} parameter in \code{\link[=conditions]{conditions()}} is meant for convenience.  Onlya single argument is alowed.  Other parameters must be named  explicitly.For example:\code{r# Instead of thisconditions('class', 'package') # 'package' is ignored with a warning# Do thisconditions(class = 'class', package = 'package')}
 }
 
 \subsection{\code{cnd:invalid_condition/error}}{

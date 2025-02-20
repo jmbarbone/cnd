@@ -643,7 +643,7 @@ delayedAssign(
       "# Do this",
       "conditions(class = 'class', package = 'package')",
       "```",
-      "... "
+      ""
     )
   )
 )

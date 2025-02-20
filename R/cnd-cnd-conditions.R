@@ -120,7 +120,7 @@
 #'     \item{class}{`cnd:conditions_dots`}
 #'     \item{type}{**warning**}
 #'   }
-#'   The `...` parameter in [conditions()] is meant for convenience.  Onlya single argument is alowed.  Other parameters must be named  explicitly.For example:```r# Instead of thisconditions('class', 'package') # 'package' is ignored with a warning# Do thisconditions(class = 'class', package = 'package')```... 
+#'   The `...` parameter in [conditions()] is meant for convenience.  Onlya single argument is alowed.  Other parameters must be named  explicitly.For example:```r# Instead of thisconditions('class', 'package') # 'package' is ignored with a warning# Do thisconditions(class = 'class', package = 'package')```
 #'   }
 #'
 #' 

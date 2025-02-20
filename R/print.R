@@ -5,37 +5,20 @@
 `print.cnd::condition_generator` <- function(x, ...) {
   local_cli_ignore_unknown_rstudio_theme()
   cat(blue(bold("cnd::condition_generator\n")))
-  cat(format(x))
+  cat(format(x), "\n")
   print_generator(x$message)
-
-  if (length(x$help)) {
-    cat(bold("help\n"))
-    cat(grey(clean_text(x$help)))
-  }
-
-  if (length(x$exports)) {
-    cat(
-      bold("\nexports\n"),
-      paste0(
-        "  ",
-        code(paste0(x$package, "::", x$exports, "()"))
-      ),
-      "\n",
-      sep = ""
-    )
-  }
+  print_help(x$help)
+  print_exports(x$exports, x$package)
   invisible(x)
 }
 
 #' @export
 `print.cnd::condition_progenitor` <- function(x, ...) {
   cat(blue(bold("cnd::condition_progenitor\n")))
-  # cat(
-  #   "This special function creates `cnd::condition_generator` objects",
-  #   "which are used to create conditions.\n"
-  # )
+
   print_generator(x)
   print_conditions(x)
+
   cat("\n")
   cli_switch(
     cli_text("For a list of conditions: {.run cnd::conditions()}"),
@@ -109,4 +92,25 @@ print_generator <- function(x) {
     "\n",
     sep = ""
   )
+}
+
+print_help <- function(help) {
+  if (length(help)) {
+    cat(bold("\nhelp\n"))
+    cat(grey(clean_text(help)), "\n")
+  }
+}
+
+print_exports <- function(exports, package) {
+  if (length(exports)) {
+    cat(
+      bold("\nexports\n"),
+      paste0(
+        "  ",
+        code(paste0(package, "::", exports, "()"))
+      ),
+      "\n",
+      sep = ""
+    )
+  }
 }
