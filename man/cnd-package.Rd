@@ -5,7 +5,7 @@
 \alias{cnd-package}
 \title{cnd: Create and Register Conditions}
 \description{
-Condition generating functions and registry options to track custom conditions for your package and processes.
+An interface for creating new condition generators, save generators in registries, link to functions, and generate documentation for packages.
 }
 \author{
 \strong{Maintainer}: Jordan Mark Barbone \email{jmbarbone@gmail.com} (\href{https://orcid.org/0000-0001-9788-3628}{ORCID}) [copyright holder]
