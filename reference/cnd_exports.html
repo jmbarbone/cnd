@@ -65,6 +65,39 @@ environment.</p>
     <p>Nothing, called for its side-effects</p>
     </div>
 
+    <div id="ref-examples">
+    <h2>Examples</h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">e</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/environment.html" class="external-link">new.env</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">registry</span> <span class="op">&lt;-</span> <span class="fu"><a href="cnd_create_registry.html">cnd_create_registry</a></span><span class="op">(</span><span class="st">"EXAMPLE"</span>, env <span class="op">=</span> <span class="va">e</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/eval.html" class="external-link">local</a></span><span class="op">(</span>envir <span class="op">=</span> <span class="va">e</span>, <span class="op">{</span></span></span>
+<span class="r-in"><span>  <span class="va">my_fun</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="cn">NULL</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="condition.html">condition</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    <span class="st">"my_condition"</span>,</span></span>
+<span class="r-in"><span>    package <span class="op">=</span> <span class="st">"example_package"</span>,</span></span>
+<span class="r-in"><span>    exports <span class="op">=</span> <span class="st">"my_fun"</span>,</span></span>
+<span class="r-in"><span>    registry <span class="op">=</span> <span class="va">registry</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="fu">cnd_exports</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># conditions are now added to my_fun():</span></span></span>
+<span class="r-in"><span><span class="va">e</span><span class="op">$</span><span class="va">my_fun</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> function () </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> NULL</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55e9afd5a1a0&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="font-weight: bold;">condition(s)</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> `<span style="font-weight: bold;">example_package</span>:my_condition/<span style="color: #BB0000;">error</span>`</span>
+<span class="r-in"><span><span class="fu"><a href="condition.html">conditions</a></span><span class="op">(</span><span class="va">e</span><span class="op">$</span><span class="va">my_fun</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[1]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB; font-weight: bold;">cnd::condition_generator</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="font-weight: bold;">example_package</span>:my_condition/<span style="color: #BB0000;">error</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="font-weight: bold;">exports</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   example_package::<span style="font-weight: bold;">my_fun</span><span style="color: #D7AF00;">()</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+</code></pre></div>
+    </div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top"><h2 data-toc-skip>Contents</h2>
