@@ -22,13 +22,14 @@
 #'   You cannot coerce a [cnd::condition_generator] object to a character. This may have occured when trying to put a condition function through [stop()] or [warning].  Instead, call the function first, then pass the result to [stop()] or [warning()].
 #'   
 #'   For example:
-#'   
 #'   ```r
+#'   
 #'   # Instead of this
 #'   stop(my_condition)
 #'   
 #'   # Do this
 #'   stop(my_condition())
+#'   
 #'   ```
 #'  }
 #'   \subsection{`cnd:cnd_document_conditions/warning`}{
@@ -88,16 +89,19 @@
 #'   'cnd::condition_generator' objects are not conditions.   You may have made this mistake: 
 #'   
 #'   ```r
-#'   x <- condition('my_condition')
+#'   
+#'   x <- condition("my_condition")
 #'   conditionMessage(x)
+#'   
 #'   ```
 #'   
-#'   Condition generators need to be called first before they can be used as
-#'    conditions.  Try this instead:
+#'   Condition generators need to be called first before they can be used as conditions.  Try this instead:
 #'   
 #'   ```r
-#'   x <- condition('my_condition')
+#'   
+#'   x <- condition("my_condition")
 #'   conditionMessage(x())
+#'   
 #'   ```
 #'  }
 #'   \subsection{`cnd:condition_overwrite/warning`}{
@@ -121,10 +125,11 @@
 #'   ```r
 #'   
 #'   # Instead of this
-#'   conditions('class', 'package') # 'package' is ignored with a warning
+#'   conditions("class", "package") # "package" is ignored with a warning
 #'   
 #'   # Do this
-#'   conditions(class = 'class', package = 'package')
+#'   conditions(class = "class", package = "package")
+#'   
 #'   ```
 #'  }
 #'   \subsection{`cnd:invalid_condition/error`}{

@@ -586,17 +586,14 @@ delayedAssign(
       "[stop()] or [warning].  Instead, call the function first, then pass the",
       " result to [stop()] or [warning()].",
       "\n\n",
-      collapse(
-        "For example:",
-        "",
-        "```r",
+      "For example:",
+      "\n",
+      rcode(
         "# Instead of this",
         "stop(my_condition)",
         "",
         "# Do this",
-        "stop(my_condition())",
-        "```",
-        sep = "\n"
+        "stop(my_condition())"
       )
     )
   )
@@ -639,15 +636,12 @@ delayedAssign(
       "\n\n",
       "For example:",
       "\n\n",
-      collapse(
-        "```r\n",
+      rcode(
         "# Instead of this",
-        "conditions('class', 'package') # 'package' is ignored with a warning",
+        'conditions("class", "package") # "package" is ignored with a warning',
         "",
         "# Do this",
-        "conditions(class = 'class', package = 'package')",
-        "```",
-        sep = "\n"
+        'conditions(class = "class", package = "package")'
       )
     )
   )
@@ -670,20 +664,17 @@ delayedAssign(
       "'cnd::condition_generator' objects are not conditions.   You may have",
       " made this mistake: ",
       "\n\n",
-      collapse(
-        "```r",
-        "x <- condition('my_condition')",
-        "conditionMessage(x)",
-        "```",
-        "",
-        "Condition generators need to be called first before they can be used as",
-        " conditions.  Try this instead:",
-        "",
-        "```r",
-        "x <- condition('my_condition')",
-        "conditionMessage(x())",
-        "```",
-        sep = "\n"
+      rcode(
+        'x <- condition("my_condition")',
+        "conditionMessage(x)"
+      ),
+      "\n\n",
+      "Condition generators need to be called first before they can be used",
+      " as conditions.  Try this instead:",
+      "\n\n",
+      rcode(
+        'x <- condition("my_condition")',
+        "conditionMessage(x())"
       )
     )
   )

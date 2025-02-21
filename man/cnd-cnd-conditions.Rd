@@ -70,11 +70,13 @@ You cannot coerce a \link{condition_generator} object to a character. This may h
 
 For example:
 
-\if{html}{\out{<div class="sourceCode r">}}\preformatted{# Instead of this
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{
+# Instead of this
 stop(my_condition)
 
 # Do this
 stop(my_condition())
+
 }\if{html}{\out{</div>}}
 
 }
@@ -134,15 +136,18 @@ stop(my_condition())
 }
 'cnd::condition_generator' objects are not conditions.   You may have made this mistake:
 
-\if{html}{\out{<div class="sourceCode r">}}\preformatted{x <- condition('my_condition')
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{
+x <- condition("my_condition")
 conditionMessage(x)
+
 }\if{html}{\out{</div>}}
 
-Condition generators need to be called first before they can be used as
-conditions.  Try this instead:
+Condition generators need to be called first before they can be used as conditions.  Try this instead:
 
-\if{html}{\out{<div class="sourceCode r">}}\preformatted{x <- condition('my_condition')
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{
+x <- condition("my_condition")
 conditionMessage(x())
+
 }\if{html}{\out{</div>}}
 
 }
@@ -166,10 +171,11 @@ For example:
 
 \if{html}{\out{<div class="sourceCode r">}}\preformatted{
 # Instead of this
-conditions('class', 'package') # 'package' is ignored with a warning
+conditions("class", "package") # "package" is ignored with a warning
 
 # Do this
-conditions(class = 'class', package = 'package')
+conditions(class = "class", package = "package")
+
 }\if{html}{\out{</div>}}
 
 }

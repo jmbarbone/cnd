@@ -130,6 +130,10 @@ match_arg <- function(arg, choices, .call = NULL, .null_as_default = FALSE) {
 }
 
 
+rcode <- function(...) {
+  collapse("```r\n", ..., "\n```", sep = "\n")
+}
+
 # conditions --------------------------------------------------------------
 
 cond_match_arg <- NULL

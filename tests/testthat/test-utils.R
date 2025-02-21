@@ -24,3 +24,10 @@ test_that("clean_text() strips leading/trailing blank lines", {
     c("foo", "bar")
   )
 })
+
+test_that("rcode()", {
+  expect_type(rcode("one"), "character")
+  expect_snapshot(
+    cat(rcode("expect_snapshot(rcode)"))
+  )
+})

@@ -71,7 +71,6 @@ test_documentation <- function(package) {
 
   skip_if_not_installed("roxygen2")
   parsed <- roxygen2::parse_text(readLines(path)[-1:-2], test_env())
-  # browser()
   expect_failure(expect_identical(parsed, list()))
 }
 
