@@ -89,6 +89,7 @@ cnd_document <- function(
   on.exit(if (isOpen(temp)) close(temp), add = TRUE)
   cat(text, file = temp, sep = "")
   res <- c(paste("#'", readLines(temp)), "NULL")
+  res <- trimws(res)
 
   if (is.null(file)) {
     return(res)
