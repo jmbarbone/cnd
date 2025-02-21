@@ -3,16 +3,15 @@
 #' @name cep-cnd-conditions
 #' @aliases cep-cnd-conditions cep:bad_argument bad_argument cep:bad_argument/error
 #' @title Conditions for `cep`
-#'
-#' @details
-#'  The following conditions are defined in the `{cep}` package.
-#'
-#' @section [`{cnd}`][cnd-package]:
-#'  These conditions are made with the `{cnd}` package though the use of
-#'  [cnd::condition()].
-#'
-#' @section `{cep}` conditions:
 #' 
+#' @details
+#'   The following conditions are defined in the `{cep}` package.
+#' 
+#' @section [`{cnd}`][cnd-package]:
+#'   These conditions are made with the `{cnd}` package though the use of
+#'   [cnd::condition()].
+#' 
+#' @section `{cep}` conditions:
 #' 
 #'   \subsection{`cep:bad_argument/error`}{
 #'   \describe{
@@ -21,10 +20,8 @@
 #'     \item{type}{**error**}
 #'   }
 #'   x should be `TRUE`
-#'   }
-#'
-#'
+#'  }
+#' 
 #' @seealso [cnd::cnd-package] [cnd::condition]
-#' @export
 #' @keywords internal
-'_PACKAGE'
+NULL

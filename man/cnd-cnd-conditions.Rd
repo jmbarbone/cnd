@@ -78,7 +78,6 @@ stop(my_condition())
 }\if{html}{\out{</div>}}
 
 }
-
 \subsection{\code{cnd:cnd_document_conditions/warning}}{
 \describe{
 \item{package}{\code{{cnd}}}
@@ -87,7 +86,6 @@ stop(my_condition())
 }
 \emph{no help documentation provided}
 }
-
 \subsection{\code{cnd:cnd_document_file/error}}{
 \describe{
 \item{package}{\code{{cnd}}}
@@ -96,7 +94,6 @@ stop(my_condition())
 }
 \emph{no help documentation provided}
 }
-
 \subsection{\code{cnd:cnd_document_pkg_reg/error}}{
 \describe{
 \item{package}{\code{{cnd}}}
@@ -105,7 +102,6 @@ stop(my_condition())
 }
 \emph{no help documentation provided}
 }
-
 \subsection{\code{cnd:cnd_generated_cleanup/message}}{
 \describe{
 \item{package}{\code{{cnd}}}
@@ -114,7 +110,6 @@ stop(my_condition())
 }
 \emph{no help documentation provided}
 }
-
 \subsection{\code{cnd:cnd_generated_write/condition}}{
 \describe{
 \item{package}{\code{{cnd}}}
@@ -123,7 +118,6 @@ stop(my_condition())
 }
 \emph{no help documentation provided}
 }
-
 \subsection{\code{cnd:cond_cnd_class/error}}{
 \describe{
 \item{package}{\code{{cnd}}}
@@ -132,7 +126,6 @@ stop(my_condition())
 }
 \code{\link[=cnd]{cnd()}} simple calls the appropriate function: \code{\link[=stop]{stop()}}, \code{\link[=warning]{warning()}}, or \code{\link[=message]{message()}} based on the \code{type} parameter from \code{\link[=condition]{condition()}}.
 }
-
 \subsection{\code{cnd:condition_message_generator/error}}{
 \describe{
 \item{package}{\code{{cnd}}}
@@ -153,7 +146,6 @@ conditionMessage(x())
 }\if{html}{\out{</div>}}
 
 }
-
 \subsection{\code{cnd:condition_overwrite/warning}}{
 \describe{
 \item{package}{\code{{cnd}}}
@@ -162,7 +154,6 @@ conditionMessage(x())
 }
 \emph{no help documentation provided}
 }
-
 \subsection{\code{cnd:conditions_dots/warning}}{
 \describe{
 \item{package}{\code{{cnd}}}
@@ -182,7 +173,6 @@ conditions(class = 'class', package = 'package')
 }\if{html}{\out{</div>}}
 
 }
-
 \subsection{\code{cnd:invalid_condition/error}}{
 \describe{
 \item{package}{\code{{cnd}}}
@@ -191,7 +181,6 @@ conditions(class = 'class', package = 'package')
 }
 The \code{class}, \code{exports}, and \code{help} parameters must be a single character string.  If you are passing a function, it must be a valid function.
 }
-
 \subsection{\code{cnd:invalid_condition_message/error}}{
 \describe{
 \item{package}{\code{{cnd}}}
@@ -202,7 +191,6 @@ Conditions messages are displayed when invoked through \code{\link[=conditionMes
 
 When \code{message} is not set, a default "there was an error" message is used.
 }
-
 \subsection{\code{cnd:match_arg/error}}{
 \describe{
 \item{package}{\code{{cnd}}}
@@ -211,7 +199,6 @@ When \code{message} is not set, a default "there was an error" message is used.
 }
 Mostly \code{\link[=match.arg]{match.arg()}} but with a custom condition
 }
-
 \subsection{\code{cnd:no_package_exports/warning}}{
 \describe{
 \item{package}{\code{{cnd}}}

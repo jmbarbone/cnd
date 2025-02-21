@@ -1,4 +1,22 @@
 #' @keywords internal
+#' @seealso [condition()] [cnd-cnd-conditions]
+#' @section Options:
+#'   \describe{
+#'     \item{`cnd.cli.override`\cr`["on"|"off"|"none"]`}{
+#'       Controls override for printing messages from `{cli}`.  When `"on"` or
+#'       `"off"`, messages will be overridden to that state.  When `"none"`,
+#'       `{cli}` will be used to determine appropriate state.
+#'     }
+#'     \item{`cnd.condition.message`\cr`["verbose"|"simple"]`}{
+#'       How messages should be printed from conditions.  `"verbose"` will
+#'       provide the message, information about the condition's class, and call
+#'       information.  `"simple"` will only provide the message.
+#'     }
+#'     \item{`cnd.call`\cr`[TRUE|FALSE]`}{
+#'       Whether to print the call that generated the condition.  This is
+#'       embedded within the `conditionCall()` method.
+#'     }
+#'   }
 "_PACKAGE"
 
 ## usethis namespace: start

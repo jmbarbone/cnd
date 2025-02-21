@@ -27,6 +27,9 @@ test_that("documentation() works", {
 
   expect_type(cnd_document("cnd", file = NULL), "character")
   expect_type(cnd_section("cnd"), "character")
+})
+
+test_that("test_documentation('cnd')", {
   test_documentation("cnd")
 })
 

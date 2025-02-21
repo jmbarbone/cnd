@@ -70,7 +70,8 @@ test_documentation <- function(package) {
   expect_condition(cnd_document(package = package, file = path), NA)
 
   skip_if_not_installed("roxygen2")
-  parsed <- roxygen2::parse_text(readLines(path)[-1:-2], NULL)
+  parsed <- roxygen2::parse_text(readLines(path)[-1:-2], test_env())
+  # browser()
   expect_failure(expect_identical(parsed, list()))
 }
 
