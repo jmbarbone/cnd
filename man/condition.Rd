@@ -172,7 +172,19 @@ stop(my_condition())
 }
 
 \item{\code{\link[=cnd-cnd-conditions]{cnd:condition_message_generator/error}}}{
-'cnd::condition_generator' objects are not conditions.   You may have made this mistake: \verb{rx <- condition('my_condition')conditionMessage(x)}Condition generators need to be called first before they can be used as conditions.  Try this instead:\verb{rx <- condition('my_condition')conditionMessage(x())}
+'cnd::condition_generator' objects are not conditions.   You may have made this mistake:
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{x <- condition('my_condition')
+conditionMessage(x)
+}\if{html}{\out{</div>}}
+
+Condition generators need to be called first before they can be used as
+conditions.  Try this instead:
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{x <- condition('my_condition')
+conditionMessage(x())
+}\if{html}{\out{</div>}}
+
 }
 
 \item{\code{\link[=cnd-cnd-conditions]{cnd:condition_overwrite/warning}}}{
@@ -180,7 +192,18 @@ stop(my_condition())
 }
 
 \item{\code{\link[=cnd-cnd-conditions]{cnd:conditions_dots/warning}}}{
-The \code{...} parameter in \code{\link[=conditions]{conditions()}} is meant for convenience.  Onlya single argument is alowed.  Other parameters must be named  explicitly.For example:\code{r# Instead of thisconditions('class', 'package') # 'package' is ignored with a warning# Do thisconditions(class = 'class', package = 'package')}
+The \code{...} parameter in \code{\link[=conditions]{conditions()}} is meant for convenience.  Only a single argument is alowed.  Other parameters must be named  explicitly.
+
+For example:
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{
+# Instead of this
+conditions('class', 'package') # 'package' is ignored with a warning
+
+# Do this
+conditions(class = 'class', package = 'package')
+}\if{html}{\out{</div>}}
+
 }
 
 \item{\code{\link[=cnd-cnd-conditions]{cnd:invalid_condition/error}}}{

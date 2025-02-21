@@ -100,7 +100,20 @@
 #'     \item{class}{`cnd:condition_message_generator`}
 #'     \item{type}{**error**}
 #'   }
-#'   'cnd::condition_generator' objects are not conditions.   You may have made this mistake: ```rx <- condition('my_condition')conditionMessage(x)```Condition generators need to be called first before they can be used as conditions.  Try this instead:```rx <- condition('my_condition')conditionMessage(x())```
+#'   'cnd::condition_generator' objects are not conditions.   You may have made this mistake: 
+#'   
+#'   ```r
+#'   x <- condition('my_condition')
+#'   conditionMessage(x)
+#'   ```
+#'   
+#'   Condition generators need to be called first before they can be used as
+#'    conditions.  Try this instead:
+#'   
+#'   ```r
+#'   x <- condition('my_condition')
+#'   conditionMessage(x())
+#'   ```
 #'   }
 #'
 #' 
@@ -120,7 +133,18 @@
 #'     \item{class}{`cnd:conditions_dots`}
 #'     \item{type}{**warning**}
 #'   }
-#'   The `...` parameter in [conditions()] is meant for convenience.  Onlya single argument is alowed.  Other parameters must be named  explicitly.For example:```r# Instead of thisconditions('class', 'package') # 'package' is ignored with a warning# Do thisconditions(class = 'class', package = 'package')```
+#'   The `...` parameter in [conditions()] is meant for convenience.  Only a single argument is alowed.  Other parameters must be named  explicitly.
+#'   
+#'   For example:
+#'   
+#'   ```r
+#'   
+#'   # Instead of this
+#'   conditions('class', 'package') # 'package' is ignored with a warning
+#'   
+#'   # Do this
+#'   conditions(class = 'class', package = 'package')
+#'   ```
 #'   }
 #'
 #' 
@@ -169,4 +193,4 @@
 #' @seealso [cnd::cnd-package] [cnd::condition]
 #' @export
 #' @keywords internal
-'_PACKAGE'
+NULL

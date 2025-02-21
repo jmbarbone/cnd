@@ -544,8 +544,8 @@ delayedAssign(
       "Conditions messages are displayed when invoked through",
       " [conditionMessage()].  You can set a static message by passing through",
       " a `character` vector, or a dynamic message by passing through a",
-      " `function`.  The function should return a `character` vector.\n",
-      "\n",
+      " `function`.  The function should return a `character` vector.",
+      "\n\n",
       "When `message` is not set, a default \"there was an error\" message is",
       " used."
     )
@@ -633,20 +633,22 @@ delayedAssign(
     exports = "conditions",
     package = "cnd",
     help = c(
-      "The `...` parameter in [conditions()] is meant for convenience.  Only",
+      "The `...` parameter in [conditions()] is meant for convenience.  Only ",
       "a single argument is alowed.  Other parameters must be named ",
       " explicitly.",
-      "",
+      "\n\n",
       "For example:",
-      "",
-      "```r",
-      "# Instead of this",
-      "conditions('class', 'package') # 'package' is ignored with a warning",
-      "",
-      "# Do this",
-      "conditions(class = 'class', package = 'package')",
-      "```",
-      ""
+      "\n\n",
+      collapse(
+        "```r\n",
+        "# Instead of this",
+        "conditions('class', 'package') # 'package' is ignored with a warning",
+        "",
+        "# Do this",
+        "conditions(class = 'class', package = 'package')",
+        "```",
+        sep = "\n"
+      )
     )
   )
 )
@@ -667,19 +669,22 @@ delayedAssign(
     help = c(
       "'cnd::condition_generator' objects are not conditions.   You may have",
       " made this mistake: ",
-      "",
-      "```r",
-      "x <- condition('my_condition')",
-      "conditionMessage(x)",
-      "```",
-      "",
-      "Condition generators need to be called first before they can be used as",
-      " conditions.  Try this instead:",
-      "",
-      "```r",
-      "x <- condition('my_condition')",
-      "conditionMessage(x())",
-      "```"
+      "\n\n",
+      collapse(
+        "```r",
+        "x <- condition('my_condition')",
+        "conditionMessage(x)",
+        "```",
+        "",
+        "Condition generators need to be called first before they can be used as",
+        " conditions.  Try this instead:",
+        "",
+        "```r",
+        "x <- condition('my_condition')",
+        "conditionMessage(x())",
+        "```",
+        sep = "\n"
+      )
     )
   )
 )

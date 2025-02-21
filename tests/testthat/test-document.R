@@ -29,3 +29,8 @@ test_that("documentation() works", {
   expect_type(cnd_section("cnd"), "character")
   test_documentation("cnd")
 })
+
+test_that("snapshots", {
+  expect_snapshot(cat(cnd_section("cnd")))
+  expect_snapshot(cnd_document("cnd", file = stdout()))
+})
