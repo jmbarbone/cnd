@@ -87,7 +87,7 @@ cnd_document <- function(
 
   temp <- file()
   on.exit(if (isOpen(temp)) close(temp), add = TRUE)
-  cat(text, file = temp, sep = "")
+  cat(text, sep = "\n", file = temp)
   res <- c(paste("#'", readLines(temp)), "NULL")
   res <- trimws(res)
 
@@ -96,7 +96,7 @@ cnd_document <- function(
   }
 
   if (inherits(file, "connection")) {
-    cat(res, file = file, sep = "")
+    cat(res, sep = "\n", file = file)
     return(invisible(file))
   }
 
@@ -132,7 +132,7 @@ cnd_document <- function(
   }
 
   cnd(cond_cnd_generated_write(file))
-  writeLines(res, file)
+  cat(res, sep = "\n", file = file)
   invisible(file)
 }
 
