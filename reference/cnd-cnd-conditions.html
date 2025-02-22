@@ -68,13 +68,11 @@
 
 </dl><p>You cannot coerce a <a href="condition.html">condition_generator</a> object to a character. This may have occurred when trying to put a condition function through <code><a href="https://rdrr.io/r/base/stop.html" class="external-link">stop()</a></code> or <a href="https://rdrr.io/r/base/warning.html" class="external-link">warning</a>.  Instead, call the function first, then pass the result to <code><a href="https://rdrr.io/r/base/stop.html" class="external-link">stop()</a></code> or <code><a href="https://rdrr.io/r/base/warning.html" class="external-link">warning()</a></code>.</p>
 <p>For example:</p>
-<p></p><div class="sourceCode r"><pre><code><span></span>
-<span><span class="co"># Instead of this</span></span>
+<p></p><div class="sourceCode r"><pre><code><span><span class="co"># Instead of this</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/stop.html" class="external-link">stop</a></span><span class="op">(</span><span class="va">my_condition</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Do this</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/stop.html" class="external-link">stop</a></span><span class="op">(</span><span class="fu">my_condition</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
-<span></span></code></pre><p></p></div>
+<span><span class="kw"><a href="https://rdrr.io/r/base/stop.html" class="external-link">stop</a></span><span class="op">(</span><span class="fu">my_condition</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre><p></p></div>
 </div>
 <div class="section">
 <h3 id="cnd-cnd-document-conditions-warning"><code>cnd:cnd_document_conditions/warning</code><a class="anchor" aria-label="anchor" href="#cnd-cnd-document-conditions-warning"></a></h3>
@@ -179,16 +177,12 @@
 <dd><p><strong>error</strong></p></dd>
 
 
-</dl><p>'cnd::condition_generator' objects are not conditions.   You may have made this mistake:</p>
-<p></p><div class="sourceCode r"><pre><code><span></span>
-<span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/condition.html">condition</a></span><span class="op">(</span><span class="st">"my_condition"</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/conditions.html" class="external-link">conditionMessage</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
-<span></span></code></pre><p></p></div>
+</dl><p><a href="condition.html">condition_generator</a> objects are not conditions.   You may have made this mistake:</p>
+<p></p><div class="sourceCode r"><pre><code><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/condition.html">condition</a></span><span class="op">(</span><span class="st">"my_condition"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/conditions.html" class="external-link">conditionMessage</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></code></pre><p></p></div>
 <p>Condition generators need to be called first before they can be used as conditions.  Try this instead:</p>
-<p></p><div class="sourceCode r"><pre><code><span></span>
-<span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/condition.html">condition</a></span><span class="op">(</span><span class="st">"my_condition"</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/conditions.html" class="external-link">conditionMessage</a></span><span class="op">(</span><span class="fu">x</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
-<span></span></code></pre><p></p></div>
+<p></p><div class="sourceCode r"><pre><code><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/condition.html">condition</a></span><span class="op">(</span><span class="st">"my_condition"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/conditions.html" class="external-link">conditionMessage</a></span><span class="op">(</span><span class="fu">x</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre><p></p></div>
 </div>
 <div class="section">
 <h3 id="cnd-condition-overwrite-warning"><code>cnd:condition_overwrite/warning</code><a class="anchor" aria-label="anchor" href="#cnd-condition-overwrite-warning"></a></h3>
@@ -220,13 +214,11 @@
 
 </dl><p>The <code>...</code> parameter in <code><a href="condition.html">conditions()</a></code> is meant for convenience.  Only a single argument is allowed.  Other parameters must be named  explicitly.</p>
 <p>For example:</p>
-<p></p><div class="sourceCode r"><pre><code><span></span>
-<span><span class="co"># Instead of this</span></span>
+<p></p><div class="sourceCode r"><pre><code><span><span class="co"># Instead of this</span></span>
 <span><span class="fu"><a href="../reference/condition.html">conditions</a></span><span class="op">(</span><span class="st">"class"</span>, <span class="st">"package"</span><span class="op">)</span> <span class="co"># "package" is ignored with a warning</span></span>
 <span></span>
 <span><span class="co"># Do this</span></span>
-<span><span class="fu"><a href="../reference/condition.html">conditions</a></span><span class="op">(</span>class <span class="op">=</span> <span class="st">"class"</span>, package <span class="op">=</span> <span class="st">"package"</span><span class="op">)</span></span>
-<span></span></code></pre><p></p></div>
+<span><span class="fu"><a href="../reference/condition.html">conditions</a></span><span class="op">(</span>class <span class="op">=</span> <span class="st">"class"</span>, package <span class="op">=</span> <span class="st">"package"</span><span class="op">)</span></span></code></pre><p></p></div>
 </div>
 <div class="section">
 <h3 id="cnd-invalid-condition-error"><code>cnd:invalid_condition/error</code><a class="anchor" aria-label="anchor" href="#cnd-invalid-condition-error"></a></h3>

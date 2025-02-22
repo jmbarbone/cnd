@@ -119,7 +119,7 @@
 <blockquote>
 <p>Note: <code>condition</code> is of mode “function” but does not retain “function” as a class. <code>condition</code> also has several conditions which can be signaled directly or indirectly.</p>
 </blockquote>
-<p>Use <code><a href="reference/condition.html">condition()</a></code> to create a generator, then use that generator within your functions:</p>
+<p>Use <code><a href="reference/condition.html">condition()</a></code> to create a <em>generator</em>, then use that <em>generator</em> within your functions:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># cnd::condition_generator</span></span>
 <span><span class="va">bad_value</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/condition.html">condition</a></span><span class="op">(</span><span class="st">"bad_value"</span>, message <span class="op">=</span> <span class="st">"Value has to be better"</span><span class="op">)</span></span>
@@ -278,7 +278,7 @@
 <span id="cb10-21"><a href="#cb10-21" tabindex="-1"></a><span class="co">#&gt; cnd:conditions_dots/warning </span></span>
 <span id="cb10-22"><a href="#cb10-22" tabindex="-1"></a><span class="co">#&gt; </span></span>
 <span id="cb10-23"><a href="#cb10-23" tabindex="-1"></a><span class="co">#&gt; help</span></span>
-<span id="cb10-24"><a href="#cb10-24" tabindex="-1"></a><span class="co">#&gt; The `...` parameter in [conditions()] is meant for convenience.  Only a single argument is allowed.  Other parameters must be named  explicitly.  For example:  ```r  # Instead of this conditions("class", "package") # "package" is ignored with a warning  # Do this conditions(class = "class", package = "package")  ``` </span></span>
+<span id="cb10-24"><a href="#cb10-24" tabindex="-1"></a><span class="co">#&gt; The `...` parameter in [conditions()] is meant for convenience.  Only a single argument is allowed.  Other parameters must be named  explicitly.  For example:  ```r # Instead of this conditions("class", "package") # "package" is ignored with a warning  # Do this conditions(class = "class", package = "package") ``` </span></span>
 <span id="cb10-25"><a href="#cb10-25" tabindex="-1"></a><span class="co">#&gt; </span></span>
 <span id="cb10-26"><a href="#cb10-26" tabindex="-1"></a><span class="co">#&gt; exports</span></span>
 <span id="cb10-27"><a href="#cb10-27" tabindex="-1"></a><span class="co">#&gt;   cnd::conditions()</span></span>
