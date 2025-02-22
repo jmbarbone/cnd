@@ -19,7 +19,7 @@
 #'     \item{class}{`cnd:as_character_cnd_error`}
 #'     \item{type}{**error**}
 #'   }
-#'   You cannot coerce a [cnd::condition_generator] object to a character. This may have occured when trying to put a condition function through [stop()] or [warning].  Instead, call the function first, then pass the result to [stop()] or [warning()].
+#'   You cannot coerce a [cnd::condition_generator] object to a character. This may have occurred when trying to put a condition function through [stop()] or [warning].  Instead, call the function first, then pass the result to [stop()] or [warning()].
 #'
 #'   For example:
 #'   ```r
@@ -118,7 +118,7 @@
 #'     \item{class}{`cnd:conditions_dots`}
 #'     \item{type}{**warning**}
 #'   }
-#'   The `...` parameter in [conditions()] is meant for convenience.  Only a single argument is alowed.  Other parameters must be named  explicitly.
+#'   The `...` parameter in [conditions()] is meant for convenience.  Only a single argument is allowed.  Other parameters must be named  explicitly.
 #'
 #'   For example:
 #'
@@ -169,4 +169,5 @@
 #'
 #' @seealso [cnd::cnd-package] [cnd::condition]
 #' @keywords internal
+#'
 NULL

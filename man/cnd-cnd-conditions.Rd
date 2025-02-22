@@ -66,7 +66,7 @@ These conditions are made with the \code{{cnd}} package though the use of
 \item{class}{\code{cnd:as_character_cnd_error}}
 \item{type}{\strong{error}}
 }
-You cannot coerce a \link{condition_generator} object to a character. This may have occured when trying to put a condition function through \code{\link[=stop]{stop()}} or \link{warning}.  Instead, call the function first, then pass the result to \code{\link[=stop]{stop()}} or \code{\link[=warning]{warning()}}.
+You cannot coerce a \link{condition_generator} object to a character. This may have occurred when trying to put a condition function through \code{\link[=stop]{stop()}} or \link{warning}.  Instead, call the function first, then pass the result to \code{\link[=stop]{stop()}} or \code{\link[=warning]{warning()}}.
 
 For example:
 
@@ -165,7 +165,7 @@ conditionMessage(x())
 \item{class}{\code{cnd:conditions_dots}}
 \item{type}{\strong{warning}}
 }
-The \code{...} parameter in \code{\link[=conditions]{conditions()}} is meant for convenience.  Only a single argument is alowed.  Other parameters must be named  explicitly.
+The \code{...} parameter in \code{\link[=conditions]{conditions()}} is meant for convenience.  Only a single argument is allowed.  Other parameters must be named  explicitly.
 
 For example:
 

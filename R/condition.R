@@ -582,7 +582,7 @@ delayedAssign(
     exports = "condition",
     help = c(
       "You cannot coerce a [cnd::condition_generator] object to a character. ",
-      "This may have occured when trying to put a condition function through ",
+      "This may have occurred when trying to put a condition function through ",
       "[stop()] or [warning].  Instead, call the function first, then pass the",
       " result to [stop()] or [warning()].",
       "\n\n",
@@ -631,7 +631,7 @@ delayedAssign(
     package = "cnd",
     help = c(
       "The `...` parameter in [conditions()] is meant for convenience.  Only ",
-      "a single argument is alowed.  Other parameters must be named ",
+      "a single argument is allowed.  Other parameters must be named ",
       " explicitly.",
       "\n\n",
       "For example:",
