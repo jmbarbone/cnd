@@ -166,6 +166,34 @@ local(envir = registrar, {
     .__REGISTRIES__.
   }
 
+  check <- function(package) {
+
+    if (exists(package, .__REGISTRIES__.)) {
+      return()
+    }
+
+    if (!requireNamespace(package, quietly = TRUE)) {
+      return()
+    }
+
+    ns <- asNamespace(package)
+
+    reg <-
+      get0(".__CND_REGISTRY__.", ns, inherits = FALSE) %||%
+      Filter(
+        function(i) inherits(i, "cnd:registry"),
+        as.list(ns, all.names = TRUE)
+      )
+
+    if (is.list(reg)) {
+      reg <- reg[[1L]]
+    }
+
+    if (length(reg)) {
+      .self$add(reg)
+    }
+  }
+
   ls <- .self$list
   rm <- .self$remove
   # a new environment for each registry

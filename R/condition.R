@@ -224,6 +224,10 @@ conditions <- function(
     return(attr(fun, "conditions"))
   }
 
+  if (!is.null(package)) {
+    registrar$check(package)
+  }
+
   if (is.null(registry)) {
     conds <- Reduce(
       "c",

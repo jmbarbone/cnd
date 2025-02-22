@@ -5,6 +5,7 @@
     Output
       REGISTRAR
         add
+        check
         create
         get
         list
