@@ -20,8 +20,12 @@ The following conditions are associated with this function:
 
 \describe{
 
+\item{\code{\link[=cep-cnd-conditions]{cep:bad_argument/error}}}{
+x should be \code{TRUE}
 }
 
-For more conditions, see:
+}
+
+For more conditions, see: \link{cep-cnd-conditions}
 }
 

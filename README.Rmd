@@ -175,14 +175,16 @@ cnd_document()
 If you want to include other information directly within your roxygen comments, you can use the `cnd_section()` function to grab all the conditions from a single functions and print out roxygen-friendly _section_ information:
 
 ```{r}
-cat(cnd_section("cnd"))
+cat(cnd_section(cnd))
 ```
 
 Typically, you may want to use this as such:
 
-```r
+```{r}
+#| echo: true
+#| eval: false
 #' @section Conditions:
-#' `r cnd_section("my_function")`
+#' `r cnd_section(my_function)`
 ```
 
 ## Retrieval

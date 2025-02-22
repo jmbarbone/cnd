@@ -120,19 +120,6 @@ The following conditions are associated with this function:
 
 \describe{
 
-}
-
-For more conditions, see:
-}
-
-\section{\code{\link[=cnd]{cnd()}} conditions}{
-
-
-Conditions are generated through the \code{\link[=cnd-package]{\{cnd\}}} package.
-The following conditions are associated with this function:
-
-\describe{
-
 \item{\code{\link[=cnd-cnd-conditions]{cnd:as_character_cnd_error/error}}}{
 You cannot coerce a \link{condition_generator} object to a character. This may have occurred when trying to put a condition function through \code{\link[=stop]{stop()}} or \link{warning}.  Instead, call the function first, then pass the result to \code{\link[=stop]{stop()}} or \code{\link[=warning]{warning()}}.
 
@@ -147,30 +134,6 @@ stop(my_condition())
 
 }\if{html}{\out{</div>}}
 
-}
-
-\item{\code{\link[=cnd-cnd-conditions]{cnd:cnd_document_conditions/warning}}}{
-
-}
-
-\item{\code{\link[=cnd-cnd-conditions]{cnd:cnd_document_file/error}}}{
-
-}
-
-\item{\code{\link[=cnd-cnd-conditions]{cnd:cnd_document_pkg_reg/error}}}{
-
-}
-
-\item{\code{\link[=cnd-cnd-conditions]{cnd:cnd_generated_cleanup/message}}}{
-
-}
-
-\item{\code{\link[=cnd-cnd-conditions]{cnd:cnd_generated_write/condition}}}{
-
-}
-
-\item{\code{\link[=cnd-cnd-conditions]{cnd:cond_cnd_class/error}}}{
-\code{\link[=cnd]{cnd()}} simple calls the appropriate function: \code{\link[=stop]{stop()}}, \code{\link[=warning]{warning()}}, or \code{\link[=message]{message()}} based on the \code{type} parameter from \code{\link[=condition]{condition()}}.
 }
 
 \item{\code{\link[=cnd-cnd-conditions]{cnd:condition_message_generator/error}}}{
@@ -196,22 +159,6 @@ conditionMessage(x())
 
 }
 
-\item{\code{\link[=cnd-cnd-conditions]{cnd:conditions_dots/warning}}}{
-The \code{...} parameter in \code{\link[=conditions]{conditions()}} is meant for convenience.  Only a single argument is allowed.  Other parameters must be named  explicitly.
-
-For example:
-
-\if{html}{\out{<div class="sourceCode r">}}\preformatted{
-# Instead of this
-conditions("class", "package") # "package" is ignored with a warning
-
-# Do this
-conditions(class = "class", package = "package")
-
-}\if{html}{\out{</div>}}
-
-}
-
 \item{\code{\link[=cnd-cnd-conditions]{cnd:invalid_condition/error}}}{
 The \code{class}, \code{exports}, and \code{help} parameters must be a single character string.  If you are passing a function, it must be a valid function.
 }
@@ -228,6 +175,23 @@ Mostly \code{\link[=match.arg]{match.arg()}} but with a custom condition
 
 \item{\code{\link[=cnd-cnd-conditions]{cnd:no_package_exports/warning}}}{
 The \code{exports} parameter requires a \code{package}
+}
+
+}
+
+For more conditions, see: \link{cnd-cnd-conditions}
+}
+
+\section{\code{\link[=cnd]{cnd()}} conditions}{
+
+
+Conditions are generated through the \code{\link[=cnd-package]{\{cnd\}}} package.
+The following conditions are associated with this function:
+
+\describe{
+
+\item{\code{\link[=cnd-cnd-conditions]{cnd:cond_cnd_class/error}}}{
+\code{\link[=cnd]{cnd()}} simple calls the appropriate function: \code{\link[=stop]{stop()}}, \code{\link[=warning]{warning()}}, or \code{\link[=message]{message()}} based on the \code{type} parameter from \code{\link[=condition]{condition()}}.
 }
 
 }

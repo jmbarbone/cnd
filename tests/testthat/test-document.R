@@ -26,7 +26,7 @@ test_that("documentation() works", {
   expect_s3_class(cnd_document("cnd", file = con), "connection")
 
   expect_type(cnd_document("cnd", file = NULL), "character")
-  expect_type(cnd_section("cnd"), "character")
+  expect_type(cnd_section(cnd), "character")
 })
 
 test_that("test_documentation('cnd')", {
@@ -34,6 +34,6 @@ test_that("test_documentation('cnd')", {
 })
 
 test_that("snapshots", {
-  expect_snapshot(cat(cnd_section("cnd")))
+  expect_snapshot(cat(cnd_section(cnd)))
   expect_snapshot(cnd_document("cnd", file = stdout()))
 })

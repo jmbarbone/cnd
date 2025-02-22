@@ -54,9 +54,29 @@ The following conditions are associated with this function:
 
 \describe{
 
+\item{\code{\link[=cnd-cnd-conditions]{cnd:cnd_document_conditions/warning}}}{
+
 }
 
-For more conditions, see:
+\item{\code{\link[=cnd-cnd-conditions]{cnd:cnd_document_file/error}}}{
+
+}
+
+\item{\code{\link[=cnd-cnd-conditions]{cnd:cnd_document_pkg_reg/error}}}{
+
+}
+
+\item{\code{\link[=cnd-cnd-conditions]{cnd:cnd_generated_cleanup/message}}}{
+
+}
+
+\item{\code{\link[=cnd-cnd-conditions]{cnd:cnd_generated_write/condition}}}{
+
+}
+
+}
+
+For more conditions, see: \link{cnd-cnd-conditions}
 }
 
 \examples{

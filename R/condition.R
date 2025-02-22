@@ -31,11 +31,11 @@
 #'
 #' @section [condition()] conditions:
 #'
-#'   `r cnd_section("condition")`
+#'   `r cnd_section(condition)`
 #'
 #' @section [cnd()] conditions:
 #'
-#'   `r cnd_section("cnd")`
+#'   `r cnd_section(cnd)`
 #'
 #' @returns
 #' - [condition()] a `cnd::condition_generator` object

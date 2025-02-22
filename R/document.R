@@ -17,7 +17,7 @@
 #'
 #' @section conditions:
 #'
-#'   `r cnd_section("cnd_document")`
+#'   `r cnd_section(cnd_document)`
 #'
 #' @export
 #' @returns
@@ -142,7 +142,7 @@ cnd_document <- function(
 #' @returns
 #' - [cnd_section()] A `character` vector of the documentation
 cnd_section <- function(fun) {
-  conds <- conditions(fun)
+  conds <- conditions(fun = fun)
   fmt(
     cnd_section_fmt,
     conds = collapse(

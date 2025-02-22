@@ -1,7 +1,7 @@
 # snapshots
 
     Code
-      cat(cnd_section("cnd"))
+      cat(cnd_section(cnd))
     Output
       
       Conditions are generated through the [`{cnd}`][cnd::cnd-package] package.
@@ -9,101 +9,8 @@
       
       \describe{
         
-        \item{[`cnd:as_character_cnd_error/error`][cnd-cnd-conditions]}{
-          You cannot coerce a [cnd::condition_generator] object to a character. This may have occurred when trying to put a condition function through [stop()] or [warning].  Instead, call the function first, then pass the result to [stop()] or [warning()].
-      
-      For example:
-      ```r
-      
-      # Instead of this
-      stop(my_condition)
-      
-      # Do this
-      stop(my_condition())
-      
-      ```
-        }
-      
-        \item{[`cnd:cnd_document_conditions/warning`][cnd-cnd-conditions]}{
-          
-        }
-      
-        \item{[`cnd:cnd_document_file/error`][cnd-cnd-conditions]}{
-          
-        }
-      
-        \item{[`cnd:cnd_document_pkg_reg/error`][cnd-cnd-conditions]}{
-          
-        }
-      
-        \item{[`cnd:cnd_generated_cleanup/message`][cnd-cnd-conditions]}{
-          
-        }
-      
-        \item{[`cnd:cnd_generated_write/condition`][cnd-cnd-conditions]}{
-          
-        }
-      
         \item{[`cnd:cond_cnd_class/error`][cnd-cnd-conditions]}{
           [cnd()] simple calls the appropriate function: [stop()], [warning()], or [message()] based on the `type` parameter from [cnd::condition()].
-        }
-      
-        \item{[`cnd:condition_message_generator/error`][cnd-cnd-conditions]}{
-          'cnd::condition_generator' objects are not conditions.   You may have made this mistake: 
-      
-      ```r
-      
-      x <- condition("my_condition")
-      conditionMessage(x)
-      
-      ```
-      
-      Condition generators need to be called first before they can be used as conditions.  Try this instead:
-      
-      ```r
-      
-      x <- condition("my_condition")
-      conditionMessage(x())
-      
-      ```
-        }
-      
-        \item{[`cnd:condition_overwrite/warning`][cnd-cnd-conditions]}{
-          
-        }
-      
-        \item{[`cnd:conditions_dots/warning`][cnd-cnd-conditions]}{
-          The `...` parameter in [conditions()] is meant for convenience.  Only a single argument is allowed.  Other parameters must be named  explicitly.
-      
-      For example:
-      
-      ```r
-      
-      # Instead of this
-      conditions("class", "package") # "package" is ignored with a warning
-      
-      # Do this
-      conditions(class = "class", package = "package")
-      
-      ```
-        }
-      
-        \item{[`cnd:invalid_condition/error`][cnd-cnd-conditions]}{
-          The `class`, `exports`, and `help` parameters must be a single character string.  If you are passing a function, it must be a valid function.
-        }
-      
-        \item{[`cnd:invalid_condition_message/error`][cnd-cnd-conditions]}{
-          Conditions messages are displayed when invoked through [conditionMessage()].  You can set a static message by passing through a `character` vector, or a dynamic message by passing through a `function`.  The function should return a `character` vector.
-      
-      When `message` is not set, a default "there was an error" message is used.
-        }
-      
-        \item{[`cnd:match_arg/error`][cnd-cnd-conditions]}{
-          Mostly [match.arg()] but with a custom condition
-        }
-      
-        \item{[`cnd:no_package_exports/warning`][cnd-cnd-conditions]}{
-          The `exports` parameter requires a `package`
         }
       
       }
