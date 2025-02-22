@@ -45,13 +45,11 @@
       #'
       #'   For example:
       #'   ```r
-      #'
       #'   # Instead of this
       #'   stop(my_condition)
       #'
       #'   # Do this
       #'   stop(my_condition())
-      #'
       #'   ```
       #'  }
       #'   \subsection{`cnd:cnd_document_conditions/warning`}{
@@ -108,22 +106,18 @@
       #'     \item{class}{`cnd:condition_message_generator`}
       #'     \item{type}{**error**}
       #'   }
-      #'   'cnd::condition_generator' objects are not conditions.   You may have made this mistake:
+      #'   [cnd::condition_generator] objects are not conditions.   You may have made this mistake:
       #'
       #'   ```r
-      #'
       #'   x <- condition("my_condition")
       #'   conditionMessage(x)
-      #'
       #'   ```
       #'
       #'   Condition generators need to be called first before they can be used as conditions.  Try this instead:
       #'
       #'   ```r
-      #'
       #'   x <- condition("my_condition")
       #'   conditionMessage(x())
-      #'
       #'   ```
       #'  }
       #'   \subsection{`cnd:condition_overwrite/warning`}{
@@ -145,13 +139,11 @@
       #'   For example:
       #'
       #'   ```r
-      #'
       #'   # Instead of this
       #'   conditions("class", "package") # "package" is ignored with a warning
       #'
       #'   # Do this
       #'   conditions(class = "class", package = "package")
-      #'
       #'   ```
       #'  }
       #'   \subsection{`cnd:invalid_condition/error`}{

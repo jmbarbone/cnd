@@ -104,8 +104,8 @@ condition
 > as a class. `condition` also has several conditions which can be
 > signaled directly or indirectly.
 
-Use `condition()` to create a generator, then use that generator within
-your functions:
+Use `condition()` to create a *generator*, then use that *generator*
+within your functions:
 
 ``` r
 # cnd::condition_generator
@@ -309,7 +309,7 @@ conditions("cnd", type = "warning")
     #> cnd:conditions_dots/warning 
     #> 
     #> help
-    #> The `...` parameter in [conditions()] is meant for convenience.  Only a single argument is allowed.  Other parameters must be named  explicitly.  For example:  ```r  # Instead of this conditions("class", "package") # "package" is ignored with a warning  # Do this conditions(class = "class", package = "package")  ``` 
+    #> The `...` parameter in [conditions()] is meant for convenience.  Only a single argument is allowed.  Other parameters must be named  explicitly.  For example:  ```r # Instead of this conditions("class", "package") # "package" is ignored with a warning  # Do this conditions(class = "class", package = "package") ``` 
     #> 
     #> exports
     #>   cnd::conditions()

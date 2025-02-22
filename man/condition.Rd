@@ -4,6 +4,8 @@
 \alias{condition}
 \alias{condition_progenitor}
 \alias{condition_generator}
+\alias{cnd::condition_progenitor}
+\alias{cnd::condition_generator}
 \alias{conditions}
 \alias{cond}
 \alias{cnd}
@@ -67,7 +69,7 @@ attribute}
 
 \item{x}{An object}
 
-\item{condition}{A \code{cnd::condition_generator} object}
+\item{condition}{A \link{condition_generator} object}
 
 \item{value}{A \code{condition}}
 
@@ -75,15 +77,15 @@ attribute}
 }
 \value{
 \itemize{
-\item \code{\link[=condition]{condition()}} a \code{cnd::condition_generator} object
+\item \code{\link[=condition]{condition()}} a \link{condition_generator} object
 }
 
 \itemize{
-\item \code{\link[=conditions]{conditions()}} a \code{list} of \code{cnd::condition_generator} objects
+\item \code{\link[=conditions]{conditions()}} a \code{list} of \link{condition_generator} objects
 }
 
 \itemize{
-\item \code{\link[=cond]{cond()}} A \code{cnd::condition_generator} object
+\item \code{\link[=cond]{cond()}} A \link{condition_generator} object
 }
 
 \itemize{
@@ -125,32 +127,26 @@ You cannot coerce a \link{condition_generator} object to a character. This may h
 
 For example:
 
-\if{html}{\out{<div class="sourceCode r">}}\preformatted{
-# Instead of this
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{# Instead of this
 stop(my_condition)
 
 # Do this
 stop(my_condition())
-
 }\if{html}{\out{</div>}}
 
 }
 
 \item{\code{\link[=cnd-cnd-conditions]{cnd:condition_message_generator/error}}}{
-'cnd::condition_generator' objects are not conditions.   You may have made this mistake:
+\link{condition_generator} objects are not conditions.   You may have made this mistake:
 
-\if{html}{\out{<div class="sourceCode r">}}\preformatted{
-x <- condition("my_condition")
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{x <- condition("my_condition")
 conditionMessage(x)
-
 }\if{html}{\out{</div>}}
 
 Condition generators need to be called first before they can be used as conditions.  Try this instead:
 
-\if{html}{\out{<div class="sourceCode r">}}\preformatted{
-x <- condition("my_condition")
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{x <- condition("my_condition")
 conditionMessage(x())
-
 }\if{html}{\out{</div>}}
 
 }

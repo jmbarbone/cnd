@@ -65,7 +65,7 @@ condition
 > Note: `condition` is of mode "function" but does not retain "function" as a class.
 `condition` also has several conditions which can be signaled directly or indirectly.
 
-Use `condition()` to create a generator, then use that generator within your functions:
+Use `condition()` to create a _generator_, then use that _generator_ within your functions:
 
 ```{r}
 #| error: true

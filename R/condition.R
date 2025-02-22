@@ -38,7 +38,7 @@
 #'   `r cnd_section(cnd)`
 #'
 #' @returns
-#' - [condition()] a `cnd::condition_generator` object
+#' - [condition()] a [cnd::condition_generator] object
 #'
 #' @export
 #' @examples
@@ -56,7 +56,8 @@
 #' )
 #' try(stop(cond_class_error(list())))
 #'
-#' @aliases condition_progenitor condition_generator
+#' @aliases condition_progenitor condition_generator cnd::condition_progenitor
+#'   cnd::condition_generator
 #' @seealso [cnd-package]
 condition <- function(
     class,
@@ -193,7 +194,7 @@ class(condition) <- "cnd::condition_progenitor"
 #' @param fun if a function is passed, then retrieves the `"conditions"`
 #'   attribute
 #' @returns
-#' - [conditions()] a `list` of `cnd::condition_generator` objects
+#' - [conditions()] a `list` of [cnd::condition_generator] objects
 conditions <- function(
     ...,
     class = NULL,
@@ -253,14 +254,14 @@ conditions <- function(
 #' @export
 #' @rdname condition
 #' @returns
-#' - [cond()] A `cnd::condition_generator` object
+#' - [cond()] A [cnd::condition_generator] object
 cond <- function(x) {
   find_cond(x)
 }
 
 #' @export
 #' @rdname condition
-#' @param condition A `cnd::condition_generator` object
+#' @param condition A [cnd::condition_generator] object
 #' @returns
 #' - [cnd()] is a wrapper for calling [stop()], [warning()], or [message()];
 #'   when  `condition` is a type, an error is thrown, and likewise for the other
@@ -663,7 +664,7 @@ delayedAssign(
     exports = "condition",
     package = "cnd",
     help = c(
-      "'cnd::condition_generator' objects are not conditions.   You may have",
+      "[cnd::condition_generator] objects are not conditions.   You may have",
       " made this mistake: ",
       "\n\n",
       rcode(
