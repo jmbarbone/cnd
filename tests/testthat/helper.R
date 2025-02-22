@@ -67,19 +67,23 @@ test_documentation <- function(package) {
   )
 
   # no changes
-  withCallingHandlers(
-    expect_condition(cnd_document(package = package, file = path), NA),
-    'cnd:cnd_generated_cleanup' = function(c) {
-      # line endings on CI Windows might be throwing off the check.  For now,
-      # these are simply going to be muffled
-      if (
-        Sys.info()[["sysname"]] == "Windows" &&
-        # GitHub should set CI to 'true'
-        isTRUE(as.logical(Sys.getenv("CI", "false")))
-      ) {
-        tryInvokeRestart("muffleCondition")
+  expect_condition(
+    withCallingHandlers(
+      cnd_document(package = package, file = path),
+      condition = function(c) {
+        # line endings on CI Windows might be throwing off the check.  For now,
+        # these are simply going to be muffled
+        if (
+          inherits(c, "cnd:cnd_generated_cleanup") &&
+          Sys.info()[["sysname"]] == "Windows" &&
+          # GitHub should set CI to 'true'
+          isTRUE(as.logical(Sys.getenv("CI", "false")))
+        ) {
+          tryInvokeRestart("muffleCondition")
+        }
       }
-    }
+    ),
+    NA
   )
 
   skip_if_not_installed("roxygen2")
