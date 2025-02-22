@@ -63,7 +63,8 @@
 </h1></div>
 <!-- badges: start -->
 
-<p>The goal of <code>{cnd}</code> is to provide easy, customized classes for <code>conditions</code>. This makes setting up custom conditions quick and more useful.</p>
+<p>The goal of <code>{cnd}</code> is to provide easy, customized classes for your <code>conditions</code>.</p>
+<p>This makes setting up custom conditions quick and more useful.</p>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
@@ -73,40 +74,81 @@
 <span><span class="fu">pak</span><span class="fu">::</span><span class="fu"><a href="https://pak.r-lib.org/reference/pak.html" class="external-link">pak</a></span><span class="op">(</span><span class="st">"jmbarbone/cnd"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
+<h2 id="conditions-in-general">Conditions, in general<a class="anchor" aria-label="anchor" href="#conditions-in-general"></a>
+</h2>
+<p><code>conditions</code> are special objects that <strong>R</strong> will use for both signaling and messaging, primarily within the context of <code><a href="https://rdrr.io/r/base/stop.html" class="external-link">stop()</a></code>, <code><a href="https://rdrr.io/r/base/warning.html" class="external-link">warning()</a></code>, and <code><a href="https://rdrr.io/r/base/message.html" class="external-link">message()</a></code>.</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/format.html" class="external-link">format</a></span><span class="op">(</span><span class="va">stop</span><span class="op">)</span><span class="op">[</span><span class="fl">7</span><span class="op">:</span><span class="fl">10</span><span class="op">]</span></span>
+<span><span class="co">#&gt; [1] "        message &lt;- conditionMessage(cond)"               </span></span>
+<span><span class="co">#&gt; [2] "        call &lt;- conditionCall(cond)"                     </span></span>
+<span><span class="co">#&gt; [3] "        .Internal(.signalCondition(cond, message, call))"</span></span>
+<span><span class="co">#&gt; [4] "        .Internal(.dfltStop(message, call))"</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/format.html" class="external-link">format</a></span><span class="op">(</span><span class="va">warning</span><span class="op">)</span><span class="op">[</span><span class="fl">9</span><span class="op">:</span><span class="fl">14</span><span class="op">]</span></span>
+<span><span class="co">#&gt; [1] "        message &lt;- conditionMessage(cond)"                   </span></span>
+<span><span class="co">#&gt; [2] "        call &lt;- conditionCall(cond)"                         </span></span>
+<span><span class="co">#&gt; [3] "        withRestarts({"                                      </span></span>
+<span><span class="co">#&gt; [4] "            .Internal(.signalCondition(cond, message, call))"</span></span>
+<span><span class="co">#&gt; [5] "            .Internal(.dfltWarn(message, call))"             </span></span>
+<span><span class="co">#&gt; [6] "        }, muffleWarning = function() NULL)"</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/format.html" class="external-link">format</a></span><span class="op">(</span><span class="va">message</span><span class="op">)</span><span class="op">[</span><span class="fl">13</span><span class="op">:</span><span class="fl">19</span><span class="op">]</span></span>
+<span><span class="co">#&gt; [1] "    defaultHandler &lt;- function(c) {"                          </span></span>
+<span><span class="co">#&gt; [2] "        cat(conditionMessage(c), file = stderr(), sep = \"\")"</span></span>
+<span><span class="co">#&gt; [3] "    }"                                                        </span></span>
+<span><span class="co">#&gt; [4] "    withRestarts({"                                           </span></span>
+<span><span class="co">#&gt; [5] "        signalCondition(cond)"                                </span></span>
+<span><span class="co">#&gt; [6] "        defaultHandler(cond)"                                 </span></span>
+<span><span class="co">#&gt; [7] "    }, muffleMessage = function() NULL)"</span></span></code></pre></div>
+<p>All functions accept a <code>condition</code> object as their first argument, which contains both the classes that will be signaled and a message that will be sent to the <code><a href="https://rdrr.io/r/base/showConnections.html" class="external-link">stderr()</a></code>. You’ll notice, too, that <code><a href="https://rdrr.io/r/base/warning.html" class="external-link">warning()</a></code> and <code><a href="https://rdrr.io/r/base/message.html" class="external-link">message()</a></code> call <code><a href="https://rdrr.io/r/base/conditions.html" class="external-link">withRestarts()</a></code>, which contain <code><a href="https://rdrr.io/r/base/conditions.html" class="external-link">signalCondition()</a></code> call. By default, these three functions create <code>condition</code> objects with an extra class of <code>"error"</code>, <code>"warning"</code>, or <code>"message"</code>, respectively. <code>{cnd}</code> inserts itself into these processes by allowing users to define new condition objects to be signaled and with greater control over messaging.</p>
+</div>
+<div class="section level2">
 <h2 id="example">Example<a class="anchor" aria-label="anchor" href="#example"></a>
 </h2>
 <p>The workhorse of <code>{cnd}</code> is <code><a href="reference/condition.html">condition()</a></code>, which is a special function of class <code><a href="reference/condition.html">cnd::condition_progenitor</a></code>, which returns other special functions of class <code><a href="reference/condition.html">cnd::condition_generator</a></code>. The <code><a href="reference/condition.html">cnd::condition_generator</a></code> objects return <code>condition</code>s.</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">cnd</span><span class="op">)</span></span>
 <span><span class="va">condition</span></span>
 <span><span class="co">#&gt; cnd::condition_progenitor</span></span>
-<span><span class="co">#&gt; generator:</span></span>
-<span><span class="co">#&gt;   $ class   : &lt;symbol&gt; </span></span>
-<span><span class="co">#&gt;   $ message : NULL</span></span>
-<span><span class="co">#&gt;   $ type    : &lt;language&gt; c("error", "warning", "message", "condition")</span></span>
-<span><span class="co">#&gt;   $ package : &lt;language&gt; get_package()</span></span>
-<span><span class="co">#&gt;   $ exports : NULL</span></span>
-<span><span class="co">#&gt;   $ help    : NULL</span></span>
-<span><span class="co">#&gt;   $ registry: &lt;symbol&gt; package</span></span>
-<span><span class="co">#&gt;   $ register: &lt;language&gt; !is.null(registry)</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; &lt;condition(s): cnd:as_character_cnd_error/error, cnd:invalid_condition/error, cnd:invalid_condition_message/error, cnd:match_arg/error, cnd:no_package_exports/warning&gt;</span></span>
+<span><span class="co">#&gt; generator</span></span>
+<span><span class="co">#&gt;   $ class    : &lt;symbol&gt; </span></span>
+<span><span class="co">#&gt;   $ message  : NULL</span></span>
+<span><span class="co">#&gt;   $ type     : &lt;language&gt; c("error", "warning", "message", "condition")</span></span>
+<span><span class="co">#&gt;   $ package  : &lt;language&gt; get_package()</span></span>
+<span><span class="co">#&gt;   $ exports  : NULL</span></span>
+<span><span class="co">#&gt;   $ help     : NULL</span></span>
+<span><span class="co">#&gt;   $ registry : &lt;symbol&gt; package</span></span>
+<span><span class="co">#&gt;   $ register : &lt;language&gt; !is.null(registry)</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; For list of conditions use cnd::conditions()</span></span></code></pre></div>
-<p>Use <code><a href="reference/condition.html">condition()</a></code> to create a generator, which controls messaging for <code>conditions</code>s.</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">bad_value</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/condition.html">condition</a></span><span class="op">(</span><span class="st">"bad_value"</span>, message <span class="op">=</span> <span class="st">"Value has to be better"</span><span class="op">)</span></span>
-<span></span>
+<span><span class="co">#&gt; condition(s)</span></span>
+<span><span class="co">#&gt; cnd:as_character_cnd_error/error</span></span>
+<span><span class="co">#&gt; cnd:condition_message_generator/error</span></span>
+<span><span class="co">#&gt; cnd:condition_overwrite/warning</span></span>
+<span><span class="co">#&gt; cnd:invalid_condition/error</span></span>
+<span><span class="co">#&gt; cnd:invalid_condition_message/error</span></span>
+<span><span class="co">#&gt; cnd:match_arg/error</span></span>
+<span><span class="co">#&gt; cnd:no_package_exports/warning</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; For a list of conditions: `cnd::conditions()`</span></span></code></pre></div>
+<blockquote>
+<p>Note: <code>condition</code> is of mode “function” but does not retain “function” as a class. <code>condition</code> also has several conditions which can be signaled directly or indirectly.</p>
+</blockquote>
+<p>Use <code><a href="reference/condition.html">condition()</a></code> to create a generator, then use that generator within your functions:</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># cnd::condition_generator</span></span>
+<span><span class="va">bad_value</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/condition.html">condition</a></span><span class="op">(</span><span class="st">"bad_value"</span>, message <span class="op">=</span> <span class="st">"Value has to be better"</span><span class="op">)</span></span>
 <span><span class="va">bad_value</span></span>
 <span><span class="co">#&gt; cnd::condition_generator</span></span>
-<span><span class="co">#&gt; &lt;bad_value/error&gt;</span></span>
+<span><span class="co">#&gt; bad_value/error</span></span>
+<span></span>
+<span><span class="co"># condition</span></span>
 <span><span class="fu">bad_value</span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; &lt;bad_value/error&gt;</span></span>
+<span><span class="co">#&gt; bad_value/error</span></span>
+<span><span class="co">#&gt; (bad_value/cnd::condition/error/condition)</span></span>
 <span><span class="co">#&gt; Value has to be better</span></span>
 <span></span>
 <span><span class="va">foo</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="kw">if</span> <span class="op">(</span><span class="va">x</span> <span class="op">&lt;</span> <span class="fl">0</span><span class="op">)</span> <span class="op">{</span></span>
-<span>    <span class="fu"><a href="reference/condition.html">cnd</a></span><span class="op">(</span><span class="fu">bad_value</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span>    <span class="kw"><a href="https://rdrr.io/r/base/stop.html" class="external-link">stop</a></span><span class="op">(</span><span class="fu">bad_value</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
 <span>  <span class="op">}</span></span>
 <span>  <span class="va">x</span></span>
 <span><span class="op">}</span></span>
@@ -115,12 +157,6 @@
 <span><span class="fu">foo</span><span class="op">(</span><span class="op">-</span><span class="fl">1</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Error in foo(-1): &lt;bad_value&gt;</span></span>
 <span><span class="co">#&gt; Error in foo(-1): Value has to be better</span></span></code></pre></div>
-<p>By default, the <code>call</code> will try to still grab the from the sys.parent of <code>bad_value()</code>. As <code>bad_value()</code> is called inside <code>foo()</code>, we still see <code>foo()</code> in the error.</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">bar</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="fu">foo</span><span class="op">(</span><span class="op">-</span><span class="fl">1L</span><span class="op">)</span></span>
-<span><span class="fu">bar</span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Error in foo(-1L): &lt;bad_value&gt;</span></span>
-<span><span class="co">#&gt; Error in foo(-1L): Value has to be better</span></span></code></pre></div>
 <p>The resulting <code><a href="reference/condition.html">cnd::condition_generator</a></code> object can also take parameters that are used in creating a custom message.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">bad_value2</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/condition.html">condition</a></span><span class="op">(</span></span>
@@ -130,15 +166,32 @@
 <span>  <span class="op">}</span></span>
 <span><span class="op">)</span></span>
 <span></span>
+<span><span class="co"># a 'generator' is also printed, with formals</span></span>
 <span><span class="va">bad_value2</span></span>
 <span><span class="co">#&gt; cnd::condition_generator</span></span>
-<span><span class="co">#&gt; &lt;bad_value2/error&gt;</span></span>
-<span><span class="co">#&gt; generator:</span></span>
-<span><span class="co">#&gt;   $ x: &lt;symbol&gt;</span></span>
-<span><span class="fu">bad_value2</span><span class="op">(</span><span class="fl">0</span><span class="op">)</span></span>
-<span><span class="co">#&gt; &lt;bad_value2/error&gt;</span></span>
-<span><span class="co">#&gt; `x` must be `&gt;=0`. A value of `0` is no good</span></span>
+<span><span class="co">#&gt; bad_value2/error </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; generator</span></span>
+<span><span class="co">#&gt;   $ x : &lt;symbol&gt;</span></span>
 <span></span>
+<span><span class="co"># pass a value to the args to generate the condition message</span></span>
+<span><span class="fu">bad_value2</span><span class="op">(</span><span class="fl">0</span><span class="op">)</span></span>
+<span><span class="co">#&gt; bad_value2/error</span></span>
+<span><span class="co">#&gt; (bad_value2/cnd::condition/error/condition)</span></span>
+<span><span class="co">#&gt; `x` must be `&gt;=0`. A value of `0` is no good</span></span>
+<span><span class="fu">bad_value2</span><span class="op">(</span><span class="op">-</span><span class="fl">1</span><span class="op">)</span></span>
+<span><span class="co">#&gt; bad_value2/error</span></span>
+<span><span class="co">#&gt; (bad_value2/cnd::condition/error/condition)</span></span>
+<span><span class="co">#&gt; `x` must be `&gt;=0`. A value of `-1` is no good</span></span>
+<span></span>
+<span><span class="co"># note: this does not provide any tests, so you may produce non-nonsensical messages</span></span>
+<span><span class="fu">bad_value2</span><span class="op">(</span><span class="fl">10</span><span class="op">)</span></span>
+<span><span class="co">#&gt; bad_value2/error</span></span>
+<span><span class="co">#&gt; (bad_value2/cnd::condition/error/condition)</span></span>
+<span><span class="co">#&gt; `x` must be `&gt;=0`. A value of `10` is no good</span></span>
+<span></span>
+<span></span>
+<span><span class="co"># now when used in your function:</span></span>
 <span><span class="va">foo</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="kw">if</span> <span class="op">(</span><span class="va">x</span> <span class="op">&lt;</span> <span class="fl">0</span><span class="op">)</span> <span class="op">{</span></span>
 <span>    <span class="kw"><a href="https://rdrr.io/r/base/stop.html" class="external-link">stop</a></span><span class="op">(</span><span class="fu">bad_value2</span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span></span>
@@ -151,279 +204,262 @@
 <span><span class="co">#&gt; Error in foo(-1.2): `x` must be `&gt;=0`. A value of `-1.2` is no good</span></span></code></pre></div>
 </div>
 <div class="section level2">
-<h2 id="registration">Registration<a class="anchor" aria-label="anchor" href="#registration"></a>
+<h2 id="your-package">Your package<a class="anchor" aria-label="anchor" href="#your-package"></a>
 </h2>
-<p><code><a href="reference/condition.html">condition()</a></code> has a few options for <em>registering</em> a condition to an exported <code>function</code>. When using <code><a href="reference/condition.html">condition()</a></code> within your package development, you should only need to use the <code>exports</code> parameter, which requires a <code>character</code> vector of exported function. <code>register</code> toggles whether a <code><a href="reference/condition.html">cnd::condition_generator</a></code> is assigned to an object. <code>registry</code> is for advanced use cases where you want to save the <code><a href="reference/condition.html">cnd::condition_generator</a></code> in a registration environment that is not associated with your package.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">condition</span></span>
-<span><span class="co">#&gt; cnd::condition_progenitor</span></span>
-<span><span class="co">#&gt; generator:</span></span>
-<span><span class="co">#&gt;   $ class   : &lt;symbol&gt; </span></span>
-<span><span class="co">#&gt;   $ message : NULL</span></span>
-<span><span class="co">#&gt;   $ type    : &lt;language&gt; c("error", "warning", "message", "condition")</span></span>
-<span><span class="co">#&gt;   $ package : &lt;language&gt; get_package()</span></span>
-<span><span class="co">#&gt;   $ exports : NULL</span></span>
-<span><span class="co">#&gt;   $ help    : NULL</span></span>
-<span><span class="co">#&gt;   $ registry: &lt;symbol&gt; package</span></span>
-<span><span class="co">#&gt;   $ register: &lt;language&gt; !is.null(registry)</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; &lt;condition(s): cnd:as_character_cnd_error/error, cnd:invalid_condition/error, cnd:invalid_condition_message/error, cnd:match_arg/error, cnd:no_package_exports/warning&gt;</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; For list of conditions use cnd::conditions()</span></span></code></pre></div>
-<p>When conditions are registered to a function, they can be retrieved from that function. <code><a href="reference/condition.html">condition()</a></code> itself has several <code><a href="reference/condition.html">cnd::condition_generator</a></code> objects.</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="reference/condition.html">conditions</a></span><span class="op">(</span><span class="va">condition</span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb8"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a><span class="co">#&gt; [[1]]</span></span>
-<span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a><span class="co">#&gt; cnd::condition_generator</span></span>
-<span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a><span class="co">#&gt; &lt;cnd:as_character_cnd_error/error&gt;</span></span>
-<span id="cb8-4"><a href="#cb8-4" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb8-5"><a href="#cb8-5" tabindex="-1"></a><span class="co">#&gt; You cannot coerce a [cnd::condition_generator] object to a character. This may have occured when trying to put a condition function through [stop()] or [warning].  Instead, call the function first, then pass the result to [stop()] or [warning()].</span></span>
-<span id="cb8-6"><a href="#cb8-6" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb8-7"><a href="#cb8-7" tabindex="-1"></a><span class="co">#&gt; For example:</span></span>
-<span id="cb8-8"><a href="#cb8-8" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb8-9"><a href="#cb8-9" tabindex="-1"></a><span class="co">#&gt; ```r</span></span>
-<span id="cb8-10"><a href="#cb8-10" tabindex="-1"></a><span class="co">#&gt; # Instead of this</span></span>
-<span id="cb8-11"><a href="#cb8-11" tabindex="-1"></a><span class="co">#&gt; stop(my_condition)</span></span>
-<span id="cb8-12"><a href="#cb8-12" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb8-13"><a href="#cb8-13" tabindex="-1"></a><span class="co">#&gt; # Do this</span></span>
-<span id="cb8-14"><a href="#cb8-14" tabindex="-1"></a><span class="co">#&gt; stop(my_condition())</span></span>
-<span id="cb8-15"><a href="#cb8-15" tabindex="-1"></a><span class="co">#&gt; ```</span></span>
-<span id="cb8-16"><a href="#cb8-16" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb8-17"><a href="#cb8-17" tabindex="-1"></a><span class="co">#&gt; exports:</span></span>
-<span id="cb8-18"><a href="#cb8-18" tabindex="-1"></a><span class="co">#&gt;   cnd::condition</span></span>
-<span id="cb8-19"><a href="#cb8-19" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb8-20"><a href="#cb8-20" tabindex="-1"></a><span class="co">#&gt; [[2]]</span></span>
-<span id="cb8-21"><a href="#cb8-21" tabindex="-1"></a><span class="co">#&gt; cnd::condition_generator</span></span>
-<span id="cb8-22"><a href="#cb8-22" tabindex="-1"></a><span class="co">#&gt; &lt;cnd:invalid_condition/error&gt;</span></span>
-<span id="cb8-23"><a href="#cb8-23" tabindex="-1"></a><span class="co">#&gt; generator:</span></span>
-<span id="cb8-24"><a href="#cb8-24" tabindex="-1"></a><span class="co">#&gt;   $ problems: &lt;symbol&gt; </span></span>
-<span id="cb8-25"><a href="#cb8-25" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb8-26"><a href="#cb8-26" tabindex="-1"></a><span class="co">#&gt; The `class`, `exports`, and `help` parameters must be a single character string.  If you are passing a function, it must be a valid function.</span></span>
-<span id="cb8-27"><a href="#cb8-27" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb8-28"><a href="#cb8-28" tabindex="-1"></a><span class="co">#&gt; exports:</span></span>
-<span id="cb8-29"><a href="#cb8-29" tabindex="-1"></a><span class="co">#&gt;   cnd::condition</span></span>
-<span id="cb8-30"><a href="#cb8-30" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb8-31"><a href="#cb8-31" tabindex="-1"></a><span class="co">#&gt; [[3]]</span></span>
-<span id="cb8-32"><a href="#cb8-32" tabindex="-1"></a><span class="co">#&gt; cnd::condition_generator</span></span>
-<span id="cb8-33"><a href="#cb8-33" tabindex="-1"></a><span class="co">#&gt; &lt;cnd:invalid_condition_message/error&gt;</span></span>
-<span id="cb8-34"><a href="#cb8-34" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb8-35"><a href="#cb8-35" tabindex="-1"></a><span class="co">#&gt; Conditions messages are displayed when invoked through [conditionMessage()].  You can set a static message by passing through a `character` vector, or a dynamic message by passing through a `function`.  The function should return a `character` vector.</span></span>
-<span id="cb8-36"><a href="#cb8-36" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb8-37"><a href="#cb8-37" tabindex="-1"></a><span class="co">#&gt; When `message` is not set, a default "there was an error" message is used.</span></span>
-<span id="cb8-38"><a href="#cb8-38" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb8-39"><a href="#cb8-39" tabindex="-1"></a><span class="co">#&gt; exports:</span></span>
-<span id="cb8-40"><a href="#cb8-40" tabindex="-1"></a><span class="co">#&gt;   cnd::condition</span></span>
-<span id="cb8-41"><a href="#cb8-41" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb8-42"><a href="#cb8-42" tabindex="-1"></a><span class="co">#&gt; [[4]]</span></span>
-<span id="cb8-43"><a href="#cb8-43" tabindex="-1"></a><span class="co">#&gt; cnd::condition_generator</span></span>
-<span id="cb8-44"><a href="#cb8-44" tabindex="-1"></a><span class="co">#&gt; &lt;cnd:match_arg/error&gt;</span></span>
-<span id="cb8-45"><a href="#cb8-45" tabindex="-1"></a><span class="co">#&gt; generator:</span></span>
-<span id="cb8-46"><a href="#cb8-46" tabindex="-1"></a><span class="co">#&gt;   $ arg    : &lt;symbol&gt; </span></span>
-<span id="cb8-47"><a href="#cb8-47" tabindex="-1"></a><span class="co">#&gt;   $ value  : &lt;symbol&gt; </span></span>
-<span id="cb8-48"><a href="#cb8-48" tabindex="-1"></a><span class="co">#&gt;   $ choices: &lt;symbol&gt; </span></span>
-<span id="cb8-49"><a href="#cb8-49" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb8-50"><a href="#cb8-50" tabindex="-1"></a><span class="co">#&gt; Mostly [match.arg()] but with a custom condition</span></span>
-<span id="cb8-51"><a href="#cb8-51" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb8-52"><a href="#cb8-52" tabindex="-1"></a><span class="co">#&gt; exports:</span></span>
-<span id="cb8-53"><a href="#cb8-53" tabindex="-1"></a><span class="co">#&gt;   cnd::condition</span></span>
-<span id="cb8-54"><a href="#cb8-54" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb8-55"><a href="#cb8-55" tabindex="-1"></a><span class="co">#&gt; [[5]]</span></span>
-<span id="cb8-56"><a href="#cb8-56" tabindex="-1"></a><span class="co">#&gt; cnd::condition_generator</span></span>
-<span id="cb8-57"><a href="#cb8-57" tabindex="-1"></a><span class="co">#&gt; &lt;cnd:no_package_exports/warning&gt;</span></span>
-<span id="cb8-58"><a href="#cb8-58" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb8-59"><a href="#cb8-59" tabindex="-1"></a><span class="co">#&gt; The `exports` parameter requires a `package`</span></span>
-<span id="cb8-60"><a href="#cb8-60" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb8-61"><a href="#cb8-61" tabindex="-1"></a><span class="co">#&gt; exports:</span></span>
-<span id="cb8-62"><a href="#cb8-62" tabindex="-1"></a><span class="co">#&gt;   cnd::condition</span></span></code></pre></div>
-<!-- These can be retrieved through their names: -->
-<!-- ```{r} -->
-<!-- cond("cnd:invalid_condition_message") -->
-<!-- ``` -->
-<p>To get the most out of your development package, add a call to <code><a href="reference/cnd_exports.html">cnd::cnd_exports()</a></code> in your last sourced filed. Usually saved in <code>R/zzz.R</code> should be good enough.</p>
+<p>There are three things you can do to get the most out of <code>{cnd}</code> within your package.</p>
+<ul>
+<li>Creating a <code>registry</code> within your package<br>
+</li>
+<li>Assigning a <code>"condition"</code> attribute to your functions<br>
+</li>
+<li>Documenting your conditions</li>
+</ul>
+<div class="section level3">
+<h3 id="registry">Registry<a class="anchor" aria-label="anchor" href="#registry"></a>
+</h3>
+<p>A <code>registry</code> is a new environment that will store all of your conditions. This environment must exist within your package, an <code>{cnd}</code> will be able to find this and use it to connect your conditions to your functions and to other outputs.</p>
+<p>Simple add <code>cnd_registry()</code> to an <code>R/</code> script in your package. If you are going to save an store conditions as objects (recommended) then you should ensure that the <code>cnd_registry()</code> call is made before any conditions are created.</p>
+<blockquote>
+<p><strong>NOTE</strong> <code>cnd_registry()</code> is designed to use <code><a href="https://rdrr.io/r/base/assign.html" class="external-link">assign()</a></code> within your package environment. Please read the documentation to ensure the environment is not masked by other objects.</p>
+</blockquote>
+<blockquote>
+<p><strong>NOTE</strong> By default, <code>condition(registry = )</code> will pick up on the <code>registry</code> object within your package when you create your conditions and functions are loaded. However, interactive use may not provide the same results. See the examples in <code><a href="reference/cnd_create_registry.html">cnd_create_registry()</a></code> for an example of how to create a new registry and assign conditions to the registry.</p>
+</blockquote>
 </div>
-<div class="section level2">
-<h2 id="documentation">Documentation<a class="anchor" aria-label="anchor" href="#documentation"></a>
-</h2>
-<p><code><a href="reference/cnd_document.html">cnd_document()</a></code> will create a new <code>.R</code> file for all conditions you have assigned to your package. Simply run the command when developing to generate a file listing all conditions.</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">cnd</span><span class="fu">::</span><span class="fu"><a href="reference/cnd_document.html">cnd_document</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<p>This can also be called after your <code><a href="reference/cnd_exports.html">cnd::cnd_exports()</a></code>.</p>
-<p>There’s a specialist <code><a href="reference/cnd_document.html">cnd_section()</a></code> function which can be used within a <code>roxygen</code> block inside your own documentation. This returns <code>rogxygen2</code> friendly text that can also copy information about your conditions to documentation for your functions.</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="section level3">
+<h3 id="assigning-conditions">Assigning conditions<a class="anchor" aria-label="anchor" href="#assigning-conditions"></a>
+</h3>
+<p><code><a href="reference/condition.html">condition()</a></code> has an argument for <code>exports</code>, which you can set to any function which you want to relate with any specific conditions.</p>
+<p>If you add any functions to the <code>exports</code> option, <code>package</code> must be set. By default, <code>package</code> should be set to your development package, so you don’t need to explicitly assign it every time.</p>
+<p>In your package, add <code><a href="reference/cnd_exports.html">cnd_exports()</a></code> to an <code>R/</code> script. This should be executed after all your conditions and their functions are created. This will add a new <code>"conditions"</code> attribute to your functions as well as a new <code>"cnd::conditioned_function"</code> class. The new class specifically updates the <code><a href="https://rdrr.io/r/base/print.html" class="external-link">print()</a></code> method to show the conditions assigned to the function.</p>
+</div>
+<div class="section level3">
+<h3 id="documentation">Documentation<a class="anchor" aria-label="anchor" href="#documentation"></a>
+</h3>
+<p>When you’ve created your conditions and assigned them to your functions, you may also want to provide documentation. Or, rather, you should always provide documentation.</p>
+<p><code><a href="reference/cnd_document.html">cnd_document()</a></code> will create a new <code>{package}-cnd-conditions.R</code> file for all conditions you have assigned to your package. Simply run the command when developing to generate a file listing all conditions. You can also include this after your call to <code><a href="reference/cnd_exports.html">cnd_exports()</a></code> to ensure that all conditions are documented. The file is written for <a href="https://roxygen2.r-lib.org/" class="external-link">roxygen2</a> to generate the <code>Rd</code> files for your package.</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="reference/cnd_document.html">cnd_document</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<p>If you want to include other information directly within your roxygen comments, you can use the <code><a href="reference/cnd_document.html">cnd_section()</a></code> function to grab all the conditions from a single functions and print out roxygen-friendly <em>section</em> information:</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="fu"><a href="reference/cnd_document.html">cnd_section</a></span><span class="op">(</span><span class="st">"cnd"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb11"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb11-2"><a href="#cb11-2" tabindex="-1"></a><span class="co">#&gt; Conditions are generated through the [`{cnd}`][cnd::cnd-package] package.</span></span>
-<span id="cb11-3"><a href="#cb11-3" tabindex="-1"></a><span class="co">#&gt; The following conditions are associated with this function:</span></span>
-<span id="cb11-4"><a href="#cb11-4" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb11-5"><a href="#cb11-5" tabindex="-1"></a><span class="co">#&gt; \describe{</span></span>
-<span id="cb11-6"><a href="#cb11-6" tabindex="-1"></a><span class="co">#&gt;   </span></span>
-<span id="cb11-7"><a href="#cb11-7" tabindex="-1"></a><span class="co">#&gt;   \item{[`cnd:as_character_cnd_error/error`][cnd-cnd-conditions]}{</span></span>
-<span id="cb11-8"><a href="#cb11-8" tabindex="-1"></a><span class="co">#&gt;     You cannot coerce a [cnd::condition_generator] object to a character. This may have occured when trying to put a condition function through [stop()] or [warning].  Instead, call the function first, then pass the result to [stop()] or [warning()].</span></span>
-<span id="cb11-9"><a href="#cb11-9" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb11-10"><a href="#cb11-10" tabindex="-1"></a><span class="co">#&gt; For example:</span></span>
-<span id="cb11-11"><a href="#cb11-11" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb11-12"><a href="#cb11-12" tabindex="-1"></a><span class="co">#&gt; ```r</span></span>
-<span id="cb11-13"><a href="#cb11-13" tabindex="-1"></a><span class="co">#&gt; # Instead of this</span></span>
-<span id="cb11-14"><a href="#cb11-14" tabindex="-1"></a><span class="co">#&gt; stop(my_condition)</span></span>
-<span id="cb11-15"><a href="#cb11-15" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb11-16"><a href="#cb11-16" tabindex="-1"></a><span class="co">#&gt; # Do this</span></span>
-<span id="cb11-17"><a href="#cb11-17" tabindex="-1"></a><span class="co">#&gt; stop(my_condition())</span></span>
-<span id="cb11-18"><a href="#cb11-18" tabindex="-1"></a><span class="co">#&gt; ```</span></span>
-<span id="cb11-19"><a href="#cb11-19" tabindex="-1"></a><span class="co">#&gt;   }</span></span>
-<span id="cb11-20"><a href="#cb11-20" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb11-21"><a href="#cb11-21" tabindex="-1"></a><span class="co">#&gt;   \item{[`cnd:cnd_generated_cleanup/condition`][cnd-cnd-conditions]}{</span></span>
-<span id="cb11-22"><a href="#cb11-22" tabindex="-1"></a><span class="co">#&gt;     </span></span>
-<span id="cb11-23"><a href="#cb11-23" tabindex="-1"></a><span class="co">#&gt;   }</span></span>
-<span id="cb11-24"><a href="#cb11-24" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb11-25"><a href="#cb11-25" tabindex="-1"></a><span class="co">#&gt;   \item{[`cnd:cnd_generated_write/condition`][cnd-cnd-conditions]}{</span></span>
-<span id="cb11-26"><a href="#cb11-26" tabindex="-1"></a><span class="co">#&gt;     </span></span>
-<span id="cb11-27"><a href="#cb11-27" tabindex="-1"></a><span class="co">#&gt;   }</span></span>
-<span id="cb11-28"><a href="#cb11-28" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb11-29"><a href="#cb11-29" tabindex="-1"></a><span class="co">#&gt;   \item{[`cnd:cond_cnd_class/error`][cnd-cnd-conditions]}{</span></span>
-<span id="cb11-30"><a href="#cb11-30" tabindex="-1"></a><span class="co">#&gt;     [cnd()] simple calls the appropriate function: [stop()], [warning()], or [message()] based on the `type` parameter from [cnd::condition()].</span></span>
-<span id="cb11-31"><a href="#cb11-31" tabindex="-1"></a><span class="co">#&gt;   }</span></span>
-<span id="cb11-32"><a href="#cb11-32" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb11-33"><a href="#cb11-33" tabindex="-1"></a><span class="co">#&gt;   \item{[`cnd:condition_overwrite/warning`][cnd-cnd-conditions]}{</span></span>
-<span id="cb11-34"><a href="#cb11-34" tabindex="-1"></a><span class="co">#&gt;     </span></span>
-<span id="cb11-35"><a href="#cb11-35" tabindex="-1"></a><span class="co">#&gt;   }</span></span>
-<span id="cb11-36"><a href="#cb11-36" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb11-37"><a href="#cb11-37" tabindex="-1"></a><span class="co">#&gt;   \item{[`cnd:conditions_dots/warning`][cnd-cnd-conditions]}{</span></span>
-<span id="cb11-38"><a href="#cb11-38" tabindex="-1"></a><span class="co">#&gt;     The `...` parameter in [conditions()] is meant for convenience.  Onlya single argument is alowed.  Other parameters must be named  explicitly.For example:```r# Instead of thisconditions('class', 'package') # 'package' is ignored with a warning# Do thisconditions(class = 'class', package = 'package')```</span></span>
-<span id="cb11-39"><a href="#cb11-39" tabindex="-1"></a><span class="co">#&gt;   }</span></span>
-<span id="cb11-40"><a href="#cb11-40" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb11-41"><a href="#cb11-41" tabindex="-1"></a><span class="co">#&gt;   \item{[`cnd:invalid_condition/error`][cnd-cnd-conditions]}{</span></span>
-<span id="cb11-42"><a href="#cb11-42" tabindex="-1"></a><span class="co">#&gt;     The `class`, `exports`, and `help` parameters must be a single character string.  If you are passing a function, it must be a valid function.</span></span>
-<span id="cb11-43"><a href="#cb11-43" tabindex="-1"></a><span class="co">#&gt;   }</span></span>
-<span id="cb11-44"><a href="#cb11-44" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb11-45"><a href="#cb11-45" tabindex="-1"></a><span class="co">#&gt;   \item{[`cnd:invalid_condition_message/error`][cnd-cnd-conditions]}{</span></span>
-<span id="cb11-46"><a href="#cb11-46" tabindex="-1"></a><span class="co">#&gt;     Conditions messages are displayed when invoked through [conditionMessage()].  You can set a static message by passing through a `character` vector, or a dynamic message by passing through a `function`.  The function should return a `character` vector.</span></span>
-<span id="cb11-47"><a href="#cb11-47" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb11-48"><a href="#cb11-48" tabindex="-1"></a><span class="co">#&gt; When `message` is not set, a default "there was an error" message is used.</span></span>
-<span id="cb11-49"><a href="#cb11-49" tabindex="-1"></a><span class="co">#&gt;   }</span></span>
-<span id="cb11-50"><a href="#cb11-50" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb11-51"><a href="#cb11-51" tabindex="-1"></a><span class="co">#&gt;   \item{[`cnd:match_arg/error`][cnd-cnd-conditions]}{</span></span>
-<span id="cb11-52"><a href="#cb11-52" tabindex="-1"></a><span class="co">#&gt;     Mostly [match.arg()] but with a custom condition</span></span>
-<span id="cb11-53"><a href="#cb11-53" tabindex="-1"></a><span class="co">#&gt;   }</span></span>
-<span id="cb11-54"><a href="#cb11-54" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb11-55"><a href="#cb11-55" tabindex="-1"></a><span class="co">#&gt;   \item{[`cnd:no_package_exports/warning`][cnd-cnd-conditions]}{</span></span>
-<span id="cb11-56"><a href="#cb11-56" tabindex="-1"></a><span class="co">#&gt;     The `exports` parameter requires a `package`</span></span>
-<span id="cb11-57"><a href="#cb11-57" tabindex="-1"></a><span class="co">#&gt;   }</span></span>
-<span id="cb11-58"><a href="#cb11-58" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb11-59"><a href="#cb11-59" tabindex="-1"></a><span class="co">#&gt; }</span></span>
-<span id="cb11-60"><a href="#cb11-60" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb11-61"><a href="#cb11-61" tabindex="-1"></a><span class="co">#&gt; For more conditions, see: [cnd-cnd-conditions]</span></span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a><span class="co">#&gt; Conditions are generated through the [`{cnd}`][cnd::cnd-package] package.</span></span>
+<span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a><span class="co">#&gt; The following conditions are associated with this function:</span></span>
+<span id="cb8-4"><a href="#cb8-4" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb8-5"><a href="#cb8-5" tabindex="-1"></a><span class="co">#&gt; \describe{</span></span>
+<span id="cb8-6"><a href="#cb8-6" tabindex="-1"></a><span class="co">#&gt;   </span></span>
+<span id="cb8-7"><a href="#cb8-7" tabindex="-1"></a><span class="co">#&gt;   \item{[`cnd:as_character_cnd_error/error`][cnd-cnd-conditions]}{</span></span>
+<span id="cb8-8"><a href="#cb8-8" tabindex="-1"></a><span class="co">#&gt;     You cannot coerce a [cnd::condition_generator] object to a character. This may have occurred when trying to put a condition function through [stop()] or [warning].  Instead, call the function first, then pass the result to [stop()] or [warning()].</span></span>
+<span id="cb8-9"><a href="#cb8-9" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb8-10"><a href="#cb8-10" tabindex="-1"></a><span class="co">#&gt; For example:</span></span>
+<span id="cb8-11"><a href="#cb8-11" tabindex="-1"></a><span class="co">#&gt; ```r</span></span>
+<span id="cb8-12"><a href="#cb8-12" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb8-13"><a href="#cb8-13" tabindex="-1"></a><span class="co">#&gt; # Instead of this</span></span>
+<span id="cb8-14"><a href="#cb8-14" tabindex="-1"></a><span class="co">#&gt; stop(my_condition)</span></span>
+<span id="cb8-15"><a href="#cb8-15" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb8-16"><a href="#cb8-16" tabindex="-1"></a><span class="co">#&gt; # Do this</span></span>
+<span id="cb8-17"><a href="#cb8-17" tabindex="-1"></a><span class="co">#&gt; stop(my_condition())</span></span>
+<span id="cb8-18"><a href="#cb8-18" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb8-19"><a href="#cb8-19" tabindex="-1"></a><span class="co">#&gt; ```</span></span>
+<span id="cb8-20"><a href="#cb8-20" tabindex="-1"></a><span class="co">#&gt;   }</span></span>
+<span id="cb8-21"><a href="#cb8-21" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb8-22"><a href="#cb8-22" tabindex="-1"></a><span class="co">#&gt;   \item{[`cnd:cnd_document_conditions/warning`][cnd-cnd-conditions]}{</span></span>
+<span id="cb8-23"><a href="#cb8-23" tabindex="-1"></a><span class="co">#&gt;     </span></span>
+<span id="cb8-24"><a href="#cb8-24" tabindex="-1"></a><span class="co">#&gt;   }</span></span>
+<span id="cb8-25"><a href="#cb8-25" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb8-26"><a href="#cb8-26" tabindex="-1"></a><span class="co">#&gt;   \item{[`cnd:cnd_document_file/error`][cnd-cnd-conditions]}{</span></span>
+<span id="cb8-27"><a href="#cb8-27" tabindex="-1"></a><span class="co">#&gt;     </span></span>
+<span id="cb8-28"><a href="#cb8-28" tabindex="-1"></a><span class="co">#&gt;   }</span></span>
+<span id="cb8-29"><a href="#cb8-29" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb8-30"><a href="#cb8-30" tabindex="-1"></a><span class="co">#&gt;   \item{[`cnd:cnd_document_pkg_reg/error`][cnd-cnd-conditions]}{</span></span>
+<span id="cb8-31"><a href="#cb8-31" tabindex="-1"></a><span class="co">#&gt;     </span></span>
+<span id="cb8-32"><a href="#cb8-32" tabindex="-1"></a><span class="co">#&gt;   }</span></span>
+<span id="cb8-33"><a href="#cb8-33" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb8-34"><a href="#cb8-34" tabindex="-1"></a><span class="co">#&gt;   \item{[`cnd:cnd_generated_cleanup/message`][cnd-cnd-conditions]}{</span></span>
+<span id="cb8-35"><a href="#cb8-35" tabindex="-1"></a><span class="co">#&gt;     </span></span>
+<span id="cb8-36"><a href="#cb8-36" tabindex="-1"></a><span class="co">#&gt;   }</span></span>
+<span id="cb8-37"><a href="#cb8-37" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb8-38"><a href="#cb8-38" tabindex="-1"></a><span class="co">#&gt;   \item{[`cnd:cnd_generated_write/condition`][cnd-cnd-conditions]}{</span></span>
+<span id="cb8-39"><a href="#cb8-39" tabindex="-1"></a><span class="co">#&gt;     </span></span>
+<span id="cb8-40"><a href="#cb8-40" tabindex="-1"></a><span class="co">#&gt;   }</span></span>
+<span id="cb8-41"><a href="#cb8-41" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb8-42"><a href="#cb8-42" tabindex="-1"></a><span class="co">#&gt;   \item{[`cnd:cond_cnd_class/error`][cnd-cnd-conditions]}{</span></span>
+<span id="cb8-43"><a href="#cb8-43" tabindex="-1"></a><span class="co">#&gt;     [cnd()] simple calls the appropriate function: [stop()], [warning()], or [message()] based on the `type` parameter from [cnd::condition()].</span></span>
+<span id="cb8-44"><a href="#cb8-44" tabindex="-1"></a><span class="co">#&gt;   }</span></span>
+<span id="cb8-45"><a href="#cb8-45" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb8-46"><a href="#cb8-46" tabindex="-1"></a><span class="co">#&gt;   \item{[`cnd:condition_message_generator/error`][cnd-cnd-conditions]}{</span></span>
+<span id="cb8-47"><a href="#cb8-47" tabindex="-1"></a><span class="co">#&gt;     'cnd::condition_generator' objects are not conditions.   You may have made this mistake: </span></span>
+<span id="cb8-48"><a href="#cb8-48" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb8-49"><a href="#cb8-49" tabindex="-1"></a><span class="co">#&gt; ```r</span></span>
+<span id="cb8-50"><a href="#cb8-50" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb8-51"><a href="#cb8-51" tabindex="-1"></a><span class="co">#&gt; x &lt;- condition("my_condition")</span></span>
+<span id="cb8-52"><a href="#cb8-52" tabindex="-1"></a><span class="co">#&gt; conditionMessage(x)</span></span>
+<span id="cb8-53"><a href="#cb8-53" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb8-54"><a href="#cb8-54" tabindex="-1"></a><span class="co">#&gt; ```</span></span>
+<span id="cb8-55"><a href="#cb8-55" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb8-56"><a href="#cb8-56" tabindex="-1"></a><span class="co">#&gt; Condition generators need to be called first before they can be used as conditions.  Try this instead:</span></span>
+<span id="cb8-57"><a href="#cb8-57" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb8-58"><a href="#cb8-58" tabindex="-1"></a><span class="co">#&gt; ```r</span></span>
+<span id="cb8-59"><a href="#cb8-59" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb8-60"><a href="#cb8-60" tabindex="-1"></a><span class="co">#&gt; x &lt;- condition("my_condition")</span></span>
+<span id="cb8-61"><a href="#cb8-61" tabindex="-1"></a><span class="co">#&gt; conditionMessage(x())</span></span>
+<span id="cb8-62"><a href="#cb8-62" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb8-63"><a href="#cb8-63" tabindex="-1"></a><span class="co">#&gt; ```</span></span>
+<span id="cb8-64"><a href="#cb8-64" tabindex="-1"></a><span class="co">#&gt;   }</span></span>
+<span id="cb8-65"><a href="#cb8-65" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb8-66"><a href="#cb8-66" tabindex="-1"></a><span class="co">#&gt;   \item{[`cnd:condition_overwrite/warning`][cnd-cnd-conditions]}{</span></span>
+<span id="cb8-67"><a href="#cb8-67" tabindex="-1"></a><span class="co">#&gt;     </span></span>
+<span id="cb8-68"><a href="#cb8-68" tabindex="-1"></a><span class="co">#&gt;   }</span></span>
+<span id="cb8-69"><a href="#cb8-69" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb8-70"><a href="#cb8-70" tabindex="-1"></a><span class="co">#&gt;   \item{[`cnd:conditions_dots/warning`][cnd-cnd-conditions]}{</span></span>
+<span id="cb8-71"><a href="#cb8-71" tabindex="-1"></a><span class="co">#&gt;     The `...` parameter in [conditions()] is meant for convenience.  Only a single argument is allowed.  Other parameters must be named  explicitly.</span></span>
+<span id="cb8-72"><a href="#cb8-72" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb8-73"><a href="#cb8-73" tabindex="-1"></a><span class="co">#&gt; For example:</span></span>
+<span id="cb8-74"><a href="#cb8-74" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb8-75"><a href="#cb8-75" tabindex="-1"></a><span class="co">#&gt; ```r</span></span>
+<span id="cb8-76"><a href="#cb8-76" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb8-77"><a href="#cb8-77" tabindex="-1"></a><span class="co">#&gt; # Instead of this</span></span>
+<span id="cb8-78"><a href="#cb8-78" tabindex="-1"></a><span class="co">#&gt; conditions("class", "package") # "package" is ignored with a warning</span></span>
+<span id="cb8-79"><a href="#cb8-79" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb8-80"><a href="#cb8-80" tabindex="-1"></a><span class="co">#&gt; # Do this</span></span>
+<span id="cb8-81"><a href="#cb8-81" tabindex="-1"></a><span class="co">#&gt; conditions(class = "class", package = "package")</span></span>
+<span id="cb8-82"><a href="#cb8-82" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb8-83"><a href="#cb8-83" tabindex="-1"></a><span class="co">#&gt; ```</span></span>
+<span id="cb8-84"><a href="#cb8-84" tabindex="-1"></a><span class="co">#&gt;   }</span></span>
+<span id="cb8-85"><a href="#cb8-85" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb8-86"><a href="#cb8-86" tabindex="-1"></a><span class="co">#&gt;   \item{[`cnd:invalid_condition/error`][cnd-cnd-conditions]}{</span></span>
+<span id="cb8-87"><a href="#cb8-87" tabindex="-1"></a><span class="co">#&gt;     The `class`, `exports`, and `help` parameters must be a single character string.  If you are passing a function, it must be a valid function.</span></span>
+<span id="cb8-88"><a href="#cb8-88" tabindex="-1"></a><span class="co">#&gt;   }</span></span>
+<span id="cb8-89"><a href="#cb8-89" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb8-90"><a href="#cb8-90" tabindex="-1"></a><span class="co">#&gt;   \item{[`cnd:invalid_condition_message/error`][cnd-cnd-conditions]}{</span></span>
+<span id="cb8-91"><a href="#cb8-91" tabindex="-1"></a><span class="co">#&gt;     Conditions messages are displayed when invoked through [conditionMessage()].  You can set a static message by passing through a `character` vector, or a dynamic message by passing through a `function`.  The function should return a `character` vector.</span></span>
+<span id="cb8-92"><a href="#cb8-92" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb8-93"><a href="#cb8-93" tabindex="-1"></a><span class="co">#&gt; When `message` is not set, a default "there was an error" message is used.</span></span>
+<span id="cb8-94"><a href="#cb8-94" tabindex="-1"></a><span class="co">#&gt;   }</span></span>
+<span id="cb8-95"><a href="#cb8-95" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb8-96"><a href="#cb8-96" tabindex="-1"></a><span class="co">#&gt;   \item{[`cnd:match_arg/error`][cnd-cnd-conditions]}{</span></span>
+<span id="cb8-97"><a href="#cb8-97" tabindex="-1"></a><span class="co">#&gt;     Mostly [match.arg()] but with a custom condition</span></span>
+<span id="cb8-98"><a href="#cb8-98" tabindex="-1"></a><span class="co">#&gt;   }</span></span>
+<span id="cb8-99"><a href="#cb8-99" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb8-100"><a href="#cb8-100" tabindex="-1"></a><span class="co">#&gt;   \item{[`cnd:no_package_exports/warning`][cnd-cnd-conditions]}{</span></span>
+<span id="cb8-101"><a href="#cb8-101" tabindex="-1"></a><span class="co">#&gt;     The `exports` parameter requires a `package`</span></span>
+<span id="cb8-102"><a href="#cb8-102" tabindex="-1"></a><span class="co">#&gt;   }</span></span>
+<span id="cb8-103"><a href="#cb8-103" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb8-104"><a href="#cb8-104" tabindex="-1"></a><span class="co">#&gt; }</span></span>
+<span id="cb8-105"><a href="#cb8-105" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb8-106"><a href="#cb8-106" tabindex="-1"></a><span class="co">#&gt; For more conditions, see: [cnd-cnd-conditions]</span></span></code></pre></div>
+<p>Typically, you may want to use this as such:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a><span class="co">#' @section Conditions:</span></span>
+<span id="cb9-2"><a href="#cb9-2" tabindex="-1"></a><span class="co">#' </span></span>
+<span id="cb9-3"><a href="#cb9-3" tabindex="-1"></a>Conditions are generated through the [<span class="st">`</span><span class="at">{cnd}</span><span class="st">`</span>][cnd<span class="sc">::</span>cnd<span class="sc">-</span>package] package.</span>
+<span id="cb9-4"><a href="#cb9-4" tabindex="-1"></a>The following conditions are associated with this <span class="cf">function</span><span class="sc">:</span></span>
+<span id="cb9-5"><a href="#cb9-5" tabindex="-1"></a></span>
+<span id="cb9-6"><a href="#cb9-6" tabindex="-1"></a>\describe{</span>
+<span id="cb9-7"><a href="#cb9-7" tabindex="-1"></a>  </span>
+<span id="cb9-8"><a href="#cb9-8" tabindex="-1"></a>}</span>
+<span id="cb9-9"><a href="#cb9-9" tabindex="-1"></a></span>
+<span id="cb9-10"><a href="#cb9-10" tabindex="-1"></a>For more conditions, see<span class="sc">:</span> </span></code></pre></div>
+</div>
 </div>
 <div class="section level2">
 <h2 id="retrieval">Retrieval<a class="anchor" aria-label="anchor" href="#retrieval"></a>
 </h2>
 <p>You can retrieve any <code>conditions</code> that are created with <code><a href="reference/condition.html">conditions()</a></code>. By default this will list all <code>conditions</code> loaded, but can be filtered by specific packages.</p>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="reference/condition.html">conditions</a></span><span class="op">(</span><span class="st">"cnd"</span>, type <span class="op">=</span> <span class="st">"warning"</span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a><span class="co">#&gt; [[1]]</span></span>
+<span id="cb11-2"><a href="#cb11-2" tabindex="-1"></a><span class="co">#&gt; cnd::condition_generator</span></span>
+<span id="cb11-3"><a href="#cb11-3" tabindex="-1"></a><span class="co">#&gt; cnd:cnd_document_conditions/warning </span></span>
+<span id="cb11-4"><a href="#cb11-4" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb11-5"><a href="#cb11-5" tabindex="-1"></a><span class="co">#&gt; exports</span></span>
+<span id="cb11-6"><a href="#cb11-6" tabindex="-1"></a><span class="co">#&gt;   cnd::cnd_document()</span></span>
+<span id="cb11-7"><a href="#cb11-7" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb11-8"><a href="#cb11-8" tabindex="-1"></a><span class="co">#&gt; [[2]]</span></span>
+<span id="cb11-9"><a href="#cb11-9" tabindex="-1"></a><span class="co">#&gt; cnd::condition_generator</span></span>
+<span id="cb11-10"><a href="#cb11-10" tabindex="-1"></a><span class="co">#&gt; cnd:condition_overwrite/warning </span></span>
+<span id="cb11-11"><a href="#cb11-11" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb11-12"><a href="#cb11-12" tabindex="-1"></a><span class="co">#&gt; generator</span></span>
+<span id="cb11-13"><a href="#cb11-13" tabindex="-1"></a><span class="co">#&gt;   $ old : &lt;symbol&gt; </span></span>
+<span id="cb11-14"><a href="#cb11-14" tabindex="-1"></a><span class="co">#&gt;   $ new : &lt;symbol&gt; </span></span>
+<span id="cb11-15"><a href="#cb11-15" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb11-16"><a href="#cb11-16" tabindex="-1"></a><span class="co">#&gt; exports</span></span>
+<span id="cb11-17"><a href="#cb11-17" tabindex="-1"></a><span class="co">#&gt;   cnd::condition()</span></span>
+<span id="cb11-18"><a href="#cb11-18" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb11-19"><a href="#cb11-19" tabindex="-1"></a><span class="co">#&gt; [[3]]</span></span>
+<span id="cb11-20"><a href="#cb11-20" tabindex="-1"></a><span class="co">#&gt; cnd::condition_generator</span></span>
+<span id="cb11-21"><a href="#cb11-21" tabindex="-1"></a><span class="co">#&gt; cnd:conditions_dots/warning </span></span>
+<span id="cb11-22"><a href="#cb11-22" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb11-23"><a href="#cb11-23" tabindex="-1"></a><span class="co">#&gt; help</span></span>
+<span id="cb11-24"><a href="#cb11-24" tabindex="-1"></a><span class="co">#&gt; The `...` parameter in [conditions()] is meant for convenience.  Only a single argument is allowed.  Other parameters must be named  explicitly.  For example:  ```r  # Instead of this conditions("class", "package") # "package" is ignored with a warning  # Do this conditions(class = "class", package = "package")  ``` </span></span>
+<span id="cb11-25"><a href="#cb11-25" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb11-26"><a href="#cb11-26" tabindex="-1"></a><span class="co">#&gt; exports</span></span>
+<span id="cb11-27"><a href="#cb11-27" tabindex="-1"></a><span class="co">#&gt;   cnd::conditions()</span></span>
+<span id="cb11-28"><a href="#cb11-28" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb11-29"><a href="#cb11-29" tabindex="-1"></a><span class="co">#&gt; [[4]]</span></span>
+<span id="cb11-30"><a href="#cb11-30" tabindex="-1"></a><span class="co">#&gt; cnd::condition_generator</span></span>
+<span id="cb11-31"><a href="#cb11-31" tabindex="-1"></a><span class="co">#&gt; cnd:no_package_exports/warning </span></span>
+<span id="cb11-32"><a href="#cb11-32" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb11-33"><a href="#cb11-33" tabindex="-1"></a><span class="co">#&gt; help</span></span>
+<span id="cb11-34"><a href="#cb11-34" tabindex="-1"></a><span class="co">#&gt; The `exports` parameter requires a `package` </span></span>
+<span id="cb11-35"><a href="#cb11-35" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb11-36"><a href="#cb11-36" tabindex="-1"></a><span class="co">#&gt; exports</span></span>
+<span id="cb11-37"><a href="#cb11-37" tabindex="-1"></a><span class="co">#&gt;   cnd::condition()</span></span></code></pre></div>
+</div>
+<div class="section level2">
+<h2 id="cnd-1">
+<code>cnd()</code><a class="anchor" aria-label="anchor" href="#cnd-1"></a>
+</h2>
+<p><code><a href="reference/condition.html">cnd()</a></code> is a special function which will use the appropriate signaling and handling function based on type of <code>condition</code> provided. When the condition’s type is <code>"error"</code> or <code>"warning"</code>, <code><a href="reference/condition.html">cnd()</a></code> passes these directly through <code><a href="https://rdrr.io/r/base/stop.html" class="external-link">stop()</a></code> and <code><a href="https://rdrr.io/r/base/warning.html" class="external-link">warning()</a></code>, respectively. Both of these functions have <code><a href="https://rdrr.io/r/base/Internal.html" class="external-link">.Internal()</a></code> calls (i.e., <code>.dfltStop()</code> and <code>.dfltWarn()</code>), which makes would make them difficult to replicate. However, <code><a href="https://rdrr.io/r/base/message.html" class="external-link">message()</a></code> does not, and thus an equivalent wrapper is internally used which also controls for formatting:</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="reference/condition.html">conditions</a></span><span class="op">(</span><span class="st">"cnd"</span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb13"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" tabindex="-1"></a><span class="co">#&gt; [[1]]</span></span>
-<span id="cb13-2"><a href="#cb13-2" tabindex="-1"></a><span class="co">#&gt; cnd::condition_generator</span></span>
-<span id="cb13-3"><a href="#cb13-3" tabindex="-1"></a><span class="co">#&gt; &lt;cnd:as_character_cnd_error/error&gt;</span></span>
-<span id="cb13-4"><a href="#cb13-4" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb13-5"><a href="#cb13-5" tabindex="-1"></a><span class="co">#&gt; You cannot coerce a [cnd::condition_generator] object to a character. This may have occured when trying to put a condition function through [stop()] or [warning].  Instead, call the function first, then pass the result to [stop()] or [warning()].</span></span>
-<span id="cb13-6"><a href="#cb13-6" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb13-7"><a href="#cb13-7" tabindex="-1"></a><span class="co">#&gt; For example:</span></span>
-<span id="cb13-8"><a href="#cb13-8" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb13-9"><a href="#cb13-9" tabindex="-1"></a><span class="co">#&gt; ```r</span></span>
-<span id="cb13-10"><a href="#cb13-10" tabindex="-1"></a><span class="co">#&gt; # Instead of this</span></span>
-<span id="cb13-11"><a href="#cb13-11" tabindex="-1"></a><span class="co">#&gt; stop(my_condition)</span></span>
-<span id="cb13-12"><a href="#cb13-12" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb13-13"><a href="#cb13-13" tabindex="-1"></a><span class="co">#&gt; # Do this</span></span>
-<span id="cb13-14"><a href="#cb13-14" tabindex="-1"></a><span class="co">#&gt; stop(my_condition())</span></span>
-<span id="cb13-15"><a href="#cb13-15" tabindex="-1"></a><span class="co">#&gt; ```</span></span>
-<span id="cb13-16"><a href="#cb13-16" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb13-17"><a href="#cb13-17" tabindex="-1"></a><span class="co">#&gt; exports:</span></span>
-<span id="cb13-18"><a href="#cb13-18" tabindex="-1"></a><span class="co">#&gt;   cnd::condition</span></span>
-<span id="cb13-19"><a href="#cb13-19" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb13-20"><a href="#cb13-20" tabindex="-1"></a><span class="co">#&gt; [[2]]</span></span>
-<span id="cb13-21"><a href="#cb13-21" tabindex="-1"></a><span class="co">#&gt; cnd::condition_generator</span></span>
-<span id="cb13-22"><a href="#cb13-22" tabindex="-1"></a><span class="co">#&gt; &lt;cnd:cnd_generated_cleanup/condition&gt;</span></span>
-<span id="cb13-23"><a href="#cb13-23" tabindex="-1"></a><span class="co">#&gt; generator:</span></span>
-<span id="cb13-24"><a href="#cb13-24" tabindex="-1"></a><span class="co">#&gt;   $ paths: &lt;symbol&gt; </span></span>
-<span id="cb13-25"><a href="#cb13-25" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb13-26"><a href="#cb13-26" tabindex="-1"></a><span class="co">#&gt; exports:</span></span>
-<span id="cb13-27"><a href="#cb13-27" tabindex="-1"></a><span class="co">#&gt;   cnd::cnd_document</span></span>
-<span id="cb13-28"><a href="#cb13-28" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb13-29"><a href="#cb13-29" tabindex="-1"></a><span class="co">#&gt; [[3]]</span></span>
-<span id="cb13-30"><a href="#cb13-30" tabindex="-1"></a><span class="co">#&gt; cnd::condition_generator</span></span>
-<span id="cb13-31"><a href="#cb13-31" tabindex="-1"></a><span class="co">#&gt; &lt;cnd:cnd_generated_write/condition&gt;</span></span>
-<span id="cb13-32"><a href="#cb13-32" tabindex="-1"></a><span class="co">#&gt; generator:</span></span>
-<span id="cb13-33"><a href="#cb13-33" tabindex="-1"></a><span class="co">#&gt;   $ path: &lt;symbol&gt; </span></span>
-<span id="cb13-34"><a href="#cb13-34" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb13-35"><a href="#cb13-35" tabindex="-1"></a><span class="co">#&gt; exports:</span></span>
-<span id="cb13-36"><a href="#cb13-36" tabindex="-1"></a><span class="co">#&gt;   cnd::cnd_document</span></span>
-<span id="cb13-37"><a href="#cb13-37" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb13-38"><a href="#cb13-38" tabindex="-1"></a><span class="co">#&gt; [[4]]</span></span>
-<span id="cb13-39"><a href="#cb13-39" tabindex="-1"></a><span class="co">#&gt; cnd::condition_generator</span></span>
-<span id="cb13-40"><a href="#cb13-40" tabindex="-1"></a><span class="co">#&gt; &lt;cnd:cond_cnd_class/error&gt;</span></span>
-<span id="cb13-41"><a href="#cb13-41" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb13-42"><a href="#cb13-42" tabindex="-1"></a><span class="co">#&gt; [cnd()] simple calls the appropriate function: [stop()], [warning()], or [message()] based on the `type` parameter from [cnd::condition()].</span></span>
-<span id="cb13-43"><a href="#cb13-43" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb13-44"><a href="#cb13-44" tabindex="-1"></a><span class="co">#&gt; exports:</span></span>
-<span id="cb13-45"><a href="#cb13-45" tabindex="-1"></a><span class="co">#&gt;   cnd::cnd</span></span>
-<span id="cb13-46"><a href="#cb13-46" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb13-47"><a href="#cb13-47" tabindex="-1"></a><span class="co">#&gt; [[5]]</span></span>
-<span id="cb13-48"><a href="#cb13-48" tabindex="-1"></a><span class="co">#&gt; cnd::condition_generator</span></span>
-<span id="cb13-49"><a href="#cb13-49" tabindex="-1"></a><span class="co">#&gt; &lt;cnd:condition_overwrite/warning&gt;</span></span>
-<span id="cb13-50"><a href="#cb13-50" tabindex="-1"></a><span class="co">#&gt; generator:</span></span>
-<span id="cb13-51"><a href="#cb13-51" tabindex="-1"></a><span class="co">#&gt;   $ old: &lt;symbol&gt; </span></span>
-<span id="cb13-52"><a href="#cb13-52" tabindex="-1"></a><span class="co">#&gt;   $ new: &lt;symbol&gt; </span></span>
-<span id="cb13-53"><a href="#cb13-53" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb13-54"><a href="#cb13-54" tabindex="-1"></a><span class="co">#&gt; [[6]]</span></span>
-<span id="cb13-55"><a href="#cb13-55" tabindex="-1"></a><span class="co">#&gt; cnd::condition_generator</span></span>
-<span id="cb13-56"><a href="#cb13-56" tabindex="-1"></a><span class="co">#&gt; &lt;cnd:conditions_dots/warning&gt;</span></span>
-<span id="cb13-57"><a href="#cb13-57" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb13-58"><a href="#cb13-58" tabindex="-1"></a><span class="co">#&gt; The `...` parameter in [conditions()] is meant for convenience.  Onlya single argument is alowed.  Other parameters must be named  explicitly.For example:```r# Instead of thisconditions('class', 'package') # 'package' is ignored with a warning# Do thisconditions(class = 'class', package = 'package')```</span></span>
-<span id="cb13-59"><a href="#cb13-59" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb13-60"><a href="#cb13-60" tabindex="-1"></a><span class="co">#&gt; exports:</span></span>
-<span id="cb13-61"><a href="#cb13-61" tabindex="-1"></a><span class="co">#&gt;   cnd::conditions</span></span>
-<span id="cb13-62"><a href="#cb13-62" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb13-63"><a href="#cb13-63" tabindex="-1"></a><span class="co">#&gt; [[7]]</span></span>
-<span id="cb13-64"><a href="#cb13-64" tabindex="-1"></a><span class="co">#&gt; cnd::condition_generator</span></span>
-<span id="cb13-65"><a href="#cb13-65" tabindex="-1"></a><span class="co">#&gt; &lt;cnd:invalid_condition/error&gt;</span></span>
-<span id="cb13-66"><a href="#cb13-66" tabindex="-1"></a><span class="co">#&gt; generator:</span></span>
-<span id="cb13-67"><a href="#cb13-67" tabindex="-1"></a><span class="co">#&gt;   $ problems: &lt;symbol&gt; </span></span>
-<span id="cb13-68"><a href="#cb13-68" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb13-69"><a href="#cb13-69" tabindex="-1"></a><span class="co">#&gt; The `class`, `exports`, and `help` parameters must be a single character string.  If you are passing a function, it must be a valid function.</span></span>
-<span id="cb13-70"><a href="#cb13-70" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb13-71"><a href="#cb13-71" tabindex="-1"></a><span class="co">#&gt; exports:</span></span>
-<span id="cb13-72"><a href="#cb13-72" tabindex="-1"></a><span class="co">#&gt;   cnd::condition</span></span>
-<span id="cb13-73"><a href="#cb13-73" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb13-74"><a href="#cb13-74" tabindex="-1"></a><span class="co">#&gt; [[8]]</span></span>
-<span id="cb13-75"><a href="#cb13-75" tabindex="-1"></a><span class="co">#&gt; cnd::condition_generator</span></span>
-<span id="cb13-76"><a href="#cb13-76" tabindex="-1"></a><span class="co">#&gt; &lt;cnd:invalid_condition_message/error&gt;</span></span>
-<span id="cb13-77"><a href="#cb13-77" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb13-78"><a href="#cb13-78" tabindex="-1"></a><span class="co">#&gt; Conditions messages are displayed when invoked through [conditionMessage()].  You can set a static message by passing through a `character` vector, or a dynamic message by passing through a `function`.  The function should return a `character` vector.</span></span>
-<span id="cb13-79"><a href="#cb13-79" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb13-80"><a href="#cb13-80" tabindex="-1"></a><span class="co">#&gt; When `message` is not set, a default "there was an error" message is used.</span></span>
-<span id="cb13-81"><a href="#cb13-81" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb13-82"><a href="#cb13-82" tabindex="-1"></a><span class="co">#&gt; exports:</span></span>
-<span id="cb13-83"><a href="#cb13-83" tabindex="-1"></a><span class="co">#&gt;   cnd::condition</span></span>
-<span id="cb13-84"><a href="#cb13-84" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb13-85"><a href="#cb13-85" tabindex="-1"></a><span class="co">#&gt; [[9]]</span></span>
-<span id="cb13-86"><a href="#cb13-86" tabindex="-1"></a><span class="co">#&gt; cnd::condition_generator</span></span>
-<span id="cb13-87"><a href="#cb13-87" tabindex="-1"></a><span class="co">#&gt; &lt;cnd:match_arg/error&gt;</span></span>
-<span id="cb13-88"><a href="#cb13-88" tabindex="-1"></a><span class="co">#&gt; generator:</span></span>
-<span id="cb13-89"><a href="#cb13-89" tabindex="-1"></a><span class="co">#&gt;   $ arg    : &lt;symbol&gt; </span></span>
-<span id="cb13-90"><a href="#cb13-90" tabindex="-1"></a><span class="co">#&gt;   $ value  : &lt;symbol&gt; </span></span>
-<span id="cb13-91"><a href="#cb13-91" tabindex="-1"></a><span class="co">#&gt;   $ choices: &lt;symbol&gt; </span></span>
-<span id="cb13-92"><a href="#cb13-92" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb13-93"><a href="#cb13-93" tabindex="-1"></a><span class="co">#&gt; Mostly [match.arg()] but with a custom condition</span></span>
-<span id="cb13-94"><a href="#cb13-94" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb13-95"><a href="#cb13-95" tabindex="-1"></a><span class="co">#&gt; exports:</span></span>
-<span id="cb13-96"><a href="#cb13-96" tabindex="-1"></a><span class="co">#&gt;   cnd::condition</span></span>
-<span id="cb13-97"><a href="#cb13-97" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb13-98"><a href="#cb13-98" tabindex="-1"></a><span class="co">#&gt; [[10]]</span></span>
-<span id="cb13-99"><a href="#cb13-99" tabindex="-1"></a><span class="co">#&gt; cnd::condition_generator</span></span>
-<span id="cb13-100"><a href="#cb13-100" tabindex="-1"></a><span class="co">#&gt; &lt;cnd:no_package_exports/warning&gt;</span></span>
-<span id="cb13-101"><a href="#cb13-101" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb13-102"><a href="#cb13-102" tabindex="-1"></a><span class="co">#&gt; The `exports` parameter requires a `package`</span></span>
-<span id="cb13-103"><a href="#cb13-103" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb13-104"><a href="#cb13-104" tabindex="-1"></a><span class="co">#&gt; exports:</span></span>
-<span id="cb13-105"><a href="#cb13-105" tabindex="-1"></a><span class="co">#&gt;   cnd::condition</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">foo_call</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu"><a href="reference/condition.html">condition</a></span><span class="op">(</span><span class="st">"foo_condition"</span>, <span class="st">"two\nlines"</span>, type <span class="op">=</span> <span class="st">"message"</span><span class="op">)</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="co"># provides a character(2) vector output:</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/conditions.html" class="external-link">conditionMessage</a></span><span class="op">(</span><span class="fu">foo_call</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "&lt;foo_condition&gt;" "two\nlines"</span></span></code></pre></div>
+<p><code><a href="https://rdrr.io/r/base/message.html" class="external-link">message()</a></code> uses a handler which simply collapses the message vector into a single string. Because of this, the lines are not always neatly separated:</p>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/message.html" class="external-link">message</a></span><span class="op">(</span><span class="fu">foo_call</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; &lt;foo_condition&gt;two</span></span>
+<span><span class="co">#&gt; lines</span></span></code></pre></div>
+<p>By contrast, the handlers invoked in <code><a href="reference/condition.html">cnd()</a></code> will recognize each element as a separate line for the output. Also, the default is to provide more information about the call, in a different format:</p>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="reference/condition.html">cnd</a></span><span class="op">(</span><span class="fu">foo_call</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; &lt;foo_condition&gt;two</span></span>
+<span><span class="co">#&gt; lines</span></span></code></pre></div>
+<p>To get the a simpler message, you can use the <code><a href="https://rdrr.io/r/base/options.html" class="external-link">options()</a></code> function to change the <code>cnd.message.format</code> option to <code>"simple"</code>.</p>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/eval.html" class="external-link">local</a></span><span class="op">(</span><span class="op">{</span></span>
+<span>  <span class="va">op</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></span><span class="op">(</span>cnd.message.format <span class="op">=</span> <span class="st">"simple"</span>, cnd.call <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/on.exit.html" class="external-link">on.exit</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></span><span class="op">(</span><span class="va">op</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="reference/condition.html">cnd</a></span><span class="op">(</span><span class="fu">foo_call</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="op">}</span><span class="op">)</span></span>
+<span><span class="co">#&gt; &lt;foo_condition&gt;two</span></span>
+<span><span class="co">#&gt; lines</span></span></code></pre></div>
+<blockquote>
+<p>Currently <code><a href="https://rdrr.io/r/base/message.html" class="external-link">message()</a></code> and therefore <code><a href="reference/condition.html">cnd()</a></code> send message conditions to the <code><a href="https://rdrr.io/r/base/showConnections.html" class="external-link">stderr()</a></code>, thus usually giving them an colored text.</p>
+</blockquote>
+<p>Another benefit in using <code>cnd(condition)</code> is being able to control for messages printed to the <code><a href="https://rdrr.io/r/base/showConnections.html" class="external-link">stdout()</a></code>. Using <code><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat()</a></code> can sometimes create noise that you’d rather suppress. Because <code><a href="reference/condition.html">cnd()</a></code> uses an internal handler for <code>message</code> and <code>condition</code> types, a condition is signaled with <code>singalCondition()</code>, which can then be caught with calling handlers:</p>
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">con</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/condition.html">condition</a></span><span class="op">(</span></span>
+<span>  <span class="st">"foo"</span>,</span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"this is my message"</span>, <span class="st">"hello"</span><span class="op">)</span>,</span>
+<span>  type <span class="op">=</span> <span class="st">"condition"</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">my_fun</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="fu"><a href="reference/condition.html">cnd</a></span><span class="op">(</span><span class="fu">con</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">my_fun</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; foo/condition</span></span>
+<span><span class="co">#&gt; (foo/cnd::condition/condition)</span></span>
+<span><span class="co">#&gt; this is my messagehello</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/conditions.html" class="external-link">withCallingHandlers</a></span><span class="op">(</span></span>
+<span>  <span class="fu">my_fun</span><span class="op">(</span><span class="op">)</span>, </span>
+<span>  condition <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">c</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/conditions.html" class="external-link">tryInvokeRestart</a></span><span class="op">(</span><span class="st">"muffleCondition"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre></div>
 </div>
 </div>
   </div>
@@ -457,6 +493,7 @@
 <ul class="list-unstyled">
 <li><a href="https://github.com/jmbarbone/cnd/actions/workflows/R-CMD-check.yaml" class="external-link"><img src="https://github.com/jmbarbone/cnd/actions/workflows/R-CMD-check.yaml/badge.svg" alt="R-CMD-check"></a></li>
 <li><a href="https://app.codecov.io/gh/jmbarbone/cnd" class="external-link"><img src="https://codecov.io/gh/jmbarbone/cnd/graph/badge.svg" alt="Codecov test coverage"></a></li>
+<li><a href="https://lifecycle.r-lib.org/articles/stages.html#experimental" class="external-link"><img src="https://img.shields.io/badge/lifecycle-experimental-orange.svg" alt="Lifecycle: experimental"></a></li>
 </ul>
 </div>
 
