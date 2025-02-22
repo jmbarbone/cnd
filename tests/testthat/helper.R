@@ -70,7 +70,7 @@ test_documentation <- function(package) {
   expect_condition(
     withCallingHandlers(
       cnd_document(package = package, file = path),
-      condition = function(c) {
+      message = function(c) {
         # line endings on CI Windows might be throwing off the check.  For now,
         # these are simply going to be muffled
         if (
