@@ -209,6 +209,8 @@ conditions <- function(
       warning(cond_conditions_dots())
     }
 
+    # TODO allow inherits(..1, "cnd:registry")
+    # TOOD allow environment(..1) as long as it appears to be a namespace
     if (is.function(..1)) {
       fun <- fun %||% ..1
     } else {

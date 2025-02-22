@@ -8,11 +8,14 @@
 [![R-CMD-check](https://github.com/jmbarbone/cnd/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/jmbarbone/cnd/actions/workflows/R-CMD-check.yaml)
 [![Codecov test
 coverage](https://codecov.io/gh/jmbarbone/cnd/graph/badge.svg)](https://app.codecov.io/gh/jmbarbone/cnd)
+[![Lifecycle:
+experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 <!-- badges: end -->
 
-The goal of `{cnd}` is to provide easy, customized classes for
-`conditions`. This makes setting up custom conditions quick and more
-useful.
+The goal of `{cnd}` is to provide easy, customized classes for your
+`conditions`.
+
+This makes setting up custom conditions quick and more useful.
 
 ## Installation
 
@@ -23,6 +26,45 @@ You can install the development version of `{cnd}` from
 # install.packages("pak")
 pak::pak("jmbarbone/cnd")
 ```
+
+## Conditions, in general
+
+`conditions` are special objects that **R** will use for both signaling
+and messaging, primarily within the context of `stop()`, `warning()`,
+and `message()`.
+
+``` r
+format(stop)[7:10]
+#> [1] "        message <- conditionMessage(cond)"               
+#> [2] "        call <- conditionCall(cond)"                     
+#> [3] "        .Internal(.signalCondition(cond, message, call))"
+#> [4] "        .Internal(.dfltStop(message, call))"
+format(warning)[9:14]
+#> [1] "        message <- conditionMessage(cond)"                   
+#> [2] "        call <- conditionCall(cond)"                         
+#> [3] "        withRestarts({"                                      
+#> [4] "            .Internal(.signalCondition(cond, message, call))"
+#> [5] "            .Internal(.dfltWarn(message, call))"             
+#> [6] "        }, muffleWarning = function() NULL)"
+format(message)[13:19]
+#> [1] "    defaultHandler <- function(c) {"                          
+#> [2] "        cat(conditionMessage(c), file = stderr(), sep = \"\")"
+#> [3] "    }"                                                        
+#> [4] "    withRestarts({"                                           
+#> [5] "        signalCondition(cond)"                                
+#> [6] "        defaultHandler(cond)"                                 
+#> [7] "    }, muffleMessage = function() NULL)"
+```
+
+All functions accept a `condition` object as their first argument, which
+contains both the classes that will be signaled and a message that will
+be sent to the `stderr()`. You’ll notice, too, that `warning()` and
+`message()` call `withRestarts()`, which contain `signalCondition()`
+call. By default, these three functions create `condition` objects with
+an extra class of `"error"`, `"warning"`, or `"message"`, respectively.
+`{cnd}` inserts itself into these processes by allowing users to define
+new condition objects to be signaled and with greater control over
+messaging.
 
 ## Example
 
@@ -35,37 +77,52 @@ functions of class `cnd::condition_generator`. The
 library(cnd)
 condition
 #> cnd::condition_progenitor
-#> generator:
-#>   $ class   : <symbol> 
-#>   $ message : NULL
-#>   $ type    : <language> c("error", "warning", "message", "condition")
-#>   $ package : <language> get_package()
-#>   $ exports : NULL
-#>   $ help    : NULL
-#>   $ registry: <symbol> package
-#>   $ register: <language> !is.null(registry)
 #> 
-#> <condition(s): cnd:as_character_cnd_error/error, cnd:invalid_condition/error, cnd:invalid_condition_message/error, cnd:match_arg/error, cnd:no_package_exports/warning>
+#> generator
+#>   $ class    : <symbol> 
+#>   $ message  : NULL
+#>   $ type     : <language> c("error", "warning", "message", "condition")
+#>   $ package  : <language> get_package()
+#>   $ exports  : NULL
+#>   $ help     : NULL
+#>   $ registry : <symbol> package
+#>   $ register : <language> !is.null(registry)
 #> 
-#> For list of conditions use cnd::conditions()
+#> condition(s)
+#> cnd:as_character_cnd_error/error
+#> cnd:condition_message_generator/error
+#> cnd:condition_overwrite/warning
+#> cnd:invalid_condition/error
+#> cnd:invalid_condition_message/error
+#> cnd:match_arg/error
+#> cnd:no_package_exports/warning
+#> 
+#> For a list of conditions: `cnd::conditions()`
 ```
 
-Use `condition()` to create a generator, which controls messaging for
-`conditions`s.
+> Note: `condition` is of mode “function” but does not retain “function”
+> as a class. `condition` also has several conditions which can be
+> signaled directly or indirectly.
+
+Use `condition()` to create a generator, then use that generator within
+your functions:
 
 ``` r
+# cnd::condition_generator
 bad_value <- condition("bad_value", message = "Value has to be better")
-
 bad_value
 #> cnd::condition_generator
-#> <bad_value/error>
+#> bad_value/error
+
+# condition
 bad_value()
-#> <bad_value/error>
+#> bad_value/error
+#> (bad_value/cnd::condition/error/condition)
 #> Value has to be better
 
 foo <- function(x) {
   if (x < 0) {
-    cnd(bad_value())
+    stop(bad_value())
   }
   x
 }
@@ -74,17 +131,6 @@ foo <- function(x) {
 foo(-1)
 #> Error in foo(-1): <bad_value>
 #> Error in foo(-1): Value has to be better
-```
-
-By default, the `call` will try to still grab the from the sys.parent of
-`bad_value()`. As `bad_value()` is called inside `foo()`, we still see
-`foo()` in the error.
-
-``` r
-bar <- function() foo(-1L)
-bar()
-#> Error in foo(-1L): <bad_value>
-#> Error in foo(-1L): Value has to be better
 ```
 
 The resulting `cnd::condition_generator` object can also take parameters
@@ -98,15 +144,32 @@ bad_value2 <- condition(
   }
 )
 
+# a 'generator' is also printed, with formals
 bad_value2
 #> cnd::condition_generator
-#> <bad_value2/error>
-#> generator:
-#>   $ x: <symbol>
-bad_value2(0)
-#> <bad_value2/error>
-#> `x` must be `>=0`. A value of `0` is no good
+#> bad_value2/error 
+#> 
+#> generator
+#>   $ x : <symbol>
 
+# pass a value to the args to generate the condition message
+bad_value2(0)
+#> bad_value2/error
+#> (bad_value2/cnd::condition/error/condition)
+#> `x` must be `>=0`. A value of `0` is no good
+bad_value2(-1)
+#> bad_value2/error
+#> (bad_value2/cnd::condition/error/condition)
+#> `x` must be `>=0`. A value of `-1` is no good
+
+# note: this does not provide any tests, so you may produce non-nonsensical messages
+bad_value2(10)
+#> bad_value2/error
+#> (bad_value2/cnd::condition/error/condition)
+#> `x` must be `>=0`. A value of `10` is no good
+
+
+# now when used in your function:
 foo <- function(x) {
   if (x < 0) {
     stop(bad_value2(x))
@@ -119,131 +182,75 @@ foo(-1.2)
 #> Error in foo(-1.2): `x` must be `>=0`. A value of `-1.2` is no good
 ```
 
-## Registration
+## Your package
 
-`condition()` has a few options for *registering* a condition to an
-exported `function`. When using `condition()` within your package
-development, you should only need to use the `exports` parameter, which
-requires a `character` vector of exported function. `register` toggles
-whether a `cnd::condition_generator` is assigned to an object.
-`registry` is for advanced use cases where you want to save the
-`cnd::condition_generator` in a registration environment that is not
-associated with your package.
+There are three things you can do to get the most out of `{cnd}` within
+your package.
 
-``` r
-condition
-#> cnd::condition_progenitor
-#> generator:
-#>   $ class   : <symbol> 
-#>   $ message : NULL
-#>   $ type    : <language> c("error", "warning", "message", "condition")
-#>   $ package : <language> get_package()
-#>   $ exports : NULL
-#>   $ help    : NULL
-#>   $ registry: <symbol> package
-#>   $ register: <language> !is.null(registry)
-#> 
-#> <condition(s): cnd:as_character_cnd_error/error, cnd:invalid_condition/error, cnd:invalid_condition_message/error, cnd:match_arg/error, cnd:no_package_exports/warning>
-#> 
-#> For list of conditions use cnd::conditions()
-```
+- Creating a `registry` within your package  
+- Assigning a `"condition"` attribute to your functions  
+- Documenting your conditions
 
-When conditions are registered to a function, they can be retrieved from
-that function. `condition()` itself has several
-`cnd::condition_generator` objects.
+### Registry
 
-``` r
-conditions(condition)
-```
+A `registry` is a new environment that will store all of your
+conditions. This environment must exist within your package, an `{cnd}`
+will be able to find this and use it to connect your conditions to your
+functions and to other outputs.
 
-    #> [[1]]
-    #> cnd::condition_generator
-    #> <cnd:as_character_cnd_error/error>
-    #> 
-    #> You cannot coerce a [cnd::condition_generator] object to a character. This may have occured when trying to put a condition function through [stop()] or [warning].  Instead, call the function first, then pass the result to [stop()] or [warning()].
-    #> 
-    #> For example:
-    #> 
-    #> ```r
-    #> # Instead of this
-    #> stop(my_condition)
-    #> 
-    #> # Do this
-    #> stop(my_condition())
-    #> ```
-    #> 
-    #> exports:
-    #>   cnd::condition
-    #> 
-    #> [[2]]
-    #> cnd::condition_generator
-    #> <cnd:invalid_condition/error>
-    #> generator:
-    #>   $ problems: <symbol> 
-    #> 
-    #> The `class`, `exports`, and `help` parameters must be a single character string.  If you are passing a function, it must be a valid function.
-    #> 
-    #> exports:
-    #>   cnd::condition
-    #> 
-    #> [[3]]
-    #> cnd::condition_generator
-    #> <cnd:invalid_condition_message/error>
-    #> 
-    #> Conditions messages are displayed when invoked through [conditionMessage()].  You can set a static message by passing through a `character` vector, or a dynamic message by passing through a `function`.  The function should return a `character` vector.
-    #> 
-    #> When `message` is not set, a default "there was an error" message is used.
-    #> 
-    #> exports:
-    #>   cnd::condition
-    #> 
-    #> [[4]]
-    #> cnd::condition_generator
-    #> <cnd:match_arg/error>
-    #> generator:
-    #>   $ arg    : <symbol> 
-    #>   $ value  : <symbol> 
-    #>   $ choices: <symbol> 
-    #> 
-    #> Mostly [match.arg()] but with a custom condition
-    #> 
-    #> exports:
-    #>   cnd::condition
-    #> 
-    #> [[5]]
-    #> cnd::condition_generator
-    #> <cnd:no_package_exports/warning>
-    #> 
-    #> The `exports` parameter requires a `package`
-    #> 
-    #> exports:
-    #>   cnd::condition
+Simple add `cnd_registry()` to an `R/` script in your package. If you
+are going to save an store conditions as objects (recommended) then you
+should ensure that the `cnd_registry()` call is made before any
+conditions are created.
 
-<!-- These can be retrieved through their names: -->
-<!-- ```{r} -->
-<!-- cond("cnd:invalid_condition_message") -->
-<!-- ``` -->
+> **NOTE** `cnd_registry()` is designed to use `assign()` within your
+> package environment. Please read the documentation to ensure the
+> environment is not masked by other objects.
 
-To get the most out of your development package, add a call to
-`cnd::cnd_exports()` in your last sourced filed. Usually saved in
-`R/zzz.R` should be good enough.
+> **NOTE** By default, `condition(registry = )` will pick up on the
+> `registry` object within your package when you create your conditions
+> and functions are loaded. However, interactive use may not provide the
+> same results. See the examples in `cnd_create_registry()` for an
+> example of how to create a new registry and assign conditions to the
+> registry.
 
-## Documentation
+### Assigning conditions
 
-`cnd_document()` will create a new `.R` file for all conditions you have
-assigned to your package. Simply run the command when developing to
-generate a file listing all conditions.
+`condition()` has an argument for `exports`, which you can set to any
+function which you want to relate with any specific conditions.
+
+If you add any functions to the `exports` option, `package` must be set.
+By default, `package` should be set to your development package, so you
+don’t need to explicitly assign it every time.
+
+In your package, add `cnd_exports()` to an `R/` script. This should be
+executed after all your conditions and their functions are created. This
+will add a new `"conditions"` attribute to your functions as well as a
+new `"cnd::conditioned_function"` class. The new class specifically
+updates the `print()` method to show the conditions assigned to the
+function.
+
+### Documentation
+
+When you’ve created your conditions and assigned them to your functions,
+you may also want to provide documentation. Or, rather, you should
+always provide documentation.
+
+`cnd_document()` will create a new `{package}-cnd-conditions.R` file for
+all conditions you have assigned to your package. Simply run the command
+when developing to generate a file listing all conditions. You can also
+include this after your call to `cnd_exports()` to ensure that all
+conditions are documented. The file is written for `{roxygen2}` to
+generate the `Rd` files for your package.
 
 ``` r
-cnd::cnd_document()
+cnd_document()
 ```
 
-This can also be called after your `cnd::cnd_exports()`.
-
-There’s a specialist `cnd_section()` function which can be used within a
-`roxygen` block inside your own documentation. This returns `rogxygen2`
-friendly text that can also copy information about your conditions to
-documentation for your functions.
+If you want to include other information directly within your roxygen
+comments, you can use the `cnd_section()` function to grab all the
+conditions from a single functions and print out roxygen-friendly
+*section* information:
 
 ``` r
 cat(cnd_section("cnd"))
@@ -256,20 +263,33 @@ cat(cnd_section("cnd"))
     #> \describe{
     #>   
     #>   \item{[`cnd:as_character_cnd_error/error`][cnd-cnd-conditions]}{
-    #>     You cannot coerce a [cnd::condition_generator] object to a character. This may have occured when trying to put a condition function through [stop()] or [warning].  Instead, call the function first, then pass the result to [stop()] or [warning()].
+    #>     You cannot coerce a [cnd::condition_generator] object to a character. This may have occurred when trying to put a condition function through [stop()] or [warning].  Instead, call the function first, then pass the result to [stop()] or [warning()].
     #> 
     #> For example:
-    #> 
     #> ```r
+    #> 
     #> # Instead of this
     #> stop(my_condition)
     #> 
     #> # Do this
     #> stop(my_condition())
+    #> 
     #> ```
     #>   }
     #> 
-    #>   \item{[`cnd:cnd_generated_cleanup/condition`][cnd-cnd-conditions]}{
+    #>   \item{[`cnd:cnd_document_conditions/warning`][cnd-cnd-conditions]}{
+    #>     
+    #>   }
+    #> 
+    #>   \item{[`cnd:cnd_document_file/error`][cnd-cnd-conditions]}{
+    #>     
+    #>   }
+    #> 
+    #>   \item{[`cnd:cnd_document_pkg_reg/error`][cnd-cnd-conditions]}{
+    #>     
+    #>   }
+    #> 
+    #>   \item{[`cnd:cnd_generated_cleanup/message`][cnd-cnd-conditions]}{
     #>     
     #>   }
     #> 
@@ -281,12 +301,44 @@ cat(cnd_section("cnd"))
     #>     [cnd()] simple calls the appropriate function: [stop()], [warning()], or [message()] based on the `type` parameter from [cnd::condition()].
     #>   }
     #> 
+    #>   \item{[`cnd:condition_message_generator/error`][cnd-cnd-conditions]}{
+    #>     'cnd::condition_generator' objects are not conditions.   You may have made this mistake: 
+    #> 
+    #> ```r
+    #> 
+    #> x <- condition("my_condition")
+    #> conditionMessage(x)
+    #> 
+    #> ```
+    #> 
+    #> Condition generators need to be called first before they can be used as conditions.  Try this instead:
+    #> 
+    #> ```r
+    #> 
+    #> x <- condition("my_condition")
+    #> conditionMessage(x())
+    #> 
+    #> ```
+    #>   }
+    #> 
     #>   \item{[`cnd:condition_overwrite/warning`][cnd-cnd-conditions]}{
     #>     
     #>   }
     #> 
     #>   \item{[`cnd:conditions_dots/warning`][cnd-cnd-conditions]}{
-    #>     The `...` parameter in [conditions()] is meant for convenience.  Onlya single argument is alowed.  Other parameters must be named  explicitly.For example:```r# Instead of thisconditions('class', 'package') # 'package' is ignored with a warning# Do thisconditions(class = 'class', package = 'package')```
+    #>     The `...` parameter in [conditions()] is meant for convenience.  Only a single argument is allowed.  Other parameters must be named  explicitly.
+    #> 
+    #> For example:
+    #> 
+    #> ```r
+    #> 
+    #> # Instead of this
+    #> conditions("class", "package") # "package" is ignored with a warning
+    #> 
+    #> # Do this
+    #> conditions(class = "class", package = "package")
+    #> 
+    #> ```
     #>   }
     #> 
     #>   \item{[`cnd:invalid_condition/error`][cnd-cnd-conditions]}{
@@ -311,6 +363,21 @@ cat(cnd_section("cnd"))
     #> 
     #> For more conditions, see: [cnd-cnd-conditions]
 
+Typically, you may want to use this as such:
+
+``` r
+#' @section Conditions:
+#' 
+Conditions are generated through the [`{cnd}`][cnd::cnd-package] package.
+The following conditions are associated with this function:
+
+\describe{
+  
+}
+
+For more conditions, see: 
+```
+
 ## Retrieval
 
 You can retrieve any `conditions` that are created with `conditions()`.
@@ -318,111 +385,127 @@ By default this will list all `conditions` loaded, but can be filtered
 by specific packages.
 
 ``` r
-conditions("cnd")
+conditions("cnd", type = "warning")
 ```
 
     #> [[1]]
     #> cnd::condition_generator
-    #> <cnd:as_character_cnd_error/error>
+    #> cnd:cnd_document_conditions/warning 
     #> 
-    #> You cannot coerce a [cnd::condition_generator] object to a character. This may have occured when trying to put a condition function through [stop()] or [warning].  Instead, call the function first, then pass the result to [stop()] or [warning()].
-    #> 
-    #> For example:
-    #> 
-    #> ```r
-    #> # Instead of this
-    #> stop(my_condition)
-    #> 
-    #> # Do this
-    #> stop(my_condition())
-    #> ```
-    #> 
-    #> exports:
-    #>   cnd::condition
+    #> exports
+    #>   cnd::cnd_document()
     #> 
     #> [[2]]
     #> cnd::condition_generator
-    #> <cnd:cnd_generated_cleanup/condition>
-    #> generator:
-    #>   $ paths: <symbol> 
+    #> cnd:condition_overwrite/warning 
     #> 
-    #> exports:
-    #>   cnd::cnd_document
+    #> generator
+    #>   $ old : <symbol> 
+    #>   $ new : <symbol> 
+    #> 
+    #> exports
+    #>   cnd::condition()
     #> 
     #> [[3]]
     #> cnd::condition_generator
-    #> <cnd:cnd_generated_write/condition>
-    #> generator:
-    #>   $ path: <symbol> 
+    #> cnd:conditions_dots/warning 
     #> 
-    #> exports:
-    #>   cnd::cnd_document
+    #> help
+    #> The `...` parameter in [conditions()] is meant for convenience.  Only a single argument is allowed.  Other parameters must be named  explicitly.  For example:  ```r  # Instead of this conditions("class", "package") # "package" is ignored with a warning  # Do this conditions(class = "class", package = "package")  ``` 
+    #> 
+    #> exports
+    #>   cnd::conditions()
     #> 
     #> [[4]]
     #> cnd::condition_generator
-    #> <cnd:cond_cnd_class/error>
+    #> cnd:no_package_exports/warning 
     #> 
-    #> [cnd()] simple calls the appropriate function: [stop()], [warning()], or [message()] based on the `type` parameter from [cnd::condition()].
+    #> help
+    #> The `exports` parameter requires a `package` 
     #> 
-    #> exports:
-    #>   cnd::cnd
-    #> 
-    #> [[5]]
-    #> cnd::condition_generator
-    #> <cnd:condition_overwrite/warning>
-    #> generator:
-    #>   $ old: <symbol> 
-    #>   $ new: <symbol> 
-    #> 
-    #> [[6]]
-    #> cnd::condition_generator
-    #> <cnd:conditions_dots/warning>
-    #> 
-    #> The `...` parameter in [conditions()] is meant for convenience.  Onlya single argument is alowed.  Other parameters must be named  explicitly.For example:```r# Instead of thisconditions('class', 'package') # 'package' is ignored with a warning# Do thisconditions(class = 'class', package = 'package')```
-    #> 
-    #> exports:
-    #>   cnd::conditions
-    #> 
-    #> [[7]]
-    #> cnd::condition_generator
-    #> <cnd:invalid_condition/error>
-    #> generator:
-    #>   $ problems: <symbol> 
-    #> 
-    #> The `class`, `exports`, and `help` parameters must be a single character string.  If you are passing a function, it must be a valid function.
-    #> 
-    #> exports:
-    #>   cnd::condition
-    #> 
-    #> [[8]]
-    #> cnd::condition_generator
-    #> <cnd:invalid_condition_message/error>
-    #> 
-    #> Conditions messages are displayed when invoked through [conditionMessage()].  You can set a static message by passing through a `character` vector, or a dynamic message by passing through a `function`.  The function should return a `character` vector.
-    #> 
-    #> When `message` is not set, a default "there was an error" message is used.
-    #> 
-    #> exports:
-    #>   cnd::condition
-    #> 
-    #> [[9]]
-    #> cnd::condition_generator
-    #> <cnd:match_arg/error>
-    #> generator:
-    #>   $ arg    : <symbol> 
-    #>   $ value  : <symbol> 
-    #>   $ choices: <symbol> 
-    #> 
-    #> Mostly [match.arg()] but with a custom condition
-    #> 
-    #> exports:
-    #>   cnd::condition
-    #> 
-    #> [[10]]
-    #> cnd::condition_generator
-    #> <cnd:no_package_exports/warning>
-    #> 
-    #> The `exports` parameter requires a `package`
-    #> 
-    #> exports:
-    #>   cnd::condition
+    #> exports
+    #>   cnd::condition()
+
+## `cnd()`
+
+`cnd()` is a special function which will use the appropriate signaling
+and handling function based on type of `condition` provided. When the
+condition’s type is `"error"` or `"warning"`, `cnd()` passes these
+directly through `stop()` and `warning()`, respectively. Both of these
+functions have `.Internal()` calls (i.e., `.dfltStop()` and
+`.dfltWarn()`), which makes would make them difficult to replicate.
+However, `message()` does not, and thus an equivalent wrapper is
+internally used which also controls for formatting:
+
+``` r
+foo_call <- function() {
+  condition("foo_condition", "two\nlines", type = "message")()
+}
+
+# provides a character(2) vector output:
+conditionMessage(foo_call())
+#> [1] "<foo_condition>" "two\nlines"
+```
+
+`message()` uses a handler which simply collapses the message vector
+into a single string. Because of this, the lines are not always neatly
+separated:
+
+``` r
+message(foo_call())
+#> <foo_condition>two
+#> lines
+```
+
+By contrast, the handlers invoked in `cnd()` will recognize each element
+as a separate line for the output. Also, the default is to provide more
+information about the call, in a different format:
+
+``` r
+cnd(foo_call())
+#> <foo_condition>two
+#> lines
+```
+
+To get the a simpler message, you can use the `options()` function to
+change the `cnd.message.format` option to `"simple"`.
+
+``` r
+local({
+  op <- options(cnd.message.format = "simple", cnd.call = FALSE)
+  on.exit(options(op))
+  cnd(foo_call())
+})
+#> <foo_condition>two
+#> lines
+```
+
+> Currently `message()` and therefore `cnd()` send message conditions to
+> the `stderr()`, thus usually giving them an colored text.
+
+Another benefit in using `cnd(condition)` is being able to control for
+messages printed to the `stdout()`. Using `cat()` can sometimes create
+noise that you’d rather suppress. Because `cnd()` uses an internal
+handler for `message` and `condition` types, a condition is signaled
+with `singalCondition()`, which can then be caught with calling
+handlers:
+
+``` r
+con <- condition(
+  "foo",
+  c("this is my message", "hello"),
+  type = "condition"
+)
+
+my_fun <- function() cnd(con())
+
+my_fun()
+#> foo/condition
+#> (foo/cnd::condition/condition)
+#> this is my messagehello
+
+withCallingHandlers(
+  my_fun(), 
+  condition = function(c) tryInvokeRestart("muffleCondition")
+)
+```
