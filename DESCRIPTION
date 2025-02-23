@@ -11,8 +11,8 @@ Authors@R:
 Description: An interface for creating new condition generators, save generators
     in registries, link to functions, and generate documentation for packages.
 License: MIT + file LICENSE
-BugReports: https://github.com/jmbarbone/cnd
-URL: https://jmbarbone.github.io/cnd/
+BugReports: https://github.com/jmbarbone/cnd/issues
+URL: https://jmbarbone.github.io/cnd/, https://github.com/jmbarbone/cnd
 Encoding: UTF-8
 Language: en-US
 Roxygen: list(markdown = TRUE)
