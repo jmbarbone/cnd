@@ -22,11 +22,11 @@ Depends:
 Suggests: 
     cli,
     here,
-    pkgbuild,
     pkgload,
     rcmdcheck,
     roxygen2,
     spelling,
-    testthat (>= 3.0.0)
+    testthat (>= 3.0.0),
+    utils
 Config/testthat/edition: 3
 Config/testthat/parallel: true

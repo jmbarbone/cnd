@@ -1,7 +1,3 @@
-library(testthat, warn.conflicts = FALSE)
-library(cnd)
-library(cep)
-
 test_that("registry found in package", {
   expect_s3_class(
     cep:::.__CND_REGISTRY__.,
@@ -10,7 +6,7 @@ test_that("registry found in package", {
 })
 
 test_that("registrary is picking up the conditions from the cep package", {
-  from_cnd <- conditions("cep")
+  from_cnd <- cnd::conditions("cep")
   from_cep <- Filter(
     \(e) inherits(e, "cnd::condition_generator"),
     as.list(getNamespace("cep"), all.names = TRUE, sorted = TRUE)
