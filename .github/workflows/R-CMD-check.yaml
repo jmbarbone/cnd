@@ -10,37 +10,27 @@ name: R-CMD-check.yaml
 
 permissions: read-all
 
-env:
-  GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
-  R_KEEP_PKG_SOURCE: yes
-
 jobs:
-  setup:
-    runs-on: ubuntu-latest
-    outputs:
-      config: ${{ steps.set-config.outputs.config }}
-    steps:
-      - id: set-config
-        run: |
-          CONFIG_JSON=$(jq -c '[
-            {"os": "macos-latest",   "r": "release"},
-            {"os": "windows-latest", "r": "release"},
-            {"os": "ubuntu-latest",  "r": "devel", "http-user-agent": "release"},
-            {"os": "ubuntu-latest",  "r": "release"},
-            {"os": "ubuntu-latest",  "r": "oldrel-1"}
-          ]' <<< '[]')
-          echo "Config JSON: $CONFIG_JSON"
-          echo "config=$CONFIG_JSON" >> "$GITHUB_OUTPUT"
-
-  setup-r:
-    name: setup ${{ matrix.config.os }} (${{ matrix.config.r }})
-    needs: setup
+  R-CMD-check:
+    runs-on: ${{ matrix.config.os }}
+    name: ${{ matrix.config.package.name }} ${{ matrix.config.os }} (${{ matrix.config.r }})
 
     strategy:
       fail-fast: false
       matrix:
-        config: ${{ fromJson(needs.setup.outputs.config) }}
-    runs-on: ${{ matrix.config.os }}
+        package:
+          - {name: cnd,              path: '.'}
+          - {name: cndSimpleExample, path: 'tools/cndSimpleExample'}
+        config:
+          - {os: macos-latest,   r: 'release'}
+          - {os: windows-latest, r: 'release'}
+          - {os: ubuntu-latest,  r: 'devel', http-user-agent: 'release'}
+          - {os: ubuntu-latest,  r: 'release'}
+          - {os: ubuntu-latest,  r: 'oldrel-1'}
+
+    env:
+      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+      R_KEEP_PKG_SOURCE: yes
 
     steps:
       - uses: actions/checkout@v4
@@ -53,50 +43,13 @@ jobs:
           http-user-agent: ${{ matrix.config.http-user-agent }}
           use-public-rspm: true
 
-  R-CMD-check-cnd:
-    name: cnd ${{ matrix.config.os }} (${{ matrix.config.r }})
-    needs:
-      - setup
-      - setup-r
-
-    strategy:
-      fail-fast: false
-      matrix:
-        config: ${{ fromJson(needs.setup.outputs.config) }}
-    runs-on: ${{ matrix.config.os }}
-
-    steps:
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
           extra-packages: any::rcmdcheck
-          needs: check
+          working-directory: ${{ matrix.package.path }}
 
       - uses: r-lib/actions/check-r-package@v2
         with:
           upload-snapshots: true
-          build_args: 'c("--no-manual","--compact-vignettes=gs+qpdf")'
-
-  R-CMD-check-cndSimpleExample:
-    name: cndSimpleExample ${{ matrix.config.os }} (${{ matrix.config.r }})
-    needs:
-      - setup
-      - R-CMD-check-cnd
-
-    strategy:
-      fail-fast: false
-      matrix:
-        config: ${{ fromJson(needs.setup.outputs.config) }}
-    runs-on: ${{ matrix.config.os }}
-
-    steps:
-      - uses: r-lib/actions/setup-r-dependencies@v2
-        with:
-          working-directory: tools/cndSimpleExample
-          extra-packages: any::rcmdcheck
-          needs: check
-
-      - uses: r-lib/actions/check-r-package@v2
-        with:
-          working-directory: tools/cndSimpleExample
-          upload-snapshots: true
-          build_args: 'c("--no-manual","--compact-vignettes=gs+qpdf")'
+          build_args: 'c("--no-manual", "--compact-vignettes=gs+qpdf")'
+          working-directory: ${{ matrix.package.path }}
