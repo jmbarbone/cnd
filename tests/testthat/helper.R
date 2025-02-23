@@ -66,5 +66,3 @@ local_registry <- function(name = basename(tempfile(""))) {
   do.call(on.exit, list(do), envir = parent.frame())
   registrar$get(name)
 }
-
-
