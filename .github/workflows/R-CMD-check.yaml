@@ -22,18 +22,13 @@ jobs:
     steps:
       - id: set-matrix
         run: |
-          echo "matrix=$(jq -c . <<EOF
-          {
-            "config": [
-              {"os": "macos-latest", "r": "release"},
-              {"os": "windows-latest", "r": "release"},
-              {"os": "ubuntu-latest", "r": "devel", "http-user-agent": "release"},
-              {"os": "ubuntu-latest", "r": "release"},
-              {"os": "ubuntu-latest", "r": "oldrel-1"}
-            ]
-          }
-          EOF
-          )" >> "$GITHUB_OUTPUT"
+          echo 'matrix={"config": [
+            {"os": "macos-latest", "r": "release"},
+            {"os": "windows-latest", "r": "release"},
+            {"os": "ubuntu-latest", "r": "devel", "http-user-agent": "release"},
+            {"os": "ubuntu-latest", "r": "release"},
+            {"os": "ubuntu-latest", "r": "oldrel-1"}
+          ]}' >> "$GITHUB_OUTPUT"
   setup:
     name: setup ${{ matrix.config.os }} (${{ matrix.config.r }})
     needs: define-matrix
