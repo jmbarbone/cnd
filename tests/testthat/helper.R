@@ -104,3 +104,32 @@ with_op <- function(op, expr) {
   on.exit(options(old))
   force(expr)
 }
+
+check_rcmdcheck <- function() {
+  skip_if_not_installed("rcmdcheck")
+  skip_if_not_installed("here")
+  expect_no_error(
+    rcmdcheck::rcmdcheck(
+      here::here("tools/cep"),
+      quiet = TRUE,
+      args = c("--no-manual", "--no-vignettes"),
+      error_on = "warning"
+    )
+  )
+}
+
+check_cep_in_use <- function() {
+  err <- tempfile()
+  on.exit(file.remove(err))
+  system2(
+    "Rscript",
+    c("--vanilla", here::here("tools/test-cep-in-use.R")),
+    stdout = FALSE,
+    stderr = err
+  )
+
+  warn <- readLines(err)
+  if (length(warn) > 0) {
+    stop(paste(warn, collapse = "\n"))
+  }
+}
