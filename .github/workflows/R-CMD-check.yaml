@@ -55,7 +55,9 @@ jobs:
 
   R-CMD-check-cnd:
     name: cnd ${{ matrix.config.os }} (${{ matrix.config.r }})
-    needs: setup-r
+    needs:
+      - setup
+      - setup-r
 
     strategy:
       fail-fast: false
@@ -76,7 +78,9 @@ jobs:
 
   R-CMD-check-cndSimpleExample:
     name: cndSimpleExample ${{ matrix.config.os }} (${{ matrix.config.r }})
-    needs: R-CMD-check-cnd
+    needs:
+      - setup
+      - R-CMD-check-cnd
 
     strategy:
       fail-fast: false
