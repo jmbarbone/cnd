@@ -30,12 +30,20 @@ This makes setting up custom conditions quick and more useful.
 
 ## Installation
 
+You can install the current CRAN version of `{cnd}` with one of:
+
+``` r
+install.packages("cnd")
+pak::pak("cran/cnd@*release")
+pak::pak("jmbarbone/cnd@*release")
+```
 You can install the development version of `{cnd}` from [GitHub](https://github.com/) with:
 
 ``` r
-# install.packages("pak")
 pak::pak("jmbarbone/cnd")
 ```
+
+But is recommended to specify a pre-release tag, if available.
 
 ## Conditions, in general
 
