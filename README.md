@@ -386,24 +386,21 @@ messages printed to the `stdout()`. Using `cat()` can sometimes create
 noise that you’d rather suppress. Because `cnd()` uses an internal
 handler for `message` and `condition` types, a condition is signaled
 with `singalCondition()`, which can then be caught with calling
-handlers:
+handlers, using a provided `"muffleCondition"` restart:
 
 ``` r
-con <- condition(
-  "foo",
-  c("this is my message", "hello"),
-  type = "condition"
-)
-
+con <- condition("foo_condition", "Hello\nthere", type = "condition")
 my_fun <- function() cnd(con())
-
-my_fun()
-#> foo/condition
-#> (foo/cnd::condition/condition)
-#> this is my messagehello
+my_fun() # note the classes inside (...)
+#> foo_condition/condition
+#> (foo_condition/cnd::condition/condition)
+#> Hello
+#> there
 
 withCallingHandlers(
   my_fun(), 
-  condition = function(c) tryInvokeRestart("muffleCondition")
+  foo_condition = function(c) {
+    tryInvokeRestart("muffleCondition")
+  }
 )
 ```

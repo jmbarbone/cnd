@@ -240,21 +240,31 @@ local({
 
 Another benefit in using `cnd(condition)` is being able to control for messages printed to the `stdout()`.
 Using `cat()` can sometimes create noise that you'd rather suppress.
-Because `cnd()` uses an internal handler for `message` and `condition` types, a condition is signaled with `singalCondition()`, which can then be caught with calling handlers:
+Because `cnd()` uses an internal handler for `message` and `condition` types, a condition is signaled with `singalCondition()`, which can then be caught with calling handlers, using a provided `"muffleCondition"` restart:
 
 ```{r}
-con <- condition(
-  "foo",
-  c("this is my message", "hello"),
-  type = "condition"
+#| include: false
+# this would probably be better in a vignette or something
+msg <- c(
+  "Character strings for the messages are at first collapsed",
+  " into a single string with no separation.",
+  "\nInclude explicit line returns",
+  "\nFor all new lines",
+  "",
+  "However, returns of functions recognize each element",
+  " as separate lines"
 )
+```
 
+```{r}
+con <- condition("foo_condition", "Hello\nthere", type = "condition")
 my_fun <- function() cnd(con())
-
-my_fun()
+my_fun() # note the classes inside (...)
 
 withCallingHandlers(
   my_fun(), 
-  condition = function(c) tryInvokeRestart("muffleCondition")
+  foo_condition = function(c) {
+    tryInvokeRestart("muffleCondition")
+  }
 )
 ```
