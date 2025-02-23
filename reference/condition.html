@@ -89,7 +89,11 @@ parameters serve as filtering arguments.</p>
 
 
 <dt id="arg-message">message<a class="anchor" aria-label="anchor" href="#arg-message"></a></dt>
-<dd><p>The message to be displayed when the condition is called</p></dd>
+<dd><p>The message to be displayed when the condition is called. When
+entered as a character vector, the message is collapsed into a single
+string. Use explicit line returns to generate new lines in output messages.
+When a function is used and a character vector returned, each element is
+treated as a new line.</p></dd>
 
 
 <dt id="arg-type">type<a class="anchor" aria-label="anchor" href="#arg-type"></a></dt>
