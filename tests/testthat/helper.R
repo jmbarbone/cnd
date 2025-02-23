@@ -18,7 +18,7 @@ test_documentation <- function() {
   dir <- tempfile("cnd_dir_")
   on.exit(unlink(dir, TRUE), add = TRUE)
   dir.create(dir, showWarnings = FALSE)
-  # path to where teh documentation will be sent
+  # path to where the documentation will be sent
   path <- tempfile("cnd_documentation_", dir, ".R")
 
   # extra file to trigger cleanup
@@ -43,7 +43,7 @@ test_documentation <- function() {
   # no changes
   expect_no_condition(
     withCallingHandlers(
-      cnd_document(package = package, file = path),
+      cnd_document(package = "cnd", file = path),
       # line endings on CI Windows might be throwing off the check.  For now,
       # these are simply going to be muffled
       "cnd:cnd_generated_cleanup" = function(c) {
