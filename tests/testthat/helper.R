@@ -66,7 +66,6 @@ test_documentation <- function(package) {
     )
   )
 
-
   is_ci_windows <-
     Sys.info()[["sysname"]] == "Windows" &&
     # GitHub should set CI to 'true'

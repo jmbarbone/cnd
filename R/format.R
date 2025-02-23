@@ -1,4 +1,3 @@
-
 # exports -----------------------------------------------------------------
 
 #' Format conditions
@@ -16,10 +15,10 @@
 #' format(condition("foo"))
 #' @name format-conditions
 `format.cnd::condition` <- function(
-    x,
-    ...,
-    cli = getOption("cnd.cli.override")
-  ) {
+  x,
+  ...,
+  cli = getOption("cnd.cli.override")
+) {
   a <- attributes(x)
   fmt_cond(
     package = a$package,
@@ -34,9 +33,9 @@
 #' @rdname format-conditions
 #' @export
 `format.cnd::condition_generator` <- function(
-    x,
-    ...,
-    cli = getOption("cnd.cli.override")
+  x,
+  ...,
+  cli = getOption("cnd.cli.override")
 ) {
   fmt_cond(
     package = x$package,
@@ -50,12 +49,12 @@
 # helpers -----------------------------------------------------------------
 
 fmt_cond <- function(
-    package,
-    class,
-    type,
-    classes = NULL,
-    message = NULL,
-    cli_override = getOption("cnd.cli.override")
+  package,
+  class,
+  type,
+  classes = NULL,
+  message = NULL,
+  cli_override = getOption("cnd.cli.override")
 ) {
   op <- options(cnd.cli.on = cli_override)
   on.exit(options(op), add = TRUE)

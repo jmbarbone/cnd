@@ -1,4 +1,3 @@
-
 # All functions from {cli} are indirectly called.  They are wrapped in a check
 # for the package itself and for whether or not ansi colors are detected.  The
 # default is to check for the package and the colors, but this can be overridden
@@ -27,8 +26,10 @@ cli_switch <- function(on, off = NULL) {
 # nolint next: object_length_linter.
 local_cli_ignore_unknown_rstudio_theme <- function() {
   op <- options(
-    cli.ignore_unknown_rstudio_theme =
-      getOption("cli.ignore_unknown_rstudio_theme", TRUE)
+    cli.ignore_unknown_rstudio_theme = getOption(
+      "cli.ignore_unknown_rstudio_theme",
+      TRUE
+    )
   )
   do <- function() options(op)
   do.call(on.exit, list(do()), envir = parent.frame())
@@ -43,19 +44,19 @@ cli_fun <- function(cli, ..., ..otherwise = base::paste0) {
 }
 
 # nocov start
-black   <- function(...) cli_fun("col_black", ...)
-blue    <- function(...) cli_fun("col_blue", ...)
-cyan    <- function(...) cli_fun("col_cyan", ...)
-green   <- function(...) cli_fun("col_green", ...)
-grey    <- function(...) cli_fun("col_grey", ...)
-magenta <- function(...) cli_fun("col_magenta", ...)
-red     <- function(...) cli_fun("col_red", ...)
-silver  <- function(...) cli_fun("col_silver", ...)
-white   <- function(...) cli_fun("col_white", ...)
-yellow  <- function(...) cli_fun("col_yellow", ...)
-bold    <- function(...) cli_fun("style_bold", ...)
-italic  <- function(...) cli_fun("style_italic", ...)
-code    <- function(...) cli_fun("code_highlight", ...)
+black   <- function(...) cli_fun("col_black", ...) # fmt: skip
+blue    <- function(...) cli_fun("col_blue", ...) # fmt: skip
+cyan    <- function(...) cli_fun("col_cyan", ...) # fmt: skip
+green   <- function(...) cli_fun("col_green", ...) # fmt: skip
+grey    <- function(...) cli_fun("col_grey", ...) # fmt: skip
+magenta <- function(...) cli_fun("col_magenta", ...) # fmt: skip
+red     <- function(...) cli_fun("col_red", ...) # fmt: skip
+silver  <- function(...) cli_fun("col_silver", ...) # fmt: skip
+white   <- function(...) cli_fun("col_white", ...) # fmt: skip
+yellow  <- function(...) cli_fun("col_yellow", ...) # fmt: skip
+bold    <- function(...) cli_fun("style_bold", ...) # fmt: skip
+italic  <- function(...) cli_fun("style_italic", ...) # fmt: skip
+code    <- function(...) cli_fun("code_highlight", ...) # fmt: skip
 # nocov end
 
 # handled retains .envir and just prints directly

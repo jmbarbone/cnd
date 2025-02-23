@@ -25,15 +25,14 @@ cnd_message <- function(condition, fmt = c("verbose", "simple")) {
 }
 
 cnd_message_handler <- function(
-    condition,
-    fmt = c("verbose", "simple"),
-    type = c("message", "condition")
+  condition,
+  fmt = c("verbose", "simple"),
+  type = c("message", "condition")
 ) {
   fmt <- match_arg(fmt, .null_as_default = TRUE)
   type <- match_arg(type)
 
   with_restarts <- function(output, fmt, ...) {
-
     # stderr() for messages, stdout() for condition
     handler <- function(x, fmt, output) {
       msg <- switch(fmt, simple = conditionMessage(x), verbose = format(x))

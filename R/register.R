@@ -1,4 +1,3 @@
-
 # register ----------------------------------------------------------------
 
 #' Create a registration
@@ -28,10 +27,10 @@
 #' @returns a `cnd:registry` object, invisibly
 #' @export
 cnd_create_registry <- function(
-    registry = get_package(),
-    overwrite = FALSE,
-    name = ".__CND_REGISTRY__.",
-    env = parent.frame()
+  registry = get_package(),
+  overwrite = FALSE,
+  name = ".__CND_REGISTRY__.",
+  env = parent.frame()
 ) {
   registrar$create(
     registry = registry,
@@ -49,7 +48,6 @@ class(registrar) <- "cnd:registrar"
 
 local(envir = registrar, {
   .self <- registrar
-
 
   new <- function(x = NULL) {
     e <- new.env(parent = .cnd_env)
@@ -76,12 +74,13 @@ local(envir = registrar, {
   }
 
   create <- function(registry, overwrite, name, env) {
-
     found <- get0(name, env, inherits = FALSE)
     if (!is.null(found)) {
       if (!inherits(found, "cnd:registry")) {
         stop(
-          "You have a variable named '", name, "' in your environment,",
+          "You have a variable named '",
+          name,
+          "' in your environment,",
           " which is not a 'cnd:registry' object.  Please remove this from",
           " your package environment to create a registry for the cnd pacakge",
           call. = FALSE
@@ -167,7 +166,6 @@ local(envir = registrar, {
   }
 
   check <- function(package) {
-
     if (exists(package, .__REGISTRIES__.)) {
       return()
     }
@@ -244,6 +242,7 @@ as_list_env <- function(x, all = FALSE) {
 
 # conditions --------------------------------------------------------------
 
+# fmt: skip
 cond_condition_overwrite <- function() {}
 delayedAssign(
   "cond_condition_overwrite",
@@ -253,12 +252,13 @@ delayedAssign(
     package = "cnd",
     exports = "condition",
     # nolint next: brace_linter.
-    message = function(old, new) fmt(
-      "A condition with the class name '{cls}' already exists in '{pkg}' and",
-      " will be overwritten{diff}",
-      cls = old$class,
-      pkg = old$package,
-      diff = paste0("\n   ", all.equal(old, new), collapse = "")
-    )
+    message = function(old, new)
+      fmt(
+        "A condition with the class name '{cls}' already exists in '{pkg}' and",
+        " will be overwritten{diff}",
+        cls = old$class,
+        pkg = old$package,
+        diff = paste0("\n   ", all.equal(old, new), collapse = "")
+      )
   )
 )

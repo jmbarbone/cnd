@@ -1,4 +1,3 @@
-
 # exports -----------------------------------------------------------------
 
 #' Conditions
@@ -60,14 +59,14 @@
 #'   cnd::condition_generator
 #' @seealso [cnd-package]
 condition <- function(
-    class,
-    message = NULL,
-    type = c("error", "warning", "message", "condition"),
-    package = get_package(),
-    exports = NULL,
-    help = NULL,
-    registry = package,
-    register = !is.null(registry)
+  class,
+  message = NULL,
+  type = c("error", "warning", "message", "condition"),
+  package = get_package(),
+  exports = NULL,
+  help = NULL,
+  registry = package,
+  register = !is.null(registry)
 ) {
   if (nargs() == 1L) {
     found <- do_find_cond(class)
@@ -95,7 +94,7 @@ condition <- function(
   }
 
   if (is.null(message)) {
-    message <- function() {}
+    message <- function() NULL
     # default message is just announcing an error
     body(message) <- paste(
       switch(
@@ -128,9 +127,9 @@ condition <- function(
   assign("help", help, condition_env)
 
   res <- local(envir = condition_env, {
+    # fmt: skip
     condition_function <- function() {}
     body(condition_function) <- substitute({
-
       # nolint next: object_usage_linter. (params is used)
       params <- as.list(match.call())[-1L]
       params <- params[names(params) != ".call"]
@@ -196,12 +195,12 @@ class(condition) <- "cnd::condition_progenitor"
 #' @returns
 #' - [conditions()] a `list` of [cnd::condition_generator] objects
 conditions <- function(
-    ...,
-    class = NULL,
-    type = NULL,
-    package = NULL,
-    registry = NULL,
-    fun = NULL
+  ...,
+  class = NULL,
+  type = NULL,
+  package = NULL,
+  registry = NULL,
+  fun = NULL
 ) {
   dot_n <- ...length()
 
@@ -364,9 +363,9 @@ find_cond <- function(x, ..., .multi = FALSE) {
 }
 
 do_find_cond <- function(
-    x,
-    force = FALSE,
-    check = c("package", "class", "type")
+  x,
+  force = FALSE,
+  check = c("package", "class", "type")
 ) {
   check <- intersect(check, eval(formals(do_find_cond)$check))
   stopifnot(!identical(check, character())) # internal error
@@ -525,6 +524,7 @@ cget <- function(x, field) {
 
 # conditions --------------------------------------------------------------
 
+# fmt: skip
 cond_no_package_exports <- function() {}
 delayedAssign(
   "cond_no_package_exports",
@@ -538,6 +538,7 @@ delayedAssign(
   )
 )
 
+# fmt: skip
 cond_condition_bad_message <- function() {}
 delayedAssign(
   "cond_condition_bad_message",
@@ -559,6 +560,7 @@ delayedAssign(
   )
 )
 
+# fmt: skip
 cond_cnd_class <- function() {}
 delayedAssign(
   "cond_cnd_class",
@@ -575,6 +577,7 @@ delayedAssign(
   )
 )
 
+# fmt: skip
 cond_as_character_condition <- function() {}
 delayedAssign(
   "cond_as_character_condition",
@@ -606,6 +609,7 @@ delayedAssign(
   )
 )
 
+# fmt: skip
 cond_condition_invalid <- function() {}
 delayedAssign(
   "cond_condition_invalid",
@@ -613,10 +617,11 @@ delayedAssign(
     "invalid_condition",
     type = "error",
     # nolint next: brace_linter.
-    message = function(problems) collapse(
-      "The following problems were found with the condition:",
-      paste0("\n", problems)
-    ),
+    message = function(problems)
+      collapse(
+        "The following problems were found with the condition:",
+        paste0("\n", problems)
+      ),
     package = "cnd",
     exports = "condition",
     help = c(
@@ -627,6 +632,7 @@ delayedAssign(
   )
 )
 
+# fmt: skip
 cond_conditions_dots <- function() {}
 delayedAssign(
   "cond_conditions_dots",
@@ -654,6 +660,8 @@ delayedAssign(
   )
 )
 
+
+# fmt: skip
 # nolint next: object_length_linter.
 cond_condition_message_generator <- function() {}
 delayedAssign(

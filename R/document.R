@@ -1,4 +1,3 @@
-
 # exports -----------------------------------------------------------------
 
 #' Document your conditions
@@ -33,10 +32,10 @@
 #'
 #' cnd_section("cnd")
 cnd_document <- function(
-    package = get_package(),
-    registry = package,
-    file = file.path("R", paste0(package, "-cnd-conditions.R")),
-    cleanup = TRUE
+  package = get_package(),
+  registry = package,
+  file = file.path("R", paste0(package, "-cnd-conditions.R")),
+  cleanup = TRUE
 ) {
   op <- options(cnd.cli.override = "off")
   on.exit(options(op), add = TRUE)
@@ -60,8 +59,14 @@ cnd_document <- function(
     package = package,
     # nolint start: line_length_linter.
     aliases1 = collapse(vapply(conds, cget, NA_character_, "class"), sep = " "),
-    aliases2 = collapse(vapply(conds, cget, NA_character_, ".class"), sep = " "),
-    aliases3 = collapse(vapply(conds, `format.cnd::condition_generator`, NA_character_), sep = " "),
+    aliases2 = collapse(
+      vapply(conds, cget, NA_character_, ".class"),
+      sep = " "
+    ),
+    aliases3 = collapse(
+      vapply(conds, `format.cnd::condition_generator`, NA_character_),
+      sep = " "
+    ),
     # nolint end: line_length_linter.
     cnd_section_describe = collapse(
       vapply(
@@ -226,6 +231,7 @@ cnd_section_item_fmt <- "
 
 # conditions --------------------------------------------------------------
 
+# fmt: skip
 cond_cnd_generated_cleanup <- function() {}
 delayedAssign(
   "cond_cnd_generated_cleanup",
@@ -235,13 +241,15 @@ delayedAssign(
     package = "cnd",
     exports = "cnd_document",
     # nolint next: brace_linter.
-    message = function(paths) c(
-      "Removing the following cnd generated files:",
-      paste0("  ", paths)
-    )
+    message = function(paths)
+      c(
+        "Removing the following cnd generated files:",
+        paste0("  ", paths)
+      )
   )
 )
 
+# fmt: skip
 cond_cnd_generated_write <- function() {}
 delayedAssign(
   "cond_cnd_generated_write",
@@ -255,10 +263,11 @@ delayedAssign(
       cli_switch(
         cli_text(sprintf("Writing {.file %s}", path))
       ) %||%
-      paste("Writing", path)
+        paste("Writing", path)
   )
 )
 
+# fmt: skip
 cond_cnd_document_pkg_reg <- function() {}
 delayedAssign(
   "cond_cnd_document_pkg_reg",
@@ -268,16 +277,18 @@ delayedAssign(
     exports = "cnd_document",
     package = "cnd",
     # nolint next: brace_linter.
-    message = function(pkg, reg) fmt(
-      "package and registry must be set\n",
-      "  package: {pkg}\n",
-      "  registry: {reg}",
-      pkg = pkg,
-      reg = reg
-    )
+    message = function(pkg, reg)
+      fmt(
+        "package and registry must be set\n",
+        "  package: {pkg}\n",
+        "  registry: {reg}",
+        pkg = pkg,
+        reg = reg
+      )
   )
 )
 
+# fmt: skip
 cond_cnd_document_conds <- function() {}
 delayedAssign(
   "cond_cnd_document_conds",
@@ -290,6 +301,7 @@ delayedAssign(
   )
 )
 
+# fmt: skip
 cond_cnd_document_file <- function() {}
 delayedAssign(
   "cond_cnd_document_file",
@@ -299,11 +311,12 @@ delayedAssign(
     package = "cnd",
     exports = "cnd_document",
     # nolint next: brace_linter.
-    message = function(file) fmt(
-      "`file` must be a `character`, `connection` object`, or `NULL`,",
-      " not {class} ({type})",
-      class = collapse(class(file), sep = "/"),
-      type = typeof(file)
-    )
+    message = function(file)
+      fmt(
+        "`file` must be a `character`, `connection` object`, or `NULL`,",
+        " not {class} ({type})",
+        class = collapse(class(file), sep = "/"),
+        type = typeof(file)
+      )
   )
 )

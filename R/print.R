@@ -1,4 +1,3 @@
-
 # exports -----------------------------------------------------------------
 
 #' @export
@@ -85,7 +84,9 @@ print_generator <- function(x) {
     "\n",
     bold("generator"),
     paste0(
-      grey("\n  $ "), grey(format(names(forms))), " : ",
+      grey("\n  $ "),
+      grey(format(names(forms))),
+      " : ",
       cyan(types),
       values
     ),
