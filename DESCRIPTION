@@ -1,6 +1,6 @@
 Package: cnd
 Title: Create and Register Conditions
-Version: 0.0.0.9003
+Version: 0.0.0.9004
 Authors@R: 
     person(
       "Jordan Mark", "Barbone", , 
@@ -11,16 +11,21 @@ Authors@R:
 Description: An interface for creating new condition generators, save generators
     in registries, link to functions, and generate documentation for packages.
 License: MIT + file LICENSE
+BugReports: https://github.com/jmbarbone/cnd
+URL: https://jmbarbone.github.io/cnd/
 Encoding: UTF-8
 Language: en-US
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2
+Depends: 
+    R (>= 3.6)
 Suggests: 
     cli,
     here,
     pkgload,
+    rcmdcheck,
     roxygen2,
     spelling,
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
-URL: https://jmbarbone.github.io/cnd/
+Config/testthat/parallel: true
