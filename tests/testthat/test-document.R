@@ -29,8 +29,8 @@ test_that("documentation() works", {
   expect_type(cnd_section(cnd), "character")
 })
 
-test_that("test_documentation('cnd')", {
-  test_documentation("cnd")
+test_that("test_documentation()", {
+  test_documentation()
 })
 
 test_that("snapshots", {

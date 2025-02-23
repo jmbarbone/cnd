@@ -9,41 +9,10 @@ scrub_environment_code <- function(x) {
   x
 }
 
-skip_if_no_cep <- function() {
-  skip_if_not(dir.exists(cep_dir()), "tools/cep package directory not found")
-}
-
-here <- function(...) {
-  skip_if_not_installed("here")
-  here::here(...)
-}
-
-cep_dir <- function() {
-  here("tools/cep")
-}
-
-test_cep <- function() {
-  skip_if_not_installed("pkgload")
-  skip_if_no_cep()
-  cep <- suppress_cnd_conditions(
-    pkgload::load_all(cep_dir(), attach = FALSE, quiet = TRUE)$env
-  )
-  expect_type(conditions(cep$example_function), "list")
-  expect_error(cep$example_function(TRUE), NA)
-  expect_error(cep$example_function(0), class = "cep:bad_argument")
-}
-
-test_documentation <- function(package) {
+test_documentation <- function() {
   skip_if_not_installed("here")
 
-  wd <- switch(
-    package,
-    cnd = here(),
-    cep = cep_dir(),
-    stop("not a valid package: ", package)
-  )
-
-  cwd <- setwd(wd)
+  cwd <- setwd(here::here())
   on.exit(setwd(cwd))
 
   dir <- tempfile("cnd_dir_")
@@ -98,22 +67,4 @@ local_registry <- function(name = basename(tempfile(""))) {
   registrar$get(name)
 }
 
-with_op <- function(op, expr) {
-  op <- as.list(op)
-  old <- options(op)
-  on.exit(options(old))
-  force(expr)
-}
 
-check_rcmdcheck <- function() {
-  skip_if_not_installed("rcmdcheck")
-  skip_if_no_cep()
-  expect_no_error(
-    rcmdcheck::rcmdcheck(
-      cep_dir(),
-      quiet = TRUE,
-      args = c("--no-manual", "--no-vignettes"),
-      error_on = "warning"
-    )
-  )
-}
