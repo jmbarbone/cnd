@@ -28,7 +28,7 @@ test_documentation <- function() {
   suppress_cnd_conditions(
     expect_message(
       expect_condition(
-        expect_identical(cnd_document(package = package, file = path), path),
+        expect_identical(cnd_document(package = "cnd", file = path), path),
         class = "cnd:cnd_generated_write"
       ),
       class = "cnd:cnd_generated_cleanup"
