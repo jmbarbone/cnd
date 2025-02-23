@@ -7,6 +7,6 @@
 # * https://testthat.r-lib.org/articles/special-files.html
 
 library(testthat)
-library(cep)
+library(cndSimpleExample)
 
-test_check("cep")
+test_check("cndSimpleExample")

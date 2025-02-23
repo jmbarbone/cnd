@@ -1,5 +1,5 @@
-Package: cep
-Title: CND Example Package
+Package: cndSimpleExample
+Title: Simple Example Package for 'cnd'
 Version: 0.0.0.9000
 Authors@R: 
     person(
@@ -9,7 +9,7 @@ Authors@R:
         role = c("aut", "cph", "cre"),
         comment = c(ORCID = "0000-0001-9788-3628")
     )
-Description: Example package used for testing cep
+Description: Example package used for testing 'cnd'
 License: MIT + file LICENSE
 Encoding: UTF-8
 Language: en-US

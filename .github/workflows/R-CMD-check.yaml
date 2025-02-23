@@ -51,7 +51,7 @@ jobs:
           upload-snapshots: true
           build_args: 'c("--no-manual","--compact-vignettes=gs+qpdf")'
 
-  R-CMD-check-cep:
+  R-CMD-check-cndSimpleExample:
     runs-on: ${{ matrix.config.os }}
 
     name: ${{ matrix.config.os }} (${{ matrix.config.r }})
@@ -83,12 +83,12 @@ jobs:
 
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
-          packages: deps::tools/cep, any::sessioninfo
+          packages: deps::tools/cndSimpleExample, any::sessioninfo
           extra-packages: any::rcmdcheck
           needs: check
 
       - uses: r-lib/actions/check-r-package@v2
         with:
-          working-directory: tools/cep
+          working-directory: tools/cndSimpleExample
           upload-snapshots: true
           build_args: 'c("--no-manual","--compact-vignettes=gs+qpdf")'
