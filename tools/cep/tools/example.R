@@ -4,7 +4,7 @@ library(cep) # conditions example package
 example_function(TRUE)
 example_function(FALSE)
 
-bad_argument
+cond_bad_argument
 
 ?cep::`cep:bad_argument`
 

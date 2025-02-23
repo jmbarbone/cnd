@@ -2,12 +2,17 @@
 % Please edit documentation in R/functions.R
 \name{example_function}
 \alias{example_function}
-\alias{bad_argument}
+\alias{cond_bad_argument}
 \title{An example function}
 \usage{
 example_function(x)
 
-bad_argument(..., .call = getOption("cnd.call", TRUE))
+cond_bad_argument(..., .call = getOption("cnd.call", TRUE))
+}
+\arguments{
+\item{x}{A value}
+
+\item{..., .call}{Condition information}
 }
 \description{
 An example function

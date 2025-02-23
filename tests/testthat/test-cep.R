@@ -27,3 +27,17 @@ test_that("cep in use", {
     }
   })
 })
+
+test_that("cep R CMD check", {
+  skip_on_cran()
+  skip_if_not_installed("rcmdcheck")
+  skip_if_not_installed("here")
+  expect_no_error(
+    rcmdcheck::rcmdcheck(
+      here::here("tools/cep"),
+      quiet = TRUE,
+      args = c("--no-manual", "--no-vignettes"),
+      error_on = "warning"
+    )
+  )
+})
