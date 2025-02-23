@@ -15,7 +15,7 @@ env:
   R_KEEP_PKG_SOURCE: yes
 
 jobs:
-  define-matrix:
+  setup:
     runs-on: ubuntu-latest
     outputs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
@@ -23,15 +23,16 @@ jobs:
       - id: set-matrix
         run: |
           echo 'matrix={"config": [
-            {"os": "macos-latest", "r": "release"},
+            {"os": "macos-latest",   "r": "release"},
             {"os": "windows-latest", "r": "release"},
-            {"os": "ubuntu-latest", "r": "devel", "http-user-agent": "release"},
-            {"os": "ubuntu-latest", "r": "release"},
-            {"os": "ubuntu-latest", "r": "oldrel-1"}
+            {"os": "ubuntu-latest",  "r": "devel", "http-user-agent": "release"},
+            {"os": "ubuntu-latest",  "r": "release"},
+            {"os": "ubuntu-latest",  "r": "oldrel-1"}
           ]}' >> "$GITHUB_OUTPUT"
-  setup:
+
+  setup-r:
     name: setup ${{ matrix.config.os }} (${{ matrix.config.r }})
-    needs: define-matrix
+    needs: setup
 
     strategy:
       fail-fast: false
@@ -51,7 +52,7 @@ jobs:
 
   R-CMD-check-cnd:
     name: cnd ${{ matrix.config.os }} (${{ matrix.config.r }})
-    needs: setup
+    needs: setup-r
 
     strategy:
       fail-fast: false
