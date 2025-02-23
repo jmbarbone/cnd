@@ -18,18 +18,19 @@ jobs:
   setup:
     runs-on: ubuntu-latest
     outputs:
-      matrix: ${{ steps.set-matrix.outputs.matrix }}
+      config: ${{ steps.set-config.outputs.config }}
     steps:
-      - id: set-matrix
+      - id: set-config
         run: |
-          MATRIX_JSON=$(jq -c '.config=[
+          CONFIG_JSON=$(jq -c '[
             {"os": "macos-latest",   "r": "release"},
             {"os": "windows-latest", "r": "release"},
             {"os": "ubuntu-latest",  "r": "devel", "http-user-agent": "release"},
             {"os": "ubuntu-latest",  "r": "release"},
             {"os": "ubuntu-latest",  "r": "oldrel-1"}
-          ]' <<< '{}')
-          echo "matrix=$MATRIX_JSON" >> "$GITHUB_OUTPUT"
+          ]' <<< '[]')
+          echo "Config JSON: $CONFIG_JSON"
+          echo "config=$CONFIG_JSON" >> "$GITHUB_OUTPUT"
 
   setup-r:
     name: setup ${{ matrix.config.os }} (${{ matrix.config.r }})
@@ -37,7 +38,8 @@ jobs:
 
     strategy:
       fail-fast: false
-      matrix: ${{ fromJson(needs.setup.outputs.matrix) }}
+      matrix:
+        config: ${{ fromJson(needs.setup.outputs.config) }}
     runs-on: ${{ matrix.config.os }}
 
     steps:
@@ -57,7 +59,8 @@ jobs:
 
     strategy:
       fail-fast: false
-      matrix: ${{ fromJson(needs.setup.outputs.matrix) }}
+      matrix:
+        config: ${{ fromJson(needs.setup.outputs.config) }}
     runs-on: ${{ matrix.config.os }}
 
     steps:
@@ -77,7 +80,8 @@ jobs:
 
     strategy:
       fail-fast: false
-      matrix: ${{ fromJson(needs.setup.outputs.matrix) }}
+      matrix:
+        config: ${{ fromJson(needs.setup.outputs.config) }}
     runs-on: ${{ matrix.config.os }}
 
     steps:
