@@ -79,7 +79,7 @@ test_documentation <- function(package) {
           # GitHub should set CI to 'true'
           isTRUE(as.logical(Sys.getenv("CI", "false")))
         ) {
-          tryInvokeRestart("muffleCondition")
+          tryInvokeRestart("muffleMessage")
         }
       }
     ),
