@@ -83,7 +83,10 @@ jobs:
 
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
-          packages: deps::tools/cndSimpleExample, any::sessioninfo
+          packages: |
+            deps::.
+            any::sessoninfo
+            local::tools/cndSimpleExample
           extra-packages: any::rcmdcheck
           needs: check
 
