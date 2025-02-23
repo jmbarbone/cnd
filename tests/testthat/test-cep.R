@@ -13,5 +13,10 @@ test_that("cep R CMD check", {
 })
 
 test_that("cep in use", {
-  expect_no_error(check_cep_in_use())
+  skip_on_cran()
+  expect_no_error(
+    expect_no_warning(
+      check_cep_in_use()
+    )
+  )
 })

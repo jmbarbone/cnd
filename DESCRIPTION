@@ -22,6 +22,7 @@ Depends:
 Suggests: 
     cli,
     here,
+    pkgbuild,
     pkgload,
     rcmdcheck,
     roxygen2,

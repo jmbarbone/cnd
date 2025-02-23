@@ -108,6 +108,7 @@ with_op <- function(op, expr) {
 check_rcmdcheck <- function() {
   skip_if_not_installed("rcmdcheck")
   skip_if_not_installed("here")
+  skip_if_no_cep()
   expect_no_error(
     rcmdcheck::rcmdcheck(
       here::here("tools/cep"),
@@ -119,8 +120,22 @@ check_rcmdcheck <- function() {
 }
 
 check_cep_in_use <- function() {
+  skip_if_not_installed("here")
+  skip_if_no_cep()
+  skip_if_not_installed("pkgbuild")
+
+  old <- cep_dir()
+  on.exit(setwd(old), add = TRUE)
+
+  path <- pkgbuild::build(cep_dir(), quiet = TRUE)
+  on.exit(file.remove(path), add = TRUE)
+
+  utils::install.packages(path, repos = NULL, quiet = TRUE)
+  on.exit(utils::remove.packages("cep"), add = TRUE)
+
   err <- tempfile()
   on.exit(file.remove(err))
+
   system2(
     "Rscript",
     c("--vanilla", here::here("tools/test-cep-in-use.R")),
