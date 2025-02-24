@@ -114,7 +114,10 @@ local(envir = registrar, {
     }
 
     force(.__CND_PACKAGE_REGISTRY__.)
-    base::get(x, .__REGISTRIES__., mode = "environment")
+    # See above for why base::get() isn't used.  Maybe if there is a more
+    # sophisticated implementation of registry finding, then we can safely use
+    # `get()` an allow errors to be thrown when objects do not exist.
+    get0(x, .__REGISTRIES__., mode = "environment")
   }
 
   register <- function(condition, old = NULL, registry = NULL) {
@@ -152,6 +155,15 @@ local(envir = registrar, {
       registry <- .self$get(registry)
     }
 
+    # TODO consider throwing a warning if the registry is null.  It will be null
+    # if we haven't create a package registry environment yet, or if we are
+    # just assigning a value to `package` for an example.  Maybe we include a
+    # parameter to catch `missing(registry)` which, when `TRUE` will not throw
+    # the warning.  But when `missing(registry)` is false, then there was an
+    # explicit attempt to use a registry that doesn't exist.
+    #
+    # For now, everything will get pushed into the default registry
+    registry <- registry %||% .self$get(":default:")
     assign(cget(condition, "class"), condition, registry)
   }
 
@@ -195,11 +207,14 @@ local(envir = registrar, {
   ls <- .self$list
   rm <- .self$remove
   # a new environment for each registry
-  .__REGISTRIES__. <- registrar$new() # nolint: object_name_linter.
+  .__REGISTRIES__. <- .self$new() # nolint: object_name_linter.
 
   # using the same class because why not
   class(.__REGISTRIES__.) <- "cnd:registries" # nolint: object_name_linter.
   attr(.__REGISTRIES__., "list") <- TRUE # nolint: object_name_linter.
+
+  # default registry for all conditions
+  registrar$add(":default:")
 })
 
 
