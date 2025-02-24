@@ -147,8 +147,15 @@ condition <- function(
         } else {
           .call <- sys.call(sys.parent())
         }
-      } else if (is.numeric(.call)) {
+      }
+
+      if (is.numeric(.call)) {
         .call <- sys.call(sys.parent(.call + 1L))
+      }
+
+      if (is.call(.call)) {
+        # TODO option for full call?
+        .call <- as.call(as.list(.call)[1L])
       }
 
       # nolint next: object_usage_linter. (cond) is used
