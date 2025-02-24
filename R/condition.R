@@ -65,7 +65,7 @@
 condition <- function(
   class,
   message = NULL,
-  type = c("error", "warning", "message", "condition"),
+  type = c("condition", "message", "warning", "error"),
   package = get_package(),
   exports = NULL,
   help = NULL,
