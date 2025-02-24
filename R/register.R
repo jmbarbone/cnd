@@ -161,9 +161,10 @@ local(envir = registrar, {
     # parameter to catch `missing(registry)` which, when `TRUE` will not throw
     # the warning.  But when `missing(registry)` is false, then there was an
     # explicit attempt to use a registry that doesn't exist.
-    if (!is.null(registry)) {
-      assign(cget(condition, "class"), condition, registry)
-    }
+    #
+    # For now, everything will get pushed into the default registry
+    registry <- registry %||% .self$get(":default:")
+    assign(cget(condition, "class"), condition, registry)
   }
 
   unregister <- function(condition, registry = cget(condition, "package")) {
@@ -206,11 +207,14 @@ local(envir = registrar, {
   ls <- .self$list
   rm <- .self$remove
   # a new environment for each registry
-  .__REGISTRIES__. <- registrar$new() # nolint: object_name_linter.
+  .__REGISTRIES__. <- .self$new() # nolint: object_name_linter.
 
   # using the same class because why not
   class(.__REGISTRIES__.) <- "cnd:registries" # nolint: object_name_linter.
   attr(.__REGISTRIES__., "list") <- TRUE # nolint: object_name_linter.
+
+  # default registry for all conditions
+  registrar$add(":default:")
 })
 
 
