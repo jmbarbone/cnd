@@ -477,7 +477,9 @@ cget <- function(x, field) {
     )
   }
 
-  msg
+
+    # the message for `warning()` has to be a single character string
+  collapse(msg, sep = "\n")
 }
 
 #' @export
