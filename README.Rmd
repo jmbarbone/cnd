@@ -78,7 +78,12 @@ Use `condition()` to create a _generator_, then use that _generator_ within your
 ```{r}
 #| error: true
 # cnd::condition_generator
-bad_value <- condition("bad_value", message = "Value has to be better")
+bad_value <- condition(
+  "bad_value",
+  message = "Value has to be better",
+  type = "error"
+)
+
 bad_value
 
 # condition
@@ -103,7 +108,8 @@ bad_value2 <- condition(
   "bad_value2",
   message = function(x) {
     sprintf("`x` must be `>=0`. A value of `%s` is no good", format(x))
-  }
+  },
+  type = "error"
 )
 
 # a 'generator' is also printed, with formals
