@@ -5,7 +5,7 @@
 \alias{cnd-package}
 \title{cnd: Create and Register Conditions}
 \description{
-An interface for creating new condition generators, save generators in registries, link to functions, and generate documentation for packages.
+An interface for creating new condition generators objects. Generators are special functions that can be saved in registries and linked to other functions. Utilities for documenting your generators, and new conditions is provided for package development.
 }
 \section{Options}{
 

@@ -35,10 +35,9 @@ thrown.
 Crate a new \code{cnd:registry} to the current environment
 }
 \examples{
-# In most cases, just having the function in your R/ scripts is good enough:
-# cnd_create_registry()
-
-# But for the sake of advanced use:
+# In most cases, just having the function in your R/ scripts is good enough,
+# and you can use `cnd_create_registry()` with its defaults.  The following
+# examples are for demonstration purposes:
 e <- new.env()
 cnd_create_registry("EXAMPLE", env = e)
 cnd_create_registry("EXAMPLE", overwrite = TRUE)
