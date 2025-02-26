@@ -8,7 +8,7 @@
       generator
         $ class    : <symbol> 
         $ message  : NULL
-        $ type     : <language> c("error", "warning", "message", "condition")
+        $ type     : <language> c("condition", "message", "warning", "error")
         $ package  : <language> get_package()
         $ exports  : NULL
         $ help     : NULL
@@ -90,7 +90,7 @@
       <environment: 0x000000000000>
       
       condition(s)
-      test-snapshots:snapshot_test_fun/error
+      test-snapshots:snapshot_test_fun/condition
 
 ---
 
@@ -116,7 +116,7 @@
       generator
         $ class    : <symbol> 
         $ message  : NULL
-        $ type     : <language> c("error", "warning", "message", "condition")
+        $ type     : <language> c("condition", "message", "warning", "error")
         $ package  : <language> get_package()
         $ exports  : NULL
         $ help     : NULL

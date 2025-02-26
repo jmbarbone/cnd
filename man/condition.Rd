@@ -17,7 +17,7 @@
 condition(
   class,
   message = NULL,
-  type = c("error", "warning", "message", "condition"),
+  type = c("condition", "message", "warning", "error"),
   package = get_package(),
   exports = NULL,
   help = NULL,
@@ -201,7 +201,7 @@ For more conditions, see: \link{cnd-cnd-conditions}
 
 \examples{
 # create a new condition:
-cond_bad_value <- condition("bad_value")
+cond_bad_value <- condition("bad_value", type = "error")
 
 # use the condition
 try(stop(cond_bad_value()))
@@ -210,7 +210,8 @@ try(cnd(cond_bad_value()))
 # dynamic messages:
 cond_class_error <- condition(
   "class_error",
-  message = function(x) paste("class cannot be", toString(class(x)))
+  message = function(x) paste("class cannot be", toString(class(x))),
+  type = "error"
 )
 try(stop(cond_class_error(list())))
 

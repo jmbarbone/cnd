@@ -12,3 +12,4 @@
 ^docs$
 ^pkgdown$
 ^air\.toml$
+^CRAN-SUBMISSION$

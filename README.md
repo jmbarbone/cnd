@@ -19,13 +19,22 @@ This makes setting up custom conditions quick and more useful.
 
 ## Installation
 
+You can install the current CRAN version of `{cnd}` with one of:
+
+``` r
+install.packages("cnd")
+pak::pak("cran/cnd@*release")
+pak::pak("jmbarbone/cnd@*release")
+```
+
 You can install the development version of `{cnd}` from
 [GitHub](https://github.com/) with:
 
 ``` r
-# install.packages("pak")
 pak::pak("jmbarbone/cnd")
 ```
+
+But is recommended to specify a pre-release tag, if available.
 
 ## Conditions, in general
 
@@ -81,7 +90,7 @@ condition
 #> generator
 #>   $ class    : <symbol> 
 #>   $ message  : NULL
-#>   $ type     : <language> c("error", "warning", "message", "condition")
+#>   $ type     : <language> c("condition", "message", "warning", "error")
 #>   $ package  : <language> get_package()
 #>   $ exports  : NULL
 #>   $ help     : NULL
@@ -109,7 +118,12 @@ within your functions:
 
 ``` r
 # cnd::condition_generator
-bad_value <- condition("bad_value", message = "Value has to be better")
+bad_value <- condition(
+  "bad_value",
+  message = "Value has to be better",
+  type = "error"
+)
+
 bad_value
 #> cnd::condition_generator
 #> bad_value/error
@@ -129,8 +143,8 @@ foo <- function(x) {
 
 
 foo(-1)
-#> Error in foo(-1): <bad_value>
-#> Error in foo(-1): Value has to be better
+#> Error in foo(): <bad_value>
+#> Value has to be better
 ```
 
 The resulting `cnd::condition_generator` object can also take parameters
@@ -141,7 +155,8 @@ bad_value2 <- condition(
   "bad_value2",
   message = function(x) {
     sprintf("`x` must be `>=0`. A value of `%s` is no good", format(x))
-  }
+  },
+  type = "error"
 )
 
 # a 'generator' is also printed, with formals
@@ -178,8 +193,8 @@ foo <- function(x) {
 }
 
 foo(-1.2)
-#> Error in foo(-1.2): <bad_value2>
-#> Error in foo(-1.2): `x` must be `>=0`. A value of `-1.2` is no good
+#> Error in foo(): <bad_value2>
+#> `x` must be `>=0`. A value of `-1.2` is no good
 ```
 
 ## Your package
@@ -342,7 +357,7 @@ foo_call <- function() {
 
 # provides a character(2) vector output:
 conditionMessage(foo_call())
-#> [1] "<foo_condition>" "two\nlines"
+#> [1] "<foo_condition>\ntwo\nlines"
 ```
 
 `message()` uses a handler which simply collapses the message vector
@@ -351,7 +366,8 @@ separated:
 
 ``` r
 message(foo_call())
-#> <foo_condition>two
+#> <foo_condition>
+#> two
 #> lines
 ```
 
@@ -361,7 +377,8 @@ information about the call, in a different format:
 
 ``` r
 cnd(foo_call())
-#> <foo_condition>two
+#> <foo_condition>
+#> two
 #> lines
 ```
 
@@ -374,7 +391,8 @@ local({
   on.exit(options(op))
   cnd(foo_call())
 })
-#> <foo_condition>two
+#> <foo_condition>
+#> two
 #> lines
 ```
 

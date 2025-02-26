@@ -30,6 +30,7 @@ test_that("documentation() works", {
 })
 
 test_that("test_documentation()", {
+  skip_on_cran()
   test_documentation()
 })
 

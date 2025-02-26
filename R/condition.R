@@ -46,7 +46,7 @@
 #' @export
 #' @examples
 #' # create a new condition:
-#' cond_bad_value <- condition("bad_value")
+#' cond_bad_value <- condition("bad_value", type = "error")
 #'
 #' # use the condition
 #' try(stop(cond_bad_value()))
@@ -55,7 +55,8 @@
 #' # dynamic messages:
 #' cond_class_error <- condition(
 #'   "class_error",
-#'   message = function(x) paste("class cannot be", toString(class(x)))
+#'   message = function(x) paste("class cannot be", toString(class(x))),
+#'   type = "error"
 #' )
 #' try(stop(cond_class_error(list())))
 #'
@@ -65,7 +66,7 @@
 condition <- function(
   class,
   message = NULL,
-  type = c("error", "warning", "message", "condition"),
+  type = c("condition", "message", "warning", "error"),
   package = get_package(),
   exports = NULL,
   help = NULL,
@@ -147,8 +148,15 @@ condition <- function(
         } else {
           .call <- sys.call(sys.parent())
         }
-      } else if (is.numeric(.call)) {
+      }
+
+      if (is.numeric(.call)) {
         .call <- sys.call(sys.parent(.call + 1L))
+      }
+
+      if (is.call(.call)) {
+        # TODO option for full call?
+        .call <- as.call(as.list(.call)[1L])
       }
 
       # nolint next: object_usage_linter. (cond) is used
@@ -477,7 +485,9 @@ cget <- function(x, field) {
     )
   }
 
-  msg
+
+    # the message for `warning()` has to be a single character string
+  collapse(msg, sep = "\n")
 }
 
 #' @export

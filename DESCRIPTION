@@ -1,6 +1,6 @@
 Package: cnd
 Title: Create and Register Conditions
-Version: 0.0.0.9004
+Version: 0.1.0
 Authors@R: 
     person(
       "Jordan Mark", "Barbone", , 
@@ -8,11 +8,13 @@ Authors@R:
       role = c("aut", "cph", "cre"),
       comment = c(ORCID = "0000-0001-9788-3628")
     )
-Description: An interface for creating new condition generators, save generators
-    in registries, link to functions, and generate documentation for packages.
+Description: An interface for creating new condition generators objects.  
+    Generators are special functions that can be saved in registries and linked
+    to other functions.  Utilities for documenting your generators, and new
+    conditions is provided for package development.
 License: MIT + file LICENSE
-BugReports: https://github.com/jmbarbone/cnd
-URL: https://jmbarbone.github.io/cnd/
+BugReports: https://github.com/jmbarbone/cnd/issues
+URL: https://jmbarbone.github.io/cnd/, https://github.com/jmbarbone/cnd
 Encoding: UTF-8
 Language: en-US
 Roxygen: list(markdown = TRUE)
