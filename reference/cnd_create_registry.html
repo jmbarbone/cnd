@@ -15,7 +15,7 @@ thrown."></head><body>
 
     <a class="navbar-brand me-2" href="../index.html">cnd</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9004</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -91,10 +91,9 @@ prevent potential conflicts with other objects.</p></dd>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># In most cases, just having the function in your R/ scripts is good enough:</span></span></span>
-<span class="r-in"><span><span class="co"># cnd_create_registry()</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># But for the sake of advanced use:</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># In most cases, just having the function in your R/ scripts is good enough,</span></span></span>
+<span class="r-in"><span><span class="co"># and you can use `cnd_create_registry()` with its defaults.  The following</span></span></span>
+<span class="r-in"><span><span class="co"># examples are for demonstration purposes:</span></span></span>
 <span class="r-in"><span><span class="va">e</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/environment.html" class="external-link">new.env</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">cnd_create_registry</span><span class="op">(</span><span class="st">"EXAMPLE"</span>, env <span class="op">=</span> <span class="va">e</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">cnd_create_registry</span><span class="op">(</span><span class="st">"EXAMPLE"</span>, overwrite <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>

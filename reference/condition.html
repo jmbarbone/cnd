@@ -13,7 +13,7 @@ parameters serve as filtering arguments."></head><body>
 
     <a class="navbar-brand me-2" href="../index.html">cnd</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9004</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -51,7 +51,7 @@ parameters serve as filtering arguments.</p>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">condition</span><span class="op">(</span></span>
 <span>  <span class="va">class</span>,</span>
 <span>  message <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"error"</span>, <span class="st">"warning"</span>, <span class="st">"message"</span>, <span class="st">"condition"</span><span class="op">)</span>,</span>
+<span>  type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"condition"</span>, <span class="st">"message"</span>, <span class="st">"warning"</span>, <span class="st">"error"</span><span class="op">)</span>,</span>
 <span>  package <span class="op">=</span> <span class="fu">get_package</span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  exports <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  help <span class="op">=</span> <span class="cn">NULL</span>,</span>
@@ -245,24 +245,25 @@ The following conditions are associated with this function:</p>
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># create a new condition:</span></span></span>
-<span class="r-in"><span><span class="va">cond_bad_value</span> <span class="op">&lt;-</span> <span class="fu">condition</span><span class="op">(</span><span class="st">"bad_value"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">cond_bad_value</span> <span class="op">&lt;-</span> <span class="fu">condition</span><span class="op">(</span><span class="st">"bad_value"</span>, type <span class="op">=</span> <span class="st">"error"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># use the condition</span></span></span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/try.html" class="external-link">try</a></span><span class="op">(</span><span class="kw"><a href="https://rdrr.io/r/base/stop.html" class="external-link">stop</a></span><span class="op">(</span><span class="fu">cond_bad_value</span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Error in eval(expr, envir) : &lt;bad_value&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Error in eval(expr, envir) : there was an error</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Error in eval() : &lt;bad_value&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> there was an error</span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/try.html" class="external-link">try</a></span><span class="op">(</span><span class="fu">cnd</span><span class="op">(</span><span class="fu">cond_bad_value</span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Error in eval(expr, envir) : &lt;bad_value&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Error in eval(expr, envir) : there was an error</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Error in eval() : &lt;bad_value&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> there was an error</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># dynamic messages:</span></span></span>
 <span class="r-in"><span><span class="va">cond_class_error</span> <span class="op">&lt;-</span> <span class="fu">condition</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  <span class="st">"class_error"</span>,</span></span>
-<span class="r-in"><span>  message <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="st">"class cannot be"</span>, <span class="fu"><a href="https://rdrr.io/r/base/toString.html" class="external-link">toString</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  message <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="st">"class cannot be"</span>, <span class="fu"><a href="https://rdrr.io/r/base/toString.html" class="external-link">toString</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  type <span class="op">=</span> <span class="st">"error"</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/try.html" class="external-link">try</a></span><span class="op">(</span><span class="kw"><a href="https://rdrr.io/r/base/stop.html" class="external-link">stop</a></span><span class="op">(</span><span class="fu">cond_class_error</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Error in eval(expr, envir) : &lt;class_error&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Error in eval(expr, envir) : class cannot be list</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Error in eval() : &lt;class_error&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> class cannot be list</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
