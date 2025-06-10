@@ -194,11 +194,10 @@ local(envir = registrar, {
         as.list(ns, all.names = TRUE)
       )
 
-    if (is.list(reg)) {
-      reg <- reg[[1L]]
-    }
-
     if (length(reg)) {
+      if (is.list(reg)) {
+        reg <- reg[[1L]]
+      }
       .self$add(reg)
     }
   }
