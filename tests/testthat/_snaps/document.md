@@ -23,7 +23,7 @@
       cnd_document("cnd", file = stdout())
     Output
       #' @name cnd-cnd-conditions
-      #' @aliases cnd-cnd-conditions cnd:as_character_cnd_error cnd:cnd_document_conditions cnd:cnd_document_file cnd:cnd_document_pkg_reg cnd:cnd_generated_cleanup cnd:cnd_generated_write cnd:cond_cnd_class cnd:condition_message_generator cnd:condition_overwrite cnd:conditions_dots cnd:invalid_condition cnd:invalid_condition_message cnd:match_arg cnd:no_package_exports as_character_cnd_error cnd_document_conditions cnd_document_file cnd_document_pkg_reg cnd_generated_cleanup cnd_generated_write cond_cnd_class condition_message_generator condition_overwrite conditions_dots invalid_condition invalid_condition_message match_arg no_package_exports cnd:as_character_cnd_error/error cnd:cnd_document_conditions/warning cnd:cnd_document_file/error cnd:cnd_document_pkg_reg/error cnd:cnd_generated_cleanup/message cnd:cnd_generated_write/condition cnd:cond_cnd_class/error cnd:condition_message_generator/error cnd:condition_overwrite/warning cnd:conditions_dots/warning cnd:invalid_condition/error cnd:invalid_condition_message/error cnd:match_arg/error cnd:no_package_exports/warning
+      #' @aliases cnd-cnd-conditions cnd:as_character_cnd_error cnd:class_error cnd:cnd_document_conditions cnd:cnd_document_file cnd:cnd_document_pkg_reg cnd:cnd_generated_cleanup cnd:cnd_generated_write cnd:cond_cnd_class cnd:condition_message_generator cnd:condition_overwrite cnd:conditions_dots cnd:defunct_error cnd:deprecation_warning cnd:input_error cnd:input_warning cnd:invalid_condition cnd:invalid_condition_message cnd:match_arg cnd:match_error cnd:no_package_exports cnd:path_deletion_message cnd:path_overwrite_message cnd:type_error cnd:value_error cnd:value_warning as_character_cnd_error class_error cnd_document_conditions cnd_document_file cnd_document_pkg_reg cnd_generated_cleanup cnd_generated_write cond_cnd_class condition_message_generator condition_overwrite conditions_dots defunct_error deprecation_warning input_error input_warning invalid_condition invalid_condition_message match_arg match_error no_package_exports path_deletion_message path_overwrite_message type_error value_error value_warning cnd:as_character_cnd_error/error cnd:class_error/error cnd:cnd_document_conditions/warning cnd:cnd_document_file/error cnd:cnd_document_pkg_reg/error cnd:cnd_generated_cleanup/message cnd:cnd_generated_write/condition cnd:cond_cnd_class/error cnd:condition_message_generator/error cnd:condition_overwrite/warning cnd:conditions_dots/warning cnd:defunct_error/error cnd:deprecation_warning/warning cnd:input_error/error cnd:input_warning/warning cnd:invalid_condition/error cnd:invalid_condition_message/error cnd:match_arg/error cnd:match_error/error cnd:no_package_exports/warning cnd:path_deletion_message/message cnd:path_overwrite_message/message cnd:type_error/error cnd:value_error/error cnd:value_warning/warning
       #' @title Conditions for `cnd`
       #'
       #' @details
@@ -51,6 +51,14 @@
       #'   # Do this
       #'   stop(my_condition())
       #'   ```
+      #'  }
+      #'   \subsection{`cnd:class_error/error`}{
+      #'   \describe{
+      #'     \item{package}{`{cnd}`}
+      #'     \item{class}{`cnd:class_error`}
+      #'     \item{type}{**error**}
+      #'   }
+      #'   _no help documentation provided_
       #'  }
       #'   \subsection{`cnd:cnd_document_conditions/warning`}{
       #'   \describe{
@@ -146,6 +154,38 @@
       #'   conditions(class = "class", package = "package")
       #'   ```
       #'  }
+      #'   \subsection{`cnd:defunct_error/error`}{
+      #'   \describe{
+      #'     \item{package}{`{cnd}`}
+      #'     \item{class}{`cnd:defunct_error`}
+      #'     \item{type}{**error**}
+      #'   }
+      #'   _no help documentation provided_
+      #'  }
+      #'   \subsection{`cnd:deprecation_warning/warning`}{
+      #'   \describe{
+      #'     \item{package}{`{cnd}`}
+      #'     \item{class}{`cnd:deprecation_warning`}
+      #'     \item{type}{**warning**}
+      #'   }
+      #'   _no help documentation provided_
+      #'  }
+      #'   \subsection{`cnd:input_error/error`}{
+      #'   \describe{
+      #'     \item{package}{`{cnd}`}
+      #'     \item{class}{`cnd:input_error`}
+      #'     \item{type}{**error**}
+      #'   }
+      #'   _no help documentation provided_
+      #'  }
+      #'   \subsection{`cnd:input_warning/warning`}{
+      #'   \describe{
+      #'     \item{package}{`{cnd}`}
+      #'     \item{class}{`cnd:input_warning`}
+      #'     \item{type}{**warning**}
+      #'   }
+      #'   _no help documentation provided_
+      #'  }
       #'   \subsection{`cnd:invalid_condition/error`}{
       #'   \describe{
       #'     \item{package}{`{cnd}`}
@@ -172,6 +212,14 @@
       #'   }
       #'   Mostly [match.arg()] but with a custom condition
       #'  }
+      #'   \subsection{`cnd:match_error/error`}{
+      #'   \describe{
+      #'     \item{package}{`{cnd}`}
+      #'     \item{class}{`cnd:match_error`}
+      #'     \item{type}{**error**}
+      #'   }
+      #'   _no help documentation provided_
+      #'  }
       #'   \subsection{`cnd:no_package_exports/warning`}{
       #'   \describe{
       #'     \item{package}{`{cnd}`}
@@ -179,6 +227,46 @@
       #'     \item{type}{**warning**}
       #'   }
       #'   The `exports` parameter requires a `package`
+      #'  }
+      #'   \subsection{`cnd:path_deletion_message/message`}{
+      #'   \describe{
+      #'     \item{package}{`{cnd}`}
+      #'     \item{class}{`cnd:path_deletion_message`}
+      #'     \item{type}{**message**}
+      #'   }
+      #'   _no help documentation provided_
+      #'  }
+      #'   \subsection{`cnd:path_overwrite_message/message`}{
+      #'   \describe{
+      #'     \item{package}{`{cnd}`}
+      #'     \item{class}{`cnd:path_overwrite_message`}
+      #'     \item{type}{**message**}
+      #'   }
+      #'   _no help documentation provided_
+      #'  }
+      #'   \subsection{`cnd:type_error/error`}{
+      #'   \describe{
+      #'     \item{package}{`{cnd}`}
+      #'     \item{class}{`cnd:type_error`}
+      #'     \item{type}{**error**}
+      #'   }
+      #'   _no help documentation provided_
+      #'  }
+      #'   \subsection{`cnd:value_error/error`}{
+      #'   \describe{
+      #'     \item{package}{`{cnd}`}
+      #'     \item{class}{`cnd:value_error`}
+      #'     \item{type}{**error**}
+      #'   }
+      #'   _no help documentation provided_
+      #'  }
+      #'   \subsection{`cnd:value_warning/warning`}{
+      #'   \describe{
+      #'     \item{package}{`{cnd}`}
+      #'     \item{class}{`cnd:value_warning`}
+      #'     \item{type}{**warning**}
+      #'   }
+      #'   _no help documentation provided_
       #'  }
       #'
       #' @seealso [cnd::cnd-package] [cnd::condition]
