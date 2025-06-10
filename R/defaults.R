@@ -1,8 +1,7 @@
-
 # TODO consider using `msg = NULL` for users to overwrite the message; or append
 # additional information
 
-InputError <- NULL
+InputError <- function() {}
 delayedAssign(
   "InputError",
   condition(
@@ -14,7 +13,7 @@ delayedAssign(
   )
 )
 
-InputWarning <- NULL
+InputWarning <- function() {}
 delayedAssign(
   "InputWarning",
   condition(
@@ -27,7 +26,7 @@ delayedAssign(
   )
 )
 
-ValueError <- NULL
+ValueError <- function() {}
 delayedAssign(
   "ValueError",
   condition(
@@ -39,7 +38,7 @@ delayedAssign(
   )
 )
 
-ValueWarning <- NULL
+ValueWarning <- function() {}
 delayedAssign(
   "ValueWarning",
   condition(
@@ -52,7 +51,7 @@ delayedAssign(
   )
 )
 
-MatchError <- NULL
+MatchError <- function() {}
 delayedAssign(
   "MatchError",
   condition(
@@ -68,7 +67,7 @@ delayedAssign(
   )
 )
 
-PathOverwriteMessage <- NULL
+PathOverwriteMessage <- function() {}
 delayedAssign(
   "PathOverwriteMessage",
   condition(
@@ -83,7 +82,7 @@ delayedAssign(
   )
 )
 
-PathDeletionMessage <- NULL
+PathDeletionMessage <- function() {}
 delayedAssign(
   "PathDeletionMessage",
   condition(
@@ -98,8 +97,8 @@ delayedAssign(
   )
 )
 
-
-DeprecationWarning <- NULL
+# fmt: skip
+DeprecationWarning <- function() {}
 delayedAssign(
   "DeprecationWarning",
   condition(
@@ -116,7 +115,7 @@ delayedAssign(
   )
 )
 
-DefunctError <- NULL
+DefunctError <- function() {}
 delayedAssign(
   "DefunctError",
   condition(
@@ -128,7 +127,7 @@ delayedAssign(
   )
 )
 
-TypeError <- NULL
+TypeError <- function() {}
 delayedAssign(
   "TypeError",
   condition(
@@ -145,7 +144,7 @@ delayedAssign(
   )
 )
 
-ClassError <- NULL
+ClassError <- function() {}
 delayedAssign(
   "ClassError",
   condition(
@@ -161,3 +160,5 @@ delayedAssign(
     type = "error"
   )
 )
+
+NamespaceError <- function() {}
