@@ -1,6 +1,7 @@
 # TODO consider using `msg = NULL` for users to overwrite the message; or append
 # additional information
 
+# fmt: skip
 InputError <- function() {}
 delayedAssign(
   "InputError",
@@ -13,6 +14,7 @@ delayedAssign(
   )
 )
 
+# fmt: skip
 InputWarning <- function() {}
 delayedAssign(
   "InputWarning",
@@ -26,6 +28,7 @@ delayedAssign(
   )
 )
 
+# fmt: skip
 ValueError <- function() {}
 delayedAssign(
   "ValueError",
@@ -38,6 +41,7 @@ delayedAssign(
   )
 )
 
+# fmt: skip
 ValueWarning <- function() {}
 delayedAssign(
   "ValueWarning",
@@ -51,6 +55,7 @@ delayedAssign(
   )
 )
 
+# fmt: skip
 MatchError <- function() {}
 delayedAssign(
   "MatchError",
@@ -67,6 +72,7 @@ delayedAssign(
   )
 )
 
+# fmt: skip
 PathOverwriteMessage <- function() {}
 delayedAssign(
   "PathOverwriteMessage",
@@ -82,6 +88,7 @@ delayedAssign(
   )
 )
 
+# fmt: skip
 PathDeletionMessage <- function() {}
 delayedAssign(
   "PathDeletionMessage",
@@ -115,6 +122,7 @@ delayedAssign(
   )
 )
 
+# fmt: skip
 DefunctError <- function() {}
 delayedAssign(
   "DefunctError",
@@ -127,6 +135,7 @@ delayedAssign(
   )
 )
 
+# fmt: skip
 TypeError <- function() {}
 delayedAssign(
   "TypeError",
@@ -144,6 +153,7 @@ delayedAssign(
   )
 )
 
+# fmt: skip
 ClassError <- function() {}
 delayedAssign(
   "ClassError",
@@ -161,4 +171,5 @@ delayedAssign(
   )
 )
 
+# fmt: skip
 NamespaceError <- function() {}
