@@ -21,6 +21,7 @@
 \alias{cnd:invalid_condition_message}
 \alias{cnd:match_arg}
 \alias{cnd:match_error}
+\alias{cnd:namespace_error}
 \alias{cnd:no_package_exports}
 \alias{cnd:path_deletion_message}
 \alias{cnd:path_overwrite_message}
@@ -46,6 +47,7 @@
 \alias{invalid_condition_message}
 \alias{match_arg}
 \alias{match_error}
+\alias{namespace_error}
 \alias{no_package_exports}
 \alias{path_deletion_message}
 \alias{path_overwrite_message}
@@ -71,6 +73,7 @@
 \alias{cnd:invalid_condition_message/error}
 \alias{cnd:match_arg/error}
 \alias{cnd:match_error/error}
+\alias{cnd:namespace_error/error}
 \alias{cnd:no_package_exports/warning}
 \alias{cnd:path_deletion_message/message}
 \alias{cnd:path_overwrite_message/message}
@@ -274,6 +277,14 @@ Mostly \code{\link[=match.arg]{match.arg()}} but with a custom condition
 \describe{
 \item{package}{\code{{cnd}}}
 \item{class}{\code{cnd:match_error}}
+\item{type}{\strong{error}}
+}
+\emph{no help documentation provided}
+}
+\subsection{\code{cnd:namespace_error/error}}{
+\describe{
+\item{package}{\code{{cnd}}}
+\item{class}{\code{cnd:namespace_error}}
 \item{type}{\strong{error}}
 }
 \emph{no help documentation provided}

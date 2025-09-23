@@ -23,7 +23,7 @@
       cnd_document("cnd", file = stdout())
     Output
       #' @name cnd-cnd-conditions
-      #' @aliases cnd-cnd-conditions cnd:as_character_cnd_error cnd:class_error cnd:cnd_document_conditions cnd:cnd_document_file cnd:cnd_document_pkg_reg cnd:cnd_generated_cleanup cnd:cnd_generated_write cnd:cond_cnd_class cnd:condition_message_generator cnd:condition_overwrite cnd:conditions_dots cnd:defunct_error cnd:deprecation_warning cnd:input_error cnd:input_warning cnd:invalid_condition cnd:invalid_condition_message cnd:match_arg cnd:match_error cnd:no_package_exports cnd:path_deletion_message cnd:path_overwrite_message cnd:type_error cnd:value_error cnd:value_warning as_character_cnd_error class_error cnd_document_conditions cnd_document_file cnd_document_pkg_reg cnd_generated_cleanup cnd_generated_write cond_cnd_class condition_message_generator condition_overwrite conditions_dots defunct_error deprecation_warning input_error input_warning invalid_condition invalid_condition_message match_arg match_error no_package_exports path_deletion_message path_overwrite_message type_error value_error value_warning cnd:as_character_cnd_error/error cnd:class_error/error cnd:cnd_document_conditions/warning cnd:cnd_document_file/error cnd:cnd_document_pkg_reg/error cnd:cnd_generated_cleanup/message cnd:cnd_generated_write/condition cnd:cond_cnd_class/error cnd:condition_message_generator/error cnd:condition_overwrite/warning cnd:conditions_dots/warning cnd:defunct_error/error cnd:deprecation_warning/warning cnd:input_error/error cnd:input_warning/warning cnd:invalid_condition/error cnd:invalid_condition_message/error cnd:match_arg/error cnd:match_error/error cnd:no_package_exports/warning cnd:path_deletion_message/message cnd:path_overwrite_message/message cnd:type_error/error cnd:value_error/error cnd:value_warning/warning
+      #' @aliases cnd-cnd-conditions cnd:as_character_cnd_error cnd:class_error cnd:cnd_document_conditions cnd:cnd_document_file cnd:cnd_document_pkg_reg cnd:cnd_generated_cleanup cnd:cnd_generated_write cnd:cond_cnd_class cnd:condition_message_generator cnd:condition_overwrite cnd:conditions_dots cnd:defunct_error cnd:deprecation_warning cnd:input_error cnd:input_warning cnd:invalid_condition cnd:invalid_condition_message cnd:match_arg cnd:match_error cnd:namespace_error cnd:no_package_exports cnd:path_deletion_message cnd:path_overwrite_message cnd:type_error cnd:value_error cnd:value_warning as_character_cnd_error class_error cnd_document_conditions cnd_document_file cnd_document_pkg_reg cnd_generated_cleanup cnd_generated_write cond_cnd_class condition_message_generator condition_overwrite conditions_dots defunct_error deprecation_warning input_error input_warning invalid_condition invalid_condition_message match_arg match_error namespace_error no_package_exports path_deletion_message path_overwrite_message type_error value_error value_warning cnd:as_character_cnd_error/error cnd:class_error/error cnd:cnd_document_conditions/warning cnd:cnd_document_file/error cnd:cnd_document_pkg_reg/error cnd:cnd_generated_cleanup/message cnd:cnd_generated_write/condition cnd:cond_cnd_class/error cnd:condition_message_generator/error cnd:condition_overwrite/warning cnd:conditions_dots/warning cnd:defunct_error/error cnd:deprecation_warning/warning cnd:input_error/error cnd:input_warning/warning cnd:invalid_condition/error cnd:invalid_condition_message/error cnd:match_arg/error cnd:match_error/error cnd:namespace_error/error cnd:no_package_exports/warning cnd:path_deletion_message/message cnd:path_overwrite_message/message cnd:type_error/error cnd:value_error/error cnd:value_warning/warning
       #' @title Conditions for `cnd`
       #'
       #' @details
@@ -216,6 +216,14 @@
       #'   \describe{
       #'     \item{package}{`{cnd}`}
       #'     \item{class}{`cnd:match_error`}
+      #'     \item{type}{**error**}
+      #'   }
+      #'   _no help documentation provided_
+      #'  }
+      #'   \subsection{`cnd:namespace_error/error`}{
+      #'   \describe{
+      #'     \item{package}{`{cnd}`}
+      #'     \item{class}{`cnd:namespace_error`}
       #'     \item{type}{**error**}
       #'   }
       #'   _no help documentation provided_

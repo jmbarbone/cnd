@@ -1,20 +1,64 @@
 # TODO consider using `msg = NULL` for users to overwrite the message; or append
 # additional information
 
-# fmt: skip
+fmt0 <- function(msg, x) {
+  s <- substitute(x, parent.frame(2L))
+  paste0(
+    msg,
+    if (!missing(x)) fmt("\n{x} = {f}", x = deparse1(s), f = format(x))
+  )
+}
+
+#' Standard conditions
+#'
+#' A set of preset conditions
+#'
+#' @param x An object
+#' @param ... additional arguments passed to the condition message
+#' @param .call condition arguments
+#' @returns A condition generator
+#' @name standard-conditions
+#' @examples
+#' assert <- function(object, is = character()) {
+#'   nm <- as.character(substitute(object))
+#'   cl <- class(is)
+#'   if (!inherits(object, cl)) {
+#'     cnd(ClassError(nm, cl))
+#'   }
+#' }
+#'
+#' foo <- function(x) {
+#'   assert(x, integer())
+#'   invisible(x)
+#' }
+#'
+#' foo(1L)
+#' try(foo(1.0))
+#' try(foo("1"))
+#'
+#' bar <- function(y) {
+#'   assert(y, structure(list(), class = c("class1", "class2")))
+#'   invisible(y)
+#' }
+#'
+#' try(bar(1L))
+NULL
+
+
+#' @rdname standard-conditions
+#' @export
 InputError <- function() {}
 delayedAssign(
   "InputError",
   condition(
     "input_error",
-    message = function(x) {
-      fmt("input is not valid:\n{x}", x = format(x))
-    },
+    message = function(x) fmt0("input is not valid", x),
     type = "error"
   )
 )
 
-# fmt: skip
+#' @rdname standard-conditions
+#' @export
 InputWarning <- function() {}
 delayedAssign(
   "InputWarning",
@@ -22,13 +66,17 @@ delayedAssign(
     "input_warning",
     # TODO something other than "valid"?
     message = function(x) {
-      fmt("input is not valid:\n{x}", x = format(x))
+      c(
+        "input is not valid",
+        if (!missing(x)) fmt("{x}:\n{f}", x = deparse1(x), f = format(x))
+      )
     },
     type = "warning"
   )
 )
 
-# fmt: skip
+#' @rdname standard-conditions
+#' @export
 ValueError <- function() {}
 delayedAssign(
   "ValueError",
@@ -41,7 +89,8 @@ delayedAssign(
   )
 )
 
-# fmt: skip
+#' @rdname standard-conditions
+#' @export
 ValueWarning <- function() {}
 delayedAssign(
   "ValueWarning",
@@ -55,7 +104,9 @@ delayedAssign(
   )
 )
 
-# fmt: skip
+#' @rdname standard-conditions
+#' @param choices A character vector of choices
+#' @export
 MatchError <- function() {}
 delayedAssign(
   "MatchError",
@@ -72,7 +123,9 @@ delayedAssign(
   )
 )
 
-# fmt: skip
+#' @rdname standard-conditions
+#' @param path A path
+#' @export
 PathOverwriteMessage <- function() {}
 delayedAssign(
   "PathOverwriteMessage",
@@ -88,7 +141,8 @@ delayedAssign(
   )
 )
 
-# fmt: skip
+#' @rdname standard-conditions
+#' @export
 PathDeletionMessage <- function() {}
 delayedAssign(
   "PathDeletionMessage",
@@ -104,7 +158,9 @@ delayedAssign(
   )
 )
 
-# fmt: skip
+#' @rdname standard-conditions
+#' @param replacement an object suggesting the replacement
+#' @export
 DeprecationWarning <- function() {}
 delayedAssign(
   "DeprecationWarning",
@@ -122,7 +178,8 @@ delayedAssign(
   )
 )
 
-# fmt: skip
+#' @rdname standard-conditions
+#' @export
 DefunctError <- function() {}
 delayedAssign(
   "DefunctError",
@@ -135,7 +192,9 @@ delayedAssign(
   )
 )
 
-# fmt: skip
+#' @rdname standard-conditions
+#' @param type a type as returned by [typeof()]
+#' @export
 TypeError <- function() {}
 delayedAssign(
   "TypeError",
@@ -153,7 +212,9 @@ delayedAssign(
   )
 )
 
-# fmt: skip
+#' @rdname standard-conditions
+#' @param class a class or vector of classes
+#' @export
 ClassError <- function() {}
 delayedAssign(
   "ClassError",
@@ -165,11 +226,27 @@ delayedAssign(
     #   inherits(x, class)
     # },
     message = function(x, class) {
-      fmt("'{x}' is not of class {class}", x = x, class = collapse(class, ","))
+      fmt(
+        "'{x}' is not of class '{class}'",
+        x = x,
+        class = collapse(class, sep = ", ")
+      )
     },
     type = "error"
   )
 )
 
-# fmt: skip
+#' @rdname standard-conditions
+#' @param pkg A package name
+#' @export
 NamespaceError <- function() {}
+delayedAssign(
+  "NamespaceError",
+  condition(
+    "namespace_error",
+    message = function(pkg) {
+      fmt("package '{pkg}' is not available", pkg = pkg)
+    },
+    type = "error"
+  )
+)
