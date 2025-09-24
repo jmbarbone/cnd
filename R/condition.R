@@ -122,7 +122,6 @@ condition <- function(
   # setting up an environment to track additional fields for
 
   condition_env <- new.env()
-  environment(message) <- condition_env
   assign("message", message, condition_env)
   assign("exports", exports, condition_env)
   assign("package", package, condition_env)
