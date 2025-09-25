@@ -77,9 +77,17 @@
          Component ".class": 1 string mismatch
          Component "class": 1 string mismatch
          Component "condition_function": target, current do not match when deparsed
-         Component ".class": 1 string mismatch
+         Component "message": Component "class": 1 string mismatch
+         Component "message": Component "original_class": 1 string mismatch
+         Component "message": Component "res": 1 string mismatch
+         Component "message": Component "res": target, current do not match when deparsed
          Component "class": 1 string mismatch
-         Component "condition_function": target, current do not match when deparsed
+         Component "condition_env": Component ".class": 1 string mismatch
+         Component "condition_env": Component "class": 1 string mismatch
+         Component "condition_env": Component "condition_function": target, current do not match when deparsed
+         Component "original_class": 1 string mismatch
+         Component "res": 1 string mismatch
+         Component "res": target, current do not match when deparsed
 
 ---
 
