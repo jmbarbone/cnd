@@ -178,7 +178,7 @@ test_that("as.character() error", {
 
 test_that(".call", {
   get_call <- function(expr) tryCatch(expr, error = function(e) e$call)
-  err <- condition("foo", type = "error", register = FALSE)
+  err <- condition("foo", type = "error", register = FALSE, package = NULL)
   foo <- function() stop(err())
   expect_identical(get_call(foo()), quote(foo()))
   expect_snapshot(foo(), error = TRUE)
@@ -189,7 +189,7 @@ test_that(".call", {
 
   foo <- function() cnd(err(.call = FALSE))
   expect_null(get_call(foo()))
-  expect_snapshot(foo(), error = TRUE)
+  expect_snapshot(foo2(), error = TRUE)
 
   fizz <- function() bar()
 

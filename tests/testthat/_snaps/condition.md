@@ -13,7 +13,8 @@
       foo()
     Condition
       Error in `foo()`:
-      ! there was an error
+      ! <foo>
+      there was an error
 
 ---
 
@@ -21,15 +22,16 @@
       bar()
     Condition
       Error in `foo()`:
-      ! there was an error
+      ! <foo>
+      there was an error
 
 ---
 
     Code
-      foo()
+      foo2()
     Condition
-      Error:
-      ! there was an error
+      Error in `foo2()`:
+      ! could not find function "foo2"
 
 ---
 
@@ -37,7 +39,8 @@
       fizz()
     Condition
       Error in `foo()`:
-      ! there was an error
+      ! <foo>
+      there was an error
 
 ---
 
@@ -45,7 +48,8 @@
       fizz()
     Condition
       Error in `bar()`:
-      ! there was an error
+      ! <foo>
+      there was an error
 
 ---
 
@@ -53,7 +57,8 @@
       fizz()
     Condition
       Error in `fizz()`:
-      ! there was an error
+      ! <foo>
+      there was an error
 
 ---
 
@@ -61,5 +66,6 @@
       fizz()
     Condition
       Error:
-      ! there was an error
+      ! <foo>
+      there was an error
 

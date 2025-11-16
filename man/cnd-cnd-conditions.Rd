@@ -100,7 +100,7 @@ The \code{file} argument to \code{\link[=cnd_document]{cnd_document()}} must be 
 \item{class}{\code{cnd:cnd_document_pkg_reg}}
 \item{type}{\strong{error}}
 }
-Both \code{package} and \code{registry} must be set to document conditions.You can set a registry by adding \code{\link[=cnd_register]{cnd_register()}} calls to your package code.
+Both \code{package} and \code{registry} must be set to document conditions.You can set a registry by adding \code{\link[=cnd_create_registry]{cnd_create_registry()}} calls to your package code.
 }
 \subsection{\code{cnd:cnd_generated_cleanup/message}}{
 \describe{
@@ -108,7 +108,7 @@ Both \code{package} and \code{registry} must be set to document conditions.You c
 \item{class}{\code{cnd:cnd_generated_cleanup}}
 \item{type}{\strong{message}}
 }
-Some files created during the docuemntation process may become obsolete while updating your conditions.
+Some files created during the documentation process may become obsolete while updating your conditions.
 }
 \subsection{\code{cnd:cnd_generated_write/condition}}{
 \describe{
@@ -116,7 +116,7 @@ Some files created during the docuemntation process may become obsolete while up
 \item{class}{\code{cnd:cnd_generated_write}}
 \item{type}{\strong{condition}}
 }
-This condition is signalled when \code{\link[=cnd_document]{cnd_document()}} needs to write new documentation files.
+This condition is signaled when \code{\link[=cnd_document]{cnd_document()}} needs to write new documentation files.
 }
 \subsection{\code{cnd:cond_cnd_class/error}}{
 \describe{
@@ -151,7 +151,7 @@ conditionMessage(x())
 \item{class}{\code{cnd:condition_overwrite}}
 \item{type}{\strong{warning}}
 }
-Defining a new condition with the same class and package as an existing condition will overwrite the previous definition.  It is recommmended to either avoid this by fully defining your condition, or creating a new condition instead.
+Defining a new condition with the same class and package as an existing condition will overwrite the previous definition.  It is recommended to either avoid this by fully defining your condition, or creating a new condition instead.
 }
 \subsection{\code{cnd:conditions_dots/warning}}{
 \describe{

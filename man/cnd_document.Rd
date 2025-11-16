@@ -63,15 +63,15 @@ The \code{file} argument to \code{\link[=cnd_document]{cnd_document()}} must be 
 }
 
 \item{\code{\link[=cnd-cnd-conditions]{cnd:cnd_document_pkg_reg/error}}}{
-Both \code{package} and \code{registry} must be set to document conditions.You can set a registry by adding \code{\link[=cnd_register]{cnd_register()}} calls to your package code.
+Both \code{package} and \code{registry} must be set to document conditions.You can set a registry by adding \code{\link[=cnd_create_registry]{cnd_create_registry()}} calls to your package code.
 }
 
 \item{\code{\link[=cnd-cnd-conditions]{cnd:cnd_generated_cleanup/message}}}{
-Some files created during the docuemntation process may become obsolete while updating your conditions.
+Some files created during the documentation process may become obsolete while updating your conditions.
 }
 
 \item{\code{\link[=cnd-cnd-conditions]{cnd:cnd_generated_write/condition}}}{
-This condition is signalled when \code{\link[=cnd_document]{cnd_document()}} needs to write new documentation files.
+This condition is signaled when \code{\link[=cnd_document]{cnd_document()}} needs to write new documentation files.
 }
 
 }

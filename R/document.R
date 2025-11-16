@@ -247,7 +247,7 @@ delayedAssign(
         paste0("  ", paths)
       ),
     help = c(
-      "Some files created during the docuemntation process may become obsolete",
+      "Some files created during the documentation process may become obsolete",
       " while updating your conditions."
     )
   )
@@ -269,7 +269,7 @@ delayedAssign(
       ) %||%
         paste("Writing", path),
     help = c(
-      "This condition is signalled when [cnd::cnd_document()] needs to write",
+      "This condition is signaled when [cnd::cnd_document()] needs to write",
       " new documentation files."
     )
   )
@@ -295,8 +295,8 @@ delayedAssign(
       ),
     help = c(
       "Both `package` and `registry` must be set to document conditions.",
-      "You can set a registry by adding [cnd::cnd_register()] calls to your",
-      " package code."
+      "You can set a registry by adding [cnd::cnd_create_registry()] calls to ",
+      "your package code."
     )
   )
 )
