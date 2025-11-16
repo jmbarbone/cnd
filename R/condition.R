@@ -4,10 +4,10 @@
 #'
 #' @details Conditions
 #'
-#' @description [condition()] is used to create a new condition function that
-#'   itself returns a new `condition`.
+#' @description [cnd::condition()] is used to create a new condition function
+#'   that itself returns a new `condition`.
 #'
-#'   [conditions()] retrieves all conditions based on search values.  The
+#'   [cnd::conditions()] retrieves all conditions based on search values.  The
 #'   parameters serve as filtering arguments.
 #'
 #' @param class The name of the new class
@@ -24,24 +24,24 @@
 #' @param registry The name of the registry to store the condition
 #' @param register Controls registration checks
 #'
-#' @section [condition_generator]: A [condition_generator] is an object (a
-#'   special [function]) which can be used to create generate a new condition,
-#'   based on specifications applied in [condition()]. These functions use `...`
-#'   to absorb extra arguments and contain a special `.call` parameter. By
-#'   default, `.call` captures the parent call from where the
-#'   [condition_generator] was created, but users may pass their own call to
-#'   override this.  See `call.` in [conditionCall()]
+#' @section [cnd::condition_generator]: A [cnd::condition_generator] is an
+#'   object (a special [function]) which can be used to create generate a new
+#'   condition, based on specifications applied in [cnd::condition()]. These
+#'   functions use `...` to absorb extra arguments and contain a special `.call`
+#'   parameter. By default, `.call` captures the parent call from where the
+#'   [cnd::condition_generator] was created, but users may pass their own call
+#'   to override this.  See `call.` in [conditionCall()]
 #'
-#' @section [condition()] conditions:
+#' @section [cnd::condition()] conditions:
 #'
 #'   `r cnd_section(condition)`
 #'
-#' @section [cnd()] conditions:
+#' @section [cnd::cnd()] conditions:
 #'
 #'   `r cnd_section(cnd)`
 #'
 #' @returns
-#' - [condition()] a [cnd::condition_generator] object
+#' - [cnd::condition()] a [cnd::condition_generator] object
 #'
 #' @export
 #' @examples
@@ -133,49 +133,59 @@ condition <- function(
   res <- local(envir = condition_env, {
     # fmt: skip
     condition_function <- function() {}
-    body(condition_function) <- substitute({
-      # nolint next: object_usage_linter. (params is used)
-      params <- as.list(match.call())[-1L]
-      params <- params[names(params) != ".call"]
-      params <- lapply(params, eval.parent, 2L)
+    body(condition_function) <- substitute(
+      {
+        # nolint next: object_usage_linter. (params is used)
+        params <- as.list(match.call())[-1L]
+        params <- params[names(params) != ".call"]
+        params <- lapply(params, eval.parent, 2L)
 
-      # nolint next: object_usage_linter. (.call is used)
-      if (is.logical(.call) && length(.call) == 1L) {
-        # this is what isTRUE()/isFALSE()
-        if (is.na(.call) || !.call) {
-          .call <- NULL
-        } else {
-          .call <- sys.call(sys.parent())
+        # nolint next: object_usage_linter. (.call is used)
+        if (is.logical(.call) && length(.call) == 1L) {
+          # this is what isTRUE()/isFALSE()
+          if (is.na(.call) || !.call) {
+            .call <- NULL
+          } else {
+            .call <- sys.call(sys.parent())
+          }
         }
-      }
 
-      if (is.numeric(.call)) {
-        .call <- sys.call(sys.parent(.call + 1L))
-      }
+        if (is.numeric(.call)) {
+          .call <- sys.call(sys.parent(.call + 1L))
+        }
 
-      if (is.call(.call)) {
-        # TODO option for full call?
-        .call <- as.call(as.list(.call)[1L])
-      }
+        if (is.call(.call)) {
+          # TODO option for full call?
+          .call <- as.call(as.list(.call)[1L])
+        }
 
-      # nolint next: object_usage_linter. (cond) is used
-      cond <- list(
-        message = clean_text(do.call(message, params)),
-        call = .call
+        # nolint next: object_usage_linter. (cond) is used
+        cond <- list(
+          message = clean_text(do.call(..message.., params)),
+          call = .call
+        )
+
+        cond <- set_class(
+          cond,
+          unique(c(..class.., "cnd::condition", type, "condition"))
+        )
+
+        attr(cond, "help") <- ..help..
+        attr(cond, "package") <- ..package..
+        attr(cond, "exports") <- ..exports..
+        attr(cond, "condition") <- ..class..
+        attr(cond, "type") <- ..type..
+        cond
+      },
+      list(
+        ..message.. = message,
+        ..class.. = class,
+        ..package.. = package,
+        ..exports.. = exports,
+        ..type.. = type,
+        ..help.. = help
       )
-
-      cond <- set_class(
-        cond,
-        unique(c(class, "cnd::condition", type, "condition"))
-      )
-
-      attr(cond, "help") <- help
-      attr(cond, "package") <- package
-      attr(cond, "exports") <- exports
-      attr(cond, "condition") <- class
-      attr(cond, "type") <- type
-      cond
-    })
+    )
     condition_function
   })
 
@@ -204,7 +214,7 @@ class(condition) <- "cnd::condition_progenitor"
 #' @param fun if a function is passed, then retrieves the `"conditions"`
 #'   attribute
 #' @returns
-#' - [conditions()] a `list` of [cnd::condition_generator] objects
+#' - [cnd::conditions()] a `list` of [cnd::condition_generator] objects
 conditions <- function(
   ...,
   class = NULL,
@@ -268,7 +278,7 @@ conditions <- function(
 #' @export
 #' @rdname condition
 #' @returns
-#' - [cond()] A [cnd::condition_generator] object
+#' - [cnd::cond()] A [cnd::condition_generator] object
 cond <- function(x) {
   find_cond(x)
 }
@@ -277,9 +287,10 @@ cond <- function(x) {
 #' @rdname condition
 #' @param condition A [cnd::condition_generator] object
 #' @returns
-#' - [cnd()] is a wrapper for calling [stop()], [warning()], or [message()];
-#'   when  `condition` is a type, an error is thrown, and likewise for the other
-#'   types.  When an error isn't thrown, the `condition` is returned, invisibly.
+#' - [cnd::cnd()] is a wrapper for calling [stop()], [warning()], or
+#'   [message()]; when  `condition` is a type, an error is thrown, and likewise
+#'   for the other types.  When an error isn't thrown, the `condition` is
+#'   returned, invisibly.
 cnd <- function(condition) {
   if (!is_cnd_condition(condition)) {
     cnd(cond_cnd_class())
@@ -484,8 +495,7 @@ cget <- function(x, field) {
     )
   }
 
-
-    # the message for `warning()` has to be a single character string
+  # the message for `warning()` has to be a single character string
   collapse(msg, sep = "\n")
 }
 
@@ -584,8 +594,9 @@ delayedAssign(
     exports = "cnd",
     package = "cnd",
     help = c(
-      "[cnd()] simple calls the appropriate function: [stop()], [warning()],",
-      " or [message()] based on the `type` parameter from [cnd::condition()]."
+      "[cnd::cnd()] simple calls the appropriate function: [stop()],",
+      " [warning()], or [message()] based on the `type` parameter from",
+      " [cnd::condition()]."
     )
   )
 )
@@ -656,8 +667,8 @@ delayedAssign(
     exports = "conditions",
     package = "cnd",
     help = c(
-      "The `...` parameter in [conditions()] is meant for convenience.  Only ",
-      "a single argument is allowed.  Other parameters must be named ",
+      "The `...` parameter in [cnd::conditions()] is meant for convenience.",
+      "  Only a single argument is allowed.  Other parameters must be named ",
       " explicitly.",
       "\n\n",
       "For example:",

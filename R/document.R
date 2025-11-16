@@ -2,7 +2,7 @@
 
 #' Document your conditions
 #'
-#' Documents your [conditions()] and [cnd::conditions()]
+#' Documents your [cnd::conditions()] and [cnd::conditions()]
 #'
 #' @param package The package to document
 #' @param registry The name of the registry
@@ -20,7 +20,7 @@
 #'
 #' @export
 #' @returns
-#'  - [cnd_document()] Conditional on the `file` argument:
+#'  - [cnd::cnd_document()] Conditional on the `file` argument:
 #'    - when `file` is a connection, the connection object
 #'    - when `file` is a path, the path
 #'    - when `file` is `NULL`, a `character` vector of the documentation
@@ -145,7 +145,7 @@ cnd_document <- function(
 #' @rdname cnd_document
 #' @param fun The name of a function
 #' @returns
-#' - [cnd_section()] A `character` vector of the documentation
+#' - [cnd::cnd_section()] A `character` vector of the documentation
 cnd_section <- function(fun) {
   conds <- conditions(fun = fun)
   fmt(
@@ -269,8 +269,8 @@ delayedAssign(
       ) %||%
         paste("Writing", path),
     help = c(
-      "This condition is signalled when {cnd} needs to write new documentation",
-      " files."
+      "This condition is signalled when [cnd::cnd_document()] needs to write",
+      " new documentation files."
     )
   )
 )
@@ -295,8 +295,8 @@ delayedAssign(
       ),
     help = c(
       "Both `package` and `registry` must be set to document conditions.",
-      "You can set a registry by adding `cnd_register()` calls to your package",
-      " code"
+      "You can set a registry by adding [cnd::cnd_register()] calls to your",
+      " package code."
     )
   )
 )
@@ -313,9 +313,9 @@ delayedAssign(
     message = "No conditions found to document",
     help = c(
       "Documentation will fail when no conditions are found.",
-      "  You may be executing `cnd_document()` too early,",
+      "  You may be executing [cnd::cnd_document()] too early,",
       " before conditions have been registered.",
-      "  You can try to find your conditions with `conditions()`."
+      "  You can try to find your conditions with [cnd::conditions()]."
     )
   )
 )
@@ -338,7 +338,7 @@ delayedAssign(
         type = typeof(file)
       ),
     help = c(
-      "The `file` argument to `cnd_document()` must be a file path,",
+      "The `file` argument to [cnd::cnd_document()] must be a file path,",
       " a connection object, or `NULL` to return the documentation as",
       " a character vector.  The default value should be suitable for standard",
       " use cases."

@@ -1,5 +1,5 @@
 #' @keywords internal
-#' @seealso [condition()] [cnd-cnd-conditions]
+#' @seealso [cnd::condition()] [cnd-cnd-conditions]
 #' @section Options:
 #'   \describe{
 #'     \item{`cnd.cli.override`\cr`["on"|"off"|"none"]`}{
@@ -14,7 +14,7 @@
 #'     }
 #'     \item{`cnd.call`\cr`[TRUE|FALSE]`}{
 #'       Whether to print the call that generated the condition.  This is
-#'       embedded within the `conditionCall()` method.
+#'       embedded within the [conditionCall()] method.
 #'     }
 #'   }
 "_PACKAGE"

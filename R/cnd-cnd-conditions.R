@@ -36,7 +36,7 @@
 #'     \item{class}{`cnd:cnd_document_conditions`}
 #'     \item{type}{**warning**}
 #'   }
-#'   Documentation will fail when no conditions are found.  You may be executing `cnd_document()` too early, before conditions have been registered.  You can try to find your conditions with `conditions()`.
+#'   Documentation will fail when no conditions are found.  You may be executing [cnd::cnd_document()] too early, before conditions have been registered.  You can try to find your conditions with [cnd::conditions()].
 #'  }
 #'   \subsection{`cnd:cnd_document_file/error`}{
 #'   \describe{
@@ -44,7 +44,7 @@
 #'     \item{class}{`cnd:cnd_document_file`}
 #'     \item{type}{**error**}
 #'   }
-#'   The `file` argument to `cnd_document()` must be a file path, a connection object, or `NULL` to return the documentation as a character vector.  The default value should be suitable for standard use cases.
+#'   The `file` argument to [cnd::cnd_document()] must be a file path, a connection object, or `NULL` to return the documentation as a character vector.  The default value should be suitable for standard use cases.
 #'  }
 #'   \subsection{`cnd:cnd_document_pkg_reg/error`}{
 #'   \describe{
@@ -52,7 +52,7 @@
 #'     \item{class}{`cnd:cnd_document_pkg_reg`}
 #'     \item{type}{**error**}
 #'   }
-#'   Both `package` and `registry` must be set to document conditions.You can set a registry by adding `cnd_register()` calls to your package code
+#'   Both `package` and `registry` must be set to document conditions.You can set a registry by adding [cnd::cnd_register()] calls to your package code.
 #'  }
 #'   \subsection{`cnd:cnd_generated_cleanup/message`}{
 #'   \describe{
@@ -68,7 +68,7 @@
 #'     \item{class}{`cnd:cnd_generated_write`}
 #'     \item{type}{**condition**}
 #'   }
-#'   This condition is signalled when {cnd} needs to write new documentation files.
+#'   This condition is signalled when [cnd::cnd_document()] needs to write new documentation files.
 #'  }
 #'   \subsection{`cnd:cond_cnd_class/error`}{
 #'   \describe{
@@ -76,7 +76,7 @@
 #'     \item{class}{`cnd:cond_cnd_class`}
 #'     \item{type}{**error**}
 #'   }
-#'   [cnd()] simple calls the appropriate function: [stop()], [warning()], or [message()] based on the `type` parameter from [cnd::condition()].
+#'   [cnd::cnd()] simple calls the appropriate function: [stop()], [warning()], or [message()] based on the `type` parameter from [cnd::condition()].
 #'  }
 #'   \subsection{`cnd:condition_message_generator/error`}{
 #'   \describe{
@@ -112,7 +112,7 @@
 #'     \item{class}{`cnd:conditions_dots`}
 #'     \item{type}{**warning**}
 #'   }
-#'   The `...` parameter in [conditions()] is meant for convenience.  Only a single argument is allowed.  Other parameters must be named  explicitly.
+#'   The `...` parameter in [cnd::conditions()] is meant for convenience.  Only a single argument is allowed.  Other parameters must be named  explicitly.
 #'
 #'   For example:
 #'
