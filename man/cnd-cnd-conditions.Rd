@@ -151,7 +151,7 @@ conditionMessage(x())
 \item{class}{\code{cnd:condition_overwrite}}
 \item{type}{\strong{warning}}
 }
-\emph{no help documentation provided}
+Defining a new condition with the same class and package as an existing condition will overwrite the previous definition.  It is recommmended to either avoid this by fully defining your condition, or creating a new condition instead.
 }
 \subsection{\code{cnd:conditions_dots/warning}}{
 \describe{

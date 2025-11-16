@@ -104,7 +104,7 @@
 #'     \item{class}{`cnd:condition_overwrite`}
 #'     \item{type}{**warning**}
 #'   }
-#'   _no help documentation provided_
+#'   Defining a new condition with the same class and package as an existing condition will overwrite the previous definition.  It is recommmended to either avoid this by fully defining your condition, or creating a new condition instead.
 #'  }
 #'   \subsection{`cnd:conditions_dots/warning`}{
 #'   \describe{
