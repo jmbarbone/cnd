@@ -35,7 +35,7 @@
       cnd:cond_cnd_class/error 
       
       help
-      [cnd()] simple calls the appropriate function: [stop()], [warning()], or [message()] based on the `type` parameter from [cnd::condition()]. 
+      [cnd::cnd()] simple calls the appropriate function: [stop()], [warning()], or [message()] based on the `type` parameter from [cnd::condition()]. 
       
       exports
         cnd::cnd()
@@ -60,6 +60,9 @@
       generator
         $ old : <symbol> 
         $ new : <symbol> 
+      
+      help
+      Defining a new condition with the same class and package as an existing condition will overwrite the previous definition.  It is recommmended to either avoid this by fully defining your condition, or creating a new condition instead. 
       
       exports
         cnd::condition()
