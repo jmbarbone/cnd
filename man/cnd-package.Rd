@@ -22,7 +22,7 @@ information.  \code{"simple"} will only provide the message.
 }
 \item{\code{cnd.call}\cr\verb{[TRUE|FALSE]}}{
 Whether to print the call that generated the condition.  This is
-embedded within the \code{conditionCall()} method.
+embedded within the \code{\link[=conditionCall]{conditionCall()}} method.
 }
 }
 }
