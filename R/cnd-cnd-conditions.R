@@ -36,7 +36,7 @@
 #'     \item{class}{`cnd:cnd_document_conditions`}
 #'     \item{type}{**warning**}
 #'   }
-#'   _no help documentation provided_
+#'   Documentation will fail when no conditions are found.  You may be executing `cnd_document()` too early, before conditions have been registered.  You can try to find your conditions with `conditions()`.
 #'  }
 #'   \subsection{`cnd:cnd_document_file/error`}{
 #'   \describe{
@@ -44,7 +44,7 @@
 #'     \item{class}{`cnd:cnd_document_file`}
 #'     \item{type}{**error**}
 #'   }
-#'   _no help documentation provided_
+#'   The `file` argument to `cnd_document()` must be a file path, a connection object, or `NULL` to return the documentation as a character vector.  The default value should be suitable for standard use cases.
 #'  }
 #'   \subsection{`cnd:cnd_document_pkg_reg/error`}{
 #'   \describe{
@@ -52,7 +52,7 @@
 #'     \item{class}{`cnd:cnd_document_pkg_reg`}
 #'     \item{type}{**error**}
 #'   }
-#'   _no help documentation provided_
+#'   Both `package` and `registry` must be set to document conditions.You can set a registry by adding `cnd_register()` calls to your package code
 #'  }
 #'   \subsection{`cnd:cnd_generated_cleanup/message`}{
 #'   \describe{
@@ -60,7 +60,7 @@
 #'     \item{class}{`cnd:cnd_generated_cleanup`}
 #'     \item{type}{**message**}
 #'   }
-#'   _no help documentation provided_
+#'   Some files created during the docuemntation process may become obsolete while updating your conditions.
 #'  }
 #'   \subsection{`cnd:cnd_generated_write/condition`}{
 #'   \describe{
@@ -68,7 +68,7 @@
 #'     \item{class}{`cnd:cnd_generated_write`}
 #'     \item{type}{**condition**}
 #'   }
-#'   _no help documentation provided_
+#'   This condition is signalled when {cnd} needs to write new documentation files.
 #'  }
 #'   \subsection{`cnd:cond_cnd_class/error`}{
 #'   \describe{

@@ -84,7 +84,7 @@ stop(my_condition())
 \item{class}{\code{cnd:cnd_document_conditions}}
 \item{type}{\strong{warning}}
 }
-\emph{no help documentation provided}
+Documentation will fail when no conditions are found.  You may be executing \code{cnd_document()} too early, before conditions have been registered.  You can try to find your conditions with \code{conditions()}.
 }
 \subsection{\code{cnd:cnd_document_file/error}}{
 \describe{
@@ -92,7 +92,7 @@ stop(my_condition())
 \item{class}{\code{cnd:cnd_document_file}}
 \item{type}{\strong{error}}
 }
-\emph{no help documentation provided}
+The \code{file} argument to \code{cnd_document()} must be a file path, a connection object, or \code{NULL} to return the documentation as a character vector.  The default value should be suitable for standard use cases.
 }
 \subsection{\code{cnd:cnd_document_pkg_reg/error}}{
 \describe{
@@ -100,7 +100,7 @@ stop(my_condition())
 \item{class}{\code{cnd:cnd_document_pkg_reg}}
 \item{type}{\strong{error}}
 }
-\emph{no help documentation provided}
+Both \code{package} and \code{registry} must be set to document conditions.You can set a registry by adding \code{cnd_register()} calls to your package code
 }
 \subsection{\code{cnd:cnd_generated_cleanup/message}}{
 \describe{
@@ -108,7 +108,7 @@ stop(my_condition())
 \item{class}{\code{cnd:cnd_generated_cleanup}}
 \item{type}{\strong{message}}
 }
-\emph{no help documentation provided}
+Some files created during the docuemntation process may become obsolete while updating your conditions.
 }
 \subsection{\code{cnd:cnd_generated_write/condition}}{
 \describe{
@@ -116,7 +116,7 @@ stop(my_condition())
 \item{class}{\code{cnd:cnd_generated_write}}
 \item{type}{\strong{condition}}
 }
-\emph{no help documentation provided}
+This condition is signalled when {cnd} needs to write new documentation files.
 }
 \subsection{\code{cnd:cond_cnd_class/error}}{
 \describe{

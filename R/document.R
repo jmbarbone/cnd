@@ -245,7 +245,11 @@ delayedAssign(
       c(
         "Removing the following cnd generated files:",
         paste0("  ", paths)
-      )
+      ),
+    help = c(
+      "Some files created during the docuemntation process may become obsolete",
+      " while updating your conditions."
+    )
   )
 )
 
@@ -263,7 +267,11 @@ delayedAssign(
       cli_switch(
         cli_text(sprintf("Writing {.file %s}", path))
       ) %||%
-        paste("Writing", path)
+        paste("Writing", path),
+    help = c(
+      "This condition is signalled when {cnd} needs to write new documentation",
+      " files."
+    )
   )
 )
 
@@ -284,7 +292,12 @@ delayedAssign(
         "  registry: {reg}",
         pkg = pkg,
         reg = reg
-      )
+      ),
+    help = c(
+      "Both `package` and `registry` must be set to document conditions.",
+      "You can set a registry by adding `cnd_register()` calls to your package",
+      " code"
+    )
   )
 )
 
@@ -297,7 +310,13 @@ delayedAssign(
     type = "warning",
     package = "cnd",
     exports = "cnd_document",
-    message = "No conditions found to document"
+    message = "No conditions found to document",
+    help = c(
+      "Documentation will fail when no conditions are found.",
+      "  You may be executing `cnd_document()` too early,",
+      " before conditions have been registered.",
+      "  You can try to find your conditions with `conditions()`."
+    )
   )
 )
 
@@ -317,6 +336,12 @@ delayedAssign(
         " not {class} ({type})",
         class = collapse(class(file), sep = "/"),
         type = typeof(file)
-      )
+      ),
+    help = c(
+      "The `file` argument to `cnd_document()` must be a file path,",
+      " a connection object, or `NULL` to return the documentation as",
+      " a character vector.  The default value should be suitable for standard",
+      " use cases."
+    )
   )
 )
