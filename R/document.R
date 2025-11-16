@@ -79,7 +79,7 @@ cnd_document <- function(
             cls = cget(c, "class"),
             typ = cget(c, "type"),
             help = if (is.null(h <- cget(c, "help"))) {
-              "  _no help documentation provided_"
+              "  _no help documentation provided_" # nocov
             } else {
               paste0("  ", clean_text(h), collapse = "\n")
             }
