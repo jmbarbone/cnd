@@ -133,49 +133,59 @@ condition <- function(
   res <- local(envir = condition_env, {
     # fmt: skip
     condition_function <- function() {}
-    body(condition_function) <- substitute({
-      # nolint next: object_usage_linter. (params is used)
-      params <- as.list(match.call())[-1L]
-      params <- params[names(params) != ".call"]
-      params <- lapply(params, eval.parent, 2L)
+    body(condition_function) <- substitute(
+      {
+        # nolint next: object_usage_linter. (params is used)
+        params <- as.list(match.call())[-1L]
+        params <- params[names(params) != ".call"]
+        params <- lapply(params, eval.parent, 2L)
 
-      # nolint next: object_usage_linter. (.call is used)
-      if (is.logical(.call) && length(.call) == 1L) {
-        # this is what isTRUE()/isFALSE()
-        if (is.na(.call) || !.call) {
-          .call <- NULL
-        } else {
-          .call <- sys.call(sys.parent())
+        # nolint next: object_usage_linter. (.call is used)
+        if (is.logical(.call) && length(.call) == 1L) {
+          # this is what isTRUE()/isFALSE()
+          if (is.na(.call) || !.call) {
+            .call <- NULL
+          } else {
+            .call <- sys.call(sys.parent())
+          }
         }
-      }
 
-      if (is.numeric(.call)) {
-        .call <- sys.call(sys.parent(.call + 1L))
-      }
+        if (is.numeric(.call)) {
+          .call <- sys.call(sys.parent(.call + 1L))
+        }
 
-      if (is.call(.call)) {
-        # TODO option for full call?
-        .call <- as.call(as.list(.call)[1L])
-      }
+        if (is.call(.call)) {
+          # TODO option for full call?
+          .call <- as.call(as.list(.call)[1L])
+        }
 
-      # nolint next: object_usage_linter. (cond) is used
-      cond <- list(
-        message = clean_text(do.call(message, params)),
-        call = .call
+        # nolint next: object_usage_linter. (cond) is used
+        cond <- list(
+          message = clean_text(do.call(..message.., params)),
+          call = .call
+        )
+
+        cond <- set_class(
+          cond,
+          unique(c(..class.., "cnd::condition", type, "condition"))
+        )
+
+        attr(cond, "help") <- ..help..
+        attr(cond, "package") <- ..package..
+        attr(cond, "exports") <- ..exports..
+        attr(cond, "condition") <- ..class..
+        attr(cond, "type") <- ..type..
+        cond
+      },
+      list(
+        ..message.. = message,
+        ..class.. = class,
+        ..package.. = package,
+        ..exports.. = exports,
+        ..type.. = type,
+        ..help.. = help
       )
-
-      cond <- set_class(
-        cond,
-        unique(c(class, "cnd::condition", type, "condition"))
-      )
-
-      attr(cond, "exports") <- exports
-      attr(cond, "package") <- package
-      attr(cond, "condition") <- class
-      attr(cond, "type") <- type
-      attr(cond, "help") <- help
-      cond
-    })
+    )
     condition_function
   })
 
@@ -537,6 +547,7 @@ cget <- function(x, field) {
 
 # conditions --------------------------------------------------------------
 
+# fmt: skip
 cond_no_package_exports <- function() {}
 delayedAssign(
   "cond_no_package_exports",
@@ -550,6 +561,7 @@ delayedAssign(
   )
 )
 
+# fmt: skip
 cond_condition_bad_message <- function() {}
 delayedAssign(
   "cond_condition_bad_message",
@@ -589,6 +601,7 @@ delayedAssign(
   )
 )
 
+# fmt: skip
 cond_as_character_condition <- function() {}
 delayedAssign(
   "cond_as_character_condition",
@@ -627,7 +640,6 @@ delayedAssign(
   condition(
     "invalid_condition",
     type = "error",
-    # fmt: skip
     # nolint next: brace_linter.
     message = function(problems)
       collapse(
@@ -644,6 +656,7 @@ delayedAssign(
   )
 )
 
+# fmt: skip
 cond_conditions_dots <- function() {}
 delayedAssign(
   "cond_conditions_dots",
@@ -672,6 +685,7 @@ delayedAssign(
 )
 
 
+# fmt: skip
 # nolint next: object_length_linter.
 cond_condition_message_generator <- function() {}
 delayedAssign(

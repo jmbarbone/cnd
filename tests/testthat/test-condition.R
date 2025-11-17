@@ -32,7 +32,6 @@ test_that("condition() works", {
 
 test_that("conditions(x) <- value", {
   reg <- local_registry()
-  # fmt: skip
   foo <- function() {}
   conditions(foo) <- condition("foo", package = "test", registry = reg)
   expect_s3_class(foo, "cnd::conditioned_function")
