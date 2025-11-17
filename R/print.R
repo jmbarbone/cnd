@@ -52,7 +52,7 @@
 print_conditions <- function(x) {
   local_cli_ignore_unknown_rstudio_theme()
 
-  conds <- attr(x, "conditions") %||% return()
+  conds <- attr2(x, "conditions") %||% return()
 
   cat("\n", bold("condition(s)"), "\n", sep = "")
   clean <- override_cli("off", vapply(conds, format, NA_character_))

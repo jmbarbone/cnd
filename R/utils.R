@@ -48,7 +48,7 @@ remove_class <- function(x, value) {
 }
 
 # yeah, just going to save over this one
-attr <- function(x, which) {
+attr2 <- function(x, which) {
   base::attr(x, which, exact = TRUE)
 }
 
@@ -92,7 +92,7 @@ clean_padding <- function(x) {
   text <- unlist(strsplit(x, "\n", fixed = TRUE))
   ok <- text != ""
 
-  ns <- attr(regexpr("^[[:space:]]+", text[ok], perl = TRUE), "match.length")
+  ns <- attr2(regexpr("^[[:space:]]+", text[ok], perl = TRUE), "match.length")
   m <- max(min(ns), 0)
 
   if (m == 0) {
@@ -129,7 +129,6 @@ match_arg <- function(arg, choices, .call = NULL, .null_as_default = FALSE) {
   choices[ok]
 }
 
-
 rcode <- function(...) {
   collapse("```r", ..., "```", sep = "\n")
 }
@@ -145,6 +144,7 @@ delayedAssign(
     package = "cnd",
     exports = "condition",
     help = "Mostly [match.arg()] but with a custom condition",
+    # fmt: skip
     # nolint next: brace_linter.
     message = function(arg, value, choices)
       fmt(
