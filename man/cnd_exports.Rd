@@ -13,7 +13,7 @@ cnd_exports(env = parent.frame())
 Nothing, called for its side-effects
 }
 \description{
-\verb{[cnd_exports()]} should be used within a package's building
+\verb{[cnd::cnd_exports()]} should be used within a package's building
 environment.
 }
 \examples{

@@ -2,7 +2,7 @@
 
 #' Document your conditions
 #'
-#' Documents your [conditions()] and [cnd::conditions()]
+#' Documents your [cnd::conditions()] and [cnd::conditions()]
 #'
 #' @param package The package to document
 #' @param registry The name of the registry
@@ -20,7 +20,7 @@
 #'
 #' @export
 #' @returns
-#'  - [cnd_document()] Conditional on the `file` argument:
+#'  - [cnd::cnd_document()] Conditional on the `file` argument:
 #'    - when `file` is a connection, the connection object
 #'    - when `file` is a path, the path
 #'    - when `file` is `NULL`, a `character` vector of the documentation
@@ -79,7 +79,7 @@ cnd_document <- function(
             cls = cget(c, "class"),
             typ = cget(c, "type"),
             help = if (is.null(h <- cget(c, "help"))) {
-              "  _no help documentation provided_"
+              "  _no help documentation provided_" # nocov
             } else {
               paste0("  ", clean_text(h), collapse = "\n")
             }
@@ -145,7 +145,7 @@ cnd_document <- function(
 #' @rdname cnd_document
 #' @param fun The name of a function
 #' @returns
-#' - [cnd_section()] A `character` vector of the documentation
+#' - [cnd::cnd_section()] A `character` vector of the documentation
 cnd_section <- function(fun) {
   conds <- conditions(fun = fun)
   fmt(
@@ -245,7 +245,11 @@ delayedAssign(
       c(
         "Removing the following cnd generated files:",
         paste0("  ", paths)
-      )
+      ),
+    help = c(
+      "Some files created during the documentation process may become obsolete",
+      " while updating your conditions."
+    )
   )
 )
 
@@ -263,7 +267,11 @@ delayedAssign(
       cli_switch(
         cli_text(sprintf("Writing {.file %s}", path))
       ) %||%
-        paste("Writing", path)
+        paste("Writing", path),
+    help = c(
+      "This condition is signaled when [cnd::cnd_document()] needs to write",
+      " new documentation files."
+    )
   )
 )
 
@@ -284,7 +292,12 @@ delayedAssign(
         "  registry: {reg}",
         pkg = pkg,
         reg = reg
-      )
+      ),
+    help = c(
+      "Both `package` and `registry` must be set to document conditions.",
+      "You can set a registry by adding [cnd::cnd_create_registry()] calls to ",
+      "your package code."
+    )
   )
 )
 
@@ -297,7 +310,13 @@ delayedAssign(
     type = "warning",
     package = "cnd",
     exports = "cnd_document",
-    message = "No conditions found to document"
+    message = "No conditions found to document",
+    help = c(
+      "Documentation will fail when no conditions are found.",
+      "  You may be executing [cnd::cnd_document()] too early,",
+      " before conditions have been registered.",
+      "  You can try to find your conditions with [cnd::conditions()]."
+    )
   )
 )
 
@@ -317,6 +336,12 @@ delayedAssign(
         " not {class} ({type})",
         class = collapse(class(file), sep = "/"),
         type = typeof(file)
-      )
+      ),
+    help = c(
+      "The `file` argument to [cnd::cnd_document()] must be a file path,",
+      " a connection object, or `NULL` to return the documentation as",
+      " a character vector.  The default value should be suitable for standard",
+      " use cases."
+    )
   )
 )

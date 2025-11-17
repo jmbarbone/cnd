@@ -93,14 +93,15 @@ attribute}
 }
 
 \itemize{
-\item \code{\link[=cnd]{cnd()}} is a wrapper for calling \code{\link[=stop]{stop()}}, \code{\link[=warning]{warning()}}, or \code{\link[=message]{message()}};
-when  \code{condition} is a type, an error is thrown, and likewise for the other
-types.  When an error isn't thrown, the \code{condition} is returned, invisibly.
+\item \code{\link[=cnd]{cnd()}} is a wrapper for calling \code{\link[=stop]{stop()}}, \code{\link[=warning]{warning()}}, or
+\code{\link[=message]{message()}}; when  \code{condition} is a type, an error is thrown, and likewise
+for the other types.  When an error isn't thrown, the \code{condition} is
+returned, invisibly.
 }
 }
 \description{
-\code{\link[=condition]{condition()}} is used to create a new condition function that
-itself returns a new \code{condition}.
+\code{\link[=condition]{condition()}} is used to create a new condition function
+that itself returns a new \code{condition}.
 
 \code{\link[=conditions]{conditions()}} retrieves all conditions based on search values.  The
 parameters serve as filtering arguments.
@@ -109,13 +110,13 @@ parameters serve as filtering arguments.
 Conditions
 }
 \section{\link{condition_generator}}{
- A \link{condition_generator} is an object (a
-special \link{function}) which can be used to create generate a new condition,
-based on specifications applied in \code{\link[=condition]{condition()}}. These functions use \code{...}
-to absorb extra arguments and contain a special \code{.call} parameter. By
-default, \code{.call} captures the parent call from where the
-\link{condition_generator} was created, but users may pass their own call to
-override this.  See \code{call.} in \code{\link[=conditionCall]{conditionCall()}}
+ A \link{condition_generator} is an
+object (a special \link{function}) which can be used to create generate a new
+condition, based on specifications applied in \code{\link[=condition]{condition()}}. These
+functions use \code{...} to absorb extra arguments and contain a special \code{.call}
+parameter. By default, \code{.call} captures the parent call from where the
+\link{condition_generator} was created, but users may pass their own call
+to override this.  See \code{call.} in \code{\link[=conditionCall]{conditionCall()}}
 }
 
 \section{\code{\link[=condition]{condition()}} conditions}{
@@ -156,7 +157,7 @@ conditionMessage(x())
 }
 
 \item{\code{\link[=cnd-cnd-conditions]{cnd:condition_overwrite/warning}}}{
-
+Defining a new condition with the same class and package as an existing condition will overwrite the previous definition.  It is recommended to either avoid this by fully defining your condition, or creating a new condition instead.
 }
 
 \item{\code{\link[=cnd-cnd-conditions]{cnd:invalid_condition/error}}}{
