@@ -1,1 +1,1 @@
-cnd_create_registry()
+cnd::cnd_create_registry()
