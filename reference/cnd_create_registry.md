@@ -1,0 +1,56 @@
+# Create a registration
+
+This function will create a new object with the name as `name` in the
+environment where it is called. This is intended to be your package
+environment, but could potentially be anywhere you want. If an object
+which is not a `cnd:registry` object is found with the same name, an
+error will be thrown.
+
+## Usage
+
+``` r
+cnd_create_registry(
+  registry = get_package(),
+  overwrite = FALSE,
+  name = ".__CND_REGISTRY__.",
+  env = parent.frame()
+)
+```
+
+## Arguments
+
+- registry:
+
+  The name of the registry
+
+- overwrite:
+
+  When `TRUE` will overwrite
+
+- name:
+
+  The name of the registry variable. Default is intended to prevent
+  potential conflicts with other objects.
+
+- env:
+
+  The environment to assign the registry to
+
+## Value
+
+a `cnd:registry` object, invisibly
+
+## Details
+
+Crate a new `cnd:registry` to the current environment
+
+## Examples
+
+``` r
+# In most cases, just having the function in your R/ scripts is good enough,
+# and you can use `cnd_create_registry()` with its defaults.  The following
+# examples are for demonstration purposes:
+e <- new.env()
+cnd_create_registry("EXAMPLE", env = e)
+cnd_create_registry("EXAMPLE", overwrite = TRUE)
+```

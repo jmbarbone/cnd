@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">cnd</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0.9002</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0.9003</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -88,7 +88,7 @@
 <dd><p><strong>warning</strong></p></dd>
 
 
-</dl><p><em>no help documentation provided</em></p>
+</dl><p>Documentation will fail when no conditions are found.  You may be executing <code><a href="cnd_document.html">cnd_document()</a></code> too early, before conditions have been registered.  You can try to find your conditions with <code><a href="condition.html">conditions()</a></code>.</p>
 </div>
 <div class="section">
 <h3 id="cnd-cnd-document-file-error"><code>cnd:cnd_document_file/error</code><a class="anchor" aria-label="anchor" href="#cnd-cnd-document-file-error"></a></h3>
@@ -103,7 +103,7 @@
 <dd><p><strong>error</strong></p></dd>
 
 
-</dl><p><em>no help documentation provided</em></p>
+</dl><p>The <code>file</code> argument to <code><a href="cnd_document.html">cnd_document()</a></code> must be a file path, a connection object, or <code>NULL</code> to return the documentation as a character vector.  The default value should be suitable for standard use cases.</p>
 </div>
 <div class="section">
 <h3 id="cnd-cnd-document-pkg-reg-error"><code>cnd:cnd_document_pkg_reg/error</code><a class="anchor" aria-label="anchor" href="#cnd-cnd-document-pkg-reg-error"></a></h3>
@@ -118,7 +118,7 @@
 <dd><p><strong>error</strong></p></dd>
 
 
-</dl><p><em>no help documentation provided</em></p>
+</dl><p>Both <code>package</code> and <code>registry</code> must be set to document conditions.You can set a registry by adding <code><a href="cnd_create_registry.html">cnd_create_registry()</a></code> calls to your package code.</p>
 </div>
 <div class="section">
 <h3 id="cnd-cnd-generated-cleanup-message"><code>cnd:cnd_generated_cleanup/message</code><a class="anchor" aria-label="anchor" href="#cnd-cnd-generated-cleanup-message"></a></h3>
@@ -133,7 +133,7 @@
 <dd><p><strong>message</strong></p></dd>
 
 
-</dl><p><em>no help documentation provided</em></p>
+</dl><p>Some files created during the documentation process may become obsolete while updating your conditions.</p>
 </div>
 <div class="section">
 <h3 id="cnd-cnd-generated-write-condition"><code>cnd:cnd_generated_write/condition</code><a class="anchor" aria-label="anchor" href="#cnd-cnd-generated-write-condition"></a></h3>
@@ -148,7 +148,7 @@
 <dd><p><strong>condition</strong></p></dd>
 
 
-</dl><p><em>no help documentation provided</em></p>
+</dl><p>This condition is signaled when <code><a href="cnd_document.html">cnd_document()</a></code> needs to write new documentation files.</p>
 </div>
 <div class="section">
 <h3 id="cnd-cond-cnd-class-error"><code>cnd:cond_cnd_class/error</code><a class="anchor" aria-label="anchor" href="#cnd-cond-cnd-class-error"></a></h3>
@@ -198,7 +198,7 @@
 <dd><p><strong>warning</strong></p></dd>
 
 
-</dl><p><em>no help documentation provided</em></p>
+</dl><p>Defining a new condition with the same class and package as an existing condition will overwrite the previous definition.  It is recommended to either avoid this by fully defining your condition, or creating a new condition instead.</p>
 </div>
 <div class="section">
 <h3 id="cnd-conditions-dots-warning"><code>cnd:conditions_dots/warning</code><a class="anchor" aria-label="anchor" href="#cnd-conditions-dots-warning"></a></h3>
@@ -298,7 +298,7 @@
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
     </footer></div>
