@@ -1,6 +1,6 @@
 # Changelog
 
-## cnd (development version)
+## cnd 0.1.1
 
 - `cnd::condition_progenitor$message` no longer has its environment
   reset [\#14](https://github.com/jmbarbone/cnd/issues/14)
