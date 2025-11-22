@@ -1,6 +1,10 @@
 # Changelog
 
+## cnd (development version)
+
 ## cnd 0.1.1
+
+CRAN release: 2025-11-22
 
 - `cnd::condition_progenitor$message` no longer has its environment
   reset [\#14](https://github.com/jmbarbone/cnd/issues/14)

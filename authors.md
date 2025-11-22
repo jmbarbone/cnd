@@ -8,15 +8,15 @@
 ## Citation
 
 Source:
-[`DESCRIPTION`](https://github.com/jmbarbone/cnd/blob/v0.1.1/DESCRIPTION)
+[`DESCRIPTION`](https://github.com/jmbarbone/cnd/blob/main/DESCRIPTION)
 
 Barbone J (2025). *cnd: Create and Register Conditions*. R package
-version 0.1.1, <https://jmbarbone.github.io/cnd/>.
+version 0.1.1.9000, <https://jmbarbone.github.io/cnd/>.
 
     @Manual{,
       title = {cnd: Create and Register Conditions},
       author = {Jordan Mark Barbone},
       year = {2025},
-      note = {R package version 0.1.1},
+      note = {R package version 0.1.1.9000},
       url = {https://jmbarbone.github.io/cnd/},
     }
