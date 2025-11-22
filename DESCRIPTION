@@ -1,6 +1,6 @@
 Package: cnd
 Title: Create and Register Conditions
-Version: 0.1.0.9003
+Version: 0.1.1
 Authors@R: 
     person(
       "Jordan Mark", "Barbone", , 
