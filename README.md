@@ -276,7 +276,7 @@ cat(cnd_section(cnd))
 #> \describe{
 #>   
 #>   \item{[`cnd:cond_cnd_class/error`][cnd-cnd-conditions]}{
-#>     [cnd()] simple calls the appropriate function: [stop()], [warning()], or [message()] based on the `type` parameter from [cnd::condition()].
+#>     [cnd::cnd()] simple calls the appropriate function: [stop()], [warning()], or [message()] based on the `type` parameter from [cnd::condition()].
 #>   }
 #> 
 #> }
@@ -305,6 +305,9 @@ conditions("cnd", type = "warning")
     #> cnd::condition_generator
     #> cnd:cnd_document_conditions/warning 
     #> 
+    #> help
+    #> Documentation will fail when no conditions are found.  You may be executing [cnd::cnd_document()] too early, before conditions have been registered.  You can try to find your conditions with [cnd::conditions()]. 
+    #> 
     #> exports
     #>   cnd::cnd_document()
     #> 
@@ -316,6 +319,9 @@ conditions("cnd", type = "warning")
     #>   $ old : <symbol> 
     #>   $ new : <symbol> 
     #> 
+    #> help
+    #> Defining a new condition with the same class and package as an existing condition will overwrite the previous definition.  It is recommended to either avoid this by fully defining your condition, or creating a new condition instead. 
+    #> 
     #> exports
     #>   cnd::condition()
     #> 
@@ -324,7 +330,7 @@ conditions("cnd", type = "warning")
     #> cnd:conditions_dots/warning 
     #> 
     #> help
-    #> The `...` parameter in [conditions()] is meant for convenience.  Only a single argument is allowed.  Other parameters must be named  explicitly.  For example:  ```r # Instead of this conditions("class", "package") # "package" is ignored with a warning  # Do this conditions(class = "class", package = "package") ``` 
+    #> The `...` parameter in [cnd::conditions()] is meant for convenience.  Only a single argument is allowed.  Other parameters must be named  explicitly.  For example:  ```r # Instead of this conditions("class", "package") # "package" is ignored with a warning  # Do this conditions(class = "class", package = "package") ``` 
     #> 
     #> exports
     #>   cnd::conditions()
