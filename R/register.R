@@ -50,7 +50,7 @@ local(envir = registrar, {
 
   new <- function(x = NULL) {
     e <- new.env(parent = .cnd_env)
-    assign(".__NAME__.", x, e)
+    assign(".__NAME__.", x, e) # nolint: object_name_linter.
     class(e) <- "cnd:registry"
     e
   }
@@ -266,14 +266,15 @@ delayedAssign(
     package = "cnd",
     exports = "condition",
     # nolint next: brace_linter.
-    message = function(old, new)
+    message = function(old, new) {
       fmt(
         "A condition with the class name '{cls}' already exists in '{pkg}' and",
         " will be overwritten{diff}",
         cls = old$class,
         pkg = old$package,
         diff = paste0("\n   ", all.equal(old, new), collapse = "")
-      ),
+      )
+    },
     help = c(
       "Defining a new condition with the same class and package as an existing",
       " condition will overwrite the previous definition.  It is recommended",
