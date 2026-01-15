@@ -7,7 +7,7 @@
 #' @details
 #'   The following conditions are defined in the `{cnd}` package.
 #'
-#' @section [`{cnd}`][cnd-package]:
+#' @section [`{cnd}`][`cnd-package`]:
 #'   These conditions are made with the `{cnd}` package though the use of
 #'   [cnd::condition()].
 #'
