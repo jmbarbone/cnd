@@ -3,7 +3,6 @@
 \name{cnd-cnd-conditions}
 \alias{cnd-cnd-conditions}
 \alias{cnd:as_character_cnd_error}
-\alias{cnd:class_error}
 \alias{cnd:cnd_document_conditions}
 \alias{cnd:cnd_document_file}
 \alias{cnd:cnd_document_pkg_reg}
@@ -13,23 +12,11 @@
 \alias{cnd:condition_message_generator}
 \alias{cnd:condition_overwrite}
 \alias{cnd:conditions_dots}
-\alias{cnd:defunct_error}
-\alias{cnd:deprecation_warning}
-\alias{cnd:input_error}
-\alias{cnd:input_warning}
 \alias{cnd:invalid_condition}
 \alias{cnd:invalid_condition_message}
 \alias{cnd:match_arg}
-\alias{cnd:match_error}
-\alias{cnd:namespace_error}
 \alias{cnd:no_package_exports}
-\alias{cnd:path_deletion_message}
-\alias{cnd:path_overwrite_message}
-\alias{cnd:type_error}
-\alias{cnd:value_error}
-\alias{cnd:value_warning}
 \alias{as_character_cnd_error}
-\alias{class_error}
 \alias{cnd_document_conditions}
 \alias{cnd_document_file}
 \alias{cnd_document_pkg_reg}
@@ -39,23 +26,11 @@
 \alias{condition_message_generator}
 \alias{condition_overwrite}
 \alias{conditions_dots}
-\alias{defunct_error}
-\alias{deprecation_warning}
-\alias{input_error}
-\alias{input_warning}
 \alias{invalid_condition}
 \alias{invalid_condition_message}
 \alias{match_arg}
-\alias{match_error}
-\alias{namespace_error}
 \alias{no_package_exports}
-\alias{path_deletion_message}
-\alias{path_overwrite_message}
-\alias{type_error}
-\alias{value_error}
-\alias{value_warning}
 \alias{cnd:as_character_cnd_error/error}
-\alias{cnd:class_error/error}
 \alias{cnd:cnd_document_conditions/warning}
 \alias{cnd:cnd_document_file/error}
 \alias{cnd:cnd_document_pkg_reg/error}
@@ -65,21 +40,10 @@
 \alias{cnd:condition_message_generator/error}
 \alias{cnd:condition_overwrite/warning}
 \alias{cnd:conditions_dots/warning}
-\alias{cnd:defunct_error/error}
-\alias{cnd:deprecation_warning/warning}
-\alias{cnd:input_error/error}
-\alias{cnd:input_warning/warning}
 \alias{cnd:invalid_condition/error}
 \alias{cnd:invalid_condition_message/error}
 \alias{cnd:match_arg/error}
-\alias{cnd:match_error/error}
-\alias{cnd:namespace_error/error}
 \alias{cnd:no_package_exports/warning}
-\alias{cnd:path_deletion_message/message}
-\alias{cnd:path_overwrite_message/message}
-\alias{cnd:type_error/error}
-\alias{cnd:value_error/error}
-\alias{cnd:value_warning/warning}
 \title{Conditions for \code{cnd}}
 \description{
 Conditions for \code{cnd}
@@ -87,10 +51,10 @@ Conditions for \code{cnd}
 \details{
 The following conditions are defined in the \code{{cnd}} package.
 }
-\section{\code{\link[=cnd-package]{\{cnd\}}}}{
+\section{\code{{cnd}}}{
 
-These conditions are made with the \code{{cnd}} package though the use of
-\code{\link[=condition]{condition()}}.
+These conditions are made with the \code{\link[=cnd-package]{\{cnd\}}} package though the
+use of \code{\link[=condition]{condition()}}.
 }
 
 \section{\code{{cnd}} conditions}{
@@ -102,7 +66,7 @@ These conditions are made with the \code{{cnd}} package though the use of
 \item{class}{\code{cnd:as_character_cnd_error}}
 \item{type}{\strong{error}}
 }
-You cannot coerce a \link{condition_generator} object to a character. This may have occurred when trying to put a condition function through \code{\link[=stop]{stop()}} or \link{warning}.  Instead, call the function first, then pass the result to \code{\link[=stop]{stop()}} or \code{\link[=warning]{warning()}}.
+You cannot coerce a \link{condition_generator} object to a character. This may have occurred when trying to put a condition function through \code{\link[base:stop]{base::stop()}} or \code{\link[base:warning]{base::warning()}}.  Instead, call the function first,  then pass the result to \code{\link[base:stop]{base::stop()}} or \code{\link[base:warning]{base::warning()}}.
 
 For example:
 
@@ -113,14 +77,6 @@ stop(my_condition)
 stop(my_condition())
 }\if{html}{\out{</div>}}
 
-}
-\subsection{\code{cnd:class_error/error}}{
-\describe{
-\item{package}{\code{{cnd}}}
-\item{class}{\code{cnd:class_error}}
-\item{type}{\strong{error}}
-}
-\emph{no help documentation provided}
 }
 \subsection{\code{cnd:cnd_document_conditions/warning}}{
 \describe{
@@ -168,7 +124,7 @@ stop(my_condition())
 \item{class}{\code{cnd:cond_cnd_class}}
 \item{type}{\strong{error}}
 }
-\code{\link[=cnd]{cnd()}} simple calls the appropriate function: \code{\link[=stop]{stop()}}, \code{\link[=warning]{warning()}}, or \code{\link[=message]{message()}} based on the \code{type} parameter from \code{\link[=condition]{condition()}}.
+\code{\link[=cnd]{cnd()}} simple calls the appropriate function: \code{\link[base:stop]{base::stop()}}, \code{\link[base:warning]{base::warning()}}, or \code{\link[base:message]{base::message()}} based on the \code{type} parameter from \code{\link[=condition]{condition()}}.
 }
 \subsection{\code{cnd:condition_message_generator/error}}{
 \describe{
@@ -215,38 +171,6 @@ conditions(class = "class", package = "package")
 }\if{html}{\out{</div>}}
 
 }
-\subsection{\code{cnd:defunct_error/error}}{
-\describe{
-\item{package}{\code{{cnd}}}
-\item{class}{\code{cnd:defunct_error}}
-\item{type}{\strong{error}}
-}
-\emph{no help documentation provided}
-}
-\subsection{\code{cnd:deprecation_warning/warning}}{
-\describe{
-\item{package}{\code{{cnd}}}
-\item{class}{\code{cnd:deprecation_warning}}
-\item{type}{\strong{warning}}
-}
-\emph{no help documentation provided}
-}
-\subsection{\code{cnd:input_error/error}}{
-\describe{
-\item{package}{\code{{cnd}}}
-\item{class}{\code{cnd:input_error}}
-\item{type}{\strong{error}}
-}
-\emph{no help documentation provided}
-}
-\subsection{\code{cnd:input_warning/warning}}{
-\describe{
-\item{package}{\code{{cnd}}}
-\item{class}{\code{cnd:input_warning}}
-\item{type}{\strong{warning}}
-}
-\emph{no help documentation provided}
-}
 \subsection{\code{cnd:invalid_condition/error}}{
 \describe{
 \item{package}{\code{{cnd}}}
@@ -261,7 +185,7 @@ The \code{class}, \code{exports}, and \code{help} parameters must be a single ch
 \item{class}{\code{cnd:invalid_condition_message}}
 \item{type}{\strong{error}}
 }
-Conditions messages are displayed when invoked through \code{\link[=conditionMessage]{conditionMessage()}}.  You can set a static message by passing through a \code{character} vector, or a dynamic message by passing through a \code{function}.  The function should return a \code{character} vector.
+Conditions messages are displayed when invoked through \code{\link[base:conditions]{base::conditionMessage()}}.  You can set a static message by passing through a \code{character} vector, or a dynamic message by passing through a \code{function}.  The function should return a \code{character} vector.
 
 When \code{message} is not set, a default "there was an error" message is used.
 }
@@ -271,23 +195,7 @@ When \code{message} is not set, a default "there was an error" message is used.
 \item{class}{\code{cnd:match_arg}}
 \item{type}{\strong{error}}
 }
-Mostly \code{\link[=match.arg]{match.arg()}} but with a custom condition
-}
-\subsection{\code{cnd:match_error/error}}{
-\describe{
-\item{package}{\code{{cnd}}}
-\item{class}{\code{cnd:match_error}}
-\item{type}{\strong{error}}
-}
-\emph{no help documentation provided}
-}
-\subsection{\code{cnd:namespace_error/error}}{
-\describe{
-\item{package}{\code{{cnd}}}
-\item{class}{\code{cnd:namespace_error}}
-\item{type}{\strong{error}}
-}
-\emph{no help documentation provided}
+Mostly \code{\link[base:match.arg]{base::match.arg()}} but with a custom condition
 }
 \subsection{\code{cnd:no_package_exports/warning}}{
 \describe{
@@ -296,46 +204,6 @@ Mostly \code{\link[=match.arg]{match.arg()}} but with a custom condition
 \item{type}{\strong{warning}}
 }
 The \code{exports} parameter requires a \code{package}
-}
-\subsection{\code{cnd:path_deletion_message/message}}{
-\describe{
-\item{package}{\code{{cnd}}}
-\item{class}{\code{cnd:path_deletion_message}}
-\item{type}{\strong{message}}
-}
-\emph{no help documentation provided}
-}
-\subsection{\code{cnd:path_overwrite_message/message}}{
-\describe{
-\item{package}{\code{{cnd}}}
-\item{class}{\code{cnd:path_overwrite_message}}
-\item{type}{\strong{message}}
-}
-\emph{no help documentation provided}
-}
-\subsection{\code{cnd:type_error/error}}{
-\describe{
-\item{package}{\code{{cnd}}}
-\item{class}{\code{cnd:type_error}}
-\item{type}{\strong{error}}
-}
-\emph{no help documentation provided}
-}
-\subsection{\code{cnd:value_error/error}}{
-\describe{
-\item{package}{\code{{cnd}}}
-\item{class}{\code{cnd:value_error}}
-\item{type}{\strong{error}}
-}
-\emph{no help documentation provided}
-}
-\subsection{\code{cnd:value_warning/warning}}{
-\describe{
-\item{package}{\code{{cnd}}}
-\item{class}{\code{cnd:value_warning}}
-\item{type}{\strong{warning}}
-}
-\emph{no help documentation provided}
 }
 }
 

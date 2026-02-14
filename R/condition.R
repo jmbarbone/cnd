@@ -4,10 +4,10 @@
 #'
 #' @details Conditions
 #'
-#' @description [condition()] is used to create a new condition function that
-#'   itself returns a new `condition`.
+#' @description [cnd::condition()] is used to create a new condition function
+#'   that itself returns a new `condition`.
 #'
-#'   [conditions()] retrieves all conditions based on search values.  The
+#'   [cnd::conditions()] retrieves all conditions based on search values.  The
 #'   parameters serve as filtering arguments.
 #'
 #' @param class The name of the new class
@@ -26,22 +26,22 @@
 #'
 #' @section [condition_generator]: A [condition_generator] is an object (a
 #'   special [function]) which can be used to create generate a new condition,
-#'   based on specifications applied in [condition()]. These functions use `...`
-#'   to absorb extra arguments and contain a special `.call` parameter. By
+#'   based on specifications applied in [cnd::condition()]. These functions use
+#'   `...` to absorb extra arguments and contain a special `.call` parameter. By
 #'   default, `.call` captures the parent call from where the
 #'   [condition_generator] was created, but users may pass their own call to
-#'   override this.  See `call.` in [conditionCall()]
+#'   override this.  See `call.` in [base::conditionCall()]
 #'
-#' @section [condition()] conditions:
+#' @section [cnd::condition()] conditions:
 #'
 #'   `r cnd_section(condition)`
 #'
-#' @section [cnd()] conditions:
+#' @section [cnd::cnd()] conditions:
 #'
 #'   `r cnd_section(cnd)`
 #'
 #' @returns
-#' - [condition()] a [cnd::condition_generator] object
+#' - [cnd::condition()] a [cnd::condition_generator] object
 #'
 #' @export
 #' @examples
@@ -205,7 +205,7 @@ class(condition) <- "cnd::condition_progenitor"
 #' @param fun if a function is passed, then retrieves the `"conditions"`
 #'   attribute
 #' @returns
-#' - [conditions()] a `list` of [cnd::condition_generator] objects
+#' - [cnd::conditions()] a `list` of [cnd::condition_generator] objects
 conditions <- function(
   ...,
   class = NULL,
@@ -269,7 +269,7 @@ conditions <- function(
 #' @export
 #' @rdname condition
 #' @returns
-#' - [cond()] A [cnd::condition_generator] object
+#' - [cnd::cond()] A [cnd::condition_generator] object
 cond <- function(x) {
   find_cond(x)
 }
@@ -278,9 +278,10 @@ cond <- function(x) {
 #' @rdname condition
 #' @param condition A [cnd::condition_generator] object
 #' @returns
-#' - [cnd()] is a wrapper for calling [stop()], [warning()], or [message()];
-#'   when  `condition` is a type, an error is thrown, and likewise for the other
-#'   types.  When an error isn't thrown, the `condition` is returned, invisibly.
+#' - [cnd::cnd()] is a wrapper for calling [base::stop()], [base::warning()],
+#' or [base::message()]; when  `condition` is a type, an error is thrown, and
+#' likewise for the other types.  When an error isn't thrown, the `condition` is
+#' returned, invisibly.
 cnd <- function(condition) {
   if (!is_cnd_condition(condition)) {
     cnd(cond_cnd_class())
@@ -568,9 +569,9 @@ delayedAssign(
     package = "cnd",
     help = c(
       "Conditions messages are displayed when invoked through",
-      " [conditionMessage()].  You can set a static message by passing through",
-      " a `character` vector, or a dynamic message by passing through a",
-      " `function`.  The function should return a `character` vector.",
+      " [base::conditionMessage()].  You can set a static message by passing",
+      " through a `character` vector, or a dynamic message by passing through",
+      " a `function`.  The function should return a `character` vector.",
       "\n\n",
       "When `message` is not set, a default \"there was an error\" message is",
       " used."
@@ -589,8 +590,9 @@ delayedAssign(
     exports = "cnd",
     package = "cnd",
     help = c(
-      "[cnd()] simple calls the appropriate function: [stop()], [warning()],",
-      " or [message()] based on the `type` parameter from [cnd::condition()]."
+      "[cnd::cnd()] simple calls the appropriate function: [base::stop()],",
+      " [base::warning()], or [base::message()] based on the `type` parameter",
+      " from [cnd::condition()]."
     )
   )
 )
@@ -611,8 +613,9 @@ delayedAssign(
     help = c(
       "You cannot coerce a [cnd::condition_generator] object to a character. ",
       "This may have occurred when trying to put a condition function through ",
-      "[stop()] or [warning].  Instead, call the function first, then pass the",
-      " result to [stop()] or [warning()].",
+      "[base::stop()] or [base::warning()].  Instead, call the function first,",
+      "  then pass the",
+      " result to [base::stop()] or [base::warning()].",
       "\n\n",
       "For example:",
       "\n",
@@ -662,8 +665,8 @@ delayedAssign(
     exports = "conditions",
     package = "cnd",
     help = c(
-      "The `...` parameter in [conditions()] is meant for convenience.  Only ",
-      "a single argument is allowed.  Other parameters must be named ",
+      "The `...` parameter in [cnd::conditions()] is meant for convenience.",
+      "  Only a single argument is allowed.  Other parameters must be named ",
       " explicitly.",
       "\n\n",
       "For example:",
@@ -689,8 +692,8 @@ delayedAssign(
     "condition_message_generator",
     type = "error",
     message = c(
-      "You are trying to call conditionMessage() on a condition_generator",
-      " object, which is not allowed"
+      "You are trying to call [base::conditionMessage()] on a",
+      " `condition_generator` object, which is not allowed"
     ),
     exports = "condition",
     package = "cnd",

@@ -144,9 +144,9 @@ delayedAssign(
     type = "error",
     package = "cnd",
     exports = "condition",
-    help = "Mostly [match.arg()] but with a custom condition",
+    help = "Mostly [base::match.arg()] but with a custom condition",
     # nolint next: brace_linter.
-    message = function(arg, value, choices)
+    message = function(arg, value, choices) {
       fmt(
         "Argument '{arg}' not valid\n",
         "value  : {value}\n",
@@ -155,5 +155,6 @@ delayedAssign(
         value = value,
         choices = collapse(choices, sep = ", ")
       )
+    }
   )
 )

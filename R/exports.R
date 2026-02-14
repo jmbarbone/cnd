@@ -1,6 +1,6 @@
 #' Add conditions to functions
 #'
-#' `[cnd_exports()]` should be used within a package's building
+#' `[cnd::cnd_exports()]` should be used within a package's building
 #' environment.
 #'
 #' @param env The package environment

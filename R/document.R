@@ -2,7 +2,7 @@
 
 #' Document your conditions
 #'
-#' Documents your [conditions()] and [cnd::conditions()]
+#' Documents your [cnd::conditions()]
 #'
 #' @param package The package to document
 #' @param registry The name of the registry
@@ -20,7 +20,7 @@
 #'
 #' @export
 #' @returns
-#'  - [cnd_document()] Conditional on the `file` argument:
+#'  - [cnd::cnd_document()] Conditional on the `file` argument:
 #'    - when `file` is a connection, the connection object
 #'    - when `file` is a path, the path
 #'    - when `file` is `NULL`, a `character` vector of the documentation
@@ -145,7 +145,7 @@ cnd_document <- function(
 #' @rdname cnd_document
 #' @param fun The name of a function
 #' @returns
-#' - [cnd_section()] A `character` vector of the documentation
+#' - [cnd::cnd_section()] A `character` vector of the documentation
 cnd_section <- function(fun) {
   conds <- conditions(fun = fun)
   fmt(

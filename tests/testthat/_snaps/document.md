@@ -10,7 +10,7 @@
       \describe{
         
         \item{[`cnd:cond_cnd_class/error`][cnd-cnd-conditions]}{
-          [cnd()] simple calls the appropriate function: [stop()], [warning()], or [message()] based on the `type` parameter from [cnd::condition()].
+          [cnd::cnd()] simple calls the appropriate function: [base::stop()], [base::warning()], or [base::message()] based on the `type` parameter from [cnd::condition()].
         }
       
       }
@@ -41,7 +41,7 @@
       #'     \item{class}{`cnd:as_character_cnd_error`}
       #'     \item{type}{**error**}
       #'   }
-      #'   You cannot coerce a [cnd::condition_generator] object to a character. This may have occurred when trying to put a condition function through [stop()] or [warning].  Instead, call the function first, then pass the result to [stop()] or [warning()].
+      #'   You cannot coerce a [cnd::condition_generator] object to a character. This may have occurred when trying to put a condition function through [base::stop()] or [base::warning()].  Instead, call the function first,  then pass the result to [base::stop()] or [base::warning()].
       #'
       #'   For example:
       #'   ```r
@@ -98,7 +98,7 @@
       #'     \item{class}{`cnd:cond_cnd_class`}
       #'     \item{type}{**error**}
       #'   }
-      #'   [cnd()] simple calls the appropriate function: [stop()], [warning()], or [message()] based on the `type` parameter from [cnd::condition()].
+      #'   [cnd::cnd()] simple calls the appropriate function: [base::stop()], [base::warning()], or [base::message()] based on the `type` parameter from [cnd::condition()].
       #'  }
       #'   \subsection{`cnd:condition_message_generator/error`}{
       #'   \describe{
@@ -134,7 +134,7 @@
       #'     \item{class}{`cnd:conditions_dots`}
       #'     \item{type}{**warning**}
       #'   }
-      #'   The `...` parameter in [conditions()] is meant for convenience.  Only a single argument is allowed.  Other parameters must be named  explicitly.
+      #'   The `...` parameter in [cnd::conditions()] is meant for convenience.  Only a single argument is allowed.  Other parameters must be named  explicitly.
       #'
       #'   For example:
       #'
@@ -160,7 +160,7 @@
       #'     \item{class}{`cnd:invalid_condition_message`}
       #'     \item{type}{**error**}
       #'   }
-      #'   Conditions messages are displayed when invoked through [conditionMessage()].  You can set a static message by passing through a `character` vector, or a dynamic message by passing through a `function`.  The function should return a `character` vector.
+      #'   Conditions messages are displayed when invoked through [base::conditionMessage()].  You can set a static message by passing through a `character` vector, or a dynamic message by passing through a `function`.  The function should return a `character` vector.
       #'
       #'   When `message` is not set, a default "there was an error" message is used.
       #'  }
@@ -170,7 +170,7 @@
       #'     \item{class}{`cnd:match_arg`}
       #'     \item{type}{**error**}
       #'   }
-      #'   Mostly [match.arg()] but with a custom condition
+      #'   Mostly [base::match.arg()] but with a custom condition
       #'  }
       #'   \subsection{`cnd:no_package_exports/warning`}{
       #'   \describe{

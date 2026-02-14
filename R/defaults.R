@@ -14,13 +14,12 @@
 #'
 #' @param ... Additional message components
 #' @param x an object
-#' @param expected Expected type or value
 #' @param actual,expected Actual or expected value (see details)
 #' @param name Name of the object (will be deparsed if not provided)
 #' @param defunct,deprecated,replacement Defunct, deprecated and replacement
 #'   object, use [base::quote()] to pass expressions (e.g., `quote(old_fun()`)
 #' @param version A version number
-#' @details If no values are entered into the `cnd::condition_generator`, a
+#' @details If no values are entered into the [cnd::condition_generator], a
 #'   default message will be used. Messages will be dynamically created based on
 #'   the parameters provided.
 #'
@@ -298,7 +297,6 @@ delayedAssign("class_warning", convert(class_error, "warning"))
 }
 
 strings <- function(...) {
-  # paste0(shQuote(c(...), type = "sh"), collapse = ", ")
   paste0(c(...), collapse = ", ")
 }
 

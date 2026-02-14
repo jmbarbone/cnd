@@ -93,14 +93,14 @@ attribute}
 }
 
 \itemize{
-\item \code{\link[=cnd]{cnd()}} is a wrapper for calling \code{\link[=stop]{stop()}}, \code{\link[=warning]{warning()}}, or \code{\link[=message]{message()}};
+\item \code{\link[=cnd]{cnd()}} is a wrapper for calling \code{\link[base:stop]{base::stop()}}, \code{\link[base:warning]{base::warning()}}, or \code{\link[base:message]{base::message()}};
 when  \code{condition} is a type, an error is thrown, and likewise for the other
 types.  When an error isn't thrown, the \code{condition} is returned, invisibly.
 }
 }
 \description{
-\code{\link[=condition]{condition()}} is used to create a new condition function that
-itself returns a new \code{condition}.
+\code{\link[=condition]{condition()}} is used to create a new condition function
+that itself returns a new \code{condition}.
 
 \code{\link[=conditions]{conditions()}} retrieves all conditions based on search values.  The
 parameters serve as filtering arguments.
@@ -111,11 +111,11 @@ Conditions
 \section{\link{condition_generator}}{
  A \link{condition_generator} is an object (a
 special \link{function}) which can be used to create generate a new condition,
-based on specifications applied in \code{\link[=condition]{condition()}}. These functions use \code{...}
-to absorb extra arguments and contain a special \code{.call} parameter. By
+based on specifications applied in \code{\link[=condition]{condition()}}. These functions use
+\code{...} to absorb extra arguments and contain a special \code{.call} parameter. By
 default, \code{.call} captures the parent call from where the
 \link{condition_generator} was created, but users may pass their own call to
-override this.  See \code{call.} in \code{\link[=conditionCall]{conditionCall()}}
+override this.  See \code{call.} in \code{\link[base:conditions]{base::conditionCall()}}
 }
 
 \section{\code{\link[=condition]{condition()}} conditions}{
@@ -127,7 +127,7 @@ The following conditions are associated with this function:
 \describe{
 
 \item{\code{\link[=cnd-cnd-conditions]{cnd:as_character_cnd_error/error}}}{
-You cannot coerce a \link{condition_generator} object to a character. This may have occurred when trying to put a condition function through \code{\link[=stop]{stop()}} or \link{warning}.  Instead, call the function first, then pass the result to \code{\link[=stop]{stop()}} or \code{\link[=warning]{warning()}}.
+You cannot coerce a \link{condition_generator} object to a character. This may have occurred when trying to put a condition function through \code{\link[base:stop]{base::stop()}} or \code{\link[base:warning]{base::warning()}}.  Instead, call the function first,  then pass the result to \code{\link[base:stop]{base::stop()}} or \code{\link[base:warning]{base::warning()}}.
 
 For example:
 
@@ -164,13 +164,13 @@ The \code{class}, \code{exports}, and \code{help} parameters must be a single ch
 }
 
 \item{\code{\link[=cnd-cnd-conditions]{cnd:invalid_condition_message/error}}}{
-Conditions messages are displayed when invoked through \code{\link[=conditionMessage]{conditionMessage()}}.  You can set a static message by passing through a \code{character} vector, or a dynamic message by passing through a \code{function}.  The function should return a \code{character} vector.
+Conditions messages are displayed when invoked through \code{\link[base:conditions]{base::conditionMessage()}}.  You can set a static message by passing through a \code{character} vector, or a dynamic message by passing through a \code{function}.  The function should return a \code{character} vector.
 
 When \code{message} is not set, a default "there was an error" message is used.
 }
 
 \item{\code{\link[=cnd-cnd-conditions]{cnd:match_arg/error}}}{
-Mostly \code{\link[=match.arg]{match.arg()}} but with a custom condition
+Mostly \code{\link[base:match.arg]{base::match.arg()}} but with a custom condition
 }
 
 \item{\code{\link[=cnd-cnd-conditions]{cnd:no_package_exports/warning}}}{
@@ -191,7 +191,7 @@ The following conditions are associated with this function:
 \describe{
 
 \item{\code{\link[=cnd-cnd-conditions]{cnd:cond_cnd_class/error}}}{
-\code{\link[=cnd]{cnd()}} simple calls the appropriate function: \code{\link[=stop]{stop()}}, \code{\link[=warning]{warning()}}, or \code{\link[=message]{message()}} based on the \code{type} parameter from \code{\link[=condition]{condition()}}.
+\code{\link[=cnd]{cnd()}} simple calls the appropriate function: \code{\link[base:stop]{base::stop()}}, \code{\link[base:warning]{base::warning()}}, or \code{\link[base:message]{base::message()}} based on the \code{type} parameter from \code{\link[=condition]{condition()}}.
 }
 
 }

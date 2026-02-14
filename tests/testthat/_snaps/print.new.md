@@ -47,7 +47,7 @@
     Output
       cnd:cond_cnd_class/error
       (cnd:cond_cnd_class/cnd::condition/error/condition)
-      'condition' must be a `cnd::condition` object
+      'condition' must be a [cnd::condition] object
 
 ---
 
