@@ -231,7 +231,6 @@ cnd_section_item_fmt <- "
 
 # conditions --------------------------------------------------------------
 
-# fmt: skip
 cond_cnd_generated_cleanup <- function() {}
 delayedAssign(
   "cond_cnd_generated_cleanup",
@@ -250,7 +249,6 @@ delayedAssign(
   )
 )
 
-# fmt: skip
 cond_cnd_generated_write <- function() {}
 delayedAssign(
   "cond_cnd_generated_write",
@@ -269,7 +267,6 @@ delayedAssign(
   )
 )
 
-# fmt: skip
 cond_cnd_document_pkg_reg <- function() {}
 delayedAssign(
   "cond_cnd_document_pkg_reg",
@@ -291,7 +288,6 @@ delayedAssign(
   )
 )
 
-# fmt: skip
 cond_cnd_document_conds <- function() {}
 delayedAssign(
   "cond_cnd_document_conds",
@@ -304,7 +300,6 @@ delayedAssign(
   )
 )
 
-# fmt: skip
 cond_cnd_document_file <- function() {}
 delayedAssign(
   "cond_cnd_document_file",

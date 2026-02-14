@@ -543,7 +543,6 @@ cget <- function(x, field) {
 
 # conditions --------------------------------------------------------------
 
-# fmt: skip
 cond_no_package_exports <- function() {}
 delayedAssign(
   "cond_no_package_exports",
@@ -557,7 +556,6 @@ delayedAssign(
   )
 )
 
-# fmt: skip
 cond_condition_bad_message <- function() {}
 delayedAssign(
   "cond_condition_bad_message",
@@ -579,7 +577,6 @@ delayedAssign(
   )
 )
 
-# fmt: skip
 cond_cnd_class <- function() {}
 delayedAssign(
   "cond_cnd_class",
@@ -597,7 +594,6 @@ delayedAssign(
   )
 )
 
-# fmt: skip
 cond_as_character_condition <- function() {}
 delayedAssign(
   "cond_as_character_condition",
@@ -630,7 +626,6 @@ delayedAssign(
   )
 )
 
-# fmt: skip
 cond_condition_invalid <- function() {}
 delayedAssign(
   "cond_condition_invalid",
@@ -654,7 +649,6 @@ delayedAssign(
   )
 )
 
-# fmt: skip
 cond_conditions_dots <- function() {}
 delayedAssign(
   "cond_conditions_dots",
@@ -683,7 +677,6 @@ delayedAssign(
 )
 
 
-# fmt: skip
 # nolint next: object_length_linter.
 cond_condition_message_generator <- function() {}
 delayedAssign(

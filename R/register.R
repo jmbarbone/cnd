@@ -255,7 +255,6 @@ as_list_env <- function(x, all = FALSE) {
 
 # conditions --------------------------------------------------------------
 
-# fmt: skip
 cond_condition_overwrite <- function() {}
 delayedAssign(
   "cond_condition_overwrite",
