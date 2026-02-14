@@ -47,9 +47,9 @@ conditions(x, ...) <- value
 \arguments{
 \item{class}{The name of the new class}
 
-\item{message}{The message to be displayed when the condition is called. When
+\item{message}{The message to be displayed when the condition is called.  When
 entered as a character vector, the message is collapsed into a single
-string. Use explicit line returns to generate new lines in output messages.
+string.  Use explicit line returns to generate new lines in output messages.
 When a function is used and a character vector returned, each element is
 treated as a new line.}
 
@@ -68,7 +68,7 @@ called}
 
 \item{...}{Additional arguments passed to methods}
 
-\item{fun}{if a function is passed, then retrieves the \code{"conditions"}
+\item{fun}{if a \code{function} is passed, then retrieves the \code{"conditions"}
 attribute}
 
 \item{x}{An object}
@@ -94,7 +94,7 @@ attribute}
 
 \itemize{
 \item \code{\link[=cnd]{cnd()}} is a wrapper for calling \code{\link[base:stop]{base::stop()}}, \code{\link[base:warning]{base::warning()}},
-or \code{\link[base:message]{base::message()}}; when  \code{condition} is a type, an error is thrown, and
+or \code{\link[base:message]{base::message()}}; when \code{condition} is a type, an error is thrown, and
 likewise for the other types.  When an error isn't thrown, the \code{condition} is
 returned, invisibly.
 }
@@ -114,7 +114,7 @@ Conditions
 object (a special \link{function}) which can be used to create generate a new
 condition, based on specifications applied in \code{\link[=condition]{condition()}}. These
 functions use \code{...} to absorb extra arguments and contain a special \code{.call}
-parameter. By default, \code{.call} captures the parent call from where the
+parameter.  By default, \code{.call} captures the parent call from where the
 \link{condition_generator} was created, but users may pass their own call
 to override this.  See \code{call.} in \code{\link[base:conditions]{base::conditionCall()}}
 }

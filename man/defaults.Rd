@@ -14,7 +14,7 @@
 \alias{class_warning}
 \title{Default conditions}
 \usage{
-value_error(..., ..., .call = getOption("cnd.call", TRUE))
+value_error(..., .call = getOption("cnd.call", TRUE))
 
 class_error(
   ...,
@@ -22,7 +22,6 @@ class_error(
   expected,
   actual = x,
   name,
-  ...,
   .call = getOption("cnd.call", TRUE)
 )
 
@@ -32,18 +31,16 @@ type_error(
   expected,
   actual = x,
   name,
-  ...,
   .call = getOption("cnd.call", TRUE)
 )
 
-input_error(..., ..., .call = getOption("cnd.call", TRUE))
+input_error(..., .call = getOption("cnd.call", TRUE))
 
 defunct_error(
   ...,
   defunct,
   replacement,
   version,
-  ...,
   .call = getOption("cnd.call", TRUE)
 )
 
@@ -52,11 +49,10 @@ deprecated_warning(
   deprecated,
   replacement,
   version,
-  ...,
   .call = getOption("cnd.call", TRUE)
 )
 
-value_warning(..., ..., .call = getOption("cnd.call", TRUE))
+value_warning(..., .call = getOption("cnd.call", TRUE))
 
 type_warning(
   ...,
@@ -64,11 +60,10 @@ type_warning(
   expected,
   actual = x,
   name,
-  ...,
   .call = getOption("cnd.call", TRUE)
 )
 
-input_warning(..., ..., .call = getOption("cnd.call", TRUE))
+input_warning(..., .call = getOption("cnd.call", TRUE))
 
 class_warning(
   ...,
@@ -76,7 +71,6 @@ class_warning(
   expected,
   actual = x,
   name,
-  ...,
   .call = getOption("cnd.call", TRUE)
 )
 }
