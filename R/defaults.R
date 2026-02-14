@@ -1,252 +1,314 @@
 # TODO consider using `msg = NULL` for users to overwrite the message; or append
 # additional information
 
-fmt0 <- function(msg, x) {
-  s <- substitute(x, parent.frame(2L))
-  paste0(
-    msg,
-    if (!missing(x)) fmt("\n{x} = {f}", x = deparse1(s), f = format(x))
-  )
-}
-
-#' Standard conditions
+#' Default conditions
 #'
-#' A set of preset conditions
+#' Default conditions have options for dynamically generated messages based on
+#' the parameters provided.
 #'
-#' @param x An object
-#' @param ... additional arguments passed to the condition message
-#' @param .call condition arguments
-#' @returns A condition generator
-#' @name standard-conditions
+#' @section messages: Messages are dynamically created with specific inputs per
+#'   condition. Generally, parameters must be explicitly used.  All condition
+#'   messages use `...` which allow for either additional context to be added or
+#'   completely overriding the message.  Default messages will require the first
+#'   parameter to be used.
+#'
+#' @param ... Additional message components
+#' @param x an object
+#' @param expected Expected type or value
+#' @param actual,expected Actual or expected value (see details)
+#' @param name Name of the object (will be deparsed if not provided)
+#' @param defunct,deprecated,replacement Defunct, deprecated and replacement
+#'   object, use [base::quote()] to pass expressions (e.g., `quote(old_fun()`)
+#' @param version A version number
+#' @details If no values are entered into the `cnd::condition_generator`, a
+#'   default message will be used. Messages will be dynamically created based on
+#'   the parameters provided.
+#'
 #' @examples
-#' assert <- function(object, is = character()) {
-#'   nm <- as.character(substitute(object))
-#'   cl <- class(is)
-#'   if (!inherits(object, cl)) {
-#'     cnd(ClassError(nm, cl))
-#'   }
-#' }
+#' type_error()
+#' type_error(x = 1L)
+#' type_error(x = 1L, expected = double())
+#' type_error(x = 1, actual = integer(), expected = double())
+#' type_error(
+#'   "Additional context",
+#'   x = "a",
+#'   actual = I("string"),
+#'   expected = I("numeric or integer")
+#' )
 #'
-#' foo <- function(x) {
-#'   assert(x, integer())
-#'   invisible(x)
-#' }
-#'
-#' foo(1L)
-#' try(foo(1.0))
-#' try(foo("1"))
-#'
-#' bar <- function(y) {
-#'   assert(y, structure(list(), class = c("class1", "class2")))
-#'   invisible(y)
-#' }
-#'
-#' try(bar(1L))
+#' @return A condition object
+#' @keywords internal
+#' @name defaults
 NULL
 
+# errors ------------------------------------------------------------------
 
-#' @rdname standard-conditions
 #' @export
-InputError <- function() {}
+#' @rdname defaults
+value_error <- function() {}
 delayedAssign(
-  "InputError",
-  condition(
-    "input_error",
-    message = function(x) fmt0("input is not valid", x),
-    type = "error"
-  )
-)
-
-#' @rdname standard-conditions
-#' @export
-InputWarning <- function() {}
-delayedAssign(
-  "InputWarning",
-  condition(
-    "input_warning",
-    # TODO something other than "valid"?
-    message = function(x) {
-      c(
-        "input is not valid",
-        if (!missing(x)) fmt("{x}:\n{f}", x = deparse1(x), f = format(x))
-      )
-    },
-    type = "warning"
-  )
-)
-
-#' @rdname standard-conditions
-#' @export
-ValueError <- function() {}
-delayedAssign(
-  "ValueError",
+  "value_error",
   condition(
     "value_error",
-    message = function(x) {
-      fmt("value is not valid:\n{x}", x = format(x))
-    },
-    type = "error"
+    \(...) .msg(...) %||% "Invalid value",
+    type = "error",
+    package = NULL,
+    help = "Generic value error"
   )
 )
 
-#' @rdname standard-conditions
 #' @export
-ValueWarning <- function() {}
+#' @rdname defaults
+class_error <- function() {}
 delayedAssign(
-  "ValueWarning",
-  condition(
-    "value_warning",
-    # TODO something other than "valid"?
-    message = function(x) {
-      fmt("value is not valid:\n{x}", x = format(x))
-    },
-    type = "warning"
-  )
-)
-
-#' @rdname standard-conditions
-#' @param choices A character vector of choices
-#' @export
-MatchError <- function() {}
-delayedAssign(
-  "MatchError",
-  condition(
-    "match_error",
-    message = function(x, choices) {
-      fmt(
-        "match failed\n  input:   {x}\n  choices: {choices}",
-        x = x,
-        choices = collapse(choices, sep = ", ")
-      )
-    },
-    type = "error"
-  )
-)
-
-#' @rdname standard-conditions
-#' @param path A path
-#' @export
-PathOverwriteMessage <- function() {}
-delayedAssign(
-  "PathOverwriteMessage",
-  condition(
-    "path_overwrite_message",
-    message = function(path) {
-      fmt(
-        "Overwriting path: {path}",
-        path = normalizePath(path, mustWork = FALSE)
-      )
-    },
-    type = "message"
-  )
-)
-
-#' @rdname standard-conditions
-#' @export
-PathDeletionMessage <- function() {}
-delayedAssign(
-  "PathDeletionMessage",
-  condition(
-    "path_deletion_message",
-    message = function(path) {
-      fmt(
-        "Deleting path: {path}",
-        path = normalizePath(path, mustWork = FALSE)
-      )
-    },
-    type = "message"
-  )
-)
-
-#' @rdname standard-conditions
-#' @param replacement an object suggesting the replacement
-#' @export
-DeprecationWarning <- function() {}
-delayedAssign(
-  "DeprecationWarning",
-  condition(
-    "deprecation_warning",
-    message = function(x, replacement) {
-      fmt(
-        "{x} is deprecated and will be removed in a future version\n",
-        "use {replacement} instead",
-        x = x,
-        replacement = replacement
-      )
-    },
-    type = "warning"
-  )
-)
-
-#' @rdname standard-conditions
-#' @export
-DefunctError <- function() {}
-delayedAssign(
-  "DefunctError",
-  condition(
-    "defunct_error",
-    message = function(x) {
-      fmt("{x} is defunct", x = x)
-    },
-    type = "error"
-  )
-)
-
-#' @rdname standard-conditions
-#' @param type a type as returned by [typeof()]
-#' @export
-TypeError <- function() {}
-delayedAssign(
-  "TypeError",
-  condition(
-    "type_error",
-    # TODO incorporate test #11
-    # test = function(x, type = typeof(example), example = NULL) {
-    #   force(type)
-    #   identical(typeof(x), type)
-    # },
-    message = function(x, type) {
-      fmt("'{x}' is not of type {type}", x = x, type = type)
-    },
-    type = "error"
-  )
-)
-
-#' @rdname standard-conditions
-#' @param class a class or vector of classes
-#' @export
-ClassError <- function() {}
-delayedAssign(
-  "ClassError",
+  "class_error",
   condition(
     "class_error",
-    # TODO incorporate test #11
-    # test = function(x, class = class(example), example = NULL) {
-    #   force(class)
-    #   inherits(x, class)
-    # },
-    message = function(x, class) {
-      fmt(
-        "'{x}' is not of class '{class}'",
-        x = x,
-        class = collapse(class, sep = ", ")
+    function(..., x, expected, actual = x, name) {
+      if (missing(x)) {
+        return(.msg(...) %||% "Invalid class")
+      }
+
+      force(x)
+
+      if (missing(name)) {
+        name <- sprintf(
+          "`%s`",
+          deparse(
+            match.call(
+              sys.function(sys.parent(1L)),
+              sys.call(sys.parent(1L)),
+              envir = parent.frame(3L)
+            )$x
+          )
+        )
+      }
+
+      if (inherits(actual, "AsIs")) {
+        actual <- actual
+      } else {
+        actual <- class(actual)
+      }
+      force(actual)
+
+      msg <- sprintf(
+        paste0(
+          "Invalid class ",
+          paste("for", name, recycle0 = TRUE),
+          ": got '%s'"
+        ),
+        strings(actual)
       )
+
+      if (!missing(expected)) {
+        if (inherits(expected, "AsIs")) {
+          expected <- expected
+        } else {
+          expected <- class(expected)
+        }
+        # option for ::?
+        msg <- sprintf("%s, expected '%s'", msg, strings(expected))
+      }
+
+      if (...length()) {
+        msg <- sprintf("%s\n%s", msg, .msg(...))
+      }
+
+      msg
     },
-    type = "error"
+    type = "error",
+    package = NULL,
+    help = "Generic class error"
   )
 )
 
-#' @rdname standard-conditions
-#' @param pkg A package name
 #' @export
-NamespaceError <- function() {}
+#' @rdname defaults
+type_error <- function() {}
 delayedAssign(
-  "NamespaceError",
+  "type_error",
   condition(
-    "namespace_error",
-    message = function(pkg) {
-      fmt("package '{pkg}' is not available", pkg = pkg)
+    "type_error",
+    function(..., x, expected, actual = x, name) {
+      if (missing(x)) {
+        return(.msg(...) %||% "Invalid type")
+      }
+
+      force(x)
+
+      if (missing(name)) {
+        name <- sprintf(
+          "`%s`",
+          deparse(
+            match.call(
+              sys.function(sys.parent(1L)),
+              sys.call(sys.parent(1L)),
+              envir = parent.frame(3L)
+            )$x
+          )
+        )
+      }
+
+      if (inherits(actual, "AsIs")) {
+        actual <- actual
+      } else {
+        actual <- typeof(actual)
+      }
+      force(actual)
+
+      msg <- sprintf(
+        paste0(
+          "Invalid type ",
+          paste("for", name, recycle0 = TRUE),
+          ": got '%s'"
+        ),
+        actual
+      )
+
+      if (!missing(expected)) {
+        if (inherits(expected, "AsIs")) {
+          expected <- expected
+        } else {
+          expected <- typeof(expected)
+        }
+        # option for ::?
+        msg <- sprintf("%s, expected '%s'", msg, expected)
+      }
+
+      if (...length()) {
+        msg <- sprintf("%s\n%s", msg, .msg(...))
+      }
+
+      msg
     },
-    type = "error"
+    type = "error",
+    package = NULL,
+    help = "Generic type error"
   )
 )
+
+#' @export
+#' @rdname defaults
+input_error <- function() {}
+delayedAssign(
+  "input_error",
+  condition(
+    "input_error",
+    function(...) .msg(...) %||% "Invalid input",
+    type = "error",
+    package = NULL,
+    help = "Generic input error"
+  )
+)
+
+#' @export
+#' @rdname defaults
+defunct_error <- function() {}
+delayedAssign(
+  "defunct_error",
+  condition(
+    "defunct_error",
+    function(..., defunct, replacement, version) {
+      if (missing(defunct)) {
+        return(.msg(...) %||% "Defunct feature")
+      }
+
+      msg <- sprintf("%s is defunct", deparse1(defunct))
+      if (!missing(replacement)) {
+        msg <- sprintf("%s, use %s instead", msg, deparse1(replacement))
+      }
+
+      if (missing(version) || isTRUE(version)) {
+        msg <- paste(msg, "and has been removed")
+      } else if (!isFALSE(version)) {
+        msg <- sprintf("%s and has been removed in %s", msg, version)
+      }
+
+      msg
+    },
+    type = "error",
+    package = NULL,
+    help = "Generic defunct error"
+  )
+)
+
+# warnings ----------------------------------------------------------------
+
+#' @export
+#' @rdname defaults
+deprecated_warning <- function() {}
+delayedAssign(
+  "deprecated_warning",
+  condition(
+    "deprecated_warning",
+    function(..., deprecated, replacement, version) {
+      if (missing(deprecated)) {
+        return(.msg(...) %||% "Deprecated feature")
+      }
+
+      msg <- sprintf("%s is deprecated", deparse1(deprecated))
+
+      if (!missing(replacement)) {
+        msg <- sprintf("%s, use %s instead", msg, deparse1(replacement))
+      }
+
+      if (missing(version) || isTRUE(version)) {
+        msg <- paste(msg, "and will be removed in a future version")
+      } else if (!isFALSE(version)) {
+        msg <- sprintf("%s and will be removed in %s", msg, version)
+      }
+
+      msg
+    },
+    type = "warning",
+    package = NULL,
+    help = "Generic deprecation warning"
+  )
+)
+
+#' @export
+#' @rdname defaults
+value_warning <- function() {}
+delayedAssign("value_warning", convert(value_error, "warning"))
+
+#' @export
+#' @rdname defaults
+type_warning <- function() {}
+delayedAssign("type_warning", convert(type_error, "warning"))
+
+#' @export
+#' @rdname defaults
+input_warning <- function() {}
+delayedAssign("input_warning", convert(input_error, "warning"))
+
+#' @export
+#' @rdname defaults
+class_warning <- function() {}
+delayedAssign("class_warning", convert(class_error, "warning"))
+
+
+# helpers -----------------------------------------------------------------
+
+.msg <- function(...) {
+  if (...length()) {
+    dots <- list(...)
+    dots$collapse <- ""
+    do.call(paste0, dots)
+  }
+}
+
+strings <- function(...) {
+  # paste0(shQuote(c(...), type = "sh"), collapse = ", ")
+  paste0(c(...), collapse = ", ")
+}
+
+convert <- function(cnd, new) {
+  change <- function(x) sub(cnd$type, new, x, fixed = TRUE)
+  condition(
+    class = change(cnd$class),
+    message = cnd$message,
+    type = new,
+    package = cnd$package,
+    help = change(cnd$help)
+  )
+}
