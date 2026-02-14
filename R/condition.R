@@ -462,6 +462,11 @@ cget <- function(x, field) {
 }
 
 #' @export
+`$<-.cnd::condition_generator` <- function(x, i, value) {
+  assign(i, value, environment(x))
+}
+
+#' @export
 `conditionMessage.cnd::condition_generator` <- function(c) {
   cnd(cond_condition_message_generator())
 }
@@ -485,8 +490,7 @@ cget <- function(x, field) {
     )
   }
 
-
-    # the message for `warning()` has to be a single character string
+  # the message for `warning()` has to be a single character string
   collapse(msg, sep = "\n")
 }
 
@@ -631,11 +635,12 @@ delayedAssign(
     "invalid_condition",
     type = "error",
     # nolint next: brace_linter.
-    message = function(problems)
+    message = function(problems) {
       collapse(
         "The following problems were found with the condition:",
         paste0("\n", problems)
-      ),
+      )
+    },
     package = "cnd",
     exports = "condition",
     help = c(
