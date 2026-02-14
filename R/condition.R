@@ -130,6 +130,10 @@ condition <- function(
   assign("original_class", original_class, condition_env)
   assign("type", type, condition_env)
   assign("help", help, condition_env)
+
+  # rather than locking the entire environment, we can just lock these specific
+  # keywords; but maybe we'll want to lock the entire environment at some other
+  # point
   lockBinding("message", condition_env)
   lockBinding("exports", condition_env)
   lockBinding("package", condition_env)
@@ -197,8 +201,6 @@ condition <- function(
 
     condition_function
   })
-
-  lockEnvironment(condition_env)
 
   formals(res) <- c(
     formals(message),
@@ -482,13 +484,16 @@ cget <- function(x, field) {
 }
 
 #' @export
-`$<-.cnd::condition_generator` <- function(x, i, value) {
-  assign(i, value, environment(x))
+`$<-.cnd::condition_generator` <- function(x, name, value) {
+  name <- substitute(name)
+  name <- as.character(name)
+  assign(name, value, environment(x))
+  x
 }
 
 #' @exportS3Method utils::.DollarNames
 `.DollarNames.cnd::condition_generator` <- function(x, pattern) {
-  grep(pattern, names(environment(x)), value = TRUE)
+  grep(pattern, names(environment(x)), value = TRUE) # nocov
 }
 
 #' @export

@@ -236,3 +236,9 @@ test_that("conditinMessage(condition_generator)", {
     class = "cnd:condition_message_generator"
   )
 })
+
+test_that("condition_generators are closures, and not subsettable", {
+  co <- condition("_", register = FALSE)
+  co$extra <- TRUE
+  expect_true(co$extra)
+})
