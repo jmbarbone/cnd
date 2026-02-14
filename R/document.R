@@ -187,9 +187,9 @@ cnd_documentation_fmt <- "@name {package}-cnd-conditions
 @details
   The following conditions are defined in the `{{package}}` package.
 
-@section [`{cnd}`][cnd-package]:
-  These conditions are made with the `{cnd}` package though the use of
-  [cnd::condition()].
+@section `{cnd}`:
+  These conditions are made with the [`{cnd}`][cnd-package] package though the
+  use of [cnd::condition()].
 
 @section `{{package}}` conditions:
 {cnd_section_describe}
@@ -241,11 +241,12 @@ delayedAssign(
     package = "cnd",
     exports = "cnd_document",
     # nolint next: brace_linter.
-    message = function(paths)
+    message = function(paths) {
       c(
         "Removing the following cnd generated files:",
         paste0("  ", paths)
       )
+    }
   )
 )
 
@@ -259,11 +260,12 @@ delayedAssign(
     package = "cnd",
     exports = "cnd_document",
     # nolint next: brace_linter.
-    message = function(path)
+    message = function(path) {
       cli_switch(
         cli_text(sprintf("Writing {.file %s}", path))
       ) %||%
         paste("Writing", path)
+    }
   )
 )
 
@@ -277,7 +279,7 @@ delayedAssign(
     exports = "cnd_document",
     package = "cnd",
     # nolint next: brace_linter.
-    message = function(pkg, reg)
+    message = function(pkg, reg) {
       fmt(
         "package and registry must be set\n",
         "  package: {pkg}\n",
@@ -285,6 +287,7 @@ delayedAssign(
         pkg = pkg,
         reg = reg
       )
+    }
   )
 )
 
@@ -310,13 +313,13 @@ delayedAssign(
     type = "error",
     package = "cnd",
     exports = "cnd_document",
-    # nolint next: brace_linter.
-    message = function(file)
+    message = function(file) {
       fmt(
         "`file` must be a `character`, `connection` object`, or `NULL`,",
         " not {class} ({type})",
         class = collapse(class(file), sep = "/"),
         type = typeof(file)
       )
+    }
   )
 )
