@@ -66,3 +66,18 @@ delayedAssign(
     env = .cnd_env
   )
 )
+
+delayedAssign(
+  "internal_error",
+  condition(
+    "internal_error",
+    \(...) .msg(...) %||% "An internal error has occurred.", # nocov
+    type = "error",
+    package = "cnd",
+    help = c(
+      "This is an internal error, which means that something has gone",
+      " (horribly?) wrong within [cnd].  If you believe this is a problem",
+      " please provide a report at <https://github.com/jmbarbone/cnd/issues>"
+    )
+  )
+)
