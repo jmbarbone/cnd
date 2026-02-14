@@ -13,7 +13,8 @@
       foo()
     Condition
       Error in `foo()`:
-      ! there was an error
+      ! <cnd:foo>
+      there was an error
 
 ---
 
@@ -21,7 +22,8 @@
       bar()
     Condition
       Error in `foo()`:
-      ! there was an error
+      ! <cnd:foo>
+      there was an error
 
 ---
 
@@ -29,7 +31,8 @@
       foo()
     Condition
       Error:
-      ! there was an error
+      ! <cnd:foo>
+      there was an error
 
 ---
 
@@ -37,7 +40,8 @@
       fizz()
     Condition
       Error in `foo()`:
-      ! there was an error
+      ! <cnd:foo>
+      there was an error
 
 ---
 
@@ -45,7 +49,8 @@
       fizz()
     Condition
       Error in `bar()`:
-      ! there was an error
+      ! <cnd:foo>
+      there was an error
 
 ---
 
@@ -53,7 +58,8 @@
       fizz()
     Condition
       Error in `fizz()`:
-      ! there was an error
+      ! <cnd:foo>
+      there was an error
 
 ---
 
@@ -61,5 +67,6 @@
       fizz()
     Condition
       Error:
-      ! there was an error
+      ! <cnd:foo>
+      there was an error
 

@@ -223,11 +223,11 @@ test_that("cnd(condition) handling", {
     class = "cnd::condition"
   )
 
-  expect_failure(
-    expect_condition(
-      expect_output(suppress_conditions(cnd(foo())), NA),
-      class = "cnd::condition"
-    )
+  expect_output(
+    expect_no_condition(
+      suppress_conditions(cnd(foo())),
+    ),
+    NA
   )
 })
 
