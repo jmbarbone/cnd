@@ -11,9 +11,9 @@
 #'   parameters serve as filtering arguments.
 #'
 #' @param class The name of the new class
-#' @param message The message to be displayed when the condition is called. When
+#' @param message The message to be displayed when the condition is called.  When
 #'   entered as a character vector, the message is collapsed into a single
-#'   string. Use explicit line returns to generate new lines in output messages.
+#'   string.  Use explicit line returns to generate new lines in output messages.
 #'   When a function is used and a character vector returned, each element is
 #'   treated as a new line.
 #' @param type The type of condition: error, warning, or message
@@ -28,7 +28,7 @@
 #'   object (a special [function]) which can be used to create generate a new
 #'   condition, based on specifications applied in [cnd::condition()]. These
 #'   functions use `...` to absorb extra arguments and contain a special `.call`
-#'   parameter. By default, `.call` captures the parent call from where the
+#'   parameter.  By default, `.call` captures the parent call from where the
 #'   [cnd::condition_generator] was created, but users may pass their own call
 #'   to override this.  See `call.` in [base::conditionCall()]
 #'
@@ -127,56 +127,74 @@ condition <- function(
   assign("exports", exports, condition_env)
   assign("package", package, condition_env)
   assign("class", class, condition_env)
-  assign(".class", original_class, condition_env)
+  assign("original_class", original_class, condition_env)
   assign("type", type, condition_env)
   assign("help", help, condition_env)
+  lockBinding("message", condition_env)
+  lockBinding("exports", condition_env)
+  lockBinding("package", condition_env)
+  lockBinding("class", condition_env)
+  lockBinding("original_class", condition_env)
+  lockBinding("type", condition_env)
+  lockBinding("help", condition_env)
 
   res <- local(envir = condition_env, {
-    # fmt: skip
     condition_function <- function() {}
-    body(condition_function) <- substitute({
-      # nolint next: object_usage_linter. (params is used)
-      params <- as.list(match.call())[-1L]
-      params <- params[names(params) != ".call"]
-      params <- lapply(params, eval.parent, 2L)
+    body(condition_function) <- substitute(
+      {
+        # nolint next: object_usage_linter. (params is used)
+        params <- as.list(match.call())[-1L]
+        params <- params[names(params) != ".call"]
+        params <- lapply(params, eval.parent, 2L)
 
-      # nolint next: object_usage_linter. (.call is used)
-      if (is.logical(.call) && length(.call) == 1L) {
-        # this is what isTRUE()/isFALSE()
-        if (is.na(.call) || !.call) {
-          .call <- NULL
-        } else {
-          .call <- sys.call(sys.parent())
+        # nolint next: object_usage_linter. (.call is used)
+        if (is.logical(.call) && length(.call) == 1L) {
+          # this is what isTRUE()/isFALSE()
+          if (is.na(.call) || !.call) {
+            .call <- NULL
+          } else {
+            .call <- sys.call(sys.parent())
+          }
         }
-      }
 
-      if (is.numeric(.call)) {
-        .call <- sys.call(sys.parent(.call + 1L))
-      }
+        if (is.numeric(.call)) {
+          .call <- sys.call(sys.parent(.call + 1L))
+        }
 
-      if (is.call(.call)) {
-        # TODO option for full call?
-        .call <- as.call(as.list(.call)[1L])
-      }
+        if (is.call(.call)) {
+          # TODO option for full call?
+          .call <- as.call(as.list(.call)[1L])
+        }
 
-      # nolint next: object_usage_linter. (cond) is used
-      cond <- list(
-        message = clean_text(do.call(message, params)),
-        call = .call
+        # nolint next: object_usage_linter. (cond) is used
+        cond <- list(
+          message = clean_text(do.call(..message.., params)),
+          call = .call
+        )
+
+        cond <- set_class(
+          cond,
+          unique(c(..class.., "cnd::condition", ..type.., "condition"))
+        )
+
+        attr(cond, "help") <- ..help..
+        attr(cond, "package") <- ..package..
+        attr(cond, "exports") <- ..exports..
+        attr(cond, "condition") <- ..class..
+        attr(cond, "type") <- ..type..
+        cond
+      },
+      list(
+        ..message.. = message,
+        ..class.. = class,
+        ..type.. = type,
+        ..help.. = help,
+        ..package.. = package,
+        ..exports.. = exports,
+        ..condition.. = condition
       )
+    )
 
-      cond <- set_class(
-        cond,
-        unique(c(class, "cnd::condition", type, "condition"))
-      )
-
-      attr(cond, "help") <- help
-      attr(cond, "package") <- package
-      attr(cond, "exports") <- exports
-      attr(cond, "condition") <- class
-      attr(cond, "type") <- type
-      cond
-    })
     condition_function
   })
 
@@ -186,6 +204,7 @@ condition <- function(
     formals(message),
     alist(... = , .call = getOption("cnd.call", TRUE))
   )
+  formals(res) <- formals(res)[!duplicated(names(formals(res)))]
 
   # explicit so that substitute() doesn't mess this up
   base::class(res) <- c("cnd::condition_generator", "function")
@@ -200,9 +219,9 @@ class(condition) <- "cnd::condition_progenitor"
 
 #' @export
 #' @rdname condition
-#' @param ... Input argument.  If a function is passed, then defaults to passing
-#'   `..1` to `fun`; otherwise defaults to passing `..1` to `package`
-#' @param fun if a function is passed, then retrieves the `"conditions"`
+#' @param ... Input argument.  If a `function` is passed, then defaults to
+#'   passing `..1` to `fun`; otherwise defaults to passing `..1` to `package`
+#' @param fun if a `function` is passed, then retrieves the `"conditions"`
 #'   attribute
 #' @returns
 #' - [cnd::conditions()] a `list` of [cnd::condition_generator] objects
@@ -249,7 +268,7 @@ conditions <- function(
     conds <- as_list_env(registry)
   }
 
-  terms <- list(package = package, .class = class, type = type)
+  terms <- list(package = package, original_class = class, type = type)
   terms <- filter2(terms, Negate(is.null))
 
   for (i in seq_along(terms)) {
@@ -279,7 +298,7 @@ cond <- function(x) {
 #' @param condition A [cnd::condition_generator] object
 #' @returns
 #' - [cnd::cnd()] is a wrapper for calling [base::stop()], [base::warning()],
-#' or [base::message()]; when  `condition` is a type, an error is thrown, and
+#' or [base::message()]; when `condition` is a type, an error is thrown, and
 #' likewise for the other types.  When an error isn't thrown, the `condition` is
 #' returned, invisibly.
 cnd <- function(condition) {
@@ -389,7 +408,7 @@ do_find_cond <- function(
     }
 
     package <- cget(x, "package")
-    class <- cget(x, ".class")
+    class <- cget(x, "original_class")
     type <- cget(x, "type")
   } else {
     package <- str_extract(x, "^.*(?=:.*)")
@@ -465,6 +484,11 @@ cget <- function(x, field) {
 #' @export
 `$<-.cnd::condition_generator` <- function(x, i, value) {
   assign(i, value, environment(x))
+}
+
+#' @exportS3Method utils::.DollarNames
+`.DollarNames.cnd::condition_generator` <- function(x, pattern) {
+  grep(pattern, names(environment(x)), value = TRUE)
 }
 
 #' @export

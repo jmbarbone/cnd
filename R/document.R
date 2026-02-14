@@ -60,7 +60,7 @@ cnd_document <- function(
     # nolint start: line_length_linter.
     aliases1 = collapse(vapply(conds, cget, NA_character_, "class"), sep = " "),
     aliases2 = collapse(
-      vapply(conds, cget, NA_character_, ".class"),
+      vapply(conds, cget, NA_character_, "original_class"),
       sep = " "
     ),
     aliases3 = collapse(
