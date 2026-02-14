@@ -93,9 +93,10 @@ attribute}
 }
 
 \itemize{
-\item \code{\link[=cnd]{cnd()}} is a wrapper for calling \code{\link[base:stop]{base::stop()}}, \code{\link[base:warning]{base::warning()}}, or \code{\link[base:message]{base::message()}};
-when  \code{condition} is a type, an error is thrown, and likewise for the other
-types.  When an error isn't thrown, the \code{condition} is returned, invisibly.
+\item \code{\link[=cnd]{cnd()}} is a wrapper for calling \code{\link[base:stop]{base::stop()}}, \code{\link[base:warning]{base::warning()}},
+or \code{\link[base:message]{base::message()}}; when  \code{condition} is a type, an error is thrown, and
+likewise for the other types.  When an error isn't thrown, the \code{condition} is
+returned, invisibly.
 }
 }
 \description{
@@ -109,13 +110,13 @@ parameters serve as filtering arguments.
 Conditions
 }
 \section{\link{condition_generator}}{
- A \link{condition_generator} is an object (a
-special \link{function}) which can be used to create generate a new condition,
-based on specifications applied in \code{\link[=condition]{condition()}}. These functions use
-\code{...} to absorb extra arguments and contain a special \code{.call} parameter. By
-default, \code{.call} captures the parent call from where the
-\link{condition_generator} was created, but users may pass their own call to
-override this.  See \code{call.} in \code{\link[base:conditions]{base::conditionCall()}}
+ A \link{condition_generator} is an
+object (a special \link{function}) which can be used to create generate a new
+condition, based on specifications applied in \code{\link[=condition]{condition()}}. These
+functions use \code{...} to absorb extra arguments and contain a special \code{.call}
+parameter. By default, \code{.call} captures the parent call from where the
+\link{condition_generator} was created, but users may pass their own call
+to override this.  See \code{call.} in \code{\link[base:conditions]{base::conditionCall()}}
 }
 
 \section{\code{\link[=condition]{condition()}} conditions}{

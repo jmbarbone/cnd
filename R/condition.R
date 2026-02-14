@@ -24,13 +24,13 @@
 #' @param registry The name of the registry to store the condition
 #' @param register Controls registration checks
 #'
-#' @section [condition_generator]: A [condition_generator] is an object (a
-#'   special [function]) which can be used to create generate a new condition,
-#'   based on specifications applied in [cnd::condition()]. These functions use
-#'   `...` to absorb extra arguments and contain a special `.call` parameter. By
-#'   default, `.call` captures the parent call from where the
-#'   [condition_generator] was created, but users may pass their own call to
-#'   override this.  See `call.` in [base::conditionCall()]
+#' @section [cnd::condition_generator]: A [cnd::condition_generator] is an
+#'   object (a special [function]) which can be used to create generate a new
+#'   condition, based on specifications applied in [cnd::condition()]. These
+#'   functions use `...` to absorb extra arguments and contain a special `.call`
+#'   parameter. By default, `.call` captures the parent call from where the
+#'   [cnd::condition_generator] was created, but users may pass their own call
+#'   to override this.  See `call.` in [base::conditionCall()]
 #'
 #' @section [cnd::condition()] conditions:
 #'
