@@ -12,6 +12,7 @@
 \alias{cnd:condition_message_generator}
 \alias{cnd:condition_overwrite}
 \alias{cnd:conditions_dots}
+\alias{cnd:internal_error}
 \alias{cnd:invalid_condition}
 \alias{cnd:invalid_condition_message}
 \alias{cnd:match_arg}
@@ -26,6 +27,7 @@
 \alias{condition_message_generator}
 \alias{condition_overwrite}
 \alias{conditions_dots}
+\alias{internal_error}
 \alias{invalid_condition}
 \alias{invalid_condition_message}
 \alias{match_arg}
@@ -40,6 +42,7 @@
 \alias{cnd:condition_message_generator/error}
 \alias{cnd:condition_overwrite/warning}
 \alias{cnd:conditions_dots/warning}
+\alias{cnd:internal_error/error}
 \alias{cnd:invalid_condition/error}
 \alias{cnd:invalid_condition_message/error}
 \alias{cnd:match_arg/error}
@@ -170,6 +173,14 @@ conditions("class", "package") # "package" is ignored with a warning
 conditions(class = "class", package = "package")
 }\if{html}{\out{</div>}}
 
+}
+\subsection{\code{cnd:internal_error/error}}{
+\describe{
+\item{package}{\code{{cnd}}}
+\item{class}{\code{cnd:internal_error}}
+\item{type}{\strong{error}}
+}
+This is an internal error, which means that something has gone (horribly?) wrong within \link{cnd}.  If you believe this is a problem please provide a report at \url{https://github.com/jmbarbone/cnd/issues}
 }
 \subsection{\code{cnd:invalid_condition/error}}{
 \describe{
