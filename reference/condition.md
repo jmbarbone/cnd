@@ -10,14 +10,16 @@ parameters serve as filtering arguments.
 
 ``` r
 condition(
-  class,
+  name,
   message = NULL,
   type = c("condition", "message", "warning", "error"),
   package = get_package(),
   exports = NULL,
   help = NULL,
   registry = package,
-  register = !is.null(registry)
+  register = !is.null(registry),
+  classes = NULL,
+  class
 )
 
 conditions(
@@ -44,7 +46,7 @@ conditions(x, ...) <- value
 
 ## Arguments
 
-- class:
+- name:
 
   The name of the new class
 
@@ -80,13 +82,21 @@ conditions(x, ...) <- value
 
   Controls registration checks
 
+- classes:
+
+  Additional classes to add to the condition
+
+- class:
+
+  ***Deprecated***; use `name` instead
+
 - ...:
 
   Additional arguments passed to methods
 
 - fun:
 
-  if a function is passed, then retrieves the `"conditions"` attribute
+  if a `function` is passed, then retrieves the `"conditions"` attribute
 
 - x:
 
@@ -119,11 +129,12 @@ conditions(x, ...) <- value
 &nbsp;
 
 - `cnd()` is a wrapper for calling
-  [`stop()`](https://rdrr.io/r/base/stop.html),
-  [`warning()`](https://rdrr.io/r/base/warning.html), or
-  [`message()`](https://rdrr.io/r/base/message.html); when `condition`
-  is a type, an error is thrown, and likewise for the other types. When
-  an error isn't thrown, the `condition` is returned, invisibly.
+  [`base::stop()`](https://rdrr.io/r/base/stop.html),
+  [`base::warning()`](https://rdrr.io/r/base/warning.html), or
+  [`base::message()`](https://rdrr.io/r/base/message.html); when
+  `condition` is a type, an error is thrown, and likewise for the other
+  types. When an error isn't thrown, the `condition` is returned,
+  invisibly.
 
 ## Details
 
@@ -138,7 +149,7 @@ create generate a new condition, based on specifications applied in
 contain a special `.call` parameter. By default, `.call` captures the
 parent call from where the condition_generator was created, but users
 may pass their own call to override this. See `call.` in
-[`conditionCall()`](https://rdrr.io/r/base/conditions.html)
+[`base::conditionCall()`](https://rdrr.io/r/base/conditions.html)
 
 ## `condition()` conditions
 
@@ -146,15 +157,15 @@ Conditions are generated through the
 [`{cnd}`](https://jmbarbone.github.io/cnd/reference/cnd-package.md)
 package. The following conditions are associated with this function:
 
-- [`cnd:as_character_cnd_error/error`](https://jmbarbone.github.io/cnd/reference/cnd-cnd-conditions.md):
+- [`cnd:condition_as_character_error/error`](https://jmbarbone.github.io/cnd/reference/cnd-cnd-conditions.md):
 
   You cannot coerce a condition_generator object to a character. This
   may have occurred when trying to put a condition function through
-  [`stop()`](https://rdrr.io/r/base/stop.html) or
-  [warning](https://rdrr.io/r/base/warning.html). Instead, call the
-  function first, then pass the result to
-  [`stop()`](https://rdrr.io/r/base/stop.html) or
-  [`warning()`](https://rdrr.io/r/base/warning.html).
+  [`base::stop()`](https://rdrr.io/r/base/stop.html) or
+  [`base::warning()`](https://rdrr.io/r/base/warning.html). Instead,
+  call the function first, then pass the result to
+  [`base::stop()`](https://rdrr.io/r/base/stop.html) or
+  [`base::warning()`](https://rdrr.io/r/base/warning.html).
 
   For example:
 
@@ -164,7 +175,18 @@ package. The following conditions are associated with this function:
       # Do this
       stop(my_condition())
 
-- [`cnd:condition_message_generator/error`](https://jmbarbone.github.io/cnd/reference/cnd-cnd-conditions.md):
+- [`cnd:condition_message_error/error`](https://jmbarbone.github.io/cnd/reference/cnd-cnd-conditions.md):
+
+  Conditions messages are displayed when invoked through
+  [`base::conditionMessage()`](https://rdrr.io/r/base/conditions.html).
+  You can set a static message by passing through a `character` vector,
+  or a dynamic message by passing through a `function`. The function
+  should return a `character` vector.
+
+  When `message` is not set, a default "there was an error" message is
+  used.
+
+- [`cnd:condition_message_generator_error/error`](https://jmbarbone.github.io/cnd/reference/cnd-cnd-conditions.md):
 
   condition_generator objects are not conditions. You may have made this
   mistake:
@@ -178,36 +200,25 @@ package. The following conditions are associated with this function:
       x <- condition("my_condition")
       conditionMessage(x())
 
-- [`cnd:condition_overwrite/warning`](https://jmbarbone.github.io/cnd/reference/cnd-cnd-conditions.md):
+- [`cnd:condition_overwrite_warning/warning`](https://jmbarbone.github.io/cnd/reference/cnd-cnd-conditions.md):
 
   Defining a new condition with the same class and package as an
   existing condition will overwrite the previous definition. It is
   recommended to either avoid this by fully defining your condition, or
   creating a new condition instead.
 
-- [`cnd:invalid_condition/error`](https://jmbarbone.github.io/cnd/reference/cnd-cnd-conditions.md):
+- [`cnd:invalid_condition_error/error`](https://jmbarbone.github.io/cnd/reference/cnd-cnd-conditions.md):
 
   The `class`, `exports`, and `help` parameters must be a single
   character string. If you are passing a function, it must be a valid
   function.
 
-- [`cnd:invalid_condition_message/error`](https://jmbarbone.github.io/cnd/reference/cnd-cnd-conditions.md):
-
-  Conditions messages are displayed when invoked through
-  [`conditionMessage()`](https://rdrr.io/r/base/conditions.html). You
-  can set a static message by passing through a `character` vector, or a
-  dynamic message by passing through a `function`. The function should
-  return a `character` vector.
-
-  When `message` is not set, a default "there was an error" message is
-  used.
-
 - [`cnd:match_arg/error`](https://jmbarbone.github.io/cnd/reference/cnd-cnd-conditions.md):
 
-  Mostly [`match.arg()`](https://rdrr.io/r/base/match.arg.html) but with
-  a custom condition
+  Mostly [`base::match.arg()`](https://rdrr.io/r/base/match.arg.html)
+  but with a custom condition
 
-- [`cnd:no_package_exports/warning`](https://jmbarbone.github.io/cnd/reference/cnd-cnd-conditions.md):
+- [`cnd:no_package_exports_warning/warning`](https://jmbarbone.github.io/cnd/reference/cnd-cnd-conditions.md):
 
   The `exports` parameter requires a `package`
 
@@ -220,13 +231,13 @@ Conditions are generated through the
 [`{cnd}`](https://jmbarbone.github.io/cnd/reference/cnd-package.md)
 package. The following conditions are associated with this function:
 
-- [`cnd:cond_cnd_class/error`](https://jmbarbone.github.io/cnd/reference/cnd-cnd-conditions.md):
+- [`cnd:cnd_class_error/error`](https://jmbarbone.github.io/cnd/reference/cnd-cnd-conditions.md):
 
   `cnd()` simple calls the appropriate function:
-  [`stop()`](https://rdrr.io/r/base/stop.html),
-  [`warning()`](https://rdrr.io/r/base/warning.html), or
-  [`message()`](https://rdrr.io/r/base/message.html) based on the `type`
-  parameter from `condition()`.
+  [`base::stop()`](https://rdrr.io/r/base/stop.html),
+  [`base::warning()`](https://rdrr.io/r/base/warning.html), or
+  [`base::message()`](https://rdrr.io/r/base/message.html) based on the
+  `type` parameter from `condition()`.
 
 For more conditions, see:
 [cnd-cnd-conditions](https://jmbarbone.github.io/cnd/reference/cnd-cnd-conditions.md)

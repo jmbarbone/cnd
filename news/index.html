@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">cnd</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.1.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.1.9001</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -34,9 +34,37 @@
 
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="development version" id="cnd-development-version">cnd (development version)<a class="anchor" aria-label="anchor" href="#cnd-development-version"></a></h2>
-</div>
+<ul><li>
+<code>condition(class = )</code> is now deprecated; instead <code>condition(name = )</code> should be use; <code>name</code> is now the first argument</li>
+<li>
+<code>condition(classes = )</code> is added to include additional condition classes</li>
+<li>adds default conditions with optional dynamic condition messages; these are defaults without <code>package = "cnd"</code> <a href="https://github.com/jmbarbone/cnd/issues/4" class="external-link">#4</a>
+<ul><li>
+<code><a href="../reference/defaults.html">value_error()</a></code>, <code><a href="../reference/defaults.html">value_warning()</a></code>
+</li>
+<li>
+<code><a href="../reference/defaults.html">class_error()</a></code>, <code><a href="../reference/defaults.html">class_warning()</a></code>
+</li>
+<li>
+<code><a href="../reference/defaults.html">type_error()</a></code>, <code><a href="../reference/defaults.html">type_warning()</a></code>
+</li>
+<li>
+<code><a href="../reference/defaults.html">input_error()</a></code>, <code><a href="../reference/defaults.html">input_warning()</a></code>
+</li>
+<li>
+<code><a href="../reference/defaults.html">use_error()</a></code>, <code><a href="../reference/defaults.html">use_warning()</a></code> (i.e., /juːs/, not /juːz/)</li>
+<li><code>default_error()</code></li>
+<li><code><a href="../reference/defaults.html">deprecated_warning()</a></code></li>
+</ul></li>
+<li>
+<code><a href="../reference/cnd_document.html">cnd_document()</a></code>’s links to <a href="https://jmbarbone.github.io/cnd/">cnd</a> are corrected <a href="https://github.com/jmbarbone/cnd/issues/25" class="external-link">#25</a>
+</li>
+<li>
+<code>condition(message = )</code> now handles <code>...</code> and other arguments correctly <a href="https://github.com/jmbarbone/cnd/issues/23" class="external-link">#23</a>
+</li>
+</ul></div>
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="0.1.1" id="cnd-011">cnd 0.1.1<a class="anchor" aria-label="anchor" href="#cnd-011"></a></h2><p class="text-muted">CRAN release: 2025-11-22</p>
+<h2 class="pkg-version" data-toc-text="0.1.1" id="cnd-011">cnd 0.1.1<a class="anchor" aria-label="anchor" href="#cnd-011"></a></h2>
 <ul><li>
 <code>cnd::condition_progenitor$message</code> no longer has its environment reset <a href="https://github.com/jmbarbone/cnd/issues/14" class="external-link">#14</a>
 </li>
@@ -46,7 +74,7 @@
 </li>
 </ul></div>
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="0.1.0" id="cnd-010">cnd 0.1.0<a class="anchor" aria-label="anchor" href="#cnd-010"></a></h2><p class="text-muted">CRAN release: 2025-02-26</p>
+<h2 class="pkg-version" data-toc-text="0.1.0" id="cnd-010">cnd 0.1.0<a class="anchor" aria-label="anchor" href="#cnd-010"></a></h2>
 <ul><li>Initial release</li>
 </ul></div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

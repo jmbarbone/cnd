@@ -26,7 +26,8 @@ conditions is provided for package development.
 
   Whether to print the call that generated the condition. This is
   embedded within the
-  [`conditionCall()`](https://rdrr.io/r/base/conditions.html) method.
+  [`base::conditionCall()`](https://rdrr.io/r/base/conditions.html)
+  method.
 
 ## See also
 

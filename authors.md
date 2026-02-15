@@ -10,13 +10,13 @@
 Source:
 [`DESCRIPTION`](https://github.com/jmbarbone/cnd/blob/main/DESCRIPTION)
 
-Barbone J (2025). *cnd: Create and Register Conditions*. R package
-version 0.1.1.9000, <https://jmbarbone.github.io/cnd/>.
+Barbone J (2026). *cnd: Create and Register Conditions*. R package
+version 0.1.1.9001, <https://jmbarbone.github.io/cnd/>.
 
     @Manual{,
       title = {cnd: Create and Register Conditions},
       author = {Jordan Mark Barbone},
-      year = {2025},
-      note = {R package version 0.1.1.9000},
+      year = {2026},
+      note = {R package version 0.1.1.9001},
       url = {https://jmbarbone.github.io/cnd/},
     }

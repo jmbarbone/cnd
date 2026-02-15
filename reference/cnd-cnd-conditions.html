@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">cnd</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.1.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.1.9001</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -43,11 +43,11 @@
     <p>The following conditions are defined in the <code>{cnd}</code> package.</p>
     </div>
     <div class="section level2">
-    <h2 id="-cnd-"><code><a href="cnd-package.html">{cnd}</a></code><a class="anchor" aria-label="anchor" href="#-cnd-"></a></h2>
+    <h2 id="-cnd-"><code>{cnd}</code><a class="anchor" aria-label="anchor" href="#-cnd-"></a></h2>
 
 
-<p>These conditions are made with the <code>{cnd}</code> package though the use of
-<code><a href="condition.html">condition()</a></code>.</p>
+<p>These conditions are made with the <code><a href="cnd-package.html">{cnd}</a></code> package though the
+use of <code><a href="condition.html">condition()</a></code>.</p>
     </div>
     <div class="section level2">
     <h2 id="-cnd-conditions"><code>{cnd}</code> conditions<a class="anchor" aria-label="anchor" href="#-cnd-conditions"></a></h2>
@@ -55,25 +55,19 @@
 
 
 <div class="section">
-<h3 id="cnd-as-character-cnd-error-error"><code>cnd:as_character_cnd_error/error</code><a class="anchor" aria-label="anchor" href="#cnd-as-character-cnd-error-error"></a></h3>
+<h3 id="cnd-cnd-class-error-error"><code>cnd:cnd_class_error/error</code><a class="anchor" aria-label="anchor" href="#cnd-cnd-class-error-error"></a></h3>
 
 <dl><dt>package</dt>
 <dd><p><code>{cnd}</code></p></dd>
 
 <dt>class</dt>
-<dd><p><code>cnd:as_character_cnd_error</code></p></dd>
+<dd><p><code>cnd:cnd_class_error</code></p></dd>
 
 <dt>type</dt>
 <dd><p><strong>error</strong></p></dd>
 
 
-</dl><p>You cannot coerce a <a href="condition.html">condition_generator</a> object to a character. This may have occurred when trying to put a condition function through <code><a href="https://rdrr.io/r/base/stop.html" class="external-link">stop()</a></code> or <a href="https://rdrr.io/r/base/warning.html" class="external-link">warning</a>.  Instead, call the function first, then pass the result to <code><a href="https://rdrr.io/r/base/stop.html" class="external-link">stop()</a></code> or <code><a href="https://rdrr.io/r/base/warning.html" class="external-link">warning()</a></code>.</p>
-<p>For example:</p>
-<p></p><div class="sourceCode r"><pre><code><span><span class="co"># Instead of this</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/stop.html" class="external-link">stop</a></span><span class="op">(</span><span class="va">my_condition</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># Do this</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/stop.html" class="external-link">stop</a></span><span class="op">(</span><span class="fu">my_condition</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre><p></p></div>
+</dl><p><code><a href="condition.html">cnd()</a></code> simple calls the appropriate function: <code><a href="https://rdrr.io/r/base/stop.html" class="external-link">base::stop()</a></code>, <code><a href="https://rdrr.io/r/base/warning.html" class="external-link">base::warning()</a></code>, or <code><a href="https://rdrr.io/r/base/message.html" class="external-link">base::message()</a></code> based on the <code>type</code> parameter from <code><a href="condition.html">condition()</a></code>.</p>
 </div>
 <div class="section">
 <h3 id="cnd-cnd-document-conditions-warning"><code>cnd:cnd_document_conditions/warning</code><a class="anchor" aria-label="anchor" href="#cnd-cnd-document-conditions-warning"></a></h3>
@@ -151,28 +145,50 @@
 </dl><p>This condition is signaled when <code><a href="cnd_document.html">cnd_document()</a></code> needs to write new documentation files.</p>
 </div>
 <div class="section">
-<h3 id="cnd-cond-cnd-class-error"><code>cnd:cond_cnd_class/error</code><a class="anchor" aria-label="anchor" href="#cnd-cond-cnd-class-error"></a></h3>
+<h3 id="cnd-condition-as-character-error-error"><code>cnd:condition_as_character_error/error</code><a class="anchor" aria-label="anchor" href="#cnd-condition-as-character-error-error"></a></h3>
 
 <dl><dt>package</dt>
 <dd><p><code>{cnd}</code></p></dd>
 
 <dt>class</dt>
-<dd><p><code>cnd:cond_cnd_class</code></p></dd>
+<dd><p><code>cnd:condition_as_character_error</code></p></dd>
 
 <dt>type</dt>
 <dd><p><strong>error</strong></p></dd>
 
 
-</dl><p><code><a href="condition.html">cnd()</a></code> simple calls the appropriate function: <code><a href="https://rdrr.io/r/base/stop.html" class="external-link">stop()</a></code>, <code><a href="https://rdrr.io/r/base/warning.html" class="external-link">warning()</a></code>, or <code><a href="https://rdrr.io/r/base/message.html" class="external-link">message()</a></code> based on the <code>type</code> parameter from <code><a href="condition.html">condition()</a></code>.</p>
+</dl><p>You cannot coerce a <a href="condition.html">condition_generator</a> object to a character. This may have occurred when trying to put a condition function through <code><a href="https://rdrr.io/r/base/stop.html" class="external-link">base::stop()</a></code> or <code><a href="https://rdrr.io/r/base/warning.html" class="external-link">base::warning()</a></code>.  Instead, call the function first,  then pass the result to <code><a href="https://rdrr.io/r/base/stop.html" class="external-link">base::stop()</a></code> or <code><a href="https://rdrr.io/r/base/warning.html" class="external-link">base::warning()</a></code>.</p>
+<p>For example:</p>
+<p></p><div class="sourceCode r"><pre><code><span><span class="co"># Instead of this</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/stop.html" class="external-link">stop</a></span><span class="op">(</span><span class="va">my_condition</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Do this</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/stop.html" class="external-link">stop</a></span><span class="op">(</span><span class="fu">my_condition</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre><p></p></div>
 </div>
 <div class="section">
-<h3 id="cnd-condition-message-generator-error"><code>cnd:condition_message_generator/error</code><a class="anchor" aria-label="anchor" href="#cnd-condition-message-generator-error"></a></h3>
+<h3 id="cnd-condition-message-error-error"><code>cnd:condition_message_error/error</code><a class="anchor" aria-label="anchor" href="#cnd-condition-message-error-error"></a></h3>
 
 <dl><dt>package</dt>
 <dd><p><code>{cnd}</code></p></dd>
 
 <dt>class</dt>
-<dd><p><code>cnd:condition_message_generator</code></p></dd>
+<dd><p><code>cnd:condition_message_error</code></p></dd>
+
+<dt>type</dt>
+<dd><p><strong>error</strong></p></dd>
+
+
+</dl><p>Conditions messages are displayed when invoked through <code><a href="https://rdrr.io/r/base/conditions.html" class="external-link">base::conditionMessage()</a></code>.  You can set a static message by passing through a <code>character</code> vector, or a dynamic message by passing through a <code>function</code>.  The function should return a <code>character</code> vector.</p>
+<p>When <code>message</code> is not set, a default "there was an error" message is used.</p>
+</div>
+<div class="section">
+<h3 id="cnd-condition-message-generator-error-error"><code>cnd:condition_message_generator_error/error</code><a class="anchor" aria-label="anchor" href="#cnd-condition-message-generator-error-error"></a></h3>
+
+<dl><dt>package</dt>
+<dd><p><code>{cnd}</code></p></dd>
+
+<dt>class</dt>
+<dd><p><code>cnd:condition_message_generator_error</code></p></dd>
 
 <dt>type</dt>
 <dd><p><strong>error</strong></p></dd>
@@ -186,13 +202,13 @@
 <span><span class="fu"><a href="https://rdrr.io/r/base/conditions.html" class="external-link">conditionMessage</a></span><span class="op">(</span><span class="fu">x</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre><p></p></div>
 </div>
 <div class="section">
-<h3 id="cnd-condition-overwrite-warning"><code>cnd:condition_overwrite/warning</code><a class="anchor" aria-label="anchor" href="#cnd-condition-overwrite-warning"></a></h3>
+<h3 id="cnd-condition-overwrite-warning-warning"><code>cnd:condition_overwrite_warning/warning</code><a class="anchor" aria-label="anchor" href="#cnd-condition-overwrite-warning-warning"></a></h3>
 
 <dl><dt>package</dt>
 <dd><p><code>{cnd}</code></p></dd>
 
 <dt>class</dt>
-<dd><p><code>cnd:condition_overwrite</code></p></dd>
+<dd><p><code>cnd:condition_overwrite_warning</code></p></dd>
 
 <dt>type</dt>
 <dd><p><strong>warning</strong></p></dd>
@@ -201,13 +217,13 @@
 </dl><p>Defining a new condition with the same class and package as an existing condition will overwrite the previous definition.  It is recommended to either avoid this by fully defining your condition, or creating a new condition instead.</p>
 </div>
 <div class="section">
-<h3 id="cnd-conditions-dots-warning"><code>cnd:conditions_dots/warning</code><a class="anchor" aria-label="anchor" href="#cnd-conditions-dots-warning"></a></h3>
+<h3 id="cnd-conditions-dots-warning-warning"><code>cnd:conditions_dots_warning/warning</code><a class="anchor" aria-label="anchor" href="#cnd-conditions-dots-warning-warning"></a></h3>
 
 <dl><dt>package</dt>
 <dd><p><code>{cnd}</code></p></dd>
 
 <dt>class</dt>
-<dd><p><code>cnd:conditions_dots</code></p></dd>
+<dd><p><code>cnd:conditions_dots_warning</code></p></dd>
 
 <dt>type</dt>
 <dd><p><strong>warning</strong></p></dd>
@@ -222,35 +238,34 @@
 <span><span class="fu"><a href="../reference/condition.html">conditions</a></span><span class="op">(</span>class <span class="op">=</span> <span class="st">"class"</span>, package <span class="op">=</span> <span class="st">"package"</span><span class="op">)</span></span></code></pre><p></p></div>
 </div>
 <div class="section">
-<h3 id="cnd-invalid-condition-error"><code>cnd:invalid_condition/error</code><a class="anchor" aria-label="anchor" href="#cnd-invalid-condition-error"></a></h3>
+<h3 id="cnd-internal-error-error"><code>cnd:internal_error/error</code><a class="anchor" aria-label="anchor" href="#cnd-internal-error-error"></a></h3>
 
 <dl><dt>package</dt>
 <dd><p><code>{cnd}</code></p></dd>
 
 <dt>class</dt>
-<dd><p><code>cnd:invalid_condition</code></p></dd>
+<dd><p><code>cnd:internal_error</code></p></dd>
+
+<dt>type</dt>
+<dd><p><strong>error</strong></p></dd>
+
+
+</dl><p>This is an internal error, which means that something has gone (horribly?) wrong within <a href="condition.html">cnd</a>.  If you believe this is a problem please provide a report at <a href="https://github.com/jmbarbone/cnd/issues" class="external-link">https://github.com/jmbarbone/cnd/issues</a></p>
+</div>
+<div class="section">
+<h3 id="cnd-invalid-condition-error-error"><code>cnd:invalid_condition_error/error</code><a class="anchor" aria-label="anchor" href="#cnd-invalid-condition-error-error"></a></h3>
+
+<dl><dt>package</dt>
+<dd><p><code>{cnd}</code></p></dd>
+
+<dt>class</dt>
+<dd><p><code>cnd:invalid_condition_error</code></p></dd>
 
 <dt>type</dt>
 <dd><p><strong>error</strong></p></dd>
 
 
 </dl><p>The <code>class</code>, <code>exports</code>, and <code>help</code> parameters must be a single character string.  If you are passing a function, it must be a valid function.</p>
-</div>
-<div class="section">
-<h3 id="cnd-invalid-condition-message-error"><code>cnd:invalid_condition_message/error</code><a class="anchor" aria-label="anchor" href="#cnd-invalid-condition-message-error"></a></h3>
-
-<dl><dt>package</dt>
-<dd><p><code>{cnd}</code></p></dd>
-
-<dt>class</dt>
-<dd><p><code>cnd:invalid_condition_message</code></p></dd>
-
-<dt>type</dt>
-<dd><p><strong>error</strong></p></dd>
-
-
-</dl><p>Conditions messages are displayed when invoked through <code><a href="https://rdrr.io/r/base/conditions.html" class="external-link">conditionMessage()</a></code>.  You can set a static message by passing through a <code>character</code> vector, or a dynamic message by passing through a <code>function</code>.  The function should return a <code>character</code> vector.</p>
-<p>When <code>message</code> is not set, a default "there was an error" message is used.</p>
 </div>
 <div class="section">
 <h3 id="cnd-match-arg-error"><code>cnd:match_arg/error</code><a class="anchor" aria-label="anchor" href="#cnd-match-arg-error"></a></h3>
@@ -265,16 +280,16 @@
 <dd><p><strong>error</strong></p></dd>
 
 
-</dl><p>Mostly <code><a href="https://rdrr.io/r/base/match.arg.html" class="external-link">match.arg()</a></code> but with a custom condition</p>
+</dl><p>Mostly <code><a href="https://rdrr.io/r/base/match.arg.html" class="external-link">base::match.arg()</a></code> but with a custom condition</p>
 </div>
 <div class="section">
-<h3 id="cnd-no-package-exports-warning"><code>cnd:no_package_exports/warning</code><a class="anchor" aria-label="anchor" href="#cnd-no-package-exports-warning"></a></h3>
+<h3 id="cnd-no-package-exports-warning-warning"><code>cnd:no_package_exports_warning/warning</code><a class="anchor" aria-label="anchor" href="#cnd-no-package-exports-warning-warning"></a></h3>
 
 <dl><dt>package</dt>
 <dd><p><code>{cnd}</code></p></dd>
 
 <dt>class</dt>
-<dd><p><code>cnd:no_package_exports</code></p></dd>
+<dd><p><code>cnd:no_package_exports_warning</code></p></dd>
 
 <dt>type</dt>
 <dd><p><strong>warning</strong></p></dd>

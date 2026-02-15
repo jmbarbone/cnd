@@ -6,14 +6,16 @@ Conditions for `cnd`
 
 The following conditions are defined in the `{cnd}` package.
 
-## [`{cnd}`](https://jmbarbone.github.io/cnd/reference/cnd-package.md)
+## `{cnd}`
 
-These conditions are made with the `{cnd}` package though the use of
+These conditions are made with the
+[`{cnd}`](https://jmbarbone.github.io/cnd/reference/cnd-package.md)
+package though the use of
 [`condition()`](https://jmbarbone.github.io/cnd/reference/condition.md).
 
 ## `{cnd}` conditions
 
-### `cnd:as_character_cnd_error/error`
+### `cnd:cnd_class_error/error`
 
 - package:
 
@@ -21,28 +23,19 @@ These conditions are made with the `{cnd}` package though the use of
 
 - class:
 
-  `cnd:as_character_cnd_error`
+  `cnd:cnd_class_error`
 
 - type:
 
   **error**
 
-You cannot coerce a
-[condition_generator](https://jmbarbone.github.io/cnd/reference/condition.md)
-object to a character. This may have occurred when trying to put a
-condition function through [`stop()`](https://rdrr.io/r/base/stop.html)
-or [warning](https://rdrr.io/r/base/warning.html). Instead, call the
-function first, then pass the result to
-[`stop()`](https://rdrr.io/r/base/stop.html) or
-[`warning()`](https://rdrr.io/r/base/warning.html).
-
-For example:
-
-    # Instead of this
-    stop(my_condition)
-
-    # Do this
-    stop(my_condition())
+[`cnd()`](https://jmbarbone.github.io/cnd/reference/condition.md) simple
+calls the appropriate function:
+[`base::stop()`](https://rdrr.io/r/base/stop.html),
+[`base::warning()`](https://rdrr.io/r/base/warning.html), or
+[`base::message()`](https://rdrr.io/r/base/message.html) based on the
+`type` parameter from
+[`condition()`](https://jmbarbone.github.io/cnd/reference/condition.md).
 
 ### `cnd:cnd_document_conditions/warning`
 
@@ -139,7 +132,7 @@ This condition is signaled when
 [`cnd_document()`](https://jmbarbone.github.io/cnd/reference/cnd_document.md)
 needs to write new documentation files.
 
-### `cnd:cond_cnd_class/error`
+### `cnd:condition_as_character_error/error`
 
 - package:
 
@@ -147,21 +140,31 @@ needs to write new documentation files.
 
 - class:
 
-  `cnd:cond_cnd_class`
+  `cnd:condition_as_character_error`
 
 - type:
 
   **error**
 
-[`cnd()`](https://jmbarbone.github.io/cnd/reference/condition.md) simple
-calls the appropriate function:
-[`stop()`](https://rdrr.io/r/base/stop.html),
-[`warning()`](https://rdrr.io/r/base/warning.html), or
-[`message()`](https://rdrr.io/r/base/message.html) based on the `type`
-parameter from
-[`condition()`](https://jmbarbone.github.io/cnd/reference/condition.md).
+You cannot coerce a
+[condition_generator](https://jmbarbone.github.io/cnd/reference/condition.md)
+object to a character. This may have occurred when trying to put a
+condition function through
+[`base::stop()`](https://rdrr.io/r/base/stop.html) or
+[`base::warning()`](https://rdrr.io/r/base/warning.html). Instead, call
+the function first, then pass the result to
+[`base::stop()`](https://rdrr.io/r/base/stop.html) or
+[`base::warning()`](https://rdrr.io/r/base/warning.html).
 
-### `cnd:condition_message_generator/error`
+For example:
+
+    # Instead of this
+    stop(my_condition)
+
+    # Do this
+    stop(my_condition())
+
+### `cnd:condition_message_error/error`
 
 - package:
 
@@ -169,7 +172,30 @@ parameter from
 
 - class:
 
-  `cnd:condition_message_generator`
+  `cnd:condition_message_error`
+
+- type:
+
+  **error**
+
+Conditions messages are displayed when invoked through
+[`base::conditionMessage()`](https://rdrr.io/r/base/conditions.html).
+You can set a static message by passing through a `character` vector, or
+a dynamic message by passing through a `function`. The function should
+return a `character` vector.
+
+When `message` is not set, a default "there was an error" message is
+used.
+
+### `cnd:condition_message_generator_error/error`
+
+- package:
+
+  `{cnd}`
+
+- class:
+
+  `cnd:condition_message_generator_error`
 
 - type:
 
@@ -187,7 +213,7 @@ conditions. Try this instead:
     x <- condition("my_condition")
     conditionMessage(x())
 
-### `cnd:condition_overwrite/warning`
+### `cnd:condition_overwrite_warning/warning`
 
 - package:
 
@@ -195,7 +221,7 @@ conditions. Try this instead:
 
 - class:
 
-  `cnd:condition_overwrite`
+  `cnd:condition_overwrite_warning`
 
 - type:
 
@@ -206,7 +232,7 @@ condition will overwrite the previous definition. It is recommended to
 either avoid this by fully defining your condition, or creating a new
 condition instead.
 
-### `cnd:conditions_dots/warning`
+### `cnd:conditions_dots_warning/warning`
 
 - package:
 
@@ -214,7 +240,7 @@ condition instead.
 
 - class:
 
-  `cnd:conditions_dots`
+  `cnd:conditions_dots_warning`
 
 - type:
 
@@ -233,7 +259,7 @@ For example:
     # Do this
     conditions(class = "class", package = "package")
 
-### `cnd:invalid_condition/error`
+### `cnd:internal_error/error`
 
 - package:
 
@@ -241,7 +267,27 @@ For example:
 
 - class:
 
-  `cnd:invalid_condition`
+  `cnd:internal_error`
+
+- type:
+
+  **error**
+
+This is an internal error, which means that something has gone
+(horribly?) wrong within
+[cnd](https://jmbarbone.github.io/cnd/reference/condition.md). If you
+believe this is a problem please provide a report at
+<https://github.com/jmbarbone/cnd/issues>
+
+### `cnd:invalid_condition_error/error`
+
+- package:
+
+  `{cnd}`
+
+- class:
+
+  `cnd:invalid_condition_error`
 
 - type:
 
@@ -249,29 +295,6 @@ For example:
 
 The `class`, `exports`, and `help` parameters must be a single character
 string. If you are passing a function, it must be a valid function.
-
-### `cnd:invalid_condition_message/error`
-
-- package:
-
-  `{cnd}`
-
-- class:
-
-  `cnd:invalid_condition_message`
-
-- type:
-
-  **error**
-
-Conditions messages are displayed when invoked through
-[`conditionMessage()`](https://rdrr.io/r/base/conditions.html). You can
-set a static message by passing through a `character` vector, or a
-dynamic message by passing through a `function`. The function should
-return a `character` vector.
-
-When `message` is not set, a default "there was an error" message is
-used.
 
 ### `cnd:match_arg/error`
 
@@ -287,10 +310,10 @@ used.
 
   **error**
 
-Mostly [`match.arg()`](https://rdrr.io/r/base/match.arg.html) but with a
-custom condition
+Mostly [`base::match.arg()`](https://rdrr.io/r/base/match.arg.html) but
+with a custom condition
 
-### `cnd:no_package_exports/warning`
+### `cnd:no_package_exports_warning/warning`
 
 - package:
 
@@ -298,7 +321,7 @@ custom condition
 
 - class:
 
-  `cnd:no_package_exports`
+  `cnd:no_package_exports_warning`
 
 - type:
 
