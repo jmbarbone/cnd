@@ -71,7 +71,7 @@ delayedAssign(
   "internal_error",
   condition(
     "internal_error",
-    \(...) .msg(...) %||% "An internal error has occurred.", # nocov
+    function(...) .msg(...) %||% "An internal error has occurred.",
     type = "error",
     package = "cnd",
     help = c(

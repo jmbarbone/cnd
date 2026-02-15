@@ -8,7 +8,7 @@ test_that("registry found in package", {
 test_that("registrary is picking up the conditions from the example package", {
   from_cnd <- cnd::conditions("cndSimpleExample")
   from_example <- Filter(
-    \(e) inherits(e, "cnd::condition_generator"),
+    function(e) inherits(e, "cnd::condition_generator"),
     as.list(getNamespace("cndSimpleExample"), all.names = TRUE, sorted = TRUE)
   )
   expect_setequal(from_cnd, from_example)
