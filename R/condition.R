@@ -104,7 +104,7 @@ condition <- function(
   original_class <- name
   if (is.null(package)) {
     if (!is.null(exports)) {
-      cnd(cond_no_package_exports())
+      cnd(no_package_exports_warning())
       exports <- NULL
     }
   } else {
@@ -125,7 +125,7 @@ condition <- function(
   } else if (is.character(message)) {
     message <- as.function(list(collapse(message)))
   } else if (!is.function(message)) {
-    cnd(cond_condition_bad_message())
+    cnd(condition_message_error())
   }
 
   if (!is.null(help)) {
@@ -259,7 +259,7 @@ conditions <- function(
 
   if (dot_n) {
     if (dot_n > 1) {
-      warning(cond_conditions_dots())
+      warning(conditions_dots_warning())
     }
 
     # TODO allow inherits(..1, "cnd:registry")
@@ -325,7 +325,7 @@ cond <- function(x) {
 #' returned, invisibly.
 cnd <- function(condition) {
   if (!is_cnd_condition(condition)) {
-    cnd(cond_cnd_class())
+    cnd(cnd_class_error())
   }
 
   switch(
@@ -476,7 +476,7 @@ validate_condition <- function(class, exports, help) {
   }
 
   if (length(problems)) {
-    cnd(cond_condition_invalid(problems, .call = sys.call(1L)))
+    cnd(invalid_condition_error(problems, .call = sys.call(1L)))
   }
 }
 
@@ -518,7 +518,7 @@ cget <- function(x, field) {
 
 #' @export
 `conditionMessage.cnd::condition_generator` <- function(c) {
-  cnd(cond_condition_message_generator())
+  cnd(condition_message_generator_error())
 }
 
 #' @export
@@ -553,7 +553,7 @@ cget <- function(x, field) {
 
 #' @export
 `as.character.cnd::condition_generator` <- function(x, ...) {
-  cnd(cond_as_character_condition())
+  cnd(condition_as_character_error())
 }
 
 #' @export
@@ -592,11 +592,11 @@ cget <- function(x, field) {
 
 # conditions --------------------------------------------------------------
 
-cond_no_package_exports <- function() {}
+no_package_exports_warning <- function() {}
 delayedAssign(
-  "cond_no_package_exports",
+  "no_package_exports_warning",
   condition(
-    "no_package_exports",
+    "no_package_exports_warning",
     classes = "input_warning",
     type = "warning",
     message = "No package was supplied, so `exports` is ignored",
@@ -606,11 +606,11 @@ delayedAssign(
   )
 )
 
-cond_condition_bad_message <- function() {}
+condition_message_error <- function() {}
 delayedAssign(
-  "cond_condition_bad_message",
+  "condition_message_error",
   condition(
-    "invalid_condition_message",
+    "condition_message_error",
     classes = "input_error",
     type = "error",
     message = "`message` must be a character vector or a function.",
@@ -628,11 +628,11 @@ delayedAssign(
   )
 )
 
-cond_cnd_class <- function() {}
+cnd_class_error <- function() {}
 delayedAssign(
-  "cond_cnd_class",
+  "cnd_class_error",
   condition(
-    "cond_cnd_class",
+    "cnd_class_error",
     classes = "input_error",
     type = "error",
     message = "'condition' must be a `cnd::condition` object",
@@ -646,11 +646,12 @@ delayedAssign(
   )
 )
 
-cond_as_character_condition <- function() {}
+condition_as_character_error <- function() {}
 delayedAssign(
-  "cond_as_character_condition",
+  "condition_as_character_error",
   condition(
-    "as_character_cnd_error",
+    "condition_as_character_error",
+    classes = "use_error",
     type = "error",
     package = "cnd",
     message = c(
@@ -678,11 +679,11 @@ delayedAssign(
   )
 )
 
-cond_condition_invalid <- function() {}
+invalid_condition_error <- function() {}
 delayedAssign(
-  "cond_condition_invalid",
+  "invalid_condition_error",
   condition(
-    "invalid_condition",
+    "invalid_condition_error",
     classes = "value_error",
     type = "error",
     # nolint next: brace_linter.
@@ -702,11 +703,11 @@ delayedAssign(
   )
 )
 
-cond_conditions_dots <- function() {}
+conditions_dots_warning <- function() {}
 delayedAssign(
-  "cond_conditions_dots",
+  "conditions_dots_warning",
   condition(
-    "conditions_dots",
+    "conditions_dots_warning",
     classes = "input_warning",
     type = "warning",
     message = "The `...` parameter only allows for a single argument",
@@ -732,11 +733,12 @@ delayedAssign(
 
 
 # nolint next: object_length_linter.
-cond_condition_message_generator <- function() {}
+condition_message_generator_error <- function() {}
 delayedAssign(
-  "cond_condition_message_generator",
+  "condition_message_generator_error",
   condition(
-    "condition_message_generator",
+    "condition_message_generator_error",
+    classes = "use_error",
     type = "error",
     message = c(
       "You are trying to call [base::conditionMessage()] on a",

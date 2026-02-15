@@ -141,7 +141,7 @@ local(envir = registrar, {
     }
 
     if (!is.null(old)) {
-      cnd(cond_condition_overwrite(old, condition))
+      cnd(condition_overwrite_warning(old, condition))
     }
 
     if (is.null(registry)) {
@@ -255,11 +255,11 @@ as_list_env <- function(x, all = FALSE) {
 
 # conditions --------------------------------------------------------------
 
-cond_condition_overwrite <- function() {}
+condition_overwrite_warning <- function() {}
 delayedAssign(
-  "cond_condition_overwrite",
+  "condition_overwrite_warning",
   condition(
-    "condition_overwrite",
+    "condition_overwrite_warning",
     type = "warning",
     package = "cnd",
     exports = "condition",

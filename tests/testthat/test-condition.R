@@ -40,7 +40,7 @@ test_that("conditions(x) <- value", {
 })
 
 test_that("find_cond() works", {
-  expect_identical(find_cond(cond_cnd_class), cond_cnd_class)
+  expect_identical(find_cond(cnd_class_error), cnd_class_error)
 })
 
 test_that("find_cond() fails", {
@@ -49,7 +49,7 @@ test_that("find_cond() fails", {
 })
 
 test_that("cnd()", {
-  expect_error(cnd(1), class = "cnd:cond_cnd_class")
+  expect_error(cnd(1), class = "cnd:cnd_class_error")
 
   con <- condition(
     "foo_message",
@@ -100,8 +100,8 @@ test_that("condition(help = gets_collapsed)", {
 
 test_that("conditions(..1)", {
   expect_warning(
-    conditions("cond_cnd_class", "cnd"),
-    class = cond_conditions_dots$class
+    conditions("cnd_class_error", "cnd"),
+    class = conditions_dots_warning$class
   )
 })
 
@@ -114,7 +114,7 @@ test_that("condition(type = 'condition')", {
 
 test_that("find_cond()", {
   expect_s3_class(
-    find_cond("cnd:cond_cnd_class/error"),
+    find_cond("cnd:cnd_class_error/error"),
     "cnd::condition_generator"
   )
 
@@ -158,19 +158,19 @@ test_that("validate_condition()", {
 
 test_that("cget() and $ and [", {
   expect_identical(
-    cget(cond_cnd_class, "class"),
-    cond_cnd_class$class
+    cget(cnd_class_error, "class"),
+    cnd_class_error$class
   )
 
   expect_identical(
-    cget(cond_cnd_class, "class"),
-    cond_cnd_class["class"]
+    cget(cnd_class_error, "class"),
+    cnd_class_error["class"]
   )
 })
 
 test_that("as.character() error", {
   expect_error(
-    as.character(cond_as_character_condition),
+    as.character(condition_as_character_error),
     class = "cnd:as_character_cnd_error"
   )
 })
