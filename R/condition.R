@@ -135,7 +135,6 @@ condition <- function(
   # setting up an environment to track additional fields for
 
   condition_env <- new.env()
-  environment(message) <- condition_env
   assign("message", message, condition_env)
   assign("exports", exports, condition_env)
   assign("package", package, condition_env)
@@ -160,8 +159,8 @@ condition <- function(
     body(condition_function) <- substitute(
       {
         # nolint next: object_usage_linter. (params is used)
-        params <- as.list(match.call())[-1L]
-        params <- params[names(params) != ".call"]
+        params <- as.list(match.call(expand.dots = TRUE))[-1L]
+        params$.call <- NULL
         params <- lapply(params, eval.parent, 2L)
 
         # nolint next: object_usage_linter. (.call is used)
@@ -185,7 +184,8 @@ condition <- function(
 
         # nolint next: object_usage_linter. (cond) is used
         cond <- list(
-          message = clean_text(do.call(..message.., params)),
+          # message = clean_text(do.call(..message.., params, TRUE)),
+          message = clean_text(do.call(condition_env$message, params, TRUE)),
           call = .call
         )
 
