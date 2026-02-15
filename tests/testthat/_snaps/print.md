@@ -6,7 +6,7 @@
       cnd::condition_progenitor
       
       generator
-        $ class    : <symbol> 
+        $ name     : <symbol> 
         $ message  : NULL
         $ type     : <language> c("condition", "message", "warning", "error")
         $ package  : <language> get_package()
@@ -14,6 +14,8 @@
         $ help     : NULL
         $ registry : <symbol> package
         $ register : <language> !is.null(registry)
+        $ classes  : NULL
+        $ class    : <symbol> 
       
       condition(s)
       cnd:as_character_cnd_error/error
@@ -46,7 +48,7 @@
       cond_cnd_class()
     Output
       cnd:cond_cnd_class/error
-      (cnd:cond_cnd_class/cnd::condition/error/condition)
+      (cnd:cond_cnd_class/cnd::condition/input_error/error/condition)
       'condition' must be a `cnd::condition` object
 
 ---
@@ -76,10 +78,20 @@
          target, current do not match when deparsed
          Component "class": 1 string mismatch
          Component "condition_function": target, current do not match when deparsed
+         Component "message": Component "name": 1 string mismatch
+         Component "message": Component "original_class": 1 string mismatch
+         Component "message": Component "res": 1 string mismatch
+         Component "message": Component "res": target, current do not match when deparsed
+         Component "message": Component "res": 1 string mismatch
          Component "original_class": 1 string mismatch
-         Component "class": 1 string mismatch
-         Component "condition_function": target, current do not match when deparsed
+         Component "condition_env": Component "class": 1 string mismatch
+         Component "condition_env": Component "condition_function": target, current do not match when deparsed
+         Component "condition_env": Component "original_class": 1 string mismatch
+         Component "name": 1 string mismatch
          Component "original_class": 1 string mismatch
+         Component "res": 1 string mismatch
+         Component "res": target, current do not match when deparsed
+         Component "res": 1 string mismatch
          1 string mismatch
 
 ---
@@ -115,7 +127,7 @@
       cnd::condition_progenitor
       
       generator
-        $ class    : <symbol> 
+        $ name     : <symbol> 
         $ message  : NULL
         $ type     : <language> c("condition", "message", "warning", "error")
         $ package  : <language> get_package()
@@ -123,6 +135,8 @@
         $ help     : NULL
         $ registry : <symbol> package
         $ register : <language> !is.null(registry)
+        $ classes  : NULL
+        $ class    : <symbol> 
       
       condition(s)
     Message

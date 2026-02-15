@@ -242,3 +242,10 @@ test_that("condition_generators are closures, and not subsettable", {
   co$extra <- TRUE
   expect_true(co$extra)
 })
+
+test_that("condition(class) is deprecated", {
+  expect_warning(
+    condition(class = "foo"),
+    class = "deprecated_warning"
+  )
+})
