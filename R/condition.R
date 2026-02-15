@@ -706,7 +706,6 @@ delayedAssign(
     classes = "value_error",
     type = "error",
     # fmt: skip
-    # nolint next: brace_linter.
     message = function(problems) {
       collapse(
         "The following problems were found with the condition:",

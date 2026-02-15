@@ -263,7 +263,6 @@ delayedAssign(
     type = "warning",
     package = "cnd",
     exports = "condition",
-    # nolint next: brace_linter.
     message = function(old, new) {
       fmt(
         "A condition with the class name '{cls}' already exists in '{pkg}' and",
