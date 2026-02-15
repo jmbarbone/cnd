@@ -57,17 +57,18 @@ cnd_document <- function(
   text <- fmt(
     cnd_documentation_fmt,
     package = package,
-    # nolint start: line_length_linter.
-    aliases1 = collapse(vapply(conds, cget, NA_character_, "class"), sep = " "),
+    aliases1 = collapse(
+      vapply(conds, \(cond) cget(cond, "class"), NA_character_),
+      sep = " "
+    ),
     aliases2 = collapse(
-      vapply(conds, cget, NA_character_, "original_class"),
+      vapply(conds, \(cond) cget(cond, "original_class"), NA_character_),
       sep = " "
     ),
     aliases3 = collapse(
       vapply(conds, `format.cnd::condition_generator`, NA_character_),
       sep = " "
     ),
-    # nolint end: line_length_linter.
     cnd_section_describe = collapse(
       vapply(
         conds,
@@ -239,7 +240,6 @@ delayedAssign(
     type = "message",
     package = "cnd",
     exports = "cnd_document",
-    # nolint next: brace_linter.
     message = function(paths) {
       c(
         "Removing the following cnd generated files:",
@@ -261,7 +261,6 @@ delayedAssign(
     type = "condition",
     package = "cnd",
     exports = "cnd_document",
-    # nolint next: brace_linter.
     message = function(path) {
       cli_switch(
         cli_text(sprintf("Writing {.file %s}", path))
@@ -283,7 +282,6 @@ delayedAssign(
     type = "error",
     exports = "cnd_document",
     package = "cnd",
-    # nolint next: brace_linter.
     message = function(pkg, reg) {
       fmt(
         "package and registry must be set\n",
