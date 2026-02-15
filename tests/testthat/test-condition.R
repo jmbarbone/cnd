@@ -9,12 +9,12 @@ test_that("condition() conditions", {
 
   expect_warning(
     condition("foo", exports = "exports", package = NULL),
-    class = "cnd:no_package_exports"
+    class = "cnd:no_package_exports_warning"
   )
 
   expect_error(
     condition("foo", 1),
-    class = "cnd:invalid_condition_message"
+    class = "cnd:condition_message_error"
   )
 })
 
@@ -132,27 +132,27 @@ test_that("find_cond()", {
 test_that("validate_condition()", {
   expect_error(
     validate_condition(1, NULL, NULL),
-    class = "cnd:invalid_condition"
+    class = "cnd:invalid_condition_error"
   )
 
   expect_error(
     validate_condition(letters, NULL, NULL),
-    class = "cnd:invalid_condition"
+    class = "cnd:invalid_condition_error"
   )
 
   expect_error(
     validate_condition("foo!bar", NULL, NULL),
-    class = "cnd:invalid_condition"
+    class = "cnd:invalid_condition_error"
   )
 
   expect_error(
     validate_condition("foo", NULL, 1),
-    class = "cnd:invalid_condition"
+    class = "cnd:invalid_condition_error"
   )
 
   expect_error(
     validate_condition("foo", 1, NULL),
-    class = "cnd:invalid_condition"
+    class = "cnd:invalid_condition_error"
   )
 })
 
@@ -171,7 +171,7 @@ test_that("cget() and $ and [", {
 test_that("as.character() error", {
   expect_error(
     as.character(condition_as_character_error),
-    class = "cnd:as_character_cnd_error"
+    class = "cnd:condition_as_character_error"
   )
 })
 
@@ -233,7 +233,7 @@ test_that("cnd(condition) handling", {
 test_that("conditinMessage(condition_generator)", {
   expect_error(
     conditionMessage(condition("foo", register = FALSE)),
-    class = "cnd:condition_message_generator"
+    class = "cnd:condition_message_generator_error"
   )
 })
 
