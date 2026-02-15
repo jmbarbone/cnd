@@ -304,7 +304,21 @@ conditions <- function(
     return()
   }
 
-  unname(conds)
+  # storing as a separate class so that we can retain the names but it doesn't
+  # clog up the console with duplicate information
+  class(conds) <- c("conditions_list", "lsit")
+  conds
+}
+
+#' @export
+print.conditions_list <- function(x, ...) {
+  for (i in seq_along(x)) {
+    if (i != 1) {
+      cat(cli_fun("rule"), "\n")
+    }
+    print(x[[i]])
+  }
+  invisible(x)
 }
 
 #' @export
