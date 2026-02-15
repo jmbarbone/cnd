@@ -6,12 +6,14 @@
 \alias{class_error}
 \alias{type_error}
 \alias{input_error}
+\alias{use_error}
 \alias{defunct_error}
 \alias{deprecated_warning}
 \alias{value_warning}
 \alias{type_warning}
 \alias{input_warning}
 \alias{class_warning}
+\alias{use_warning}
 \title{Default conditions}
 \usage{
 value_error(..., .call = getOption("cnd.call", TRUE))
@@ -19,8 +21,10 @@ value_error(..., .call = getOption("cnd.call", TRUE))
 class_error(
   ...,
   x,
-  expected,
   actual = x,
+  actual_class = class(actual),
+  expected,
+  expected_class = class(expected),
   name,
   .call = getOption("cnd.call", TRUE)
 )
@@ -28,21 +32,19 @@ class_error(
 type_error(
   ...,
   x,
-  expected,
   actual = x,
+  actual_type = typeof(actual),
+  expected,
+  expected_type = typeof(expected),
   name,
   .call = getOption("cnd.call", TRUE)
 )
 
 input_error(..., .call = getOption("cnd.call", TRUE))
 
-defunct_error(
-  ...,
-  defunct,
-  replacement,
-  version,
-  .call = getOption("cnd.call", TRUE)
-)
+use_error(..., .call = getOption("cnd.call", TRUE))
+
+defunct_error(..., defunct, replacement, .call = getOption("cnd.call", TRUE))
 
 deprecated_warning(
   ...,
@@ -57,8 +59,10 @@ value_warning(..., .call = getOption("cnd.call", TRUE))
 type_warning(
   ...,
   x,
-  expected,
   actual = x,
+  actual_type = typeof(actual),
+  expected,
+  expected_type = typeof(expected),
   name,
   .call = getOption("cnd.call", TRUE)
 )
@@ -68,23 +72,31 @@ input_warning(..., .call = getOption("cnd.call", TRUE))
 class_warning(
   ...,
   x,
-  expected,
   actual = x,
+  actual_class = class(actual),
+  expected,
+  expected_class = class(expected),
   name,
   .call = getOption("cnd.call", TRUE)
 )
+
+use_warning(..., .call = getOption("cnd.call", TRUE))
 }
 \arguments{
-\item{...}{Additional message components}
+\item{...}{Additional message components; extra named arguments will signal
+an \code{\link[=input_warning]{input_warning()}}.}
 
 \item{x}{an object}
 
-\item{actual, expected}{Actual or expected value (see details)}
+\item{actual, expected}{Objects whose \code{class} or \code{type} should be retrieved}
+
+\item{actual_class, actual_type, expected_class, expected_type}{Override \code{class}
+or \code{type}}
 
 \item{name}{Name of the object (will be deparsed if not provided)}
 
 \item{defunct, deprecated, replacement}{Defunct, deprecated and replacement
-object, use \code{\link[base:substitute]{base::quote()}} to pass expressions (e.g., \verb{quote(old_fun()})}
+object, use \code{\link[base:substitute]{base::quote()}} to pass expressions (e.g., \code{quote(fun(old = ))})}
 
 \item{version}{A version number}
 }
@@ -116,8 +128,7 @@ type_error(x = 1, actual = integer(), expected = double())
 type_error(
   "Additional context",
   x = "a",
-  actual = I("string"),
-  expected = I("numeric or integer")
+  expected = 1L
 )
 
 }

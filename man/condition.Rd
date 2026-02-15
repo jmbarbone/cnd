@@ -15,14 +15,16 @@
 \title{Conditions}
 \usage{
 condition(
-  class,
+  name,
   message = NULL,
   type = c("condition", "message", "warning", "error"),
   package = get_package(),
   exports = NULL,
   help = NULL,
   registry = package,
-  register = !is.null(registry)
+  register = !is.null(registry),
+  classes = NULL,
+  class
 )
 
 conditions(
@@ -45,13 +47,13 @@ conditions(x, ...) <- value
 \method{conditions}{`cnd::condition_progenitor`}(x, ...) <- value
 }
 \arguments{
-\item{class}{The name of the new class}
+\item{name}{The name of the new class}
 
-\item{message}{The message to be displayed when the condition is called.  When
+\item{message}{The message to be displayed when the condition is called. When
 entered as a character vector, the message is collapsed into a single
-string.  Use explicit line returns to generate new lines in output messages.
-When a function is used and a character vector returned, each element is
-treated as a new line.}
+string.  Use explicit line returns to generate new lines in output
+messages. When a function is used and a character vector returned, each
+element is treated as a new line.}
 
 \item{type}{The type of condition: error, warning, or message}
 
@@ -65,6 +67,10 @@ called}
 \item{registry}{The name of the registry to store the condition}
 
 \item{register}{Controls registration checks}
+
+\item{classes}{Additional classes to add to the condition}
+
+\item{class}{\emph{\strong{Deprecated}}; use \code{name} instead}
 
 \item{...}{Additional arguments passed to methods}
 
