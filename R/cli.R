@@ -12,10 +12,7 @@ cli_on <- function() {
     off = FALSE,
     NULL
   ) %||%
-    {
-      requireNamespace("cli", quietly = TRUE) &&
-        cli::num_ansi_colors() > 1L
-    }
+    (requireNamespace("cli", quietly = TRUE) && cli::num_ansi_colors() > 1L)
 }
 
 override_cli <- function(status = c("on", "off"), expr) {
@@ -51,6 +48,7 @@ cli_fun <- function(cli, ..., ..otherwise = base::paste0) {
 
 # nocov start
 # fmt: skip
+# nolint next: brace_linter.
 {
   black   <- function(...) cli_fun("col_black", ...)
   blue    <- function(...) cli_fun("col_blue", ...)
