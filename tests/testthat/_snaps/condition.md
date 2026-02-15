@@ -13,11 +13,7 @@
       foo()
     Condition
       Error in `foo()`:
-    <<<<<<< HEAD
-      ! <cnd:foo>
-    =======
       ! <foo>
-    >>>>>>> main
       there was an error
 
 ---
@@ -26,11 +22,7 @@
       bar()
     Condition
       Error in `foo()`:
-    <<<<<<< HEAD
-      ! <cnd:foo>
-    =======
       ! <foo>
-    >>>>>>> main
       there was an error
 
 ---
@@ -38,14 +30,8 @@
     Code
       foo2()
     Condition
-    <<<<<<< HEAD
-      Error:
-      ! <cnd:foo>
-      there was an error
-    =======
       Error in `foo2()`:
       ! could not find function "foo2"
-    >>>>>>> main
 
 ---
 
@@ -53,11 +39,7 @@
       fizz()
     Condition
       Error in `foo()`:
-    <<<<<<< HEAD
-      ! <cnd:foo>
-    =======
       ! <foo>
-    >>>>>>> main
       there was an error
 
 ---
@@ -66,11 +48,7 @@
       fizz()
     Condition
       Error in `bar()`:
-    <<<<<<< HEAD
-      ! <cnd:foo>
-    =======
       ! <foo>
-    >>>>>>> main
       there was an error
 
 ---
@@ -79,11 +57,7 @@
       fizz()
     Condition
       Error in `fizz()`:
-    <<<<<<< HEAD
-      ! <cnd:foo>
-    =======
       ! <foo>
-    >>>>>>> main
       there was an error
 
 ---
@@ -92,10 +66,6 @@
       fizz()
     Condition
       Error:
-    <<<<<<< HEAD
-      ! <cnd:foo>
-    =======
       ! <foo>
-    >>>>>>> main
       there was an error
 
