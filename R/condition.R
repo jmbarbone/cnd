@@ -314,7 +314,13 @@ conditions <- function(
 print.conditions_list <- function(x, ...) {
   for (i in seq_along(x)) {
     if (i != 1) {
-      cat(cli_fun("rule"), "\n")
+      cat(
+        cli_fun(
+          "rule",
+          ..otherwise = function(...) strrep("-", getOption("width"))
+        ),
+        "\n"
+      )
     }
     print(x[[i]])
   }

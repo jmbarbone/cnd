@@ -6,10 +6,16 @@
 cli_on <- function() {
   switch(
     getOption("cnd.cli.override", "none"),
+    true = ,
     on = TRUE,
+    false = ,
     off = FALSE,
-    requireNamespace("cli", quietly = TRUE) && cli::num_ansi_colors() > 1L
-  )
+    NULL
+  ) %||%
+    {
+      requireNamespace("cli", quietly = TRUE) &&
+        cli::num_ansi_colors() > 1L
+    }
 }
 
 override_cli <- function(status = c("on", "off"), expr) {
