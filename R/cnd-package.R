@@ -14,7 +14,7 @@
 #'     }
 #'     \item{`cnd.call`\cr`[TRUE|FALSE]`}{
 #'       Whether to print the call that generated the condition.  This is
-#'       embedded within the [conditionCall()] method.
+#'       embedded within the [base::conditionCall()] method.
 #'     }
 #'   }
 "_PACKAGE"
@@ -64,5 +64,20 @@ delayedAssign(
     overwrite = TRUE,
     name = ".__CND_REGISTRY__.",
     env = .cnd_env
+  )
+)
+
+delayedAssign(
+  "internal_error",
+  condition(
+    "internal_error",
+    function(...) .msg(...) %||% "An internal error has occurred.",
+    type = "error",
+    package = "cnd",
+    help = c(
+      "This is an internal error, which means that something has gone",
+      " (horribly?) wrong within [cnd].  If you believe this is a problem",
+      " please provide a report at <https://github.com/jmbarbone/cnd/issues>"
+    )
   )
 )

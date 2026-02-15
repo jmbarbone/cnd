@@ -9,9 +9,6 @@ suppress_conditions <- function(expr, classes = "condition") {
   )
 }
 
-# nolint next: object_name_linter.
-suppressConditions <- suppress_conditions
-
 suppress_cnd_conditions <- function(expr) {
   suppress_conditions(expr, "cnd::condition")
 }

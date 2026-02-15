@@ -10,12 +10,12 @@
 #'   [cnd::conditions()] retrieves all conditions based on search values.  The
 #'   parameters serve as filtering arguments.
 #'
-#' @param class The name of the new class
+#' @param name The name of the new class
 #' @param message The message to be displayed when the condition is called. When
 #'   entered as a character vector, the message is collapsed into a single
-#'   string. Use explicit line returns to generate new lines in output messages.
-#'   When a function is used and a character vector returned, each element is
-#'   treated as a new line.
+#'   string.  Use explicit line returns to generate new lines in output
+#'   messages. When a function is used and a character vector returned, each
+#'   element is treated as a new line.
 #' @param type The type of condition: error, warning, or message
 #' @param exports The exported functions to be displayed when the condition is
 #'   called
@@ -23,14 +23,16 @@
 #' @param package The package to which the condition belongs
 #' @param registry The name of the registry to store the condition
 #' @param register Controls registration checks
+#' @param classes Additional classes to add to the condition
+#' @param class _**Deprecated**_; use `name` instead
 #'
 #' @section [cnd::condition_generator]: A [cnd::condition_generator] is an
 #'   object (a special [function]) which can be used to create generate a new
 #'   condition, based on specifications applied in [cnd::condition()]. These
 #'   functions use `...` to absorb extra arguments and contain a special `.call`
-#'   parameter. By default, `.call` captures the parent call from where the
+#'   parameter.  By default, `.call` captures the parent call from where the
 #'   [cnd::condition_generator] was created, but users may pass their own call
-#'   to override this.  See `call.` in [conditionCall()]
+#'   to override this.  See `call.` in [base::conditionCall()]
 #'
 #' @section [cnd::condition()] conditions:
 #'
@@ -64,17 +66,28 @@
 #'   cnd::condition_generator
 #' @seealso [cnd-package]
 condition <- function(
-  class,
+  name,
   message = NULL,
   type = c("condition", "message", "warning", "error"),
   package = get_package(),
   exports = NULL,
   help = NULL,
   registry = package,
-  register = !is.null(registry)
+  register = !is.null(registry),
+  classes = NULL,
+  class
 ) {
+  if (!missing(class)) {
+    cnd(deprecated_warning(
+      deprecated = quote(condition(class = )),
+      replacement = quote(condition(name = )),
+      version = "0.3.0"
+    ))
+    name <- class
+  }
+
   if (nargs() == 1L) {
-    found <- do_find_cond(class)
+    found <- do_find_cond(name)
     if (length(found) == 1L) {
       return(found[[1L]])
     }
@@ -84,18 +97,18 @@ condition <- function(
   force(registry)
   force(register)
 
-  validate_condition(class = class, exports = exports, help = help)
+  validate_condition(class = name, exports = exports, help = help)
 
   type <- match_arg(type)
 
-  original_class <- class
+  original_class <- name
   if (is.null(package)) {
     if (!is.null(exports)) {
-      cnd(cond_no_package_exports())
+      cnd(no_package_exports_warning())
       exports <- NULL
     }
   } else {
-    class <- paste(package, class, sep = ":")
+    name <- paste(package, name, sep = ":")
   }
 
   if (is.null(message)) {
@@ -112,7 +125,7 @@ condition <- function(
   } else if (is.character(message)) {
     message <- as.function(list(collapse(message)))
   } else if (!is.function(message)) {
-    cnd(cond_condition_bad_message())
+    cnd(condition_message_error())
   }
 
   if (!is.null(help)) {
@@ -125,19 +138,29 @@ condition <- function(
   assign("message", message, condition_env)
   assign("exports", exports, condition_env)
   assign("package", package, condition_env)
-  assign("class", class, condition_env)
-  assign(".class", original_class, condition_env)
+  assign("class", name, condition_env)
+  assign("original_class", original_class, condition_env)
   assign("type", type, condition_env)
   assign("help", help, condition_env)
 
+  # rather than locking the entire environment, we can just lock these specific
+  # keywords; but maybe we'll want to lock the entire environment at some other
+  # point
+  lockBinding("message", condition_env)
+  lockBinding("exports", condition_env)
+  lockBinding("package", condition_env)
+  lockBinding("class", condition_env)
+  lockBinding("original_class", condition_env)
+  lockBinding("type", condition_env)
+  lockBinding("help", condition_env)
+
   res <- local(envir = condition_env, {
-    # fmt: skip
     condition_function <- function() {}
     body(condition_function) <- substitute(
       {
         # nolint next: object_usage_linter. (params is used)
-        params <- as.list(match.call())[-1L]
-        params <- params[names(params) != ".call"]
+        params <- as.list(match.call(expand.dots = TRUE))[-1L]
+        params$.call <- NULL
         params <- lapply(params, eval.parent, 2L)
 
         # nolint next: object_usage_linter. (.call is used)
@@ -161,13 +184,19 @@ condition <- function(
 
         # nolint next: object_usage_linter. (cond) is used
         cond <- list(
-          message = clean_text(do.call(..message.., params)),
+          message = clean_text(do.call(..message.., params, TRUE)),
           call = .call
         )
 
         cond <- set_class(
           cond,
-          unique(c(..class.., "cnd::condition", type, "condition"))
+          unique(c(
+            ..class..,
+            "cnd::condition",
+            ..classes..,
+            ..type..,
+            "condition"
+          ))
         )
 
         attr(cond, "help") <- ..help..
@@ -179,22 +208,24 @@ condition <- function(
       },
       list(
         ..message.. = message,
-        ..class.. = class,
+        ..class.. = name,
+        ..type.. = type,
+        ..help.. = help,
         ..package.. = package,
         ..exports.. = exports,
-        ..type.. = type,
-        ..help.. = help
+        ..condition.. = condition,
+        ..classes.. = classes
       )
     )
+
     condition_function
   })
-
-  lockEnvironment(condition_env)
 
   formals(res) <- c(
     formals(message),
     alist(... = , .call = getOption("cnd.call", TRUE))
   )
+  formals(res) <- formals(res)[!duplicated(names(formals(res)))]
 
   # explicit so that substitute() doesn't mess this up
   base::class(res) <- c("cnd::condition_generator", "function")
@@ -209,9 +240,9 @@ class(condition) <- "cnd::condition_progenitor"
 
 #' @export
 #' @rdname condition
-#' @param ... Input argument.  If a function is passed, then defaults to passing
-#'   `..1` to `fun`; otherwise defaults to passing `..1` to `package`
-#' @param fun if a function is passed, then retrieves the `"conditions"`
+#' @param ... Input argument.  If a `function` is passed, then defaults to
+#'   passing `..1` to `fun`; otherwise defaults to passing `..1` to `package`
+#' @param fun if a `function` is passed, then retrieves the `"conditions"`
 #'   attribute
 #' @returns
 #' - [cnd::conditions()] a `list` of [cnd::condition_generator] objects
@@ -227,7 +258,7 @@ conditions <- function(
 
   if (dot_n) {
     if (dot_n > 1) {
-      warning(cond_conditions_dots())
+      warning(conditions_dots_warning())
     }
 
     # TODO allow inherits(..1, "cnd:registry")
@@ -258,7 +289,7 @@ conditions <- function(
     conds <- as_list_env(registry)
   }
 
-  terms <- list(package = package, .class = class, type = type)
+  terms <- list(package = package, original_class = class, type = type)
   terms <- filter2(terms, Negate(is.null))
 
   for (i in seq_along(terms)) {
@@ -272,7 +303,27 @@ conditions <- function(
     return()
   }
 
-  unname(conds)
+  # storing as a separate class so that we can retain the names but it doesn't
+  # clog up the console with duplicate information
+  class(conds) <- c("conditions_list", "lsit")
+  conds
+}
+
+#' @export
+print.conditions_list <- function(x, ...) {
+  for (i in seq_along(x)) {
+    if (i != 1) {
+      cat(
+        cli_fun(
+          "rule",
+          ..otherwise = function(...) strrep("-", getOption("width"))
+        ),
+        "\n"
+      )
+    }
+    print(x[[i]])
+  }
+  invisible(x)
 }
 
 #' @export
@@ -287,13 +338,13 @@ cond <- function(x) {
 #' @rdname condition
 #' @param condition A [cnd::condition_generator] object
 #' @returns
-#' - [cnd::cnd()] is a wrapper for calling [stop()], [warning()], or
-#'   [message()]; when  `condition` is a type, an error is thrown, and likewise
-#'   for the other types.  When an error isn't thrown, the `condition` is
-#'   returned, invisibly.
+#' - [cnd::cnd()] is a wrapper for calling [base::stop()], [base::warning()],
+#' or [base::message()]; when `condition` is a type, an error is thrown, and
+#' likewise for the other types.  When an error isn't thrown, the `condition` is
+#' returned, invisibly.
 cnd <- function(condition) {
   if (!is_cnd_condition(condition)) {
-    cnd(cond_cnd_class())
+    cnd(cnd_class_error())
   }
 
   switch(
@@ -398,7 +449,7 @@ do_find_cond <- function(
     }
 
     package <- cget(x, "package")
-    class <- cget(x, ".class")
+    class <- cget(x, "original_class")
     type <- cget(x, "type")
   } else {
     package <- str_extract(x, "^.*(?=:.*)")
@@ -444,7 +495,7 @@ validate_condition <- function(class, exports, help) {
   }
 
   if (length(problems)) {
-    cnd(cond_condition_invalid(problems, .call = sys.call(1L)))
+    cnd(invalid_condition_error(problems, .call = sys.call(1L)))
   }
 }
 
@@ -472,8 +523,21 @@ cget <- function(x, field) {
 }
 
 #' @export
+`$<-.cnd::condition_generator` <- function(x, name, value) {
+  name <- substitute(name)
+  name <- as.character(name)
+  assign(name, value, environment(x))
+  x
+}
+
+#' @exportS3Method utils::.DollarNames
+`.DollarNames.cnd::condition_generator` <- function(x, pattern) {
+  grep(pattern, names(environment(x)), value = TRUE) # nocov
+}
+
+#' @export
 `conditionMessage.cnd::condition_generator` <- function(c) {
-  cnd(cond_condition_message_generator())
+  cnd(condition_message_generator_error())
 }
 
 #' @export
@@ -508,7 +572,7 @@ cget <- function(x, field) {
 
 #' @export
 `as.character.cnd::condition_generator` <- function(x, ...) {
-  cnd(cond_as_character_condition())
+  cnd(condition_as_character_error())
 }
 
 #' @export
@@ -547,12 +611,12 @@ cget <- function(x, field) {
 
 # conditions --------------------------------------------------------------
 
-# fmt: skip
-cond_no_package_exports <- function() {}
+no_package_exports_warning <- function() {}
 delayedAssign(
-  "cond_no_package_exports",
+  "no_package_exports_warning",
   condition(
-    "no_package_exports",
+    "no_package_exports_warning",
+    classes = "input_warning",
     type = "warning",
     message = "No package was supplied, so `exports` is ignored",
     exports = "condition",
@@ -561,21 +625,21 @@ delayedAssign(
   )
 )
 
-# fmt: skip
-cond_condition_bad_message <- function() {}
+condition_message_error <- function() {}
 delayedAssign(
-  "cond_condition_bad_message",
+  "condition_message_error",
   condition(
-    "invalid_condition_message",
+    "condition_message_error",
+    classes = "input_error",
     type = "error",
     message = "`message` must be a character vector or a function.",
     exports = "condition",
     package = "cnd",
     help = c(
       "Conditions messages are displayed when invoked through",
-      " [conditionMessage()].  You can set a static message by passing through",
-      " a `character` vector, or a dynamic message by passing through a",
-      " `function`.  The function should return a `character` vector.",
+      " [base::conditionMessage()].  You can set a static message by passing",
+      " through a `character` vector, or a dynamic message by passing through",
+      " a `function`.  The function should return a `character` vector.",
       "\n\n",
       "When `message` is not set, a default \"there was an error\" message is",
       " used."
@@ -583,30 +647,30 @@ delayedAssign(
   )
 )
 
-# fmt: skip
-cond_cnd_class <- function() {}
+cnd_class_error <- function() {}
 delayedAssign(
-  "cond_cnd_class",
+  "cnd_class_error",
   condition(
-    "cond_cnd_class",
+    "cnd_class_error",
+    classes = "input_error",
     type = "error",
     message = "'condition' must be a `cnd::condition` object",
     exports = "cnd",
     package = "cnd",
     help = c(
-      "[cnd::cnd()] simple calls the appropriate function: [stop()],",
-      " [warning()], or [message()] based on the `type` parameter from",
-      " [cnd::condition()]."
+      "[cnd::cnd()] simple calls the appropriate function: [base::stop()],",
+      " [base::warning()], or [base::message()] based on the `type` parameter",
+      " from [cnd::condition()]."
     )
   )
 )
 
-# fmt: skip
-cond_as_character_condition <- function() {}
+condition_as_character_error <- function() {}
 delayedAssign(
-  "cond_as_character_condition",
+  "condition_as_character_error",
   condition(
-    "as_character_cnd_error",
+    "condition_as_character_error",
+    classes = "use_error",
     type = "error",
     package = "cnd",
     message = c(
@@ -617,8 +681,9 @@ delayedAssign(
     help = c(
       "You cannot coerce a [cnd::condition_generator] object to a character. ",
       "This may have occurred when trying to put a condition function through ",
-      "[stop()] or [warning].  Instead, call the function first, then pass the",
-      " result to [stop()] or [warning()].",
+      "[base::stop()] or [base::warning()].  Instead, call the function first,",
+      "  then pass the",
+      " result to [base::stop()] or [base::warning()].",
       "\n\n",
       "For example:",
       "\n",
@@ -633,20 +698,20 @@ delayedAssign(
   )
 )
 
-# fmt: skip
-cond_condition_invalid <- function() {}
+invalid_condition_error <- function() {}
 delayedAssign(
-  "cond_condition_invalid",
+  "invalid_condition_error",
   condition(
-    "invalid_condition",
+    "invalid_condition_error",
+    classes = "value_error",
     type = "error",
     # fmt: skip
-    # nolint next: brace_linter.
-    message = function(problems)
+    message = function(problems) {
       collapse(
         "The following problems were found with the condition:",
         paste0("\n", problems)
-      ),
+      )
+    },
     package = "cnd",
     exports = "condition",
     help = c(
@@ -657,12 +722,12 @@ delayedAssign(
   )
 )
 
-# fmt: skip
-cond_conditions_dots <- function() {}
+conditions_dots_warning <- function() {}
 delayedAssign(
-  "cond_conditions_dots",
+  "conditions_dots_warning",
   condition(
-    "conditions_dots",
+    "conditions_dots_warning",
+    classes = "input_warning",
     type = "warning",
     message = "The `...` parameter only allows for a single argument",
     exports = "conditions",
@@ -686,17 +751,17 @@ delayedAssign(
 )
 
 
-# fmt: skip
 # nolint next: object_length_linter.
-cond_condition_message_generator <- function() {}
+condition_message_generator_error <- function() {}
 delayedAssign(
-  "cond_condition_message_generator",
+  "condition_message_generator_error",
   condition(
-    "condition_message_generator",
+    "condition_message_generator_error",
+    classes = "use_error",
     type = "error",
     message = c(
-      "You are trying to call conditionMessage() on a condition_generator",
-      " object, which is not allowed"
+      "You are trying to call [base::conditionMessage()] on a",
+      " `condition_generator` object, which is not allowed"
     ),
     exports = "condition",
     package = "cnd",

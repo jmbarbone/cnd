@@ -6,10 +6,13 @@
 cli_on <- function() {
   switch(
     getOption("cnd.cli.override", "none"),
+    true = ,
     on = TRUE,
+    false = ,
     off = FALSE,
-    requireNamespace("cli", quietly = TRUE) && cli::num_ansi_colors() > 1L
-  )
+    NULL
+  ) %||%
+    (requireNamespace("cli", quietly = TRUE) && cli::num_ansi_colors() > 1L)
 }
 
 override_cli <- function(status = c("on", "off"), expr) {
@@ -44,19 +47,23 @@ cli_fun <- function(cli, ..., ..otherwise = base::paste0) {
 }
 
 # nocov start
-black   <- function(...) cli_fun("col_black", ...) # fmt: skip
-blue    <- function(...) cli_fun("col_blue", ...) # fmt: skip
-cyan    <- function(...) cli_fun("col_cyan", ...) # fmt: skip
-green   <- function(...) cli_fun("col_green", ...) # fmt: skip
-grey    <- function(...) cli_fun("col_grey", ...) # fmt: skip
-magenta <- function(...) cli_fun("col_magenta", ...) # fmt: skip
-red     <- function(...) cli_fun("col_red", ...) # fmt: skip
-silver  <- function(...) cli_fun("col_silver", ...) # fmt: skip
-white   <- function(...) cli_fun("col_white", ...) # fmt: skip
-yellow  <- function(...) cli_fun("col_yellow", ...) # fmt: skip
-bold    <- function(...) cli_fun("style_bold", ...) # fmt: skip
-italic  <- function(...) cli_fun("style_italic", ...) # fmt: skip
-code    <- function(...) cli_fun("code_highlight", ...) # fmt: skip
+# fmt: skip
+# nolint next: brace_linter.
+{
+  black   <- function(...) cli_fun("col_black", ...)
+  blue    <- function(...) cli_fun("col_blue", ...)
+  cyan    <- function(...) cli_fun("col_cyan", ...)
+  green   <- function(...) cli_fun("col_green", ...)
+  grey    <- function(...) cli_fun("col_grey", ...)
+  magenta <- function(...) cli_fun("col_magenta", ...)
+  red     <- function(...) cli_fun("col_red", ...)
+  silver  <- function(...) cli_fun("col_silver", ...)
+  white   <- function(...) cli_fun("col_white", ...)
+  yellow  <- function(...) cli_fun("col_yellow", ...)
+  bold    <- function(...) cli_fun("style_bold", ...)
+  italic  <- function(...) cli_fun("style_italic", ...)
+  code    <- function(...) cli_fun("code_highlight", ...)
+}
 # nocov end
 
 # handled retains .envir and just prints directly

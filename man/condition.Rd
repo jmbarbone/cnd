@@ -15,14 +15,16 @@
 \title{Conditions}
 \usage{
 condition(
-  class,
+  name,
   message = NULL,
   type = c("condition", "message", "warning", "error"),
   package = get_package(),
   exports = NULL,
   help = NULL,
   registry = package,
-  register = !is.null(registry)
+  register = !is.null(registry),
+  classes = NULL,
+  class
 )
 
 conditions(
@@ -45,13 +47,13 @@ conditions(x, ...) <- value
 \method{conditions}{`cnd::condition_progenitor`}(x, ...) <- value
 }
 \arguments{
-\item{class}{The name of the new class}
+\item{name}{The name of the new class}
 
 \item{message}{The message to be displayed when the condition is called. When
 entered as a character vector, the message is collapsed into a single
-string. Use explicit line returns to generate new lines in output messages.
-When a function is used and a character vector returned, each element is
-treated as a new line.}
+string.  Use explicit line returns to generate new lines in output
+messages. When a function is used and a character vector returned, each
+element is treated as a new line.}
 
 \item{type}{The type of condition: error, warning, or message}
 
@@ -66,9 +68,13 @@ called}
 
 \item{register}{Controls registration checks}
 
+\item{classes}{Additional classes to add to the condition}
+
+\item{class}{\emph{\strong{Deprecated}}; use \code{name} instead}
+
 \item{...}{Additional arguments passed to methods}
 
-\item{fun}{if a function is passed, then retrieves the \code{"conditions"}
+\item{fun}{if a \code{function} is passed, then retrieves the \code{"conditions"}
 attribute}
 
 \item{x}{An object}
@@ -93,9 +99,9 @@ attribute}
 }
 
 \itemize{
-\item \code{\link[=cnd]{cnd()}} is a wrapper for calling \code{\link[=stop]{stop()}}, \code{\link[=warning]{warning()}}, or
-\code{\link[=message]{message()}}; when  \code{condition} is a type, an error is thrown, and likewise
-for the other types.  When an error isn't thrown, the \code{condition} is
+\item \code{\link[=cnd]{cnd()}} is a wrapper for calling \code{\link[base:stop]{base::stop()}}, \code{\link[base:warning]{base::warning()}},
+or \code{\link[base:message]{base::message()}}; when \code{condition} is a type, an error is thrown, and
+likewise for the other types.  When an error isn't thrown, the \code{condition} is
 returned, invisibly.
 }
 }
@@ -114,9 +120,9 @@ Conditions
 object (a special \link{function}) which can be used to create generate a new
 condition, based on specifications applied in \code{\link[=condition]{condition()}}. These
 functions use \code{...} to absorb extra arguments and contain a special \code{.call}
-parameter. By default, \code{.call} captures the parent call from where the
+parameter.  By default, \code{.call} captures the parent call from where the
 \link{condition_generator} was created, but users may pass their own call
-to override this.  See \code{call.} in \code{\link[=conditionCall]{conditionCall()}}
+to override this.  See \code{call.} in \code{\link[base:conditions]{base::conditionCall()}}
 }
 
 \section{\code{\link[=condition]{condition()}} conditions}{
@@ -127,8 +133,8 @@ The following conditions are associated with this function:
 
 \describe{
 
-\item{\code{\link[=cnd-cnd-conditions]{cnd:as_character_cnd_error/error}}}{
-You cannot coerce a \link{condition_generator} object to a character. This may have occurred when trying to put a condition function through \code{\link[=stop]{stop()}} or \link{warning}.  Instead, call the function first, then pass the result to \code{\link[=stop]{stop()}} or \code{\link[=warning]{warning()}}.
+\item{\code{\link[=cnd-cnd-conditions]{cnd:condition_as_character_error/error}}}{
+You cannot coerce a \link{condition_generator} object to a character. This may have occurred when trying to put a condition function through \code{\link[base:stop]{base::stop()}} or \code{\link[base:warning]{base::warning()}}.  Instead, call the function first,  then pass the result to \code{\link[base:stop]{base::stop()}} or \code{\link[base:warning]{base::warning()}}.
 
 For example:
 
@@ -141,7 +147,13 @@ stop(my_condition())
 
 }
 
-\item{\code{\link[=cnd-cnd-conditions]{cnd:condition_message_generator/error}}}{
+\item{\code{\link[=cnd-cnd-conditions]{cnd:condition_message_error/error}}}{
+Conditions messages are displayed when invoked through \code{\link[base:conditions]{base::conditionMessage()}}.  You can set a static message by passing through a \code{character} vector, or a dynamic message by passing through a \code{function}.  The function should return a \code{character} vector.
+
+When \code{message} is not set, a default "there was an error" message is used.
+}
+
+\item{\code{\link[=cnd-cnd-conditions]{cnd:condition_message_generator_error/error}}}{
 \link{condition_generator} objects are not conditions.   You may have made this mistake:
 
 \if{html}{\out{<div class="sourceCode r">}}\preformatted{x <- condition("my_condition")
@@ -156,25 +168,19 @@ conditionMessage(x())
 
 }
 
-\item{\code{\link[=cnd-cnd-conditions]{cnd:condition_overwrite/warning}}}{
+\item{\code{\link[=cnd-cnd-conditions]{cnd:condition_overwrite_warning/warning}}}{
 Defining a new condition with the same class and package as an existing condition will overwrite the previous definition.  It is recommended to either avoid this by fully defining your condition, or creating a new condition instead.
 }
 
-\item{\code{\link[=cnd-cnd-conditions]{cnd:invalid_condition/error}}}{
+\item{\code{\link[=cnd-cnd-conditions]{cnd:invalid_condition_error/error}}}{
 The \code{class}, \code{exports}, and \code{help} parameters must be a single character string.  If you are passing a function, it must be a valid function.
 }
 
-\item{\code{\link[=cnd-cnd-conditions]{cnd:invalid_condition_message/error}}}{
-Conditions messages are displayed when invoked through \code{\link[=conditionMessage]{conditionMessage()}}.  You can set a static message by passing through a \code{character} vector, or a dynamic message by passing through a \code{function}.  The function should return a \code{character} vector.
-
-When \code{message} is not set, a default "there was an error" message is used.
-}
-
 \item{\code{\link[=cnd-cnd-conditions]{cnd:match_arg/error}}}{
-Mostly \code{\link[=match.arg]{match.arg()}} but with a custom condition
+Mostly \code{\link[base:match.arg]{base::match.arg()}} but with a custom condition
 }
 
-\item{\code{\link[=cnd-cnd-conditions]{cnd:no_package_exports/warning}}}{
+\item{\code{\link[=cnd-cnd-conditions]{cnd:no_package_exports_warning/warning}}}{
 The \code{exports} parameter requires a \code{package}
 }
 
@@ -191,8 +197,8 @@ The following conditions are associated with this function:
 
 \describe{
 
-\item{\code{\link[=cnd-cnd-conditions]{cnd:cond_cnd_class/error}}}{
-\code{\link[=cnd]{cnd()}} simple calls the appropriate function: \code{\link[=stop]{stop()}}, \code{\link[=warning]{warning()}}, or \code{\link[=message]{message()}} based on the \code{type} parameter from \code{\link[=condition]{condition()}}.
+\item{\code{\link[=cnd-cnd-conditions]{cnd:cnd_class_error/error}}}{
+\code{\link[=cnd]{cnd()}} simple calls the appropriate function: \code{\link[base:stop]{base::stop()}}, \code{\link[base:warning]{base::warning()}}, or \code{\link[base:message]{base::message()}} based on the \code{type} parameter from \code{\link[=condition]{condition()}}.
 }
 
 }

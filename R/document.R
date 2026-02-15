@@ -2,7 +2,7 @@
 
 #' Document your conditions
 #'
-#' Documents your [cnd::conditions()] and [cnd::conditions()]
+#' Documents your [cnd::conditions()]
 #'
 #' @param package The package to document
 #' @param registry The name of the registry
@@ -57,17 +57,18 @@ cnd_document <- function(
   text <- fmt(
     cnd_documentation_fmt,
     package = package,
-    # nolint start: line_length_linter.
-    aliases1 = collapse(vapply(conds, cget, NA_character_, "class"), sep = " "),
+    aliases1 = collapse(
+      vapply(conds, \(cond) cget(cond, "class"), NA_character_),
+      sep = " "
+    ),
     aliases2 = collapse(
-      vapply(conds, cget, NA_character_, ".class"),
+      vapply(conds, \(cond) cget(cond, "original_class"), NA_character_),
       sep = " "
     ),
     aliases3 = collapse(
       vapply(conds, `format.cnd::condition_generator`, NA_character_),
       sep = " "
     ),
-    # nolint end: line_length_linter.
     cnd_section_describe = collapse(
       vapply(
         conds,
@@ -187,9 +188,9 @@ cnd_documentation_fmt <- "@name {package}-cnd-conditions
 @details
   The following conditions are defined in the `{{package}}` package.
 
-@section [`{cnd}`][cnd-package]:
-  These conditions are made with the `{cnd}` package though the use of
-  [cnd::condition()].
+@section `{cnd}`:
+  These conditions are made with the [`{cnd}`][cnd-package] package though the
+  use of [cnd::condition()].
 
 @section `{{package}}` conditions:
 {cnd_section_describe}
@@ -231,7 +232,6 @@ cnd_section_item_fmt <- "
 
 # conditions --------------------------------------------------------------
 
-# fmt: skip
 cond_cnd_generated_cleanup <- function() {}
 delayedAssign(
   "cond_cnd_generated_cleanup",
@@ -240,12 +240,12 @@ delayedAssign(
     type = "message",
     package = "cnd",
     exports = "cnd_document",
-    # nolint next: brace_linter.
-    message = function(paths)
+    message = function(paths) {
       c(
         "Removing the following cnd generated files:",
         paste0("  ", paths)
-      ),
+      )
+    },
     help = c(
       "Some files created during the documentation process may become obsolete",
       " while updating your conditions."
@@ -253,7 +253,6 @@ delayedAssign(
   )
 )
 
-# fmt: skip
 cond_cnd_generated_write <- function() {}
 delayedAssign(
   "cond_cnd_generated_write",
@@ -262,12 +261,12 @@ delayedAssign(
     type = "condition",
     package = "cnd",
     exports = "cnd_document",
-    # nolint next: brace_linter.
-    message = function(path)
+    message = function(path) {
       cli_switch(
         cli_text(sprintf("Writing {.file %s}", path))
       ) %||%
-        paste("Writing", path),
+        paste("Writing", path)
+    },
     help = c(
       "This condition is signaled when [cnd::cnd_document()] needs to write",
       " new documentation files."
@@ -275,7 +274,6 @@ delayedAssign(
   )
 )
 
-# fmt: skip
 cond_cnd_document_pkg_reg <- function() {}
 delayedAssign(
   "cond_cnd_document_pkg_reg",
@@ -284,15 +282,15 @@ delayedAssign(
     type = "error",
     exports = "cnd_document",
     package = "cnd",
-    # nolint next: brace_linter.
-    message = function(pkg, reg)
+    message = function(pkg, reg) {
       fmt(
         "package and registry must be set\n",
         "  package: {pkg}\n",
         "  registry: {reg}",
         pkg = pkg,
         reg = reg
-      ),
+      )
+    },
     help = c(
       "Both `package` and `registry` must be set to document conditions.",
       "You can set a registry by adding [cnd::cnd_create_registry()] calls to ",
@@ -301,7 +299,6 @@ delayedAssign(
   )
 )
 
-# fmt: skip
 cond_cnd_document_conds <- function() {}
 delayedAssign(
   "cond_cnd_document_conds",
@@ -320,23 +317,23 @@ delayedAssign(
   )
 )
 
-# fmt: skip
 cond_cnd_document_file <- function() {}
 delayedAssign(
   "cond_cnd_document_file",
   condition(
     "cnd_document_file",
+    classes = "input_error",
     type = "error",
     package = "cnd",
     exports = "cnd_document",
-    # nolint next: brace_linter.
-    message = function(file)
+    message = function(file) {
       fmt(
         "`file` must be a `character`, `connection` object`, or `NULL`,",
         " not {class} ({type})",
         class = collapse(class(file), sep = "/"),
         type = typeof(file)
-      ),
+      )
+    },
     help = c(
       "The `file` argument to [cnd::cnd_document()] must be a file path,",
       " a connection object, or `NULL` to return the documentation as",

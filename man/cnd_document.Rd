@@ -44,7 +44,7 @@ documentation.}
 }
 }
 \description{
-Documents your \code{\link[=conditions]{conditions()}} and \code{\link[=conditions]{conditions()}}
+Documents your \code{\link[=conditions]{conditions()}}
 }
 \section{conditions}{
 

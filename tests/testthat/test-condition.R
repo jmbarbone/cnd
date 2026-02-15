@@ -9,12 +9,12 @@ test_that("condition() conditions", {
 
   expect_warning(
     condition("foo", exports = "exports", package = NULL),
-    class = "cnd:no_package_exports"
+    class = "cnd:no_package_exports_warning"
   )
 
   expect_error(
     condition("foo", 1),
-    class = "cnd:invalid_condition_message"
+    class = "cnd:condition_message_error"
   )
 })
 
@@ -40,7 +40,7 @@ test_that("conditions(x) <- value", {
 })
 
 test_that("find_cond() works", {
-  expect_identical(find_cond(cond_cnd_class), cond_cnd_class)
+  expect_identical(find_cond(cnd_class_error), cnd_class_error)
 })
 
 test_that("find_cond() fails", {
@@ -49,7 +49,7 @@ test_that("find_cond() fails", {
 })
 
 test_that("cnd()", {
-  expect_error(cnd(1), class = "cnd:cond_cnd_class")
+  expect_error(cnd(1), class = "cnd:cnd_class_error")
 
   con <- condition(
     "foo_message",
@@ -100,8 +100,8 @@ test_that("condition(help = gets_collapsed)", {
 
 test_that("conditions(..1)", {
   expect_warning(
-    conditions("cond_cnd_class", "cnd"),
-    class = cond_conditions_dots$class
+    conditions("cnd_class_error", "cnd"),
+    class = conditions_dots_warning$class
   )
 })
 
@@ -114,7 +114,7 @@ test_that("condition(type = 'condition')", {
 
 test_that("find_cond()", {
   expect_s3_class(
-    find_cond("cnd:cond_cnd_class/error"),
+    find_cond("cnd:cnd_class_error/error"),
     "cnd::condition_generator"
   )
 
@@ -132,46 +132,46 @@ test_that("find_cond()", {
 test_that("validate_condition()", {
   expect_error(
     validate_condition(1, NULL, NULL),
-    class = "cnd:invalid_condition"
+    class = "cnd:invalid_condition_error"
   )
 
   expect_error(
     validate_condition(letters, NULL, NULL),
-    class = "cnd:invalid_condition"
+    class = "cnd:invalid_condition_error"
   )
 
   expect_error(
     validate_condition("foo!bar", NULL, NULL),
-    class = "cnd:invalid_condition"
+    class = "cnd:invalid_condition_error"
   )
 
   expect_error(
     validate_condition("foo", NULL, 1),
-    class = "cnd:invalid_condition"
+    class = "cnd:invalid_condition_error"
   )
 
   expect_error(
     validate_condition("foo", 1, NULL),
-    class = "cnd:invalid_condition"
+    class = "cnd:invalid_condition_error"
   )
 })
 
 test_that("cget() and $ and [", {
   expect_identical(
-    cget(cond_cnd_class, "class"),
-    cond_cnd_class$class
+    cget(cnd_class_error, "class"),
+    cnd_class_error$class
   )
 
   expect_identical(
-    cget(cond_cnd_class, "class"),
-    cond_cnd_class["class"]
+    cget(cnd_class_error, "class"),
+    cnd_class_error["class"]
   )
 })
 
 test_that("as.character() error", {
   expect_error(
-    as.character(cond_as_character_condition),
-    class = "cnd:as_character_cnd_error"
+    as.character(condition_as_character_error),
+    class = "cnd:condition_as_character_error"
   )
 })
 
@@ -226,15 +226,30 @@ test_that("cnd(condition) handling", {
     class = "cnd::condition"
   )
 
-  expect_no_condition(
-    expect_output(suppress_conditions(cnd(foo())), NA),
-    class = "cnd::condition"
+  expect_output(
+    expect_no_condition(
+      suppress_conditions(cnd(foo())),
+    ),
+    NA
   )
 })
 
 test_that("conditinMessage(condition_generator)", {
   expect_error(
     conditionMessage(condition("foo", register = FALSE)),
-    class = "cnd:condition_message_generator"
+    class = "cnd:condition_message_generator_error"
+  )
+})
+
+test_that("condition_generators are closures, and not subsettable", {
+  co <- condition("_", register = FALSE)
+  co$extra <- TRUE
+  expect_true(co$extra)
+})
+
+test_that("condition(class) is deprecated", {
+  expect_warning(
+    condition(class = "foo"),
+    class = "deprecated_warning"
   )
 })

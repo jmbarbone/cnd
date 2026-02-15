@@ -50,7 +50,7 @@ local(envir = registrar, {
 
   new <- function(x = NULL) {
     e <- new.env(parent = .cnd_env)
-    assign(".__NAME__.", x, e)
+    assign(".__NAME__.", x, e) # nolint: object_name_linter.
     class(e) <- "cnd:registry"
     e
   }
@@ -141,7 +141,7 @@ local(envir = registrar, {
     }
 
     if (!is.null(old)) {
-      cnd(cond_condition_overwrite(old, condition))
+      cnd(condition_overwrite_warning(old, condition))
     }
 
     if (is.null(registry)) {
@@ -194,11 +194,10 @@ local(envir = registrar, {
         as.list(ns, all.names = TRUE)
       )
 
-    if (is.list(reg)) {
-      reg <- reg[[1L]]
-    }
-
     if (length(reg)) {
+      if (is.list(reg)) {
+        reg <- reg[[1L]]
+      }
       .self$add(reg)
     }
   }
@@ -256,24 +255,23 @@ as_list_env <- function(x, all = FALSE) {
 
 # conditions --------------------------------------------------------------
 
-# fmt: skip
-cond_condition_overwrite <- function() {}
+condition_overwrite_warning <- function() {}
 delayedAssign(
-  "cond_condition_overwrite",
+  "condition_overwrite_warning",
   condition(
-    "condition_overwrite",
+    "condition_overwrite_warning",
     type = "warning",
     package = "cnd",
     exports = "condition",
-    # nolint next: brace_linter.
-    message = function(old, new)
+    message = function(old, new) {
       fmt(
         "A condition with the class name '{cls}' already exists in '{pkg}' and",
         " will be overwritten{diff}",
         cls = old$class,
         pkg = old$package,
         diff = paste0("\n   ", all.equal(old, new), collapse = "")
-      ),
+      )
+    },
     help = c(
       "Defining a new condition with the same class and package as an existing",
       " condition will overwrite the previous definition.  It is recommended",

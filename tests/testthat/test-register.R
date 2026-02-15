@@ -21,7 +21,7 @@ test_that("registration works", {
   # warning for overwriting
   expect_warning(
     registrar$register(foo2, registry = reg),
-    class = "cnd:condition_overwrite"
+    class = "cnd:condition_overwrite_warning"
   )
   expect_null(registrar$unregister(foo2, reg))
 

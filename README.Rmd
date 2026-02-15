@@ -32,14 +32,14 @@ This makes setting up custom conditions quick and more useful.
 
 You can install the current CRAN version of `{cnd}` with one of:
 
-``` r
+```r
 install.packages("cnd")
 pak::pak("cran/cnd@*release")
 pak::pak("jmbarbone/cnd@*release")
 ```
 You can install the development version of `{cnd}` from [GitHub](https://github.com/) with:
 
-``` r
+```r
 pak::pak("jmbarbone/cnd")
 ```
 
