@@ -27,7 +27,7 @@
 #'     \item{class}{`cnd:cnd_document_conditions`}
 #'     \item{type}{**warning**}
 #'   }
-#'   _no help documentation provided_
+#'   Documentation will fail when no conditions are found.  You may be executing [cnd::cnd_document()] too early, before conditions have been registered.  You can try to find your conditions with [cnd::conditions()].
 #'  }
 #'   \subsection{`cnd:cnd_document_file/error`}{
 #'   \describe{
@@ -35,7 +35,7 @@
 #'     \item{class}{`cnd:cnd_document_file`}
 #'     \item{type}{**error**}
 #'   }
-#'   _no help documentation provided_
+#'   The `file` argument to [cnd::cnd_document()] must be a file path, a connection object, or `NULL` to return the documentation as a character vector.  The default value should be suitable for standard use cases.
 #'  }
 #'   \subsection{`cnd:cnd_document_pkg_reg/error`}{
 #'   \describe{
@@ -43,7 +43,7 @@
 #'     \item{class}{`cnd:cnd_document_pkg_reg`}
 #'     \item{type}{**error**}
 #'   }
-#'   _no help documentation provided_
+#'   Both `package` and `registry` must be set to document conditions.You can set a registry by adding [cnd::cnd_create_registry()] calls to your package code.
 #'  }
 #'   \subsection{`cnd:cnd_generated_cleanup/message`}{
 #'   \describe{
@@ -51,7 +51,7 @@
 #'     \item{class}{`cnd:cnd_generated_cleanup`}
 #'     \item{type}{**message**}
 #'   }
-#'   _no help documentation provided_
+#'   Some files created during the documentation process may become obsolete while updating your conditions.
 #'  }
 #'   \subsection{`cnd:cnd_generated_write/condition`}{
 #'   \describe{
@@ -59,7 +59,7 @@
 #'     \item{class}{`cnd:cnd_generated_write`}
 #'     \item{type}{**condition**}
 #'   }
-#'   _no help documentation provided_
+#'   This condition is signaled when [cnd::cnd_document()] needs to write new documentation files.
 #'  }
 #'   \subsection{`cnd:condition_as_character_error/error`}{
 #'   \describe{
@@ -114,7 +114,7 @@
 #'     \item{class}{`cnd:condition_overwrite_warning`}
 #'     \item{type}{**warning**}
 #'   }
-#'   _no help documentation provided_
+#'   Defining a new condition with the same class and package as an existing condition will overwrite the previous definition.  It is recommended to either avoid this by fully defining your condition, or creating a new condition instead.
 #'  }
 #'   \subsection{`cnd:conditions_dots_warning/warning`}{
 #'   \describe{

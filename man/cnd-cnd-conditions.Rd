@@ -77,7 +77,7 @@ use of \code{\link[=condition]{condition()}}.
 \item{class}{\code{cnd:cnd_document_conditions}}
 \item{type}{\strong{warning}}
 }
-\emph{no help documentation provided}
+Documentation will fail when no conditions are found.  You may be executing \code{\link[=cnd_document]{cnd_document()}} too early, before conditions have been registered.  You can try to find your conditions with \code{\link[=conditions]{conditions()}}.
 }
 \subsection{\code{cnd:cnd_document_file/error}}{
 \describe{
@@ -85,7 +85,7 @@ use of \code{\link[=condition]{condition()}}.
 \item{class}{\code{cnd:cnd_document_file}}
 \item{type}{\strong{error}}
 }
-\emph{no help documentation provided}
+The \code{file} argument to \code{\link[=cnd_document]{cnd_document()}} must be a file path, a connection object, or \code{NULL} to return the documentation as a character vector.  The default value should be suitable for standard use cases.
 }
 \subsection{\code{cnd:cnd_document_pkg_reg/error}}{
 \describe{
@@ -93,7 +93,7 @@ use of \code{\link[=condition]{condition()}}.
 \item{class}{\code{cnd:cnd_document_pkg_reg}}
 \item{type}{\strong{error}}
 }
-\emph{no help documentation provided}
+Both \code{package} and \code{registry} must be set to document conditions.You can set a registry by adding \code{\link[=cnd_create_registry]{cnd_create_registry()}} calls to your package code.
 }
 \subsection{\code{cnd:cnd_generated_cleanup/message}}{
 \describe{
@@ -101,7 +101,7 @@ use of \code{\link[=condition]{condition()}}.
 \item{class}{\code{cnd:cnd_generated_cleanup}}
 \item{type}{\strong{message}}
 }
-\emph{no help documentation provided}
+Some files created during the documentation process may become obsolete while updating your conditions.
 }
 \subsection{\code{cnd:cnd_generated_write/condition}}{
 \describe{
@@ -109,7 +109,7 @@ use of \code{\link[=condition]{condition()}}.
 \item{class}{\code{cnd:cnd_generated_write}}
 \item{type}{\strong{condition}}
 }
-\emph{no help documentation provided}
+This condition is signaled when \code{\link[=cnd_document]{cnd_document()}} needs to write new documentation files.
 }
 \subsection{\code{cnd:condition_as_character_error/error}}{
 \describe{
@@ -164,7 +164,7 @@ conditionMessage(x())
 \item{class}{\code{cnd:condition_overwrite_warning}}
 \item{type}{\strong{warning}}
 }
-\emph{no help documentation provided}
+Defining a new condition with the same class and package as an existing condition will overwrite the previous definition.  It is recommended to either avoid this by fully defining your condition, or creating a new condition instead.
 }
 \subsection{\code{cnd:conditions_dots_warning/warning}}{
 \describe{

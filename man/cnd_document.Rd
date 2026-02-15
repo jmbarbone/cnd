@@ -55,23 +55,23 @@ The following conditions are associated with this function:
 \describe{
 
 \item{\code{\link[=cnd-cnd-conditions]{cnd:cnd_document_conditions/warning}}}{
-
+Documentation will fail when no conditions are found.  You may be executing \code{\link[=cnd_document]{cnd_document()}} too early, before conditions have been registered.  You can try to find your conditions with \code{\link[=conditions]{conditions()}}.
 }
 
 \item{\code{\link[=cnd-cnd-conditions]{cnd:cnd_document_file/error}}}{
-
+The \code{file} argument to \code{\link[=cnd_document]{cnd_document()}} must be a file path, a connection object, or \code{NULL} to return the documentation as a character vector.  The default value should be suitable for standard use cases.
 }
 
 \item{\code{\link[=cnd-cnd-conditions]{cnd:cnd_document_pkg_reg/error}}}{
-
+Both \code{package} and \code{registry} must be set to document conditions.You can set a registry by adding \code{\link[=cnd_create_registry]{cnd_create_registry()}} calls to your package code.
 }
 
 \item{\code{\link[=cnd-cnd-conditions]{cnd:cnd_generated_cleanup/message}}}{
-
+Some files created during the documentation process may become obsolete while updating your conditions.
 }
 
 \item{\code{\link[=cnd-cnd-conditions]{cnd:cnd_generated_write/condition}}}{
-
+This condition is signaled when \code{\link[=cnd_document]{cnd_document()}} needs to write new documentation files.
 }
 
 }

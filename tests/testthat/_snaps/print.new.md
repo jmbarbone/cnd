@@ -37,11 +37,7 @@
       cnd:cnd_class_error/error 
       
       help
-    <<<<<<< HEAD
       [cnd::cnd()] simple calls the appropriate function: [base::stop()], [base::warning()], or [base::message()] based on the `type` parameter from [cnd::condition()]. 
-    =======
-      [cnd::cnd()] simple calls the appropriate function: [stop()], [warning()], or [message()] based on the `type` parameter from [cnd::condition()]. 
-    >>>>>>> main
       
       exports
         cnd::cnd()
@@ -83,7 +79,6 @@
       A condition with the class name 'cnd:testing:snapshot_test_old' already exists in 'cnd:testing' and will be overwritten
          1 string mismatch
          target, current do not match when deparsed
-    <<<<<<< HEAD
          Component "class": 1 string mismatch
          Component "condition_function": target, current do not match when deparsed
          Component "message": Component "name": 1 string mismatch
@@ -101,22 +96,6 @@
          Component "res": target, current do not match when deparsed
          Component "res": 1 string mismatch
          1 string mismatch
-    =======
-         Component ".class": 1 string mismatch
-         Component "class": 1 string mismatch
-         Component "condition_function": target, current do not match when deparsed
-         Component "message": Component "class": 1 string mismatch
-         Component "message": Component "original_class": 1 string mismatch
-         Component "message": Component "res": 1 string mismatch
-         Component "message": Component "res": target, current do not match when deparsed
-         Component "class": 1 string mismatch
-         Component "condition_env": Component ".class": 1 string mismatch
-         Component "condition_env": Component "class": 1 string mismatch
-         Component "condition_env": Component "condition_function": target, current do not match when deparsed
-         Component "original_class": 1 string mismatch
-         Component "res": 1 string mismatch
-         Component "res": target, current do not match when deparsed
-    >>>>>>> main
 
 ---
 

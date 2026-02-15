@@ -184,8 +184,7 @@ condition <- function(
 
         # nolint next: object_usage_linter. (cond) is used
         cond <- list(
-          # message = clean_text(do.call(..message.., params, TRUE)),
-          message = clean_text(do.call(condition_env$message, params, TRUE)),
+          message = clean_text(do.call(..message.., params, TRUE)),
           call = .call
         )
 
@@ -273,7 +272,7 @@ conditions <- function(
 
   if (!is.null(fun)) {
     fun <- match.fun(fun)
-    return(attr(fun, "conditions"))
+    return(attr2(fun, "conditions"))
   }
 
   if (!is.null(package)) {
@@ -349,7 +348,7 @@ cnd <- function(condition) {
   }
 
   switch(
-    attr(condition, "type"),
+    attr2(condition, "type"),
     error = stop(condition), # maybe `error()` should be the name
     warning = warning(condition),
     message = cnd_message(condition, getOption("cnd.message.format")),
@@ -543,11 +542,11 @@ cget <- function(x, field) {
 
 #' @export
 `conditionMessage.cnd::condition` <- function(c) {
-  exports <- attr(c, "exports")
-  pkg <- attr(c, "package")
+  exports <- attr2(c, "exports")
+  pkg <- attr2(c, "package")
 
   msg <- c(
-    fmt("<{cl}>", cl = attr(c, "condition")),
+    fmt("<{cl}>", cl = attr2(c, "condition")),
     collapse(c$message, sep = "\n")
   )
 
@@ -706,6 +705,7 @@ delayedAssign(
     "invalid_condition_error",
     classes = "value_error",
     type = "error",
+    # fmt: skip
     # nolint next: brace_linter.
     message = function(problems) {
       collapse(

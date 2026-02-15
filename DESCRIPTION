@@ -20,15 +20,12 @@ Language: en-US
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.3
 Depends: 
-    R (>= 3.6)
+    R (>= 4.1)
 Suggests: 
-    cli,
-    here,
-    pkgload,
-    rcmdcheck,
-    roxygen2,
-    spelling,
-    testthat (>= 3.0.0),
-    utils
+    cli (>= 3.6.5),
+    here (>= 1.0.2),
+    roxygen2 (>= 7.3.3),
+    spelling (>= 2.3.2),
+    testthat (>= 3.0.0)
 Config/testthat/edition: 3
 Config/testthat/parallel: false

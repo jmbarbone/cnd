@@ -9,13 +9,8 @@
       
       \describe{
         
-    <<<<<<< HEAD
         \item{[`cnd:cnd_class_error/error`][cnd-cnd-conditions]}{
           [cnd::cnd()] simple calls the appropriate function: [base::stop()], [base::warning()], or [base::message()] based on the `type` parameter from [cnd::condition()].
-    =======
-        \item{[`cnd:cond_cnd_class/error`][cnd-cnd-conditions]}{
-          [cnd::cnd()] simple calls the appropriate function: [stop()], [warning()], or [message()] based on the `type` parameter from [cnd::condition()].
-    >>>>>>> main
         }
       
       }
@@ -94,7 +89,6 @@
       #'     \item{class}{`cnd:condition_as_character_error`}
       #'     \item{type}{**error**}
       #'   }
-    <<<<<<< HEAD
       #'   You cannot coerce a [cnd::condition_generator] object to a character. This may have occurred when trying to put a condition function through [base::stop()] or [base::warning()].  Instead, call the function first,  then pass the result to [base::stop()] or [base::warning()].
       #'
       #'   For example:
@@ -105,9 +99,6 @@
       #'   # Do this
       #'   stop(my_condition())
       #'   ```
-    =======
-      #'   [cnd::cnd()] simple calls the appropriate function: [stop()], [warning()], or [message()] based on the `type` parameter from [cnd::condition()].
-    >>>>>>> main
       #'  }
       #'   \subsection{`cnd:condition_message_error/error`}{
       #'   \describe{

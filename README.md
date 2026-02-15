@@ -88,7 +88,7 @@ condition
 #> cnd::condition_progenitor
 #> 
 #> generator
-#>   $ class    : <symbol> 
+#>   $ name     : <symbol> 
 #>   $ message  : NULL
 #>   $ type     : <language> c("condition", "message", "warning", "error")
 #>   $ package  : <language> get_package()
@@ -96,15 +96,17 @@ condition
 #>   $ help     : NULL
 #>   $ registry : <symbol> package
 #>   $ register : <language> !is.null(registry)
+#>   $ classes  : NULL
+#>   $ class    : <symbol> 
 #> 
 #> condition(s)
-#> cnd:as_character_cnd_error/error
-#> cnd:condition_message_generator/error
-#> cnd:condition_overwrite/warning
-#> cnd:invalid_condition/error
-#> cnd:invalid_condition_message/error
+#> cnd:condition_as_character_error/error
+#> cnd:condition_message_error/error
+#> cnd:condition_message_generator_error/error
+#> cnd:condition_overwrite_warning/warning
+#> cnd:invalid_condition_error/error
 #> cnd:match_arg/error
-#> cnd:no_package_exports/warning
+#> cnd:no_package_exports_warning/warning
 #> 
 #> For a list of conditions: `cnd::conditions()`
 ```
@@ -143,7 +145,8 @@ foo <- function(x) {
 
 
 foo(-1)
-#> Error in foo(): <bad_value>
+#> Error in `foo()`:
+#> ! <bad_value>
 #> Value has to be better
 ```
 
@@ -193,7 +196,8 @@ foo <- function(x) {
 }
 
 foo(-1.2)
-#> Error in foo(): <bad_value2>
+#> Error in `foo()`:
+#> ! <bad_value2>
 #> `x` must be `>=0`. A value of `-1.2` is no good
 ```
 
@@ -275,8 +279,8 @@ cat(cnd_section(cnd))
 #> 
 #> \describe{
 #>   
-#>   \item{[`cnd:cond_cnd_class/error`][cnd-cnd-conditions]}{
-#>     [cnd()] simple calls the appropriate function: [stop()], [warning()], or [message()] based on the `type` parameter from [cnd::condition()].
+#>   \item{[`cnd:cnd_class_error/error`][cnd-cnd-conditions]}{
+#>     [cnd::cnd()] simple calls the appropriate function: [base::stop()], [base::warning()], or [base::message()] based on the `type` parameter from [cnd::condition()].
 #>   }
 #> 
 #> }
@@ -301,37 +305,39 @@ by specific packages.
 conditions("cnd", type = "warning")
 ```
 
-    #> [[1]]
     #> cnd::condition_generator
     #> cnd:cnd_document_conditions/warning 
     #> 
+    #> help
+    #> Documentation will fail when no conditions are found.  You may be executing [cnd::cnd_document()] too early, before conditions have been registered.  You can try to find your conditions with [cnd::conditions()]. 
+    #> 
     #> exports
     #>   cnd::cnd_document()
-    #> 
-    #> [[2]]
+    #> -------------------------------------------------------------------------------- 
     #> cnd::condition_generator
-    #> cnd:condition_overwrite/warning 
+    #> cnd:condition_overwrite_warning/warning 
     #> 
     #> generator
     #>   $ old : <symbol> 
     #>   $ new : <symbol> 
     #> 
+    #> help
+    #> Defining a new condition with the same class and package as an existing condition will overwrite the previous definition.  It is recommended to either avoid this by fully defining your condition, or creating a new condition instead. 
+    #> 
     #> exports
     #>   cnd::condition()
-    #> 
-    #> [[3]]
+    #> -------------------------------------------------------------------------------- 
     #> cnd::condition_generator
-    #> cnd:conditions_dots/warning 
+    #> cnd:conditions_dots_warning/warning 
     #> 
     #> help
-    #> The `...` parameter in [conditions()] is meant for convenience.  Only a single argument is allowed.  Other parameters must be named  explicitly.  For example:  ```r # Instead of this conditions("class", "package") # "package" is ignored with a warning  # Do this conditions(class = "class", package = "package") ``` 
+    #> The `...` parameter in [cnd::conditions()] is meant for convenience.  Only a single argument is allowed.  Other parameters must be named  explicitly.  For example:  ```r # Instead of this conditions("class", "package") # "package" is ignored with a warning  # Do this conditions(class = "class", package = "package") ``` 
     #> 
     #> exports
     #>   cnd::conditions()
-    #> 
-    #> [[4]]
+    #> -------------------------------------------------------------------------------- 
     #> cnd::condition_generator
-    #> cnd:no_package_exports/warning 
+    #> cnd:no_package_exports_warning/warning 
     #> 
     #> help
     #> The `exports` parameter requires a `package` 
