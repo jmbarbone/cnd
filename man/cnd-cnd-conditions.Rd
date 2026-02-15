@@ -2,51 +2,51 @@
 % Please edit documentation in R/cnd-cnd-conditions.R
 \name{cnd-cnd-conditions}
 \alias{cnd-cnd-conditions}
-\alias{cnd:as_character_cnd_error}
+\alias{cnd:cnd_class_error}
 \alias{cnd:cnd_document_conditions}
 \alias{cnd:cnd_document_file}
 \alias{cnd:cnd_document_pkg_reg}
 \alias{cnd:cnd_generated_cleanup}
 \alias{cnd:cnd_generated_write}
-\alias{cnd:cond_cnd_class}
-\alias{cnd:condition_message_generator}
-\alias{cnd:condition_overwrite}
-\alias{cnd:conditions_dots}
+\alias{cnd:condition_as_character_error}
+\alias{cnd:condition_message_error}
+\alias{cnd:condition_message_generator_error}
+\alias{cnd:condition_overwrite_warning}
+\alias{cnd:conditions_dots_warning}
 \alias{cnd:internal_error}
-\alias{cnd:invalid_condition}
-\alias{cnd:invalid_condition_message}
+\alias{cnd:invalid_condition_error}
 \alias{cnd:match_arg}
-\alias{cnd:no_package_exports}
-\alias{as_character_cnd_error}
+\alias{cnd:no_package_exports_warning}
+\alias{cnd_class_error}
 \alias{cnd_document_conditions}
 \alias{cnd_document_file}
 \alias{cnd_document_pkg_reg}
 \alias{cnd_generated_cleanup}
 \alias{cnd_generated_write}
-\alias{cond_cnd_class}
-\alias{condition_message_generator}
-\alias{condition_overwrite}
-\alias{conditions_dots}
+\alias{condition_as_character_error}
+\alias{condition_message_error}
+\alias{condition_message_generator_error}
+\alias{condition_overwrite_warning}
+\alias{conditions_dots_warning}
 \alias{internal_error}
-\alias{invalid_condition}
-\alias{invalid_condition_message}
+\alias{invalid_condition_error}
 \alias{match_arg}
-\alias{no_package_exports}
-\alias{cnd:as_character_cnd_error/error}
+\alias{no_package_exports_warning}
+\alias{cnd:cnd_class_error/error}
 \alias{cnd:cnd_document_conditions/warning}
 \alias{cnd:cnd_document_file/error}
 \alias{cnd:cnd_document_pkg_reg/error}
 \alias{cnd:cnd_generated_cleanup/message}
 \alias{cnd:cnd_generated_write/condition}
-\alias{cnd:cond_cnd_class/error}
-\alias{cnd:condition_message_generator/error}
-\alias{cnd:condition_overwrite/warning}
-\alias{cnd:conditions_dots/warning}
+\alias{cnd:condition_as_character_error/error}
+\alias{cnd:condition_message_error/error}
+\alias{cnd:condition_message_generator_error/error}
+\alias{cnd:condition_overwrite_warning/warning}
+\alias{cnd:conditions_dots_warning/warning}
 \alias{cnd:internal_error/error}
-\alias{cnd:invalid_condition/error}
-\alias{cnd:invalid_condition_message/error}
+\alias{cnd:invalid_condition_error/error}
 \alias{cnd:match_arg/error}
-\alias{cnd:no_package_exports/warning}
+\alias{cnd:no_package_exports_warning/warning}
 \title{Conditions for \code{cnd}}
 \description{
 Conditions for \code{cnd}
@@ -63,23 +63,13 @@ use of \code{\link[=condition]{condition()}}.
 \section{\code{{cnd}} conditions}{
 
 
-\subsection{\code{cnd:as_character_cnd_error/error}}{
+\subsection{\code{cnd:cnd_class_error/error}}{
 \describe{
 \item{package}{\code{{cnd}}}
-\item{class}{\code{cnd:as_character_cnd_error}}
+\item{class}{\code{cnd:cnd_class_error}}
 \item{type}{\strong{error}}
 }
-You cannot coerce a \link{condition_generator} object to a character. This may have occurred when trying to put a condition function through \code{\link[base:stop]{base::stop()}} or \code{\link[base:warning]{base::warning()}}.  Instead, call the function first,  then pass the result to \code{\link[base:stop]{base::stop()}} or \code{\link[base:warning]{base::warning()}}.
-
-For example:
-
-\if{html}{\out{<div class="sourceCode r">}}\preformatted{# Instead of this
-stop(my_condition)
-
-# Do this
-stop(my_condition())
-}\if{html}{\out{</div>}}
-
+\code{\link[=cnd]{cnd()}} simple calls the appropriate function: \code{\link[base:stop]{base::stop()}}, \code{\link[base:warning]{base::warning()}}, or \code{\link[base:message]{base::message()}} based on the \code{type} parameter from \code{\link[=condition]{condition()}}.
 }
 \subsection{\code{cnd:cnd_document_conditions/warning}}{
 \describe{
@@ -121,18 +111,38 @@ stop(my_condition())
 }
 \emph{no help documentation provided}
 }
-\subsection{\code{cnd:cond_cnd_class/error}}{
+\subsection{\code{cnd:condition_as_character_error/error}}{
 \describe{
 \item{package}{\code{{cnd}}}
-\item{class}{\code{cnd:cond_cnd_class}}
+\item{class}{\code{cnd:condition_as_character_error}}
 \item{type}{\strong{error}}
 }
-\code{\link[=cnd]{cnd()}} simple calls the appropriate function: \code{\link[base:stop]{base::stop()}}, \code{\link[base:warning]{base::warning()}}, or \code{\link[base:message]{base::message()}} based on the \code{type} parameter from \code{\link[=condition]{condition()}}.
+You cannot coerce a \link{condition_generator} object to a character. This may have occurred when trying to put a condition function through \code{\link[base:stop]{base::stop()}} or \code{\link[base:warning]{base::warning()}}.  Instead, call the function first,  then pass the result to \code{\link[base:stop]{base::stop()}} or \code{\link[base:warning]{base::warning()}}.
+
+For example:
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{# Instead of this
+stop(my_condition)
+
+# Do this
+stop(my_condition())
+}\if{html}{\out{</div>}}
+
 }
-\subsection{\code{cnd:condition_message_generator/error}}{
+\subsection{\code{cnd:condition_message_error/error}}{
 \describe{
 \item{package}{\code{{cnd}}}
-\item{class}{\code{cnd:condition_message_generator}}
+\item{class}{\code{cnd:condition_message_error}}
+\item{type}{\strong{error}}
+}
+Conditions messages are displayed when invoked through \code{\link[base:conditions]{base::conditionMessage()}}.  You can set a static message by passing through a \code{character} vector, or a dynamic message by passing through a \code{function}.  The function should return a \code{character} vector.
+
+When \code{message} is not set, a default "there was an error" message is used.
+}
+\subsection{\code{cnd:condition_message_generator_error/error}}{
+\describe{
+\item{package}{\code{{cnd}}}
+\item{class}{\code{cnd:condition_message_generator_error}}
 \item{type}{\strong{error}}
 }
 \link{condition_generator} objects are not conditions.   You may have made this mistake:
@@ -148,18 +158,18 @@ conditionMessage(x())
 }\if{html}{\out{</div>}}
 
 }
-\subsection{\code{cnd:condition_overwrite/warning}}{
+\subsection{\code{cnd:condition_overwrite_warning/warning}}{
 \describe{
 \item{package}{\code{{cnd}}}
-\item{class}{\code{cnd:condition_overwrite}}
+\item{class}{\code{cnd:condition_overwrite_warning}}
 \item{type}{\strong{warning}}
 }
 \emph{no help documentation provided}
 }
-\subsection{\code{cnd:conditions_dots/warning}}{
+\subsection{\code{cnd:conditions_dots_warning/warning}}{
 \describe{
 \item{package}{\code{{cnd}}}
-\item{class}{\code{cnd:conditions_dots}}
+\item{class}{\code{cnd:conditions_dots_warning}}
 \item{type}{\strong{warning}}
 }
 The \code{...} parameter in \code{\link[=conditions]{conditions()}} is meant for convenience.  Only a single argument is allowed.  Other parameters must be named  explicitly.
@@ -182,23 +192,13 @@ conditions(class = "class", package = "package")
 }
 This is an internal error, which means that something has gone (horribly?) wrong within \link{cnd}.  If you believe this is a problem please provide a report at \url{https://github.com/jmbarbone/cnd/issues}
 }
-\subsection{\code{cnd:invalid_condition/error}}{
+\subsection{\code{cnd:invalid_condition_error/error}}{
 \describe{
 \item{package}{\code{{cnd}}}
-\item{class}{\code{cnd:invalid_condition}}
+\item{class}{\code{cnd:invalid_condition_error}}
 \item{type}{\strong{error}}
 }
 The \code{class}, \code{exports}, and \code{help} parameters must be a single character string.  If you are passing a function, it must be a valid function.
-}
-\subsection{\code{cnd:invalid_condition_message/error}}{
-\describe{
-\item{package}{\code{{cnd}}}
-\item{class}{\code{cnd:invalid_condition_message}}
-\item{type}{\strong{error}}
-}
-Conditions messages are displayed when invoked through \code{\link[base:conditions]{base::conditionMessage()}}.  You can set a static message by passing through a \code{character} vector, or a dynamic message by passing through a \code{function}.  The function should return a \code{character} vector.
-
-When \code{message} is not set, a default "there was an error" message is used.
 }
 \subsection{\code{cnd:match_arg/error}}{
 \describe{
@@ -208,10 +208,10 @@ When \code{message} is not set, a default "there was an error" message is used.
 }
 Mostly \code{\link[base:match.arg]{base::match.arg()}} but with a custom condition
 }
-\subsection{\code{cnd:no_package_exports/warning}}{
+\subsection{\code{cnd:no_package_exports_warning/warning}}{
 \describe{
 \item{package}{\code{{cnd}}}
-\item{class}{\code{cnd:no_package_exports}}
+\item{class}{\code{cnd:no_package_exports_warning}}
 \item{type}{\strong{warning}}
 }
 The \code{exports} parameter requires a \code{package}
