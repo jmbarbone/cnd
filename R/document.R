@@ -305,6 +305,7 @@ delayedAssign(
   "cond_cnd_document_file",
   condition(
     "cnd_document_file",
+    classes = "input_error",
     type = "error",
     package = "cnd",
     exports = "cnd_document",

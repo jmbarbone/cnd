@@ -303,7 +303,7 @@ strings <- function(...) {
 convert <- function(cnd, new) {
   change <- function(x) sub(cnd$type, new, x, fixed = TRUE)
   condition(
-    class = change(cnd$class),
+    name = change(cnd$class),
     message = cnd$message,
     type = new,
     package = cnd$package,

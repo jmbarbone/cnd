@@ -10,12 +10,12 @@
 #'   [cnd::conditions()] retrieves all conditions based on search values.  The
 #'   parameters serve as filtering arguments.
 #'
-#' @param class The name of the new class
-#' @param message The message to be displayed when the condition is called.  When
+#' @param name The name of the new class
+#' @param message The message to be displayed when the condition is called. When
 #'   entered as a character vector, the message is collapsed into a single
-#'   string.  Use explicit line returns to generate new lines in output messages.
-#'   When a function is used and a character vector returned, each element is
-#'   treated as a new line.
+#'   string.  Use explicit line returns to generate new lines in output
+#'   messages. When a function is used and a character vector returned, each
+#'   element is treated as a new line.
 #' @param type The type of condition: error, warning, or message
 #' @param exports The exported functions to be displayed when the condition is
 #'   called
@@ -23,6 +23,8 @@
 #' @param package The package to which the condition belongs
 #' @param registry The name of the registry to store the condition
 #' @param register Controls registration checks
+#' @param classes Additional classes to add to the condition
+#' @param class _**Deprecated**_; use `name` instead
 #'
 #' @section [cnd::condition_generator]: A [cnd::condition_generator] is an
 #'   object (a special [function]) which can be used to create generate a new
@@ -64,17 +66,28 @@
 #'   cnd::condition_generator
 #' @seealso [cnd-package]
 condition <- function(
-  class,
+  name,
   message = NULL,
   type = c("condition", "message", "warning", "error"),
   package = get_package(),
   exports = NULL,
   help = NULL,
   registry = package,
-  register = !is.null(registry)
+  register = !is.null(registry),
+  classes = NULL,
+  class
 ) {
+  if (!missing(class)) {
+    cnd(deprecated_warning(
+      deprecated = quote(condition(class = )),
+      replacement = quote(condition(name = )),
+      version = "0.3.0"
+    ))
+    name <- class
+  }
+
   if (nargs() == 1L) {
-    found <- do_find_cond(class)
+    found <- do_find_cond(name)
     if (length(found) == 1L) {
       return(found[[1L]])
     }
@@ -84,18 +97,18 @@ condition <- function(
   force(registry)
   force(register)
 
-  validate_condition(class = class, exports = exports, help = help)
+  validate_condition(class = name, exports = exports, help = help)
 
   type <- match_arg(type)
 
-  original_class <- class
+  original_class <- name
   if (is.null(package)) {
     if (!is.null(exports)) {
       cnd(cond_no_package_exports())
       exports <- NULL
     }
   } else {
-    class <- paste(package, class, sep = ":")
+    name <- paste(package, name, sep = ":")
   }
 
   if (is.null(message)) {
@@ -126,7 +139,7 @@ condition <- function(
   assign("message", message, condition_env)
   assign("exports", exports, condition_env)
   assign("package", package, condition_env)
-  assign("class", class, condition_env)
+  assign("class", name, condition_env)
   assign("original_class", original_class, condition_env)
   assign("type", type, condition_env)
   assign("help", help, condition_env)
@@ -178,7 +191,13 @@ condition <- function(
 
         cond <- set_class(
           cond,
-          unique(c(..class.., "cnd::condition", ..type.., "condition"))
+          unique(c(
+            ..class..,
+            "cnd::condition",
+            ..classes..,
+            ..type..,
+            "condition"
+          ))
         )
 
         attr(cond, "help") <- ..help..
@@ -190,12 +209,13 @@ condition <- function(
       },
       list(
         ..message.. = message,
-        ..class.. = class,
+        ..class.. = name,
         ..type.. = type,
         ..help.. = help,
         ..package.. = package,
         ..exports.. = exports,
-        ..condition.. = condition
+        ..condition.. = condition,
+        ..classes.. = classes
       )
     )
 
@@ -577,6 +597,7 @@ delayedAssign(
   "cond_no_package_exports",
   condition(
     "no_package_exports",
+    classes = "input_warning",
     type = "warning",
     message = "No package was supplied, so `exports` is ignored",
     exports = "condition",
@@ -590,6 +611,7 @@ delayedAssign(
   "cond_condition_bad_message",
   condition(
     "invalid_condition_message",
+    classes = "input_error",
     type = "error",
     message = "`message` must be a character vector or a function.",
     exports = "condition",
@@ -611,6 +633,7 @@ delayedAssign(
   "cond_cnd_class",
   condition(
     "cond_cnd_class",
+    classes = "input_error",
     type = "error",
     message = "'condition' must be a `cnd::condition` object",
     exports = "cnd",
@@ -660,6 +683,7 @@ delayedAssign(
   "cond_condition_invalid",
   condition(
     "invalid_condition",
+    classes = "value_error",
     type = "error",
     # nolint next: brace_linter.
     message = function(problems) {
@@ -683,6 +707,7 @@ delayedAssign(
   "cond_conditions_dots",
   condition(
     "conditions_dots",
+    classes = "input_warning",
     type = "warning",
     message = "The `...` parameter only allows for a single argument",
     exports = "conditions",

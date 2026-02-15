@@ -134,6 +134,7 @@ rcode <- function(...) {
   collapse("```r", ..., "```", sep = "\n")
 }
 
+
 # conditions --------------------------------------------------------------
 
 cond_match_arg <- NULL
@@ -141,6 +142,7 @@ delayedAssign(
   "cond_match_arg",
   condition(
     "match_arg",
+    classes = "input_error",
     type = "error",
     package = "cnd",
     exports = "condition",
