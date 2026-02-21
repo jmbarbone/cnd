@@ -8,7 +8,7 @@
 ## Citation
 
 Source:
-[`DESCRIPTION`](https://github.com/jmbarbone/cnd/blob/v0.1.1.9001/DESCRIPTION)
+[`DESCRIPTION`](https://github.com/jmbarbone/cnd/blob/main/DESCRIPTION)
 
 Barbone J (2026). *cnd: Create and Register Conditions*. R package
 version 0.1.1.9001, <https://jmbarbone.github.io/cnd/>.

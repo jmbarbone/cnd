@@ -30,6 +30,8 @@
 
 ## cnd 0.1.1
 
+CRAN release: 2025-11-22
+
 - `cnd::condition_progenitor$message` no longer has its environment
   reset [\#14](https://github.com/jmbarbone/cnd/issues/14)
 - test fix for [testthat](https://testthat.r-lib.org) 3.3.0
@@ -39,5 +41,7 @@
   [\#5](https://github.com/jmbarbone/cnd/issues/5)
 
 ## cnd 0.1.0
+
+CRAN release: 2025-02-26
 
 - Initial release
