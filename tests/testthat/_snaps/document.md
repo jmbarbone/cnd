@@ -23,7 +23,7 @@
       cnd_document("cnd", file = stdout())
     Output
       #' @name cnd-cnd-conditions
-      #' @aliases cnd-cnd-conditions cnd:cnd_class_error cnd:cnd_document_conditions cnd:cnd_document_file cnd:cnd_document_pkg_reg cnd:cnd_generated_cleanup cnd:cnd_generated_write cnd:condition_as_character_error cnd:condition_message_error cnd:condition_message_generator_error cnd:condition_overwrite_warning cnd:conditions_dots_warning cnd:foo cnd:internal_error cnd:invalid_condition_error cnd:match_arg cnd:no_package_exports_warning cnd_class_error cnd_document_conditions cnd_document_file cnd_document_pkg_reg cnd_generated_cleanup cnd_generated_write condition_as_character_error condition_message_error condition_message_generator_error condition_overwrite_warning conditions_dots_warning foo internal_error invalid_condition_error match_arg no_package_exports_warning cnd:cnd_class_error/error cnd:cnd_document_conditions/warning cnd:cnd_document_file/error cnd:cnd_document_pkg_reg/error cnd:cnd_generated_cleanup/message cnd:cnd_generated_write/condition cnd:condition_as_character_error/error cnd:condition_message_error/error cnd:condition_message_generator_error/error cnd:condition_overwrite_warning/warning cnd:conditions_dots_warning/warning cnd:foo/condition cnd:internal_error/error cnd:invalid_condition_error/error cnd:match_arg/error cnd:no_package_exports_warning/warning
+      #' @aliases cnd-cnd-conditions cnd:cnd_class_error cnd:cnd_document_conditions cnd:cnd_document_file cnd:cnd_document_pkg_reg cnd:cnd_generated_cleanup cnd:cnd_generated_write cnd:condition_as_character_error cnd:condition_message_error cnd:condition_message_generator_error cnd:condition_overwrite_warning cnd:conditions_dots_warning cnd:internal_error cnd:invalid_condition_error cnd:match_arg cnd:no_package_exports_warning cnd_class_error cnd_document_conditions cnd_document_file cnd_document_pkg_reg cnd_generated_cleanup cnd_generated_write condition_as_character_error condition_message_error condition_message_generator_error condition_overwrite_warning conditions_dots_warning internal_error invalid_condition_error match_arg no_package_exports_warning cnd:cnd_class_error/error cnd:cnd_document_conditions/warning cnd:cnd_document_file/error cnd:cnd_document_pkg_reg/error cnd:cnd_generated_cleanup/message cnd:cnd_generated_write/condition cnd:condition_as_character_error/error cnd:condition_message_error/error cnd:condition_message_generator_error/error cnd:condition_overwrite_warning/warning cnd:conditions_dots_warning/warning cnd:internal_error/error cnd:invalid_condition_error/error cnd:match_arg/error cnd:no_package_exports_warning/warning
       #' @title Conditions for `cnd`
       #'
       #' @details
@@ -155,14 +155,6 @@
       #'   # Do this
       #'   conditions(class = "class", package = "package")
       #'   ```
-      #'  }
-      #'   \subsection{`cnd:foo/condition`}{
-      #'   \describe{
-      #'     \item{package}{`{cnd}`}
-      #'     \item{class}{`cnd:foo`}
-      #'     \item{type}{**condition**}
-      #'   }
-      #'   _no help documentation provided_
       #'  }
       #'   \subsection{`cnd:internal_error/error`}{
       #'   \describe{
