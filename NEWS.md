@@ -8,6 +8,7 @@
   - `type_error()`, `type_warning()`
   - `input_error()`, `input_warning()`
   - `use_error()`, `use_warning()` (i.e., /juːs/, not /juːz/)
+  - `duplicate_error()`, `duplicate_warning()`
   - `default_error()`
   - `deprecated_warning()`
 - `cnd_document()`'s links to `{cnd}` are corrected [#25](https://github.com/jmbarbone/cnd/issues/25)
