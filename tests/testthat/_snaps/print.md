@@ -155,3 +155,45 @@
     Message
       For a list of conditions: `cnd::conditions()`
 
+# print.conditions_list()
+
+    Code
+      conditions("cnd")[1]
+    Output
+      $`cnd:cnd_class_error`
+      cnd::condition_generator
+      cnd:cnd_class_error/error 
+      
+      help
+      [cnd::cnd()] simple calls the appropriate function: [base::stop()], [base::warning()], or [base::message()] based on the `type` parameter from [cnd::condition()]. 
+      
+      exports
+        cnd::cnd()
+      
+
+---
+
+    Code
+      conditions("cnd")[1:2]
+    Output
+      $`cnd:cnd_class_error`
+      cnd::condition_generator
+      cnd:cnd_class_error/error 
+      
+      help
+      [cnd::cnd()] simple calls the appropriate function: [base::stop()], [base::warning()], or [base::message()] based on the `type` parameter from [cnd::condition()]. 
+      
+      exports
+        cnd::cnd()
+      
+      $`cnd:cnd_document_conditions`
+      cnd::condition_generator
+      cnd:cnd_document_conditions/warning 
+      
+      help
+      Documentation will fail when no conditions are found.  You may be executing [cnd::cnd_document()] too early, before conditions have been registered.  You can try to find your conditions with [cnd::conditions()]. 
+      
+      exports
+        cnd::cnd_document()
+      
+
