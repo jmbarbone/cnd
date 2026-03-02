@@ -40,6 +40,23 @@ test_that("use_error()", {
   expect_s3_class(use_error(), "use_error")
 })
 
+test_that("duplicate_error()", {
+  expect_error(
+    duplicate_error(x = 1:10),
+    class = "input_error"
+  )
+
+  expect_s3_class(
+    duplicate_error(x = c(1, 1, 2)),
+    class = "duplicate_error"
+  )
+
+  x <- c(1L, 2L, 2L)
+  expect_snapshot(duplicate_error(x = x))
+  y <- rep(letters[1:5], each = 100)
+  expect_snapshot(duplicate_error(x = y))
+})
+
 test_that("defunct_error()", {
   expect_s3_class(defunct_error(), "defunct_error")
   foo <- function() {
