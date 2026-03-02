@@ -115,14 +115,14 @@ or \code{type}}
 
 \item{name}{Name of the object (will be \code{\link[base:deparse]{base::deparse()}}'d if not provided)}
 
+\item{positions}{Vector positions of \code{x}}
+
 \item{duplicates}{Duplicated values of \code{x}}
 
 \item{defunct, deprecated, replacement}{Defunct, deprecated and replacement
 object, use \code{\link[base:substitute]{base::quote()}} to pass expressions (e.g., \code{quote(fun(old = ))})}
 
 \item{version}{A version number}
-
-\item{position}{Vector positions of \code{x}}
 }
 \value{
 A condition object

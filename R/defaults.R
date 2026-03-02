@@ -23,7 +23,7 @@
 #'   object, use [base::quote()] to pass expressions (e.g., `quote(fun(old =
 #'   ))`)
 #' @param version A version number
-#' @param position Vector positions of `x`
+#' @param positions Vector positions of `x`
 #' @param duplicates Duplicated values of `x`
 #' @details If no values are entered into the [cnd::condition_generator], a
 #'   default message will be used. Messages will be dynamically created based on
