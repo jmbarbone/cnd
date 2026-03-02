@@ -7,6 +7,7 @@
 \alias{type_error}
 \alias{input_error}
 \alias{use_error}
+\alias{duplicate_error}
 \alias{defunct_error}
 \alias{deprecated_warning}
 \alias{value_warning}
@@ -14,6 +15,7 @@
 \alias{input_warning}
 \alias{class_warning}
 \alias{use_warning}
+\alias{duplicate_warning}
 \title{Default conditions}
 \usage{
 value_error(..., .call = getOption("cnd.call", TRUE))
@@ -43,6 +45,15 @@ type_error(
 input_error(..., .call = getOption("cnd.call", TRUE))
 
 use_error(..., .call = getOption("cnd.call", TRUE))
+
+duplicate_error(
+  ...,
+  x,
+  positions = which(duplicated(x)),
+  duplicates = x[positions],
+  name,
+  .call = getOption("cnd.call", TRUE)
+)
 
 defunct_error(..., defunct, replacement, .call = getOption("cnd.call", TRUE))
 
@@ -81,6 +92,15 @@ class_warning(
 )
 
 use_warning(..., .call = getOption("cnd.call", TRUE))
+
+duplicate_warning(
+  ...,
+  x,
+  positions = which(duplicated(x)),
+  duplicates = x[positions],
+  name,
+  .call = getOption("cnd.call", TRUE)
+)
 }
 \arguments{
 \item{...}{Additional message components; extra named arguments will signal
@@ -93,12 +113,16 @@ an \code{\link[=input_warning]{input_warning()}}.}
 \item{actual_class, actual_type, expected_class, expected_type}{Override \code{class}
 or \code{type}}
 
-\item{name}{Name of the object (will be deparsed if not provided)}
+\item{name}{Name of the object (will be \code{\link[base:deparse]{base::deparse()}}'d if not provided)}
+
+\item{duplicates}{Duplicated values of \code{x}}
 
 \item{defunct, deprecated, replacement}{Defunct, deprecated and replacement
 object, use \code{\link[base:substitute]{base::quote()}} to pass expressions (e.g., \code{quote(fun(old = ))})}
 
 \item{version}{A version number}
+
+\item{position}{Vector positions of \code{x}}
 }
 \value{
 A condition object
