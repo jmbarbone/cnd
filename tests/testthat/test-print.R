@@ -26,3 +26,8 @@ test_that("printing with cli", {
     expect_snapshot(condition)
   })
 })
+
+test_that("print.conditions_list()", {
+  expect_snapshot(conditions("cnd")[1])
+  expect_snapshot(conditions("cnd")[1:2])
+})
