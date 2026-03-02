@@ -18,11 +18,13 @@
 #' @param actual,expected Objects whose `class` or `type` should be retrieved
 #' @param actual_class,actual_type,expected_class,expected_type Override `class`
 #'   or `type`
-#' @param name Name of the object (will be deparsed if not provided)
+#' @param name Name of the object (will be [base::deparse()]'d if not provided)
 #' @param defunct,deprecated,replacement Defunct, deprecated and replacement
 #'   object, use [base::quote()] to pass expressions (e.g., `quote(fun(old =
 #'   ))`)
 #' @param version A version number
+#' @param position Vector positions of `x`
+#' @param duplicates Duplicated values of `x`
 #' @details If no values are entered into the [cnd::condition_generator], a
 #'   default message will be used. Messages will be dynamically created based on
 #'   the parameters provided.
@@ -212,6 +214,74 @@ delayedAssign(
 
 #' @export
 #' @rdname defaults
+duplicate_error <- function() {}
+delayedAssign(
+  "duplicate_error",
+  condition(
+    "duplicate_error",
+    function(
+      ...,
+      x,
+      positions = which(duplicated(x)),
+      duplicates = x[positions],
+      name
+    ) {
+      check_dots(...)
+
+      if (missing(x) && missing(duplicates)) {
+        return(.msg(...) %||% "Duplicated detected")
+      }
+
+      force(positions)
+      force(duplicates)
+      n <- length(duplicates)
+
+      if (!isTRUE(n >= 1L)) {
+        fun <- format(as.list(sys.calls()[[1L]])[[1L]])
+        stop(input_error(
+          sprintf("`%s()` default reporting requires a positive length", fun),
+          " input for `positions` or `duplicates`"
+        ))
+      }
+
+      if (missing(name)) {
+        mc <- match.call(
+          sys.function(sys.parent(1L)),
+          sys.call(sys.parent(1L)),
+          envir = parent.frame(3L)
+        )
+        name <- sprintf("`%s`", deparse(mc$x))
+      }
+
+      # TODO option for max duplicate reporting
+      n_max <- 10L
+      n_show <- min(n, n_max)
+
+      positions <- positions[1:n_show]
+      duplicates <- duplicates[1:n_show]
+
+      dupes <- strings(sprintf("[%d] '%s'", positions, duplicates))
+
+      if (n > n_max) {
+        dupes <- sprintf("%s (and %d more)", dupes, n - n_max)
+      }
+
+      msg <- sprintf("Duplicate values found in '%s': %s", name, dupes)
+
+      if (...length()) {
+        msg <- sprintf("%s\n%s", msg, .msg(...))
+      }
+
+      msg
+    },
+    type = "error",
+    package = NULL,
+    help = "Generic duplicate error"
+  )
+)
+
+#' @export
+#' @rdname defaults
 defunct_error <- function() {}
 delayedAssign(
   "defunct_error",
@@ -237,6 +307,7 @@ delayedAssign(
     help = "Generic defunct error"
   )
 )
+
 
 # warnings ----------------------------------------------------------------
 
@@ -299,6 +370,11 @@ delayedAssign("class_warning", convert(class_error, "warning"))
 use_warning <- function() {}
 delayedAssign("use_warning", convert(use_error, "warning"))
 
+#' @export
+#' @rdname defaults
+duplicate_warning <- function() {}
+delayedAssign("duplicate_warning", convert(duplicate_error, "warning"))
+
 # helpers -----------------------------------------------------------------
 
 .msg <- function(...) {
@@ -343,8 +419,9 @@ check_dots <- function(...) {
 # nocov start
 convert <- function(cnd, new) {
   change <- function(x) sub(cnd$type, new, x, fixed = TRUE)
+  cnd_class <- sub("^.*[::]", "", cnd$class)
   condition(
-    name = change(cnd$class),
+    name = change(cnd_class),
     message = cnd$message,
     type = new,
     package = cnd$package,
