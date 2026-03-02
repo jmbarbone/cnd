@@ -20,6 +20,8 @@
   - [`use_error()`](https://jmbarbone.github.io/cnd/reference/defaults.md),
     [`use_warning()`](https://jmbarbone.github.io/cnd/reference/defaults.md)
     (i.e., /juːs/, not /juːz/)
+  - [`duplicate_error()`](https://jmbarbone.github.io/cnd/reference/defaults.md),
+    [`duplicate_warning()`](https://jmbarbone.github.io/cnd/reference/defaults.md)
   - `default_error()`
   - [`deprecated_warning()`](https://jmbarbone.github.io/cnd/reference/defaults.md)
 - [`cnd_document()`](https://jmbarbone.github.io/cnd/reference/cnd_document.md)’s

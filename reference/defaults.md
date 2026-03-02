@@ -34,6 +34,15 @@ input_error(..., .call = getOption("cnd.call", TRUE))
 
 use_error(..., .call = getOption("cnd.call", TRUE))
 
+duplicate_error(
+  ...,
+  x,
+  positions = which(duplicated(x)),
+  duplicates = x[positions],
+  name,
+  .call = getOption("cnd.call", TRUE)
+)
+
 defunct_error(..., defunct, replacement, .call = getOption("cnd.call", TRUE))
 
 deprecated_warning(
@@ -71,6 +80,15 @@ class_warning(
 )
 
 use_warning(..., .call = getOption("cnd.call", TRUE))
+
+duplicate_warning(
+  ...,
+  x,
+  positions = which(duplicated(x)),
+  duplicates = x[positions],
+  name,
+  .call = getOption("cnd.call", TRUE)
+)
 ```
 
 ## Arguments
@@ -94,7 +112,17 @@ use_warning(..., .call = getOption("cnd.call", TRUE))
 
 - name:
 
-  Name of the object (will be deparsed if not provided)
+  Name of the object (will be
+  [`base::deparse()`](https://rdrr.io/r/base/deparse.html)'d if not
+  provided)
+
+- positions:
+
+  Vector positions of `x`
+
+- duplicates:
+
+  Duplicated values of `x`
 
 - defunct, deprecated, replacement:
 
