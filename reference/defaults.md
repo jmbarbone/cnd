@@ -45,6 +45,8 @@ duplicate_error(
 
 defunct_error(..., defunct, replacement, .call = getOption("cnd.call", TRUE))
 
+internal_error(..., .call = getOption("cnd.call", TRUE))
+
 deprecated_warning(
   ...,
   deprecated,
@@ -89,6 +91,8 @@ duplicate_warning(
   name,
   .call = getOption("cnd.call", TRUE)
 )
+
+internal_warning(..., .call = getOption("cnd.call", TRUE))
 ```
 
 ## Arguments
@@ -132,7 +136,11 @@ duplicate_warning(
 
 - version:
 
-  A version number
+  Version specification. When *missing* or `FALSE`, no version
+  information is shown; when `TRUE` a generic future warning is
+  included; otherwise, version is is cast to a
+  [`base::package_version()`](https://rdrr.io/r/base/numeric_version.html)
+  and included in the message.
 
 ## Value
 

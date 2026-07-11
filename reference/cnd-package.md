@@ -38,3 +38,8 @@ conditions is provided for package development.
 
 **Maintainer**: Jordan Mark Barbone <jmbarbone@gmail.com>
 ([ORCID](https://orcid.org/0000-0001-9788-3628)) \[copyright holder\]
+
+Authors:
+
+- Jordan Mark Barbone <jmbarbone@gmail.com>
+  ([ORCID](https://orcid.org/0000-0001-9788-3628)) \[copyright holder\]

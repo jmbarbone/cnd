@@ -7,8 +7,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>Create and Register Conditions • cnd</title>
 <script src="deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link href="deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
-<script src="deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
+<link href="deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet">
+<script src="deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="deps/headroom-0.11.0/headroom.min.js"></script><script src="deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="deps/search-1.0.0/fuse.min.js"></script><script src="deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="pkgdown.js"></script><meta property="og:title" content="Create and Register Conditions">
 <meta name="description" content="An interface for creating new condition generators objects. Generators are special functions that can be saved in registries and linked to other functions. Utilities for documenting your generators, and new conditions is provided for package development.">
@@ -22,7 +22,7 @@
 
     <a class="navbar-brand me-2" href="index.html">cnd</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.1.9002</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.1.9003</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -125,7 +125,7 @@
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; For a list of conditions: `cnd::conditions()`</span></span></code></pre></div>
 <blockquote>
-<p>Note: <code>condition</code> is of mode “function” but does not retain “function” as a class. <code>condition</code> also has several conditions which can be signaled directly or indirectly.</p>
+<p>[!NOTE] <code>condition</code> is of mode “function” but does not retain “function” as a class. <code>condition</code> also has several conditions which can be signaled directly or indirectly.</p>
 </blockquote>
 <p>Use <code><a href="reference/condition.html">condition()</a></code> to create a <em>generator</em>, then use that <em>generator</em> within your functions:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
@@ -163,7 +163,7 @@
 <code class="sourceCode R"><span><span class="va">bad_value2</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/condition.html">condition</a></span><span class="op">(</span></span>
 <span>  <span class="st">"bad_value2"</span>,</span>
 <span>  message <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
-<span>    <span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"`x` must be `&gt;=0`. A value of `%s` is no good"</span>, <span class="fu"><a href="https://rdrr.io/r/base/format.html" class="external-link">format</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"`x` must be `&gt;0`. A value of `%s` is no good"</span>, <span class="fu"><a href="https://rdrr.io/r/base/format.html" class="external-link">format</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span></span>
 <span>  <span class="op">}</span>,</span>
 <span>  type <span class="op">=</span> <span class="st">"error"</span></span>
 <span><span class="op">)</span></span>
@@ -180,17 +180,17 @@
 <span><span class="fu">bad_value2</span><span class="op">(</span><span class="fl">0</span><span class="op">)</span></span>
 <span><span class="co">#&gt; bad_value2/error</span></span>
 <span><span class="co">#&gt; (bad_value2/cnd::condition/error/condition)</span></span>
-<span><span class="co">#&gt; `x` must be `&gt;=0`. A value of `0` is no good</span></span>
+<span><span class="co">#&gt; `x` must be `&gt;0`. A value of `0` is no good</span></span>
 <span><span class="fu">bad_value2</span><span class="op">(</span><span class="op">-</span><span class="fl">1</span><span class="op">)</span></span>
 <span><span class="co">#&gt; bad_value2/error</span></span>
 <span><span class="co">#&gt; (bad_value2/cnd::condition/error/condition)</span></span>
-<span><span class="co">#&gt; `x` must be `&gt;=0`. A value of `-1` is no good</span></span>
+<span><span class="co">#&gt; `x` must be `&gt;0`. A value of `-1` is no good</span></span>
 <span></span>
 <span><span class="co"># note: this does not provide any tests, so you may produce non-nonsensical messages</span></span>
 <span><span class="fu">bad_value2</span><span class="op">(</span><span class="fl">10</span><span class="op">)</span></span>
 <span><span class="co">#&gt; bad_value2/error</span></span>
 <span><span class="co">#&gt; (bad_value2/cnd::condition/error/condition)</span></span>
-<span><span class="co">#&gt; `x` must be `&gt;=0`. A value of `10` is no good</span></span>
+<span><span class="co">#&gt; `x` must be `&gt;0`. A value of `10` is no good</span></span>
 <span></span>
 <span></span>
 <span><span class="co"># now when used in your function:</span></span>
@@ -204,12 +204,12 @@
 <span><span class="fu">foo</span><span class="op">(</span><span class="op">-</span><span class="fl">1.2</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Error in `foo()`:</span></span>
 <span><span class="co">#&gt; ! &lt;bad_value2&gt;</span></span>
-<span><span class="co">#&gt; `x` must be `&gt;=0`. A value of `-1.2` is no good</span></span></code></pre></div>
+<span><span class="co">#&gt; `x` must be `&gt;0`. A value of `-1.2` is no good</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="your-package">Your package<a class="anchor" aria-label="anchor" href="#your-package"></a>
 </h2>
-<p>There are three things you can do to get the most out of <a href="https://jmbarbone.github.io/cnd/">cnd</a> within your package.</p>
+<p>There are three steps you can take to get the most out of <a href="https://jmbarbone.github.io/cnd/">cnd</a> within your package.</p>
 <ul>
 <li>Creating a <code>registry</code> within your package<br>
 </li>
@@ -221,12 +221,12 @@
 <h3 id="registry">Registry<a class="anchor" aria-label="anchor" href="#registry"></a>
 </h3>
 <p>A <code>registry</code> is a new environment that will store all of your conditions. This environment must exist within your package, an <a href="https://jmbarbone.github.io/cnd/">cnd</a> will be able to find this and use it to connect your conditions to your functions and to other outputs.</p>
-<p>Simple add <code>cnd_registry()</code> to an <code>R/</code> script in your package. If you are going to save an store conditions as objects (recommended) then you should ensure that the <code>cnd_registry()</code> call is made before any conditions are created.</p>
+<p>Simple add <code>cnd_registry()</code> to an <code>R/</code> script in your package. If you are going to save and store conditions as objects (recommended) then you should ensure that the <code>cnd_registry()</code> call is made <em>before</em> any conditions are created.</p>
 <blockquote>
-<p><strong>NOTE</strong> <code>cnd_registry()</code> is designed to use <code><a href="https://rdrr.io/r/base/assign.html" class="external-link">assign()</a></code> within your package environment. Please read the documentation to ensure the environment is not masked by other objects.</p>
+<p>[!NOTE] <code>cnd_registry()</code> is designed to use <code><a href="https://rdrr.io/r/base/assign.html" class="external-link">assign()</a></code> within your package environment. Please read the documentation to ensure the environment is not masked by other objects.</p>
 </blockquote>
 <blockquote>
-<p><strong>NOTE</strong> By default, <code>condition(registry = )</code> will pick up on the <code>registry</code> object within your package when you create your conditions and functions are loaded. However, interactive use may not provide the same results. See the examples in <code><a href="reference/cnd_create_registry.html">cnd_create_registry()</a></code> for an example of how to create a new registry and assign conditions to the registry.</p>
+<p>[!NOTE] By default, <code>condition(registry = )</code> will pick up on the <code>registry</code> object within your package when you create your conditions and functions are loaded. However, interactive use may not provide the same results. See the examples in <code><a href="reference/cnd_create_registry.html">cnd_create_registry()</a></code> for an example of how to create a new registry and assign conditions to the registry.</p>
 </blockquote>
 </div>
 <div class="section level3">
@@ -347,7 +347,7 @@
 <span><span class="co">#&gt; two</span></span>
 <span><span class="co">#&gt; lines</span></span></code></pre></div>
 <blockquote>
-<p>Currently <code><a href="https://rdrr.io/r/base/message.html" class="external-link">message()</a></code> and therefore <code><a href="reference/condition.html">cnd()</a></code> send message conditions to the <code><a href="https://rdrr.io/r/base/showConnections.html" class="external-link">stderr()</a></code>, thus usually giving them an colored text.</p>
+<p>[!NOTE] Currently <code><a href="https://rdrr.io/r/base/message.html" class="external-link">message()</a></code> and therefore <code><a href="reference/condition.html">cnd()</a></code> send message conditions to the <code><a href="https://rdrr.io/r/base/showConnections.html" class="external-link">stderr()</a></code>, thus usually giving them colored text.</p>
 </blockquote>
 <p>Another benefit in using <code>cnd(condition)</code> is being able to control for messages printed to the <code><a href="https://rdrr.io/r/base/showConnections.html" class="external-link">stdout()</a></code>. Using <code><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat()</a></code> can sometimes create noise that you’d rather suppress. Because <code><a href="reference/condition.html">cnd()</a></code> uses an internal handler for <code>message</code> and <code>condition</code> types, a condition is signaled with <code>singalCondition()</code>, which can then be caught with calling handlers, using a provided <code>"muffleCondition"</code> restart:</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
@@ -405,6 +405,7 @@
 <li><a href="https://github.com/jmbarbone/cnd/actions/workflows/R-CMD-check.yaml" class="external-link"><img src="https://github.com/jmbarbone/cnd/actions/workflows/R-CMD-check.yaml/badge.svg" alt="R-CMD-check"></a></li>
 <li><a href="https://app.codecov.io/gh/jmbarbone/cnd" class="external-link"><img src="https://codecov.io/gh/jmbarbone/cnd/graph/badge.svg" alt="Codecov test coverage"></a></li>
 <li><a href="https://lifecycle.r-lib.org/articles/stages.html#experimental" class="external-link"><img src="https://img.shields.io/badge/lifecycle-experimental-orange.svg" alt="Lifecycle: experimental"></a></li>
+<li><a href="https://CRAN.R-project.org/package=cnd" class="external-link"><img src="https://www.r-pkg.org/badges/version/cnd" alt="CRAN status"></a></li>
 </ul>
 </div>
 
@@ -417,7 +418,7 @@
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
     </footer>

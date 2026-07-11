@@ -259,26 +259,6 @@ For example:
     # Do this
     conditions(class = "class", package = "package")
 
-### `cnd:internal_error/error`
-
-- package:
-
-  `{cnd}`
-
-- class:
-
-  `cnd:internal_error`
-
-- type:
-
-  **error**
-
-This is an internal error, which means that something has gone
-(horribly?) wrong within
-[cnd](https://jmbarbone.github.io/cnd/reference/condition.md). If you
-believe this is a problem please provide a report at
-<https://github.com/jmbarbone/cnd/issues>
-
 ### `cnd:invalid_condition_error/error`
 
 - package:

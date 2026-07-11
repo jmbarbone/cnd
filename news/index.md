@@ -29,6 +29,7 @@
   [\#25](https://github.com/jmbarbone/cnd/issues/25)
 - `condition(message = )` now handles `...` and other arguments
   correctly [\#23](https://github.com/jmbarbone/cnd/issues/23)
+- internal: documentation updates
 
 ## cnd 0.1.1
 
