@@ -1,7 +1,7 @@
 Package: t0
 Title: Simple Example Package for 'cnd'
 Version: 0.0.0.9000
-Authors@R: 
+Authors@R:
     person(
         "Jordan Mark", 
         "Barbone",
@@ -14,11 +14,11 @@ License: MIT + file LICENSE
 Encoding: UTF-8
 Language: en-US
 Roxygen: list(markdown = TRUE)
-Imports: 
+Imports:
     cnd
 Remotes:
-    cnd=local::../..
-Suggests: 
+    cnd=local::../../..
+Suggests:
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
 Config/roxygen2/version: 8.0.0
