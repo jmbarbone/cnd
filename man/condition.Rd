@@ -221,7 +221,6 @@ cond_class_error <- condition(
   type = "error"
 )
 try(stop(cond_class_error(list())))
-
 }
 \seealso{
 \link{cnd-package}
