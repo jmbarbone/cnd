@@ -15,3 +15,4 @@
 ^CRAN-SUBMISSION$
 ^\.positai$
 ^\.claude$
+^tests/testthat/t0/\.Rbuildignore$
