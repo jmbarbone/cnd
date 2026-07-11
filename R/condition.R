@@ -264,6 +264,10 @@ conditions <- function(
     # TOOD allow environment(..1) as long as it appears to be a namespace
     if (is.function(..1)) {
       fun <- fun %||% ..1
+    } else if (grepl(":", ..1, fixed = TRUE)) {
+      class <- strsplit(..1, ":", fixed = TRUE)[[1L]]
+      package <- class[1L]
+      class <- class[2L]
     } else {
       package <- package %||% ..1
     }
@@ -288,6 +292,9 @@ conditions <- function(
     conds <- as_list_env(registry)
   }
 
+  if (!is.null(class)) {
+    class <- sub("/.*$", "", class)
+  }
   terms <- list(package = package, original_class = class, type = type)
   terms <- filter2(terms, Negate(is.null))
 
