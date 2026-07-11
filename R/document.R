@@ -189,8 +189,8 @@ cnd_documentation_fmt <- "@name {package}-cnd-conditions
   The following conditions are defined in the `{{package}}` package.
 
 @section `{cnd}`:
-  These conditions are made with the [`{cnd}`][cnd-package] package though the
-  use of [cnd::condition()].
+  These conditions are made with the [`{cnd}`][cnd-package] package though
+  the use of [cnd::condition()].
 
 @section `{{package}}` conditions:
 {cnd_section_describe}

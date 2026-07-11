@@ -14,8 +14,8 @@ The following conditions are defined in the \code{{t0}} package.
 }
 \section{\code{{cnd}}}{
 
-These conditions are made with the \code{\link[cnd:cnd-package]{\{cnd\}}} package though the
-use of \code{\link[cnd:condition]{cnd::condition()}}.
+These conditions are made with the \code{\link[cnd:cnd-package]{\{cnd\}}} package though
+the use of \code{\link[cnd:condition]{cnd::condition()}}.
 }
 
 \section{\code{{t0}} conditions}{

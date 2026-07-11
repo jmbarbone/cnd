@@ -53,8 +53,8 @@ The following conditions are defined in the \code{{cnd}} package.
 }
 \section{\code{{cnd}}}{
 
-These conditions are made with the \code{\link[=cnd-package]{\{cnd\}}} package though the
-use of \code{\link[=condition]{condition()}}.
+These conditions are made with the \code{\link[=cnd-package]{\{cnd\}}} package though
+the use of \code{\link[=condition]{condition()}}.
 }
 
 \section{\code{{cnd}} conditions}{
