@@ -160,6 +160,7 @@
     Code
       print(conditions("cnd")[1])
     Output
+      $`cnd:cnd_class_error`
       cnd::condition_generator
       cnd:cnd_class_error/error 
       
@@ -168,12 +169,14 @@
       
       exports
         cnd::cnd()
+      
 
 ---
 
     Code
       print(conditions("cnd")[1:2])
     Output
+      $`cnd:cnd_class_error`
       cnd::condition_generator
       cnd:cnd_class_error/error 
       
@@ -182,7 +185,8 @@
       
       exports
         cnd::cnd()
-      -------------------------------------------------------------------------------- 
+      
+      $`cnd:cnd_document_conditions`
       cnd::condition_generator
       cnd:cnd_document_conditions/warning 
       
@@ -191,4 +195,5 @@
       
       exports
         cnd::cnd_document()
+      
 
