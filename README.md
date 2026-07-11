@@ -10,6 +10,8 @@
 coverage](https://codecov.io/gh/jmbarbone/cnd/graph/badge.svg)](https://app.codecov.io/gh/jmbarbone/cnd)
 [![Lifecycle:
 experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
+[![CRAN
+status](https://www.r-pkg.org/badges/version/cnd)](https://CRAN.R-project.org/package=cnd)
 <!-- badges: end -->
 
 The goal of `{cnd}` is to provide easy, customized classes for your
@@ -111,9 +113,9 @@ condition
 #> For a list of conditions: `cnd::conditions()`
 ```
 
-> Note: `condition` is of mode “function” but does not retain “function”
-> as a class. `condition` also has several conditions which can be
-> signaled directly or indirectly.
+> [!NOTE]
+> `condition` is of mode "function" but does not retain "function" as a class.
+> `condition` also has several conditions which can be signaled directly or indirectly.
 
 Use `condition()` to create a *generator*, then use that *generator*
 within your functions:
@@ -157,7 +159,7 @@ that are used in creating a custom message.
 bad_value2 <- condition(
   "bad_value2",
   message = function(x) {
-    sprintf("`x` must be `>=0`. A value of `%s` is no good", format(x))
+    sprintf("`x` must be `>0`. A value of `%s` is no good", format(x))
   },
   type = "error"
 )
@@ -174,17 +176,17 @@ bad_value2
 bad_value2(0)
 #> bad_value2/error
 #> (bad_value2/cnd::condition/error/condition)
-#> `x` must be `>=0`. A value of `0` is no good
+#> `x` must be `>0`. A value of `0` is no good
 bad_value2(-1)
 #> bad_value2/error
 #> (bad_value2/cnd::condition/error/condition)
-#> `x` must be `>=0`. A value of `-1` is no good
+#> `x` must be `>0`. A value of `-1` is no good
 
 # note: this does not provide any tests, so you may produce non-nonsensical messages
 bad_value2(10)
 #> bad_value2/error
 #> (bad_value2/cnd::condition/error/condition)
-#> `x` must be `>=0`. A value of `10` is no good
+#> `x` must be `>0`. A value of `10` is no good
 
 
 # now when used in your function:
@@ -198,12 +200,12 @@ foo <- function(x) {
 foo(-1.2)
 #> Error in `foo()`:
 #> ! <bad_value2>
-#> `x` must be `>=0`. A value of `-1.2` is no good
+#> `x` must be `>0`. A value of `-1.2` is no good
 ```
 
 ## Your package
 
-There are three things you can do to get the most out of `{cnd}` within
+There are three steps you can take to get the most out of `{cnd}` within
 your package.
 
 - Creating a `registry` within your package  
@@ -218,20 +220,18 @@ will be able to find this and use it to connect your conditions to your
 functions and to other outputs.
 
 Simple add `cnd_registry()` to an `R/` script in your package. If you
-are going to save an store conditions as objects (recommended) then you
-should ensure that the `cnd_registry()` call is made before any
+are going to save and store conditions as objects (recommended) then you
+should ensure that the `cnd_registry()` call is made *before* any
 conditions are created.
 
-> **NOTE** `cnd_registry()` is designed to use `assign()` within your
-> package environment. Please read the documentation to ensure the
-> environment is not masked by other objects.
+> [!NOTE] 
+> `cnd_registry()` is designed to use `assign()` within your package environment.
+> Please read the documentation to ensure the environment is not masked by other objects.
 
-> **NOTE** By default, `condition(registry = )` will pick up on the
-> `registry` object within your package when you create your conditions
-> and functions are loaded. However, interactive use may not provide the
-> same results. See the examples in `cnd_create_registry()` for an
-> example of how to create a new registry and assign conditions to the
-> registry.
+> [!NOTE]
+> By default, `condition(registry = )` will pick up on the `registry` object within your package when you create your conditions and functions are loaded.
+> However, interactive use may not provide the same results.
+> See the examples in `cnd_create_registry()` for an example of how to create a new registry and assign conditions to the registry.
 
 ### Assigning conditions
 
@@ -402,8 +402,8 @@ local({
 #> lines
 ```
 
-> Currently `message()` and therefore `cnd()` send message conditions to
-> the `stderr()`, thus usually giving them an colored text.
+> [!NOTE]
+> Currently `message()` and therefore `cnd()` send message conditions to the `stderr()`, thus usually giving them colored text.
 
 Another benefit in using `cnd(condition)` is being able to control for
 messages printed to the `stdout()`. Using `cat()` can sometimes create

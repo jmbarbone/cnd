@@ -21,6 +21,7 @@ knitr::opts_chunk$set(
 [![R-CMD-check](https://github.com/jmbarbone/cnd/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/jmbarbone/cnd/actions/workflows/R-CMD-check.yaml)
 [![Codecov test coverage](https://codecov.io/gh/jmbarbone/cnd/graph/badge.svg)](https://app.codecov.io/gh/jmbarbone/cnd)
 [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
+[![CRAN status](https://www.r-pkg.org/badges/version/cnd)](https://CRAN.R-project.org/package=cnd)
 <!-- badges: end -->
 
 The goal of `{cnd}` is to provide easy, customized classes for your `conditions`.
@@ -70,8 +71,11 @@ library(cnd)
 condition
 ```
 
-> Note: `condition` is of mode "function" but does not retain "function" as a class.
-`condition` also has several conditions which can be signaled directly or indirectly.
+```{=markdown}
+> [!NOTE]
+> `condition` is of mode "function" but does not retain "function" as a class.
+> `condition` also has several conditions which can be signaled directly or indirectly.
+```
 
 Use `condition()` to create a _generator_, then use that _generator_ within your functions:
 
@@ -107,7 +111,7 @@ The resulting `cnd::condition_generator` object can also take parameters that ar
 bad_value2 <- condition(
   "bad_value2",
   message = function(x) {
-    sprintf("`x` must be `>=0`. A value of `%s` is no good", format(x))
+    sprintf("`x` must be `>0`. A value of `%s` is no good", format(x))
   },
   type = "error"
 )
@@ -137,7 +141,7 @@ foo(-1.2)
 
 ## Your package
 
-There are three things you can do to get the most out of `{cnd}` within your package. 
+There are three steps you can take to get the most out of `{cnd}` within your package. 
 
 - Creating a `registry` within your package  
 - Assigning a `"condition"` attribute to your functions  
@@ -149,16 +153,20 @@ A `registry` is a new environment that will store all of your conditions.
 This environment must exist within your package, an `{cnd}` will be able to find this and use it to connect your conditions to your functions and to other outputs.
 
 Simple add `cnd_registry()` to an `R/` script in your package.
-If you are going to save an store conditions as objects (recommended) then you should ensure that the `cnd_registry()` call is made before any conditions are created.
+If you are going to save and store conditions as objects (recommended) then you should ensure that the `cnd_registry()` call is made _before_ any conditions are created.
 
-> **NOTE** 
+```{=markdown}
+> [!NOTE] 
 > `cnd_registry()` is designed to use `assign()` within your package environment.
-Please read the documentation to ensure the environment is not masked by other objects.
+> Please read the documentation to ensure the environment is not masked by other objects.
+```
 
-> **NOTE**
+```{=markdown}
+> [!NOTE]
 > By default, `condition(registry = )` will pick up on the `registry` object within your package when you create your conditions and functions are loaded.
-However, interactive use may not provide the same results.
-See the examples in `cnd_create_registry()` for an example of how to create a new registry and assign conditions to the registry.
+> However, interactive use may not provide the same results.
+> See the examples in `cnd_create_registry()` for an example of how to create a new registry and assign conditions to the registry.
+```
 
 ### Assigning conditions
 
@@ -250,7 +258,11 @@ local({
 })
 ```
 
-> Currently `message()` and therefore `cnd()` send message conditions to the `stderr()`, thus usually giving them an colored text.
+
+```{=markdown}
+> [!NOTE]
+> Currently `message()` and therefore `cnd()` send message conditions to the `stderr()`, thus usually giving them colored text.
+```
 
 Another benefit in using `cnd(condition)` is being able to control for messages printed to the `stdout()`.
 Using `cat()` can sometimes create noise that you'd rather suppress.

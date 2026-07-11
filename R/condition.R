@@ -62,8 +62,7 @@
 #' )
 #' try(stop(cond_class_error(list())))
 #'
-#' @aliases condition_progenitor condition_generator cnd::condition_progenitor
-#'   cnd::condition_generator
+#' @aliases condition_progenitor condition_generator cnd::condition_progenitor cnd::condition_generator
 #' @seealso [cnd-package]
 condition <- function(
   name,

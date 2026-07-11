@@ -122,7 +122,7 @@ condition, based on specifications applied in \code{\link[=condition]{condition(
 functions use \code{...} to absorb extra arguments and contain a special \code{.call}
 parameter.  By default, \code{.call} captures the parent call from where the
 \link{condition_generator} was created, but users may pass their own call
-to override this.  See \code{call.} in \code{\link[base:conditions]{base::conditionCall()}}
+to override this.  See \code{call.} in \code{\link[base:conditionCall]{base::conditionCall()}}
 }
 
 \section{\code{\link[=condition]{condition()}} conditions}{
@@ -148,7 +148,7 @@ stop(my_condition())
 }
 
 \item{\code{\link[=cnd-cnd-conditions]{cnd:condition_message_error/error}}}{
-Conditions messages are displayed when invoked through \code{\link[base:conditions]{base::conditionMessage()}}.  You can set a static message by passing through a \code{character} vector, or a dynamic message by passing through a \code{function}.  The function should return a \code{character} vector.
+Conditions messages are displayed when invoked through \code{\link[base:conditionMessage]{base::conditionMessage()}}.  You can set a static message by passing through a \code{character} vector, or a dynamic message by passing through a \code{function}.  The function should return a \code{character} vector.
 
 When \code{message} is not set, a default "there was an error" message is used.
 }

@@ -308,6 +308,22 @@ delayedAssign(
   )
 )
 
+#' @export
+#' @rdname defaults
+internal_error <- function() {}
+delayedAssign(
+  "internal_error",
+  condition(
+    "internal_error",
+    function(...) {
+      check_dots(...)
+      .msg(...) %||% "Internal problem, please report to package maintainer"
+    },
+    type = "error",
+    package = NULL,
+    help = "Generic internal error"
+  )
+)
 
 # warnings ----------------------------------------------------------------
 
@@ -327,14 +343,14 @@ delayedAssign(
 
       msg <- sprintf("%s is deprecated", ticks(deprecated))
 
-      if (!missing(replacement)) {
-        msg <- sprintf("%s, use %s instead", msg, ticks(replacement))
-      }
-
       if (missing(version) || isTRUE(version)) {
         msg <- paste(msg, "and will be removed in a future version")
       } else if (!isFALSE(version)) {
         msg <- sprintf("%s and will be removed in %s", msg, version)
+      }
+
+      if (!missing(replacement)) {
+        msg <- sprintf("%s, use %s instead", msg, ticks(replacement))
       }
 
       msg
@@ -374,6 +390,11 @@ delayedAssign("use_warning", convert(use_error, "warning"))
 #' @rdname defaults
 duplicate_warning <- function() {}
 delayedAssign("duplicate_warning", convert(duplicate_error, "warning"))
+
+#' @export
+#' @rdname defaults
+internal_warning <- function() {}
+delayedAssign("internal_warning", convert(internal_error, "warning"))
 
 # helpers -----------------------------------------------------------------
 
