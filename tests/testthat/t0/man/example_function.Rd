@@ -25,12 +25,12 @@ The following conditions are associated with this function:
 
 \describe{
 
-\item{\code{\link[=cndSimpleExample-cnd-conditions]{cndSimpleExample:bad_argument/error}}}{
+\item{\code{\link[=t0-cnd-conditions]{t0:bad_argument/error}}}{
 x should be \code{TRUE}
 }
 
 }
 
-For more conditions, see: \link{cndSimpleExample-cnd-conditions}
+For more conditions, see: \link{t0-cnd-conditions}
 }
 
