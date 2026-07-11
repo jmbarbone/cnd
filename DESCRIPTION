@@ -1,6 +1,6 @@
 Package: cnd
 Title: Create and Register Conditions
-Version: 0.1.1.9002
+Version: 0.1.1.9003
 Authors@R: 
     person(
       "Jordan Mark", "Barbone", , 
@@ -18,7 +18,6 @@ URL: https://jmbarbone.github.io/cnd/, https://github.com/jmbarbone/cnd
 Encoding: UTF-8
 Language: en-US
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.3
 Depends: 
     R (>= 4.1)
 Suggests: 
@@ -29,3 +28,4 @@ Suggests:
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
 Config/testthat/parallel: false
+Config/roxygen2/version: 8.0.0

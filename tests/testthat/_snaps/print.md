@@ -158,7 +158,7 @@
 # print.conditions_list()
 
     Code
-      conditions("cnd")[1]
+      print(conditions("cnd")[1])
     Output
       $`cnd:cnd_class_error`
       cnd::condition_generator
@@ -174,7 +174,7 @@
 ---
 
     Code
-      conditions("cnd")[1:2]
+      print(conditions("cnd")[1:2])
     Output
       $`cnd:cnd_class_error`
       cnd::condition_generator

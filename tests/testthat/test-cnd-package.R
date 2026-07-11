@@ -3,5 +3,5 @@ test_that("force evaluation doesn't fail", {
 })
 
 test_that("internal_error()", {
-  expect_s3_class(internal_error(), "cnd:internal_error")
+  expect_s3_class(internal_error(), "internal_error")
 })

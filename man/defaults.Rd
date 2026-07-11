@@ -9,6 +9,7 @@
 \alias{use_error}
 \alias{duplicate_error}
 \alias{defunct_error}
+\alias{internal_error}
 \alias{deprecated_warning}
 \alias{value_warning}
 \alias{type_warning}
@@ -16,6 +17,7 @@
 \alias{class_warning}
 \alias{use_warning}
 \alias{duplicate_warning}
+\alias{internal_warning}
 \title{Default conditions}
 \usage{
 value_error(..., .call = getOption("cnd.call", TRUE))
@@ -56,6 +58,8 @@ duplicate_error(
 )
 
 defunct_error(..., defunct, replacement, .call = getOption("cnd.call", TRUE))
+
+internal_error(..., .call = getOption("cnd.call", TRUE))
 
 deprecated_warning(
   ...,
@@ -101,6 +105,8 @@ duplicate_warning(
   name,
   .call = getOption("cnd.call", TRUE)
 )
+
+internal_warning(..., .call = getOption("cnd.call", TRUE))
 }
 \arguments{
 \item{...}{Additional message components; extra named arguments will signal
@@ -120,9 +126,12 @@ or \code{type}}
 \item{duplicates}{Duplicated values of \code{x}}
 
 \item{defunct, deprecated, replacement}{Defunct, deprecated and replacement
-object, use \code{\link[base:substitute]{base::quote()}} to pass expressions (e.g., \code{quote(fun(old = ))})}
+object, use \code{\link[base:quote]{base::quote()}} to pass expressions (e.g., \code{quote(fun(old = ))})}
 
-\item{version}{A version number}
+\item{version}{Version specification.  When \emph{missing} or \code{FALSE}, no version
+information is shown; when \code{TRUE} a generic future warning is included;
+otherwise, version is is cast to a \code{\link[base:package_version]{base::package_version()}} and included
+in the message.}
 }
 \value{
 A condition object

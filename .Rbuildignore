@@ -13,3 +13,5 @@
 ^pkgdown$
 ^air\.toml$
 ^CRAN-SUBMISSION$
+^\.positai$
+^\.claude$

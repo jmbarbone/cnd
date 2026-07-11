@@ -13,7 +13,6 @@
 \alias{cnd:condition_message_generator_error}
 \alias{cnd:condition_overwrite_warning}
 \alias{cnd:conditions_dots_warning}
-\alias{cnd:internal_error}
 \alias{cnd:invalid_condition_error}
 \alias{cnd:match_arg}
 \alias{cnd:no_package_exports_warning}
@@ -28,7 +27,6 @@
 \alias{condition_message_generator_error}
 \alias{condition_overwrite_warning}
 \alias{conditions_dots_warning}
-\alias{internal_error}
 \alias{invalid_condition_error}
 \alias{match_arg}
 \alias{no_package_exports_warning}
@@ -43,7 +41,6 @@
 \alias{cnd:condition_message_generator_error/error}
 \alias{cnd:condition_overwrite_warning/warning}
 \alias{cnd:conditions_dots_warning/warning}
-\alias{cnd:internal_error/error}
 \alias{cnd:invalid_condition_error/error}
 \alias{cnd:match_arg/error}
 \alias{cnd:no_package_exports_warning/warning}
@@ -135,7 +132,7 @@ stop(my_condition())
 \item{class}{\code{cnd:condition_message_error}}
 \item{type}{\strong{error}}
 }
-Conditions messages are displayed when invoked through \code{\link[base:conditions]{base::conditionMessage()}}.  You can set a static message by passing through a \code{character} vector, or a dynamic message by passing through a \code{function}.  The function should return a \code{character} vector.
+Conditions messages are displayed when invoked through \code{\link[base:conditionMessage]{base::conditionMessage()}}.  You can set a static message by passing through a \code{character} vector, or a dynamic message by passing through a \code{function}.  The function should return a \code{character} vector.
 
 When \code{message} is not set, a default "there was an error" message is used.
 }
@@ -183,14 +180,6 @@ conditions("class", "package") # "package" is ignored with a warning
 conditions(class = "class", package = "package")
 }\if{html}{\out{</div>}}
 
-}
-\subsection{\code{cnd:internal_error/error}}{
-\describe{
-\item{package}{\code{{cnd}}}
-\item{class}{\code{cnd:internal_error}}
-\item{type}{\strong{error}}
-}
-This is an internal error, which means that something has gone (horribly?) wrong within \link{cnd}.  If you believe this is a problem please provide a report at \url{https://github.com/jmbarbone/cnd/issues}
 }
 \subsection{\code{cnd:invalid_condition_error/error}}{
 \describe{

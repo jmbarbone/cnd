@@ -28,6 +28,6 @@ test_that("printing with cli", {
 })
 
 test_that("print.conditions_list()", {
-  expect_snapshot(conditions("cnd")[1])
-  expect_snapshot(conditions("cnd")[1:2])
+  expect_snapshot(print(conditions("cnd")[1]))
+  expect_snapshot(print(conditions("cnd")[1:2]))
 })

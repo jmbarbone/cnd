@@ -61,9 +61,8 @@
 #'   type = "error"
 #' )
 #' try(stop(cond_class_error(list())))
-#'
-#' @aliases condition_progenitor condition_generator cnd::condition_progenitor
-#'   cnd::condition_generator
+# nolint next: line_length_linter.
+#' @aliases condition_progenitor condition_generator cnd::condition_progenitor cnd::condition_generator
 #' @seealso [cnd-package]
 condition <- function(
   name,
