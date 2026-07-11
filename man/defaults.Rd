@@ -128,7 +128,10 @@ or \code{type}}
 \item{defunct, deprecated, replacement}{Defunct, deprecated and replacement
 object, use \code{\link[base:quote]{base::quote()}} to pass expressions (e.g., \code{quote(fun(old = ))})}
 
-\item{version}{A version number}
+\item{version}{Version specification.  When \emph{missing} or \code{FALSE}, no version
+information is shown; when \code{TRUE} a generic future warning is included;
+otherwise, version is is cast to a \code{\link[base:package_version]{base::package_version()}} and included
+in the message.}
 }
 \value{
 A condition object

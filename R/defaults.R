@@ -22,7 +22,10 @@
 #' @param defunct,deprecated,replacement Defunct, deprecated and replacement
 #'   object, use [base::quote()] to pass expressions (e.g., `quote(fun(old =
 #'   ))`)
-#' @param version A version number
+#' @param version Version specification.  When _missing_ or `FALSE`, no version
+#'   information is shown; when `TRUE` a generic future warning is included;
+#'   otherwise, version is is cast to a [base::package_version()] and included
+#'   in the message.
 #' @param positions Vector positions of `x`
 #' @param duplicates Duplicated values of `x`
 #' @details If no values are entered into the [cnd::condition_generator], a
@@ -343,10 +346,13 @@ delayedAssign(
 
       msg <- sprintf("%s is deprecated", ticks(deprecated))
 
-      if (missing(version) || isTRUE(version)) {
+      if (missing(version) || isFALSE(version)) {
+        NULL
+      } else if (isTRUE(version)) {
         msg <- paste(msg, "and will be removed in a future version")
-      } else if (!isFALSE(version)) {
-        msg <- sprintf("%s and will be removed in %s", msg, version)
+      } else {
+        version <- as.package_version(version)
+        msg <- sprintf("%s and will be removed in '%s'", msg, version)
       }
 
       if (!missing(replacement)) {
