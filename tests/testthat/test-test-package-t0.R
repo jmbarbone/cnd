@@ -12,7 +12,7 @@ test_that("registrary is picking up the conditions from the example package", {
     function(e) inherits(e, "cnd::condition_generator"),
     as.list(getNamespace("t0"), all.names = TRUE, sorted = TRUE)
   )
-  expect_setequal(unname(from_cnd), unname(unnamefrom_example))
+  expect_setequal(unname(from_cnd), unname(from_example))
 })
 
 test_that("cndSimpleExample registry is loaded into cnd", {
