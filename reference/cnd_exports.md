@@ -39,7 +39,7 @@ local(envir = e, {
 e$my_fun
 #> function () 
 #> NULL
-#> <environment: 0x55e18b1e4a40>
+#> <environment: 0x5614eedc9bb8>
 #> 
 #> condition(s)
 #> `example_package:my_condition/condition`
