@@ -29,7 +29,10 @@
   [\#25](https://github.com/jmbarbone/cnd/issues/25)
 - `condition(message = )` now handles `...` and other arguments
   correctly [\#23](https://github.com/jmbarbone/cnd/issues/23)
-- internal: documentation updates
+- [`cnd_document()`](https://jmbarbone.github.io/cnd/reference/cnd_document.md)
+  no longer produces \>80 character lines
+- **internal**: documentation updates
+- **internal**: test restructure for internal, testing package
 
 ## cnd 0.1.1
 
