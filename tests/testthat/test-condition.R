@@ -253,3 +253,10 @@ test_that("condition(class) is deprecated", {
     class = "deprecated_warning"
   )
 })
+
+test_that("condition(package:condition)", {
+  expect_identical(
+    conditions("cnd:cnd_class_error/error")[[1]],
+    cnd_class_error
+  )
+})
