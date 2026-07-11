@@ -16,6 +16,7 @@
 - `cnd_document()` no longer produces >80 character lines
 - **internal**: documentation updates
 - **internal**: test restructure for internal, testing package
+- `conditions("pkg:condition/type")` now works [#18](https://github.com/jmbarbone/cnd/issues/18)
 
 # cnd 0.1.1
 
