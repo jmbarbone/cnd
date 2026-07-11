@@ -66,3 +66,48 @@ local_registry <- function(name = basename(tempfile(""))) {
   do.call(on.exit, list(do), envir = parent.frame())
   registrar$get(name)
 }
+
+# from RConsortium/S7 tests
+
+quick_install <- function(package, lib, quiet = TRUE) {
+  opts <- c(
+    "--data-compress=none",
+    "--no-byte-compile",
+    "--no-data",
+    "--no-demo",
+    "--no-docs",
+    "--no-help",
+    "--no-html",
+    "--no-libs",
+    "--use-vanilla",
+    NULL
+  )
+
+  for (p in package) {
+    utils::install.packages(
+      pkgs = p,
+      lib = lib,
+      repos = NULL,
+      type = "source",
+      quiet = quiet,
+      INSTALL_opts = paste(opts, collapse = " ")
+    )
+  }
+}
+
+local_install_and_attach <- function(path, lib, frame = parent.frame()) {
+  quick_install(path, lib)
+  package <- basename(path)
+  library(package, character.only = TRUE)
+  defer(
+    try(detach(paste0("package:", package), unload = TRUE), silent = TRUE),
+    frame = frame
+  )
+  invisible(package)
+}
+
+# Lightweight equivalent of withr::defer()
+defer <- function(expr, frame = parent.frame(), after = FALSE) {
+  thunk <- as.call(list(function() expr))
+  do.call(on.exit, list(thunk, TRUE, after), envir = frame)
+}
