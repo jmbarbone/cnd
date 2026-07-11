@@ -13,7 +13,9 @@
   - `deprecated_warning()`
 - `cnd_document()`'s links to `{cnd}` are corrected [#25](https://github.com/jmbarbone/cnd/issues/25)
 - `condition(message = )` now handles `...` and other arguments correctly [#23](https://github.com/jmbarbone/cnd/issues/23) 
-- internal: documentation updates
+- `cnd_document()` no longer produces >80 character lines
+- **internal**: documentation updates
+- **internal**: test restructure for internal, testing package
 
 # cnd 0.1.1
 
