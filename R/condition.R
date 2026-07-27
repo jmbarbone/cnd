@@ -482,31 +482,38 @@ remove_conditions <- function(x) {
 
 validate_condition <- function(class, exports, help) {
   # reset problems
-  problems <- character()
-  problem <- function(...) problems <<- c(problems, ...)
+  problems <- local({
+    .problems <- character()
+    function(...) {
+      if (...length() == 0L) {
+        return(.problems)
+      }
+      .problems <<- c(.problems, ...)
+    }
+  })
 
   if (!is.character(class)) {
-    problem("`class` must be a character vector")
+    problems("`class` must be a character vector")
   }
 
   if (length(class) != 1L) {
-    problem("`class` must be a single character string")
+    problems("`class` must be a single character string")
   } else if (!grepl("^[a-z0-9_.]+$", class, ignore.case = TRUE)) {
-    problem(
+    problems(
       "`class` must only contain letters, numbers, underscores, or periods"
     )
   }
 
   if (!(is.null(exports) || is.character(exports))) {
-    problem("`exports` must be NULL or a character vector")
+    problems("`exports` must be NULL or a character vector")
   }
 
   if (!(is.null(help) || is.character(help))) {
-    problem("`help` must be NULL or a character vector")
+    problems("`help` must be NULL or a character vector")
   }
 
-  if (length(problems)) {
-    cnd(invalid_condition_error(problems, .call = sys.call(1L)))
+  if (length(problems())) {
+    cnd(invalid_condition_error(problems(), .call = sys.call(1L)))
   }
 }
 
