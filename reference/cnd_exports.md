@@ -39,7 +39,7 @@ local(envir = e, {
 e$my_fun
 #> function () 
 #> NULL
-#> <environment: 0x55a5c9bc1da0>
+#> <environment: 0x55a7fcc9fac8>
 #> 
 #> condition(s)
 #> `example_package:my_condition/condition`
@@ -47,6 +47,9 @@ conditions(e$my_fun)
 #> [[1]]
 #> cnd::condition_generator
 #> example_package:my_condition/condition 
+#> 
+#> generator
+#>   $ ... : <symbol> 
 #> 
 #> exports
 #>   example_package::my_fun()

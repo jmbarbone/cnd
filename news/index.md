@@ -35,6 +35,8 @@
 - **internal**: test restructure for internal, testing package
 - `conditions("pkg:condition/type")` now works
   [\#18](https://github.com/jmbarbone/cnd/issues/18)
+- `condition(name)(message)` can be used to override default messages
+  [\#22](https://github.com/jmbarbone/cnd/issues/22)
 
 ## cnd 0.1.1
 
