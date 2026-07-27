@@ -262,8 +262,7 @@ test_that("condition(package:condition)", {
 })
 
 test_that("condition('foo')(<anything>)", {
-  expect_identical(
-    conditionMessage(condition("foo", register = FALSE)("<anything>")),
-    "<foo>\n<anything>"
+  expect_snapshot(
+    cnd(condition("_message_override_", register = FALSE)("<anything>"))
   )
 })
