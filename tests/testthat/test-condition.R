@@ -260,3 +260,10 @@ test_that("condition(package:condition)", {
     cnd_class_error
   )
 })
+
+test_that("condition('foo')(<anything>)", {
+  expect_identical(
+    conditionMessage(condition("foo", register = FALSE)("<anything>")),
+    "<foo>\n<anything>"
+  )
+})
