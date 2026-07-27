@@ -111,15 +111,20 @@ condition <- function(
   }
 
   if (is.null(message)) {
-    message <- function() NULL
+    message <- function(...) NULL
     # default message is just announcing an error
-    body(message) <- paste(
-      switch(
-        type,
-        error = "there was an",
-        "there was a"
-      ),
-      type
+    body(message) <- substitute(
+      if (...length() > 0L) c(...) else ..text..,
+      list(
+        ..text.. = paste(
+          switch(
+            type,
+            error = "there was an",
+            "there was a"
+          ),
+          type
+        )
+      )
     )
   } else if (is.character(message)) {
     message <- as.function(list(collapse(message)))
