@@ -260,3 +260,9 @@ test_that("condition(package:condition)", {
     cnd_class_error
   )
 })
+
+test_that("condition('foo')(<anything>)", {
+  expect_snapshot(
+    cnd(condition("_message_override_", register = FALSE)("<anything>"))
+  )
+})

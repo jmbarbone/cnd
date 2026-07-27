@@ -69,3 +69,12 @@
       ! <foo>
       there was an error
 
+# condition('foo')(<anything>)
+
+    Code
+      cnd(condition("_message_override_", register = FALSE)("<anything>"))
+    Output
+      cnd:_message_override_/condition
+      (cnd:_message_override_/cnd::condition/condition)
+      <anything>
+
