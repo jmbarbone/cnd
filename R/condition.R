@@ -165,7 +165,7 @@ condition <- function(
         # nolint next: object_usage_linter. (params is used)
         params <- as.list(match.call(expand.dots = TRUE))[-1L]
         params$.call <- NULL
-        params <- lapply(params, eval.parent, 2L)
+        params <- lapply(params, \(p) eval.parent(p, 3L))
 
         # nolint next: object_usage_linter. (.call is used)
         if (is.logical(.call) && length(.call) == 1L) {
