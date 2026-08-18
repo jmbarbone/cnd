@@ -167,8 +167,8 @@ cnd_section <- function(fun) {
     ),
     pkgs = collapse(
       vapply(
-        unique(vapply(conds, cget, NA_character_, "package")),
-        function(p) fmt("[{pkg}-cnd-conditions]", pkg = p),
+        unique(vapply(conds, \(cond) cget(cond, "package"), NA_character_)),
+        \(p) fmt("[{pkg}-cnd-conditions]", pkg = p),
         NA_character_
       )
     ),
