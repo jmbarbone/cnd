@@ -489,11 +489,11 @@ validate_condition <- function(class, exports, help) {
   # reset problems
   problems <- local({
     .problems <- character()
-    function(...) {
-      if (...length() == 0L) {
+    function(x) {
+      if (missing(x)) {
         return(.problems)
       }
-      .problems <<- c(.problems, ...)
+      .problems <<- c(.problems, x)
     }
   })
 
