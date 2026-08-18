@@ -2,20 +2,20 @@
 % Please edit documentation in R/cnd-cnd-conditions.R
 \name{cnd-cnd-conditions}
 \alias{cnd-cnd-conditions}
-\alias{cnd:cnd_class_error}
-\alias{cnd:cnd_document_conditions}
-\alias{cnd:cnd_document_file}
-\alias{cnd:cnd_document_pkg_reg}
-\alias{cnd:cnd_generated_cleanup}
-\alias{cnd:cnd_generated_write}
-\alias{cnd:condition_as_character_error}
-\alias{cnd:condition_message_error}
-\alias{cnd:condition_message_generator_error}
-\alias{cnd:condition_overwrite_warning}
-\alias{cnd:conditions_dots_warning}
-\alias{cnd:invalid_condition_error}
-\alias{cnd:match_arg}
-\alias{cnd:no_package_exports_warning}
+\alias{cnd::cnd_class_error}
+\alias{cnd::cnd_document_conditions}
+\alias{cnd::cnd_document_file}
+\alias{cnd::cnd_document_pkg_reg}
+\alias{cnd::cnd_generated_cleanup}
+\alias{cnd::cnd_generated_write}
+\alias{cnd::condition_as_character_error}
+\alias{cnd::condition_message_error}
+\alias{cnd::condition_message_generator_error}
+\alias{cnd::condition_overwrite_warning}
+\alias{cnd::conditions_dots_warning}
+\alias{cnd::invalid_condition_error}
+\alias{cnd::match_arg}
+\alias{cnd::no_package_exports_warning}
 \alias{cnd_class_error}
 \alias{cnd_document_conditions}
 \alias{cnd_document_file}
@@ -63,7 +63,7 @@ the use of \code{\link[=condition]{condition()}}.
 \subsection{\code{cnd:cnd_class_error/error}}{
 \describe{
 \item{package}{\code{{cnd}}}
-\item{class}{\code{cnd:cnd_class_error}}
+\item{class}{\code{cnd::cnd_class_error}}
 \item{type}{\strong{error}}
 }
 \code{\link[=cnd]{cnd()}} simple calls the appropriate function: \code{\link[base:stop]{base::stop()}}, \code{\link[base:warning]{base::warning()}}, or \code{\link[base:message]{base::message()}} based on the \code{type} parameter from \code{\link[=condition]{condition()}}.
@@ -71,7 +71,7 @@ the use of \code{\link[=condition]{condition()}}.
 \subsection{\code{cnd:cnd_document_conditions/warning}}{
 \describe{
 \item{package}{\code{{cnd}}}
-\item{class}{\code{cnd:cnd_document_conditions}}
+\item{class}{\code{cnd::cnd_document_conditions}}
 \item{type}{\strong{warning}}
 }
 Documentation will fail when no conditions are found.  You may be executing \code{\link[=cnd_document]{cnd_document()}} too early, before conditions have been registered.  You can try to find your conditions with \code{\link[=conditions]{conditions()}}.
@@ -79,7 +79,7 @@ Documentation will fail when no conditions are found.  You may be executing \cod
 \subsection{\code{cnd:cnd_document_file/error}}{
 \describe{
 \item{package}{\code{{cnd}}}
-\item{class}{\code{cnd:cnd_document_file}}
+\item{class}{\code{cnd::cnd_document_file}}
 \item{type}{\strong{error}}
 }
 The \code{file} argument to \code{\link[=cnd_document]{cnd_document()}} must be a file path, a connection object, or \code{NULL} to return the documentation as a character vector.  The default value should be suitable for standard use cases.
@@ -87,7 +87,7 @@ The \code{file} argument to \code{\link[=cnd_document]{cnd_document()}} must be 
 \subsection{\code{cnd:cnd_document_pkg_reg/error}}{
 \describe{
 \item{package}{\code{{cnd}}}
-\item{class}{\code{cnd:cnd_document_pkg_reg}}
+\item{class}{\code{cnd::cnd_document_pkg_reg}}
 \item{type}{\strong{error}}
 }
 Both \code{package} and \code{registry} must be set to document conditions.You can set a registry by adding \code{\link[=cnd_create_registry]{cnd_create_registry()}} calls to your package code.
@@ -95,7 +95,7 @@ Both \code{package} and \code{registry} must be set to document conditions.You c
 \subsection{\code{cnd:cnd_generated_cleanup/message}}{
 \describe{
 \item{package}{\code{{cnd}}}
-\item{class}{\code{cnd:cnd_generated_cleanup}}
+\item{class}{\code{cnd::cnd_generated_cleanup}}
 \item{type}{\strong{message}}
 }
 Some files created during the documentation process may become obsolete while updating your conditions.
@@ -103,7 +103,7 @@ Some files created during the documentation process may become obsolete while up
 \subsection{\code{cnd:cnd_generated_write/condition}}{
 \describe{
 \item{package}{\code{{cnd}}}
-\item{class}{\code{cnd:cnd_generated_write}}
+\item{class}{\code{cnd::cnd_generated_write}}
 \item{type}{\strong{condition}}
 }
 This condition is signaled when \code{\link[=cnd_document]{cnd_document()}} needs to write new documentation files.
@@ -111,7 +111,7 @@ This condition is signaled when \code{\link[=cnd_document]{cnd_document()}} need
 \subsection{\code{cnd:condition_as_character_error/error}}{
 \describe{
 \item{package}{\code{{cnd}}}
-\item{class}{\code{cnd:condition_as_character_error}}
+\item{class}{\code{cnd::condition_as_character_error}}
 \item{type}{\strong{error}}
 }
 You cannot coerce a \link{condition_generator} object to a character. This may have occurred when trying to put a condition function through \code{\link[base:stop]{base::stop()}} or \code{\link[base:warning]{base::warning()}}.  Instead, call the function first,  then pass the result to \code{\link[base:stop]{base::stop()}} or \code{\link[base:warning]{base::warning()}}.
@@ -129,7 +129,7 @@ stop(my_condition())
 \subsection{\code{cnd:condition_message_error/error}}{
 \describe{
 \item{package}{\code{{cnd}}}
-\item{class}{\code{cnd:condition_message_error}}
+\item{class}{\code{cnd::condition_message_error}}
 \item{type}{\strong{error}}
 }
 Conditions messages are displayed when invoked through \code{\link[base:conditionMessage]{base::conditionMessage()}}.  You can set a static message by passing through a \code{character} vector, or a dynamic message by passing through a \code{function}.  The function should return a \code{character} vector.
@@ -139,7 +139,7 @@ When \code{message} is not set, a default "there was an error" message is used.
 \subsection{\code{cnd:condition_message_generator_error/error}}{
 \describe{
 \item{package}{\code{{cnd}}}
-\item{class}{\code{cnd:condition_message_generator_error}}
+\item{class}{\code{cnd::condition_message_generator_error}}
 \item{type}{\strong{error}}
 }
 \link{condition_generator} objects are not conditions.   You may have made this mistake:
@@ -158,7 +158,7 @@ conditionMessage(x())
 \subsection{\code{cnd:condition_overwrite_warning/warning}}{
 \describe{
 \item{package}{\code{{cnd}}}
-\item{class}{\code{cnd:condition_overwrite_warning}}
+\item{class}{\code{cnd::condition_overwrite_warning}}
 \item{type}{\strong{warning}}
 }
 Defining a new condition with the same class and package as an existing condition will overwrite the previous definition.  It is recommended to either avoid this by fully defining your condition, or creating a new condition instead.
@@ -166,7 +166,7 @@ Defining a new condition with the same class and package as an existing conditio
 \subsection{\code{cnd:conditions_dots_warning/warning}}{
 \describe{
 \item{package}{\code{{cnd}}}
-\item{class}{\code{cnd:conditions_dots_warning}}
+\item{class}{\code{cnd::conditions_dots_warning}}
 \item{type}{\strong{warning}}
 }
 The \code{...} parameter in \code{\link[=conditions]{conditions()}} is meant for convenience.  Only a single argument is allowed.  Other parameters must be named  explicitly.
@@ -184,7 +184,7 @@ conditions(class = "class", package = "package")
 \subsection{\code{cnd:invalid_condition_error/error}}{
 \describe{
 \item{package}{\code{{cnd}}}
-\item{class}{\code{cnd:invalid_condition_error}}
+\item{class}{\code{cnd::invalid_condition_error}}
 \item{type}{\strong{error}}
 }
 The \code{class}, \code{exports}, and \code{help} parameters must be a single character string.  If you are passing a function, it must be a valid function.
@@ -192,7 +192,7 @@ The \code{class}, \code{exports}, and \code{help} parameters must be a single ch
 \subsection{\code{cnd:match_arg/error}}{
 \describe{
 \item{package}{\code{{cnd}}}
-\item{class}{\code{cnd:match_arg}}
+\item{class}{\code{cnd::match_arg}}
 \item{type}{\strong{error}}
 }
 Mostly \code{\link[base:match.arg]{base::match.arg()}} but with a custom condition
@@ -200,7 +200,7 @@ Mostly \code{\link[base:match.arg]{base::match.arg()}} but with a custom conditi
 \subsection{\code{cnd:no_package_exports_warning/warning}}{
 \describe{
 \item{package}{\code{{cnd}}}
-\item{class}{\code{cnd:no_package_exports_warning}}
+\item{class}{\code{cnd::no_package_exports_warning}}
 \item{type}{\strong{warning}}
 }
 The \code{exports} parameter requires a \code{package}
