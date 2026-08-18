@@ -129,7 +129,7 @@ cnd_document <- function(
 
     if (length(cnd_files)) {
       cnd(cond_cnd_generated_cleanup(cnd_files))
-      try(file.remove(cnd_files), silent = TRUE)
+      tryCatch(file.remove(cnd_files), error = function(e) NULL)
     }
   }
 
