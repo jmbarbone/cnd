@@ -28,10 +28,11 @@
 ---
 
     Code
-      foo2()
+      foo()
     Condition
-      Error in `foo2()`:
-      ! could not find function "foo2"
+      Error:
+      ! <foo>
+      there was an error
 
 ---
 

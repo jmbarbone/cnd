@@ -180,7 +180,7 @@ test_that(".call", {
   if (Sys.info()[["sysname"]] == "Linux") {
     skip_on_ci()
   }
-  get_call <- function(expr) tryCatch(expr, error = function(e) e$call)
+  get_call <- function(expr) tryCatch(expr, error = \(e) e$call)
   err <- condition("foo", type = "error", register = FALSE, package = NULL)
   foo <- function() stop(err())
   expect_identical(get_call(foo()), quote(foo()))
@@ -192,7 +192,7 @@ test_that(".call", {
 
   foo <- function() cnd(err(.call = FALSE))
   expect_null(get_call(foo()))
-  expect_snapshot(foo2(), error = TRUE)
+  expect_snapshot(foo(), error = TRUE)
 
   fizz <- function() bar()
 
