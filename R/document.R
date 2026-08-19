@@ -130,6 +130,8 @@ cnd_document <- function(
 
   temp_gen <- tempfile()
   on.exit(if (file.exists(temp_gen)) file.remove(temp_gen), add = TRUE)
+  file.create(temp_gen)
+  Sys.chmod(temp_gen)
   con_gen <- file(temp_gen, open = "wb", encoding = "UTF-8")
   on.exit(if (isOpen(con_gen)) close(con_gen), add = TRUE)
   cat(res, sep = "\n", file = con_gen)
