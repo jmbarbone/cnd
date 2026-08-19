@@ -142,7 +142,7 @@ cnd_document <- function(
   }
 
   cnd(cond_cnd_generated_write(file))
-  file.rename(temp_gen, file)
+  file.copy(temp_gen, file, overwrite = TRUE)
   invisible(file)
 }
 
