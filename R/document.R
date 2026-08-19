@@ -91,10 +91,10 @@ cnd_document <- function(
     )
   )
 
-  temp <- file()
-  on.exit(if (isOpen(temp)) close(temp), add = TRUE)
-  cat(text, sep = "\n", file = temp)
-  res <- c(paste("#'", readLines(temp)), "NULL")
+  con_doc <- file()
+  on.exit(if (isOpen(con_doc)) close(con_doc), add = TRUE)
+  cat(text, sep = "\n", file = con_doc)
+  res <- c(paste("#'", readLines(con_doc)), "NULL")
   res <- trimws(res)
 
   if (is.null(file)) {
@@ -119,26 +119,30 @@ cnd_document <- function(
     cnd_files <- cnd_files[cnd_files != file]
     cnd_files <- filter2(
       cnd_files,
-      function(p) {
-        identical(
-          readLines(p, n = 1, warn = FALSE),
-          gen_text
-        )
-      }
+      \(p) identical(readLines(p, n = 1, warn = FALSE), gen_text)
     )
 
     if (length(cnd_files)) {
       cnd(cond_cnd_generated_cleanup(cnd_files))
-      tryCatch(file.remove(cnd_files), error = function(e) NULL)
+      tryCatch(file.remove(cnd_files), error = \(e) NULL)
     }
   }
 
-  if (file.exists(file) && identical(res, readLines(file))) {
+  temp_gen <- tempfile()
+  on.exit(if (file.exists(temp_gen)) file.remove(temp_gen), add = TRUE)
+  con_gen <- file(temp_gen, open = "wb", encoding = "UTF-8")
+  on.exit(if (isOpen(con_gen)) close(con_gen), add = TRUE)
+  cat(res, sep = "\n", file = con_gen)
+
+  if (
+    file.exists(file) &&
+      tools::md5sum(temp_gen) == tools::md5sum(file)
+  ) {
     return(invisible(file))
   }
 
   cnd(cond_cnd_generated_write(file))
-  cat(res, sep = "\n", file = file)
+  file.rename(temp_gen, file)
   invisible(file)
 }
 
