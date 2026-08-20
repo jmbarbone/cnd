@@ -52,13 +52,13 @@ test_documentation <- function() {
       # these are simply going to be muffled
       "cnd::cnd_generated_cleanup" = function(c) {
         if (is_ci_windows) {
-          skips[["cnd::cnd_generated_cleanup"]] <- TRUE
+          skips[["cnd::cnd_generated_cleanup"]] <<- TRUE
           tryInvokeRestart("muffleMessage")
         }
       },
       "cnd::cnd_generated_write" = function(c) {
         if (is_ci_windows) {
-          skips[["cnd::cnd_generated_write"]] <- TRUE
+          skips[["cnd::cnd_generated_write"]] <<- TRUE
           tryInvokeRestart("muffleCondition")
         }
       }
