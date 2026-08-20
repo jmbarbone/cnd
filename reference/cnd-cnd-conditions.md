@@ -23,7 +23,7 @@ package though the use of
 
 - class:
 
-  `cnd:cnd_class_error`
+  `cnd::cnd_class_error`
 
 - type:
 
@@ -45,7 +45,7 @@ calls the appropriate function:
 
 - class:
 
-  `cnd:cnd_document_conditions`
+  `cnd::cnd_document_conditions`
 
 - type:
 
@@ -66,7 +66,7 @@ your conditions with
 
 - class:
 
-  `cnd:cnd_document_file`
+  `cnd::cnd_document_file`
 
 - type:
 
@@ -86,7 +86,7 @@ suitable for standard use cases.
 
 - class:
 
-  `cnd:cnd_document_pkg_reg`
+  `cnd::cnd_document_pkg_reg`
 
 - type:
 
@@ -105,7 +105,7 @@ calls to your package code.
 
 - class:
 
-  `cnd:cnd_generated_cleanup`
+  `cnd::cnd_generated_cleanup`
 
 - type:
 
@@ -122,7 +122,7 @@ while updating your conditions.
 
 - class:
 
-  `cnd:cnd_generated_write`
+  `cnd::cnd_generated_write`
 
 - type:
 
@@ -140,7 +140,7 @@ needs to write new documentation files.
 
 - class:
 
-  `cnd:condition_as_character_error`
+  `cnd::condition_as_character_error`
 
 - type:
 
@@ -172,7 +172,7 @@ For example:
 
 - class:
 
-  `cnd:condition_message_error`
+  `cnd::condition_message_error`
 
 - type:
 
@@ -195,7 +195,7 @@ used.
 
 - class:
 
-  `cnd:condition_message_generator_error`
+  `cnd::condition_message_generator_error`
 
 - type:
 
@@ -221,7 +221,7 @@ conditions. Try this instead:
 
 - class:
 
-  `cnd:condition_overwrite_warning`
+  `cnd::condition_overwrite_warning`
 
 - type:
 
@@ -240,7 +240,7 @@ condition instead.
 
 - class:
 
-  `cnd:conditions_dots_warning`
+  `cnd::conditions_dots_warning`
 
 - type:
 
@@ -267,7 +267,7 @@ For example:
 
 - class:
 
-  `cnd:invalid_condition_error`
+  `cnd::invalid_condition_error`
 
 - type:
 
@@ -284,7 +284,7 @@ string. If you are passing a function, it must be a valid function.
 
 - class:
 
-  `cnd:match_arg`
+  `cnd::match_arg`
 
 - type:
 
@@ -301,7 +301,7 @@ with a custom condition
 
 - class:
 
-  `cnd:no_package_exports_warning`
+  `cnd::no_package_exports_warning`
 
 - type:
 

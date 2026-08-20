@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">cnd</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.1.9006</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.1.9007</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -29,7 +29,7 @@
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>Changelog</h1>
-      <small>Source: <a href="https://github.com/jmbarbone/cnd/blob/v0.1.1.9006/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
+      <small>Source: <a href="https://github.com/jmbarbone/cnd/blob/main/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
     <div class="section level2">
@@ -72,10 +72,13 @@
 <li>
 <strong>internal</strong>: test restructure for internal, testing package</li>
 <li>
-<code>conditions("pkg:condition/type")</code> now works <a href="https://github.com/jmbarbone/cnd/issues/18" class="external-link">#18</a>
+<code>conditions("pkg::condition/type")</code> now works <a href="https://github.com/jmbarbone/cnd/issues/18" class="external-link">#18</a>
 </li>
 <li>
 <code>condition(name)(message)</code> can be used to override default messages <a href="https://github.com/jmbarbone/cnd/issues/22" class="external-link">#22</a>
+</li>
+<li>
+<strong>BREAKING</strong> class names are now reported as <code>"pkg::condition"</code> using <code>::</code> instead of <code>:</code>
 </li>
 </ul></div>
     <div class="section level2">

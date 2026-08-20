@@ -29,6 +29,12 @@ conditions is provided for package development.
   [`base::conditionCall()`](https://rdrr.io/r/base/conditions.html)
   method.
 
+- `cnd.warn.immediate`  
+  `[TRUE|FALSE]`:
+
+  Whether to immediately print warnings. This temporarily changes
+  `options("warn") <- 1`
+
 ## See also
 
 [`condition()`](https://jmbarbone.github.io/cnd/reference/condition.md)
