@@ -34,6 +34,7 @@
 cnd_document <- function(
   package = get_package(),
   registry = package,
+  # TODO check if connection objects are appropriately handled
   file = file.path("R", paste0(package, "-cnd-conditions.R")),
   cleanup = TRUE
 ) {
@@ -136,10 +137,7 @@ cnd_document <- function(
   on.exit(if (isOpen(con_gen)) close(con_gen), add = TRUE)
   cat(res, sep = "\n", file = con_gen)
 
-  if (
-    file.exists(file) &&
-      tools::md5sum(temp_gen) == tools::md5sum(file)
-  ) {
+  if (file.exists(file) && md5sum(temp_gen) == md5sum(file)) {
     return(invisible(file))
   }
 
