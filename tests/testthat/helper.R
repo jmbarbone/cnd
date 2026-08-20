@@ -46,10 +46,10 @@ test_documentation <- function() {
       cnd_document(package = "cnd", file = path),
       # line endings on CI Windows might be throwing off the check.  For now,
       # these are simply going to be muffled
-      "cnd:cnd_generated_cleanup" = function(c) {
+      "cnd::cnd_generated_cleanup" = function(c) {
         if (is_ci_windows) tryInvokeRestart("muffleMessage")
       },
-      "cnd:cnd_generated_write" = function(c) {
+      "cnd::cnd_generated_write" = function(c) {
         if (is_ci_windows) tryInvokeRestart("muffleCondition")
       }
     )
