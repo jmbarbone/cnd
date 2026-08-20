@@ -358,7 +358,7 @@ cnd <- function(condition) {
     cnd(cnd_class_error())
   }
 
-  if (getOption("cnd.warn.immediate")) {
+  if (getOption("cnd.warn.immediate", FALSE)) {
     op <- options(warn = 1)
     on.exit(options(op))
   }
