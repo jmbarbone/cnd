@@ -107,7 +107,7 @@ condition <- function(
       exports <- NULL
     }
   } else {
-    name <- paste(package, name, sep = ":")
+    name <- paste(package, name, sep = "::")
   }
 
   if (is.null(message)) {
@@ -165,7 +165,7 @@ condition <- function(
         # nolint next: object_usage_linter. (params is used)
         params <- as.list(match.call(expand.dots = TRUE))[-1L]
         params$.call <- NULL
-        params <- lapply(params, eval.parent, 2L)
+        params <- lapply(params, \(p) eval.parent(p, 3L))
 
         # nolint next: object_usage_linter. (.call is used)
         if (is.logical(.call) && length(.call) == 1L) {
@@ -269,8 +269,8 @@ conditions <- function(
     # TOOD allow environment(..1) as long as it appears to be a namespace
     if (is.function(..1)) {
       fun <- fun %||% ..1
-    } else if (grepl(":", ..1, fixed = TRUE)) {
-      class <- strsplit(..1, ":", fixed = TRUE)[[1L]]
+    } else if (grepl("::", ..1, fixed = TRUE)) {
+      class <- strsplit(..1, "::", fixed = TRUE)[[1L]]
       package <- class[1L]
       class <- class[2L]
     } else {
@@ -356,6 +356,11 @@ cond <- function(x) {
 cnd <- function(condition) {
   if (!is_cnd_condition(condition)) {
     cnd(cnd_class_error())
+  }
+
+  if (getOption("cnd.warn.immediate", FALSE)) {
+    op <- options(warn = 1)
+    on.exit(options(op))
   }
 
   switch(
@@ -463,8 +468,8 @@ do_find_cond <- function(
     class <- cget(x, "original_class")
     type <- cget(x, "type")
   } else {
-    package <- str_extract(x, "^.*(?=:.*)")
-    class <- gsub("^.*:|/.*$", "", x)
+    package <- str_extract(x, "^.*(?=::.*)")
+    class <- gsub("^.*::|/.*$", "", x)
     class <- if (nzchar(class)) class
     type <- str_extract(x, "(?<=/).*$")
   }
@@ -484,11 +489,11 @@ validate_condition <- function(class, exports, help) {
   # reset problems
   problems <- local({
     .problems <- character()
-    function(...) {
-      if (...length() == 0L) {
+    function(x) {
+      if (missing(x)) {
         return(.problems)
       }
-      .problems <<- c(.problems, ...)
+      .problems <<- c(.problems, x)
     }
   })
 

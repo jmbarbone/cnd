@@ -48,7 +48,7 @@
       cnd_class_error()
     Output
       cnd:cnd_class_error/error
-      (cnd:cnd_class_error/cnd::condition/input_error/error/condition)
+      (cnd::cnd_class_error/cnd::condition/input_error/error/condition)
       'condition' must be a `cnd::condition` object
 
 ---
@@ -75,8 +75,8 @@
       condition_overwrite_warning(old, new)
     Output
       cnd:condition_overwrite_warning/warning
-      (cnd:condition_overwrite_warning/cnd::condition/warning/condition)
-      A condition with the class name 'cnd:testing:snapshot_test_old' already exists in 'cnd:testing' and will be overwritten
+      (cnd::condition_overwrite_warning/cnd::condition/warning/condition)
+      A condition with the class name 'cnd:testing::snapshot_test_old' already exists in 'cnd:testing' and will be overwritten
          1 string mismatch
          target, current do not match when deparsed
          Component "class": 1 string mismatch
@@ -160,7 +160,7 @@
     Code
       print(conditions("cnd")[1])
     Output
-      $`cnd:cnd_class_error`
+      $`cnd::cnd_class_error`
       cnd::condition_generator
       cnd:cnd_class_error/error 
       
@@ -176,7 +176,7 @@
     Code
       print(conditions("cnd")[1:2])
     Output
-      $`cnd:cnd_class_error`
+      $`cnd::cnd_class_error`
       cnd::condition_generator
       cnd:cnd_class_error/error 
       
@@ -186,7 +186,7 @@
       exports
         cnd::cnd()
       
-      $`cnd:cnd_document_conditions`
+      $`cnd::cnd_document_conditions`
       cnd::condition_generator
       cnd:cnd_document_conditions/warning 
       

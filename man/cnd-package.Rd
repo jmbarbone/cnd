@@ -24,6 +24,10 @@ information.  \code{"simple"} will only provide the message.
 Whether to print the call that generated the condition.  This is
 embedded within the \code{\link[base:conditionCall]{base::conditionCall()}} method.
 }
+\item{\code{cnd.warn.immediate}\cr\verb{[TRUE|FALSE]}}{
+Whether to immediately print warnings.  This temporarily changes
+\code{options("warn") <- 1}
+}
 }
 }
 

@@ -3,22 +3,22 @@ test_that("documentation() works", {
 
   expect_error(
     cnd_document(package = NULL),
-    class = "cnd:cnd_document_pkg_reg"
+    class = "cnd::cnd_document_pkg_reg"
   )
 
   expect_error(
     cnd_document(registry = NULL),
-    class = "cnd:cnd_document_pkg_reg"
+    class = "cnd::cnd_document_pkg_reg"
   )
 
   expect_warning(
     cnd_document("cnd", registry = reg, file = NULL),
-    class = "cnd:cnd_document_conditions"
+    class = "cnd::cnd_document_conditions"
   )
 
   expect_error(
     cnd_document("cnd", file = NA),
-    class = "cnd:cnd_document_file"
+    class = "cnd::cnd_document_file"
   )
 
   con <- file()

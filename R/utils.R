@@ -133,6 +133,9 @@ rcode <- function(...) {
   collapse("```r", ..., "```", sep = "\n")
 }
 
+md5sum <- function(x) {
+  unname(tools::md5sum(x))
+}
 
 # conditions --------------------------------------------------------------
 

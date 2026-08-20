@@ -4,7 +4,7 @@
       foo()
     Output
       help:foo/condition
-      (help:foo/cnd::condition/condition)
+      (help::foo/cnd::condition/condition)
       there was a condition
 
 # .call
@@ -28,10 +28,11 @@
 ---
 
     Code
-      foo2()
+      foo()
     Condition
-      Error in `foo2()`:
-      ! could not find function "foo2"
+      Error:
+      ! <foo>
+      there was an error
 
 ---
 
@@ -75,6 +76,6 @@
       cnd(condition("_message_override_", register = FALSE)("<anything>"))
     Output
       cnd:_message_override_/condition
-      (cnd:_message_override_/cnd::condition/condition)
+      (cnd::_message_override_/cnd::condition/condition)
       <anything>
 

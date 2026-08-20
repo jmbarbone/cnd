@@ -16,8 +16,9 @@
 - `cnd_document()` no longer produces >80 character lines
 - **internal**: documentation updates
 - **internal**: test restructure for internal, testing package
-- `conditions("pkg:condition/type")` now works [#18](https://github.com/jmbarbone/cnd/issues/18)
+- `conditions("pkg::condition/type")` now works [#18](https://github.com/jmbarbone/cnd/issues/18)
 - `condition(name)(message)` can be used to override default messages [#22](https://github.com/jmbarbone/cnd/issues/22)
+- **BREAKING** class names are now reported as `"pkg::condition"` using `::` instead of `:`
 
 # cnd 0.1.1
 

@@ -16,6 +16,10 @@
 #'       Whether to print the call that generated the condition.  This is
 #'       embedded within the [base::conditionCall()] method.
 #'     }
+#'     \item{`cnd.warn.immediate`\cr`[TRUE|FALSE]`}{
+#'       Whether to immediately print warnings.  This temporarily changes
+#'       `options("warn") <- 1`
+#'     }
 #'   }
 "_PACKAGE"
 
@@ -46,7 +50,8 @@ cnd_evaluate <- function() {
 op.cnd <- list(
   cnd.cli.override = "none",
   cnd.condition.message = "verbose",
-  cnd.call = TRUE
+  cnd.call = TRUE,
+  cnd.warn.immediate = TRUE
 )
 
 .onLoad <- function(libname, pkgname) {

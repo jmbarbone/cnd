@@ -29,9 +29,9 @@ test_documentation <- function() {
     expect_message(
       expect_condition(
         expect_identical(cnd_document(package = "cnd", file = path), path),
-        class = "cnd:cnd_generated_write"
+        class = "cnd::cnd_generated_write"
       ),
-      class = "cnd:cnd_generated_cleanup"
+      class = "cnd::cnd_generated_cleanup"
     )
   )
 
@@ -40,17 +40,27 @@ test_documentation <- function() {
     # GitHub should set CI to 'true'
     isTRUE(as.logical(Sys.getenv("CI", "false")))
 
+  skips <- c(
+    `cnd::cnd_generated_cleanup` = FALSE,
+    `cnd::cnd_generated_write` = FALSE
+  )
   # no changes
   expect_no_condition(
     withCallingHandlers(
       cnd_document(package = "cnd", file = path),
       # line endings on CI Windows might be throwing off the check.  For now,
       # these are simply going to be muffled
-      "cnd:cnd_generated_cleanup" = function(c) {
-        if (is_ci_windows) tryInvokeRestart("muffleMessage")
+      "cnd::cnd_generated_cleanup" = function(c) {
+        if (is_ci_windows) {
+          skips[["cnd::cnd_generated_cleanup"]] <<- TRUE
+          tryInvokeRestart("muffleMessage")
+        }
       },
-      "cnd:cnd_generated_write" = function(c) {
-        if (is_ci_windows) tryInvokeRestart("muffleCondition")
+      "cnd::cnd_generated_write" = function(c) {
+        if (is_ci_windows) {
+          skips[["cnd::cnd_generated_write"]] <<- TRUE
+          tryInvokeRestart("muffleCondition")
+        }
       }
     )
   )
@@ -58,6 +68,14 @@ test_documentation <- function() {
   skip_if_not_installed("roxygen2")
   parsed <- roxygen2::parse_text(readLines(path)[-1:-2], test_env())
   expect_failure(expect_identical(parsed, list()))
+
+  if (is_ci_windows && any(skips)) {
+    skip(paste(
+      "skipped full documentation test on CI Windows due to potentially",
+      "erroneous cleanup/write conditions being thrown during",
+      toString(names(skips)[skips])
+    ))
+  }
 }
 
 local_registry <- function(name = basename(tempfile(""))) {
