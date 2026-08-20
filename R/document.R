@@ -125,12 +125,12 @@ cnd_document <- function(
 
     if (length(cnd_files)) {
       cnd(cond_cnd_generated_cleanup(cnd_files))
-      tryCatch(file.remove(cnd_files), error = \(e) NULL)
+      tryCatch(unlink(cnd_files), error = \(e) NULL)
     }
   }
 
   temp_gen <- tempfile()
-  on.exit(if (file.exists(temp_gen)) file.remove(temp_gen), add = TRUE)
+  on.exit(if (file.exists(temp_gen)) unlink(temp_gen), add = TRUE)
   file.create(temp_gen)
   Sys.chmod(temp_gen)
   con_gen <- file(temp_gen, open = "wb", encoding = "UTF-8")
