@@ -208,8 +208,8 @@ foo(-1.2)
 There are three steps you can take to get the most out of `{cnd}` within
 your package.
 
-- Creating a `registry` within your package  
-- Assigning a `"condition"` attribute to your functions  
+- Creating a `registry` within your package\
+- Assigning a `"condition"` attribute to your functions\
 - Documenting your conditions
 
 ### Registry
