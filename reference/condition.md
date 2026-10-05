@@ -157,7 +157,7 @@ Conditions are generated through the
 [`{cnd}`](https://jmbarbone.github.io/cnd/reference/cnd-package.md)
 package. The following conditions are associated with this function:
 
-- [`cnd:condition_as_character_error/error`](https://jmbarbone.github.io/cnd/reference/cnd-cnd-conditions.md):
+- [`cnd::condition_as_character_error/error`](https://jmbarbone.github.io/cnd/reference/cnd-cnd-conditions.md):
 
   You cannot coerce a condition_generator object to a character. This
   may have occurred when trying to put a condition function through
@@ -175,7 +175,7 @@ package. The following conditions are associated with this function:
       # Do this
       stop(my_condition())
 
-- [`cnd:condition_message_error/error`](https://jmbarbone.github.io/cnd/reference/cnd-cnd-conditions.md):
+- [`cnd::condition_message_error/error`](https://jmbarbone.github.io/cnd/reference/cnd-cnd-conditions.md):
 
   Conditions messages are displayed when invoked through
   [`base::conditionMessage()`](https://rdrr.io/r/base/conditions.html).
@@ -186,7 +186,7 @@ package. The following conditions are associated with this function:
   When `message` is not set, a default "there was an error" message is
   used.
 
-- [`cnd:condition_message_generator_error/error`](https://jmbarbone.github.io/cnd/reference/cnd-cnd-conditions.md):
+- [`cnd::condition_message_generator_error/error`](https://jmbarbone.github.io/cnd/reference/cnd-cnd-conditions.md):
 
   condition_generator objects are not conditions. You may have made this
   mistake:
@@ -200,25 +200,25 @@ package. The following conditions are associated with this function:
       x <- condition("my_condition")
       conditionMessage(x())
 
-- [`cnd:condition_overwrite_warning/warning`](https://jmbarbone.github.io/cnd/reference/cnd-cnd-conditions.md):
+- [`cnd::condition_overwrite_warning/warning`](https://jmbarbone.github.io/cnd/reference/cnd-cnd-conditions.md):
 
   Defining a new condition with the same class and package as an
   existing condition will overwrite the previous definition. It is
   recommended to either avoid this by fully defining your condition, or
   creating a new condition instead.
 
-- [`cnd:invalid_condition_error/error`](https://jmbarbone.github.io/cnd/reference/cnd-cnd-conditions.md):
+- [`cnd::invalid_condition_error/error`](https://jmbarbone.github.io/cnd/reference/cnd-cnd-conditions.md):
 
   The `class`, `exports`, and `help` parameters must be a single
   character string. If you are passing a function, it must be a valid
   function.
 
-- [`cnd:match_arg/error`](https://jmbarbone.github.io/cnd/reference/cnd-cnd-conditions.md):
+- [`cnd::match_arg/error`](https://jmbarbone.github.io/cnd/reference/cnd-cnd-conditions.md):
 
   Mostly [`base::match.arg()`](https://rdrr.io/r/base/match.arg.html)
   but with a custom condition
 
-- [`cnd:no_package_exports_warning/warning`](https://jmbarbone.github.io/cnd/reference/cnd-cnd-conditions.md):
+- [`cnd::no_package_exports_warning/warning`](https://jmbarbone.github.io/cnd/reference/cnd-cnd-conditions.md):
 
   The `exports` parameter requires a `package`
 
@@ -231,7 +231,7 @@ Conditions are generated through the
 [`{cnd}`](https://jmbarbone.github.io/cnd/reference/cnd-package.md)
 package. The following conditions are associated with this function:
 
-- [`cnd:cnd_class_error/error`](https://jmbarbone.github.io/cnd/reference/cnd-cnd-conditions.md):
+- [`cnd::cnd_class_error/error`](https://jmbarbone.github.io/cnd/reference/cnd-cnd-conditions.md):
 
   `cnd()` simple calls the appropriate function:
   [`base::stop()`](https://rdrr.io/r/base/stop.html),

@@ -15,7 +15,7 @@ package though the use of
 
 ## `{cnd}` conditions
 
-### `cnd:cnd_class_error/error`
+### `cnd::cnd_class_error/error`
 
 - package:
 
@@ -37,7 +37,7 @@ calls the appropriate function:
 `type` parameter from
 [`condition()`](https://jmbarbone.github.io/cnd/reference/condition.md).
 
-### `cnd:cnd_document_conditions/warning`
+### `cnd::cnd_document_conditions/warning`
 
 - package:
 
@@ -58,7 +58,7 @@ too early, before conditions have been registered. You can try to find
 your conditions with
 [`conditions()`](https://jmbarbone.github.io/cnd/reference/condition.md).
 
-### `cnd:cnd_document_file/error`
+### `cnd::cnd_document_file/error`
 
 - package:
 
@@ -78,7 +78,7 @@ must be a file path, a connection object, or `NULL` to return the
 documentation as a character vector. The default value should be
 suitable for standard use cases.
 
-### `cnd:cnd_document_pkg_reg/error`
+### `cnd::cnd_document_pkg_reg/error`
 
 - package:
 
@@ -97,7 +97,7 @@ set a registry by adding
 [`cnd_create_registry()`](https://jmbarbone.github.io/cnd/reference/cnd_create_registry.md)
 calls to your package code.
 
-### `cnd:cnd_generated_cleanup/message`
+### `cnd::cnd_generated_cleanup/message`
 
 - package:
 
@@ -114,7 +114,7 @@ calls to your package code.
 Some files created during the documentation process may become obsolete
 while updating your conditions.
 
-### `cnd:cnd_generated_write/condition`
+### `cnd::cnd_generated_write/condition`
 
 - package:
 
@@ -132,7 +132,7 @@ This condition is signaled when
 [`cnd_document()`](https://jmbarbone.github.io/cnd/reference/cnd_document.md)
 needs to write new documentation files.
 
-### `cnd:condition_as_character_error/error`
+### `cnd::condition_as_character_error/error`
 
 - package:
 
@@ -164,7 +164,7 @@ For example:
     # Do this
     stop(my_condition())
 
-### `cnd:condition_message_error/error`
+### `cnd::condition_message_error/error`
 
 - package:
 
@@ -187,7 +187,7 @@ return a `character` vector.
 When `message` is not set, a default "there was an error" message is
 used.
 
-### `cnd:condition_message_generator_error/error`
+### `cnd::condition_message_generator_error/error`
 
 - package:
 
@@ -213,7 +213,7 @@ conditions. Try this instead:
     x <- condition("my_condition")
     conditionMessage(x())
 
-### `cnd:condition_overwrite_warning/warning`
+### `cnd::condition_overwrite_warning/warning`
 
 - package:
 
@@ -232,7 +232,7 @@ condition will overwrite the previous definition. It is recommended to
 either avoid this by fully defining your condition, or creating a new
 condition instead.
 
-### `cnd:conditions_dots_warning/warning`
+### `cnd::conditions_dots_warning/warning`
 
 - package:
 
@@ -259,7 +259,7 @@ For example:
     # Do this
     conditions(class = "class", package = "package")
 
-### `cnd:invalid_condition_error/error`
+### `cnd::invalid_condition_error/error`
 
 - package:
 
@@ -276,7 +276,7 @@ For example:
 The `class`, `exports`, and `help` parameters must be a single character
 string. If you are passing a function, it must be a valid function.
 
-### `cnd:match_arg/error`
+### `cnd::match_arg/error`
 
 - package:
 
@@ -293,7 +293,7 @@ string. If you are passing a function, it must be a valid function.
 Mostly [`base::match.arg()`](https://rdrr.io/r/base/match.arg.html) but
 with a custom condition
 
-### `cnd:no_package_exports_warning/warning`
+### `cnd::no_package_exports_warning/warning`
 
 - package:
 

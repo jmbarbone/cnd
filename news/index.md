@@ -37,7 +37,7 @@
   [\#18](https://github.com/jmbarbone/cnd/issues/18)
 - `condition(name)(message)` can be used to override default messages
   [\#22](https://github.com/jmbarbone/cnd/issues/22)
-- **BREAKING** class names are now reported as `"pkg::condition"` using
+- **BREAKING** class names are now created as `"pkg::condition"` using
   `::` instead of `:`
 
 ## cnd 0.1.1
