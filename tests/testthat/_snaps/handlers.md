@@ -29,7 +29,7 @@
     Code
       cnd_condition(foo(), "verbose")
     Output
-      cnd:foo/condition
+      cnd::foo/condition
       (cnd::foo/cnd::condition/condition)
       there was a condition
 

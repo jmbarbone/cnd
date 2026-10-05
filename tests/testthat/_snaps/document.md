@@ -9,7 +9,7 @@
       
       \describe{
         
-        \item{[`cnd:cnd_class_error/error`][cnd-cnd-conditions]}{
+        \item{[`cnd::cnd_class_error/error`][cnd-cnd-conditions]}{
           [cnd::cnd()] simple calls the appropriate function: [base::stop()], [base::warning()], or [base::message()] based on the `type` parameter from [cnd::condition()].
         }
       
@@ -23,7 +23,7 @@
       cnd_document("cnd", file = stdout())
     Output
       #' @name cnd-cnd-conditions
-      #' @aliases cnd-cnd-conditions cnd::cnd_class_error cnd::cnd_document_conditions cnd::cnd_document_file cnd::cnd_document_pkg_reg cnd::cnd_generated_cleanup cnd::cnd_generated_write cnd::condition_as_character_error cnd::condition_message_error cnd::condition_message_generator_error cnd::condition_overwrite_warning cnd::conditions_dots_warning cnd::foo cnd::invalid_condition_error cnd::match_arg cnd::no_package_exports_warning cnd_class_error cnd_document_conditions cnd_document_file cnd_document_pkg_reg cnd_generated_cleanup cnd_generated_write condition_as_character_error condition_message_error condition_message_generator_error condition_overwrite_warning conditions_dots_warning foo invalid_condition_error match_arg no_package_exports_warning cnd:cnd_class_error/error cnd:cnd_document_conditions/warning cnd:cnd_document_file/error cnd:cnd_document_pkg_reg/error cnd:cnd_generated_cleanup/message cnd:cnd_generated_write/condition cnd:condition_as_character_error/error cnd:condition_message_error/error cnd:condition_message_generator_error/error cnd:condition_overwrite_warning/warning cnd:conditions_dots_warning/warning cnd:foo/condition cnd:invalid_condition_error/error cnd:match_arg/error cnd:no_package_exports_warning/warning
+      #' @aliases cnd-cnd-conditions cnd::cnd_class_error cnd::cnd_document_conditions cnd::cnd_document_file cnd::cnd_document_pkg_reg cnd::cnd_generated_cleanup cnd::cnd_generated_write cnd::condition_as_character_error cnd::condition_message_error cnd::condition_message_generator_error cnd::condition_overwrite_warning cnd::conditions_dots_warning cnd::foo cnd::invalid_condition_error cnd::match_arg cnd::no_package_exports_warning cnd_class_error cnd_document_conditions cnd_document_file cnd_document_pkg_reg cnd_generated_cleanup cnd_generated_write condition_as_character_error condition_message_error condition_message_generator_error condition_overwrite_warning conditions_dots_warning foo invalid_condition_error match_arg no_package_exports_warning cnd::cnd_class_error/error cnd::cnd_document_conditions/warning cnd::cnd_document_file/error cnd::cnd_document_pkg_reg/error cnd::cnd_generated_cleanup/message cnd::cnd_generated_write/condition cnd::condition_as_character_error/error cnd::condition_message_error/error cnd::condition_message_generator_error/error cnd::condition_overwrite_warning/warning cnd::conditions_dots_warning/warning cnd::foo/condition cnd::invalid_condition_error/error cnd::match_arg/error cnd::no_package_exports_warning/warning
       #' @title Conditions for `cnd`
       #'
       #' @details
@@ -35,7 +35,7 @@
       #'
       #' @section `{cnd}` conditions:
       #'
-      #'   \subsection{`cnd:cnd_class_error/error`}{
+      #'   \subsection{`cnd::cnd_class_error/error`}{
       #'   \describe{
       #'     \item{package}{`{cnd}`}
       #'     \item{class}{`cnd::cnd_class_error`}
@@ -43,7 +43,7 @@
       #'   }
       #'   [cnd::cnd()] simple calls the appropriate function: [base::stop()], [base::warning()], or [base::message()] based on the `type` parameter from [cnd::condition()].
       #'  }
-      #'   \subsection{`cnd:cnd_document_conditions/warning`}{
+      #'   \subsection{`cnd::cnd_document_conditions/warning`}{
       #'   \describe{
       #'     \item{package}{`{cnd}`}
       #'     \item{class}{`cnd::cnd_document_conditions`}
@@ -51,7 +51,7 @@
       #'   }
       #'   Documentation will fail when no conditions are found.  You may be executing [cnd::cnd_document()] too early, before conditions have been registered.  You can try to find your conditions with [cnd::conditions()].
       #'  }
-      #'   \subsection{`cnd:cnd_document_file/error`}{
+      #'   \subsection{`cnd::cnd_document_file/error`}{
       #'   \describe{
       #'     \item{package}{`{cnd}`}
       #'     \item{class}{`cnd::cnd_document_file`}
@@ -59,7 +59,7 @@
       #'   }
       #'   The `file` argument to [cnd::cnd_document()] must be a file path, a connection object, or `NULL` to return the documentation as a character vector.  The default value should be suitable for standard use cases.
       #'  }
-      #'   \subsection{`cnd:cnd_document_pkg_reg/error`}{
+      #'   \subsection{`cnd::cnd_document_pkg_reg/error`}{
       #'   \describe{
       #'     \item{package}{`{cnd}`}
       #'     \item{class}{`cnd::cnd_document_pkg_reg`}
@@ -67,7 +67,7 @@
       #'   }
       #'   Both `package` and `registry` must be set to document conditions.You can set a registry by adding [cnd::cnd_create_registry()] calls to your package code.
       #'  }
-      #'   \subsection{`cnd:cnd_generated_cleanup/message`}{
+      #'   \subsection{`cnd::cnd_generated_cleanup/message`}{
       #'   \describe{
       #'     \item{package}{`{cnd}`}
       #'     \item{class}{`cnd::cnd_generated_cleanup`}
@@ -75,7 +75,7 @@
       #'   }
       #'   Some files created during the documentation process may become obsolete while updating your conditions.
       #'  }
-      #'   \subsection{`cnd:cnd_generated_write/condition`}{
+      #'   \subsection{`cnd::cnd_generated_write/condition`}{
       #'   \describe{
       #'     \item{package}{`{cnd}`}
       #'     \item{class}{`cnd::cnd_generated_write`}
@@ -83,7 +83,7 @@
       #'   }
       #'   This condition is signaled when [cnd::cnd_document()] needs to write new documentation files.
       #'  }
-      #'   \subsection{`cnd:condition_as_character_error/error`}{
+      #'   \subsection{`cnd::condition_as_character_error/error`}{
       #'   \describe{
       #'     \item{package}{`{cnd}`}
       #'     \item{class}{`cnd::condition_as_character_error`}
@@ -100,7 +100,7 @@
       #'   stop(my_condition())
       #'   ```
       #'  }
-      #'   \subsection{`cnd:condition_message_error/error`}{
+      #'   \subsection{`cnd::condition_message_error/error`}{
       #'   \describe{
       #'     \item{package}{`{cnd}`}
       #'     \item{class}{`cnd::condition_message_error`}
@@ -110,7 +110,7 @@
       #'
       #'   When `message` is not set, a default "there was an error" message is used.
       #'  }
-      #'   \subsection{`cnd:condition_message_generator_error/error`}{
+      #'   \subsection{`cnd::condition_message_generator_error/error`}{
       #'   \describe{
       #'     \item{package}{`{cnd}`}
       #'     \item{class}{`cnd::condition_message_generator_error`}
@@ -130,7 +130,7 @@
       #'   conditionMessage(x())
       #'   ```
       #'  }
-      #'   \subsection{`cnd:condition_overwrite_warning/warning`}{
+      #'   \subsection{`cnd::condition_overwrite_warning/warning`}{
       #'   \describe{
       #'     \item{package}{`{cnd}`}
       #'     \item{class}{`cnd::condition_overwrite_warning`}
@@ -138,7 +138,7 @@
       #'   }
       #'   Defining a new condition with the same class and package as an existing condition will overwrite the previous definition.  It is recommended to either avoid this by fully defining your condition, or creating a new condition instead.
       #'  }
-      #'   \subsection{`cnd:conditions_dots_warning/warning`}{
+      #'   \subsection{`cnd::conditions_dots_warning/warning`}{
       #'   \describe{
       #'     \item{package}{`{cnd}`}
       #'     \item{class}{`cnd::conditions_dots_warning`}
@@ -156,7 +156,7 @@
       #'   conditions(class = "class", package = "package")
       #'   ```
       #'  }
-      #'   \subsection{`cnd:foo/condition`}{
+      #'   \subsection{`cnd::foo/condition`}{
       #'   \describe{
       #'     \item{package}{`{cnd}`}
       #'     \item{class}{`cnd::foo`}
@@ -164,7 +164,7 @@
       #'   }
       #'   _no help documentation provided_
       #'  }
-      #'   \subsection{`cnd:invalid_condition_error/error`}{
+      #'   \subsection{`cnd::invalid_condition_error/error`}{
       #'   \describe{
       #'     \item{package}{`{cnd}`}
       #'     \item{class}{`cnd::invalid_condition_error`}
@@ -172,7 +172,7 @@
       #'   }
       #'   The `class`, `exports`, and `help` parameters must be a single character string.  If you are passing a function, it must be a valid function.
       #'  }
-      #'   \subsection{`cnd:match_arg/error`}{
+      #'   \subsection{`cnd::match_arg/error`}{
       #'   \describe{
       #'     \item{package}{`{cnd}`}
       #'     \item{class}{`cnd::match_arg`}
@@ -180,7 +180,7 @@
       #'   }
       #'   Mostly [base::match.arg()] but with a custom condition
       #'  }
-      #'   \subsection{`cnd:no_package_exports_warning/warning`}{
+      #'   \subsection{`cnd::no_package_exports_warning/warning`}{
       #'   \describe{
       #'     \item{package}{`{cnd}`}
       #'     \item{class}{`cnd::no_package_exports_warning`}
