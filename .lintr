@@ -3,6 +3,7 @@ linters: linters_with_defaults(
   indentation_linter = NULL
   )
 exclusions: list(
-  "R/cnd-cnd-conditions.R"
+  "R/cnd-cnd-conditions.R",
+  "tests/testthat/t0/R/t0-cnd-conditions.R"
   )
 encoding: "UTF-8"
