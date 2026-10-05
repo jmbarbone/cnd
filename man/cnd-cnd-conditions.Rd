@@ -30,20 +30,20 @@
 \alias{invalid_condition_error}
 \alias{match_arg}
 \alias{no_package_exports_warning}
-\alias{cnd:cnd_class_error/error}
-\alias{cnd:cnd_document_conditions/warning}
-\alias{cnd:cnd_document_file/error}
-\alias{cnd:cnd_document_pkg_reg/error}
-\alias{cnd:cnd_generated_cleanup/message}
-\alias{cnd:cnd_generated_write/condition}
-\alias{cnd:condition_as_character_error/error}
-\alias{cnd:condition_message_error/error}
-\alias{cnd:condition_message_generator_error/error}
-\alias{cnd:condition_overwrite_warning/warning}
-\alias{cnd:conditions_dots_warning/warning}
-\alias{cnd:invalid_condition_error/error}
-\alias{cnd:match_arg/error}
-\alias{cnd:no_package_exports_warning/warning}
+\alias{cnd::cnd_class_error/error}
+\alias{cnd::cnd_document_conditions/warning}
+\alias{cnd::cnd_document_file/error}
+\alias{cnd::cnd_document_pkg_reg/error}
+\alias{cnd::cnd_generated_cleanup/message}
+\alias{cnd::cnd_generated_write/condition}
+\alias{cnd::condition_as_character_error/error}
+\alias{cnd::condition_message_error/error}
+\alias{cnd::condition_message_generator_error/error}
+\alias{cnd::condition_overwrite_warning/warning}
+\alias{cnd::conditions_dots_warning/warning}
+\alias{cnd::invalid_condition_error/error}
+\alias{cnd::match_arg/error}
+\alias{cnd::no_package_exports_warning/warning}
 \title{Conditions for \code{cnd}}
 \description{
 Conditions for \code{cnd}
@@ -60,7 +60,7 @@ the use of \code{\link[=condition]{condition()}}.
 \section{\code{{cnd}} conditions}{
 
 
-\subsection{\code{cnd:cnd_class_error/error}}{
+\subsection{\code{cnd::cnd_class_error/error}}{
 \describe{
 \item{package}{\code{{cnd}}}
 \item{class}{\code{cnd::cnd_class_error}}
@@ -68,7 +68,7 @@ the use of \code{\link[=condition]{condition()}}.
 }
 \code{\link[=cnd]{cnd()}} simple calls the appropriate function: \code{\link[base:stop]{base::stop()}}, \code{\link[base:warning]{base::warning()}}, or \code{\link[base:message]{base::message()}} based on the \code{type} parameter from \code{\link[=condition]{condition()}}.
 }
-\subsection{\code{cnd:cnd_document_conditions/warning}}{
+\subsection{\code{cnd::cnd_document_conditions/warning}}{
 \describe{
 \item{package}{\code{{cnd}}}
 \item{class}{\code{cnd::cnd_document_conditions}}
@@ -76,7 +76,7 @@ the use of \code{\link[=condition]{condition()}}.
 }
 Documentation will fail when no conditions are found.  You may be executing \code{\link[=cnd_document]{cnd_document()}} too early, before conditions have been registered.  You can try to find your conditions with \code{\link[=conditions]{conditions()}}.
 }
-\subsection{\code{cnd:cnd_document_file/error}}{
+\subsection{\code{cnd::cnd_document_file/error}}{
 \describe{
 \item{package}{\code{{cnd}}}
 \item{class}{\code{cnd::cnd_document_file}}
@@ -84,7 +84,7 @@ Documentation will fail when no conditions are found.  You may be executing \cod
 }
 The \code{file} argument to \code{\link[=cnd_document]{cnd_document()}} must be a file path, a connection object, or \code{NULL} to return the documentation as a character vector.  The default value should be suitable for standard use cases.
 }
-\subsection{\code{cnd:cnd_document_pkg_reg/error}}{
+\subsection{\code{cnd::cnd_document_pkg_reg/error}}{
 \describe{
 \item{package}{\code{{cnd}}}
 \item{class}{\code{cnd::cnd_document_pkg_reg}}
@@ -92,7 +92,7 @@ The \code{file} argument to \code{\link[=cnd_document]{cnd_document()}} must be 
 }
 Both \code{package} and \code{registry} must be set to document conditions.You can set a registry by adding \code{\link[=cnd_create_registry]{cnd_create_registry()}} calls to your package code.
 }
-\subsection{\code{cnd:cnd_generated_cleanup/message}}{
+\subsection{\code{cnd::cnd_generated_cleanup/message}}{
 \describe{
 \item{package}{\code{{cnd}}}
 \item{class}{\code{cnd::cnd_generated_cleanup}}
@@ -100,7 +100,7 @@ Both \code{package} and \code{registry} must be set to document conditions.You c
 }
 Some files created during the documentation process may become obsolete while updating your conditions.
 }
-\subsection{\code{cnd:cnd_generated_write/condition}}{
+\subsection{\code{cnd::cnd_generated_write/condition}}{
 \describe{
 \item{package}{\code{{cnd}}}
 \item{class}{\code{cnd::cnd_generated_write}}
@@ -108,7 +108,7 @@ Some files created during the documentation process may become obsolete while up
 }
 This condition is signaled when \code{\link[=cnd_document]{cnd_document()}} needs to write new documentation files.
 }
-\subsection{\code{cnd:condition_as_character_error/error}}{
+\subsection{\code{cnd::condition_as_character_error/error}}{
 \describe{
 \item{package}{\code{{cnd}}}
 \item{class}{\code{cnd::condition_as_character_error}}
@@ -126,7 +126,7 @@ stop(my_condition())
 }\if{html}{\out{</div>}}
 
 }
-\subsection{\code{cnd:condition_message_error/error}}{
+\subsection{\code{cnd::condition_message_error/error}}{
 \describe{
 \item{package}{\code{{cnd}}}
 \item{class}{\code{cnd::condition_message_error}}
@@ -136,7 +136,7 @@ Conditions messages are displayed when invoked through \code{\link[base:conditio
 
 When \code{message} is not set, a default "there was an error" message is used.
 }
-\subsection{\code{cnd:condition_message_generator_error/error}}{
+\subsection{\code{cnd::condition_message_generator_error/error}}{
 \describe{
 \item{package}{\code{{cnd}}}
 \item{class}{\code{cnd::condition_message_generator_error}}
@@ -155,7 +155,7 @@ conditionMessage(x())
 }\if{html}{\out{</div>}}
 
 }
-\subsection{\code{cnd:condition_overwrite_warning/warning}}{
+\subsection{\code{cnd::condition_overwrite_warning/warning}}{
 \describe{
 \item{package}{\code{{cnd}}}
 \item{class}{\code{cnd::condition_overwrite_warning}}
@@ -163,7 +163,7 @@ conditionMessage(x())
 }
 Defining a new condition with the same class and package as an existing condition will overwrite the previous definition.  It is recommended to either avoid this by fully defining your condition, or creating a new condition instead.
 }
-\subsection{\code{cnd:conditions_dots_warning/warning}}{
+\subsection{\code{cnd::conditions_dots_warning/warning}}{
 \describe{
 \item{package}{\code{{cnd}}}
 \item{class}{\code{cnd::conditions_dots_warning}}
@@ -181,7 +181,7 @@ conditions(class = "class", package = "package")
 }\if{html}{\out{</div>}}
 
 }
-\subsection{\code{cnd:invalid_condition_error/error}}{
+\subsection{\code{cnd::invalid_condition_error/error}}{
 \describe{
 \item{package}{\code{{cnd}}}
 \item{class}{\code{cnd::invalid_condition_error}}
@@ -189,7 +189,7 @@ conditions(class = "class", package = "package")
 }
 The \code{class}, \code{exports}, and \code{help} parameters must be a single character string.  If you are passing a function, it must be a valid function.
 }
-\subsection{\code{cnd:match_arg/error}}{
+\subsection{\code{cnd::match_arg/error}}{
 \describe{
 \item{package}{\code{{cnd}}}
 \item{class}{\code{cnd::match_arg}}
@@ -197,7 +197,7 @@ The \code{class}, \code{exports}, and \code{help} parameters must be a single ch
 }
 Mostly \code{\link[base:match.arg]{base::match.arg()}} but with a custom condition
 }
-\subsection{\code{cnd:no_package_exports_warning/warning}}{
+\subsection{\code{cnd::no_package_exports_warning/warning}}{
 \describe{
 \item{package}{\code{{cnd}}}
 \item{class}{\code{cnd::no_package_exports_warning}}

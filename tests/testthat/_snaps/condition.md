@@ -3,7 +3,7 @@
     Code
       foo()
     Output
-      help:foo/condition
+      help::foo/condition
       (help::foo/cnd::condition/condition)
       there was a condition
 
@@ -75,7 +75,7 @@
     Code
       cnd(condition("_message_override_", register = FALSE)("<anything>"))
     Output
-      cnd:_message_override_/condition
+      cnd::_message_override_/condition
       (cnd::_message_override_/cnd::condition/condition)
       <anything>
 

@@ -18,13 +18,13 @@
         $ class    : <symbol> 
       
       condition(s)
-      cnd:condition_as_character_error/error
-      cnd:condition_message_error/error
-      cnd:condition_message_generator_error/error
-      cnd:condition_overwrite_warning/warning
-      cnd:invalid_condition_error/error
-      cnd:match_arg/error
-      cnd:no_package_exports_warning/warning
+      cnd::condition_as_character_error/error
+      cnd::condition_message_error/error
+      cnd::condition_message_generator_error/error
+      cnd::condition_overwrite_warning/warning
+      cnd::invalid_condition_error/error
+      cnd::match_arg/error
+      cnd::no_package_exports_warning/warning
       
       For a list of conditions: `cnd::conditions()`
 
@@ -34,7 +34,7 @@
       cnd_class_error
     Output
       cnd::condition_generator
-      cnd:cnd_class_error/error 
+      cnd::cnd_class_error/error 
       
       help
       [cnd::cnd()] simple calls the appropriate function: [base::stop()], [base::warning()], or [base::message()] based on the `type` parameter from [cnd::condition()]. 
@@ -47,7 +47,7 @@
     Code
       cnd_class_error()
     Output
-      cnd:cnd_class_error/error
+      cnd::cnd_class_error/error
       (cnd::cnd_class_error/cnd::condition/input_error/error/condition)
       'condition' must be a `cnd::condition` object
 
@@ -57,7 +57,7 @@
       condition_overwrite_warning
     Output
       cnd::condition_generator
-      cnd:condition_overwrite_warning/warning 
+      cnd::condition_overwrite_warning/warning 
       
       generator
         $ old : <symbol> 
@@ -74,7 +74,7 @@
     Code
       condition_overwrite_warning(old, new)
     Output
-      cnd:condition_overwrite_warning/warning
+      cnd::condition_overwrite_warning/warning
       (cnd::condition_overwrite_warning/cnd::condition/warning/condition)
       A condition with the class name 'cnd:testing::snapshot_test_old' already exists in 'cnd:testing' and will be overwritten
          1 string mismatch
@@ -106,7 +106,7 @@
       <environment: 0x000000000000>
       
       condition(s)
-      test-snapshots:snapshot_test_fun/condition
+      test-snapshots::snapshot_test_fun/condition
 
 ---
 
@@ -114,7 +114,7 @@
       condition_message_error
     Output
       cnd::condition_generator
-      cnd:condition_message_error/error 
+      cnd::condition_message_error/error 
       
       help
       Conditions messages are displayed when invoked through [base::conditionMessage()].  You can set a static message by passing through a `character` vector, or a dynamic message by passing through a `function`.  The function should return a `character` vector.  When `message` is not set, a default "there was an error" message is used. 
@@ -143,13 +143,13 @@
       
       condition(s)
     Message
-      `cnd:condition_as_character_error/error`
-      `cnd:condition_message_error/error`
-      `cnd:condition_message_generator_error/error`
-      `cnd:condition_overwrite_warning/warning`
-      `cnd:invalid_condition_error/error`
-      `cnd:match_arg/error`
-      `cnd:no_package_exports_warning/warning`
+      `cnd::condition_as_character_error/error`
+      `cnd::condition_message_error/error`
+      `cnd::condition_message_generator_error/error`
+      `cnd::condition_overwrite_warning/warning`
+      `cnd::invalid_condition_error/error`
+      `cnd::match_arg/error`
+      `cnd::no_package_exports_warning/warning`
     Output
       
     Message
@@ -162,7 +162,7 @@
     Output
       $`cnd::cnd_class_error`
       cnd::condition_generator
-      cnd:cnd_class_error/error 
+      cnd::cnd_class_error/error 
       
       help
       [cnd::cnd()] simple calls the appropriate function: [base::stop()], [base::warning()], or [base::message()] based on the `type` parameter from [cnd::condition()]. 
@@ -178,7 +178,7 @@
     Output
       $`cnd::cnd_class_error`
       cnd::condition_generator
-      cnd:cnd_class_error/error 
+      cnd::cnd_class_error/error 
       
       help
       [cnd::cnd()] simple calls the appropriate function: [base::stop()], [base::warning()], or [base::message()] based on the `type` parameter from [cnd::condition()]. 
@@ -188,7 +188,7 @@
       
       $`cnd::cnd_document_conditions`
       cnd::condition_generator
-      cnd:cnd_document_conditions/warning 
+      cnd::cnd_document_conditions/warning 
       
       help
       Documentation will fail when no conditions are found.  You may be executing [cnd::cnd_document()] too early, before conditions have been registered.  You can try to find your conditions with [cnd::conditions()]. 

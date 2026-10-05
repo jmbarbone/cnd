@@ -64,7 +64,7 @@ fmt_cond <- function(
     package = if (is.null(package)) {
       ""
     } else {
-      paste0(bold(package), ":")
+      paste0(bold(package), "::")
     },
     class = sub("^.*:+", "", class),
     type = switch(

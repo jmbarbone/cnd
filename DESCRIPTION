@@ -1,6 +1,6 @@
 Package: cnd
 Title: Create and Register Conditions
-Version: 0.1.1.9007
+Version: 0.1.1.9008
 Authors@R: 
     person(
       "Jordan Mark", "Barbone", , 
@@ -28,6 +28,6 @@ Suggests:
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
 Config/testthat/parallel: false
-Config/roxygen2/version: 8.0.0
+Config/roxygen2/version: 8.1.0
 Imports: 
     tools
