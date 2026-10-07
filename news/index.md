@@ -1,5 +1,7 @@
 # Changelog
 
+## cnd (development version)
+
 ## cnd 0.2.0
 
 CRAN release: 2026-10-07
