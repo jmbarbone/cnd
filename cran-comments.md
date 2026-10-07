@@ -1,6 +1,4 @@
-## R CMD check results
+# CRAN comments
 
-0 errors | 0 warnings | 1 note
-
-* This is patch release
-* This corrects current CRAN check errors
+* This is minor release
+* No expected breakage for CRAN packages
