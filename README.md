@@ -102,13 +102,13 @@ condition
 #>   $ class    : <symbol> 
 #> 
 #> condition(s)
-#> cnd:condition_as_character_error/error
-#> cnd:condition_message_error/error
-#> cnd:condition_message_generator_error/error
-#> cnd:condition_overwrite_warning/warning
-#> cnd:invalid_condition_error/error
-#> cnd:match_arg/error
-#> cnd:no_package_exports_warning/warning
+#> cnd::condition_as_character_error/error
+#> cnd::condition_message_error/error
+#> cnd::condition_message_generator_error/error
+#> cnd::condition_overwrite_warning/warning
+#> cnd::invalid_condition_error/error
+#> cnd::match_arg/error
+#> cnd::no_package_exports_warning/warning
 #> 
 #> For a list of conditions: `cnd::conditions()`
 ```
@@ -279,7 +279,7 @@ cat(cnd_section(cnd))
 #> 
 #> \describe{
 #>   
-#>   \item{[`cnd:cnd_class_error/error`][cnd-cnd-conditions]}{
+#>   \item{[`cnd::cnd_class_error/error`][cnd-cnd-conditions]}{
 #>     [cnd::cnd()] simple calls the appropriate function: [base::stop()], [base::warning()], or [base::message()] based on the `type` parameter from [cnd::condition()].
 #>   }
 #> 
@@ -306,7 +306,7 @@ conditions("cnd", type = "warning")
 ```
 
     #> cnd::condition_generator
-    #> cnd:cnd_document_conditions/warning 
+    #> cnd::cnd_document_conditions/warning 
     #> 
     #> help
     #> Documentation will fail when no conditions are found.  You may be executing [cnd::cnd_document()] too early, before conditions have been registered.  You can try to find your conditions with [cnd::conditions()]. 
@@ -315,7 +315,7 @@ conditions("cnd", type = "warning")
     #>   cnd::cnd_document()
     #> -------------------------------------------------------------------------------- 
     #> cnd::condition_generator
-    #> cnd:condition_overwrite_warning/warning 
+    #> cnd::condition_overwrite_warning/warning 
     #> 
     #> generator
     #>   $ old : <symbol> 
@@ -328,7 +328,7 @@ conditions("cnd", type = "warning")
     #>   cnd::condition()
     #> -------------------------------------------------------------------------------- 
     #> cnd::condition_generator
-    #> cnd:conditions_dots_warning/warning 
+    #> cnd::conditions_dots_warning/warning 
     #> 
     #> help
     #> The `...` parameter in [cnd::conditions()] is meant for convenience.  Only a single argument is allowed.  Other parameters must be named  explicitly.  For example:  ```r # Instead of this conditions("class", "package") # "package" is ignored with a warning  # Do this conditions(class = "class", package = "package") ``` 
@@ -337,7 +337,7 @@ conditions("cnd", type = "warning")
     #>   cnd::conditions()
     #> -------------------------------------------------------------------------------- 
     #> cnd::condition_generator
-    #> cnd:no_package_exports_warning/warning 
+    #> cnd::no_package_exports_warning/warning 
     #> 
     #> help
     #> The `exports` parameter requires a `package` 

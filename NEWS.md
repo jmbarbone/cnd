@@ -1,4 +1,10 @@
-# cnd (development version)
+# cnd 0.2.0
+
+## Breaking
+
+- class names are now created as `"pkg::condition"` using `::` instead of `:`
+
+## Features
 
 - `condition(class = )` is now deprecated; instead `condition(name = )` should be use; `name` is now the first argument
 - `condition(classes = )` is added to include additional condition classes
@@ -11,14 +17,19 @@
   - `duplicate_error()`, `duplicate_warning()`
   - `default_error()`
   - `deprecated_warning()`
+- `cnd_document()` no longer produces >80 character lines
+- `condition(name)(message)` can be used to override default messages [#22](https://github.com/jmbarbone/cnd/issues/22)
+
+## Fixes
+
 - `cnd_document()`'s links to `{cnd}` are corrected [#25](https://github.com/jmbarbone/cnd/issues/25)
 - `condition(message = )` now handles `...` and other arguments correctly [#23](https://github.com/jmbarbone/cnd/issues/23) 
-- `cnd_document()` no longer produces >80 character lines
-- **internal**: documentation updates
-- **internal**: test restructure for internal, testing package
 - `conditions("pkg::condition/type")` now works [#18](https://github.com/jmbarbone/cnd/issues/18)
-- `condition(name)(message)` can be used to override default messages [#22](https://github.com/jmbarbone/cnd/issues/22)
-- **BREAKING** class names are now created as `"pkg::condition"` using `::` instead of `:`
+
+## Internal
+
+- documentation updates
+- test restructure for internal, testing package
 
 # cnd 0.1.1
 
